@@ -1,0 +1,47 @@
+ion-toolbar {
+  --background: #4DD9D5; // teal do ARCA
+  --color: white;
+
+  // Ícone do menu
+  ion-menu-button {
+    color: white;
+  }
+
+  // Barra de busca
+  ion-searchbar {
+    --background: white;
+    --border-radius: 25px;
+    --box-shadow: none;
+    --placeholder-color: #999;
+    --color: #333;
+    --icon-color: #4DD9D5;
+    padding: 4px 8px 4px 0;
+  }
+}
+
+// Remove a linha/borda padrão do header
+ion-header {
+  &::after {
+    display: none;
+  }
+}
+
+// Sugestões de busca
+.suggestions-container {
+  position: absolute;
+  width: 100%;
+  z-index: 999;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  border-radius: 0 0 12px 12px;
+
+  ion-item {
+    --min-height: 40px;
+    font-size: 14px;
+    cursor: pointer;
+
+    &:hover {
+      --background: #f0fffe;
+    }
+  }
+}

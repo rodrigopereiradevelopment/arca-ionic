@@ -1,23 +1,60 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { RouterModule, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import {
+  IonMenu,
+  IonHeader,
+  IonToolbar,
+  IonContent,
+  IonFooter,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonItemDivider,
+  MenuController
+} from '@ionic/angular/standalone'; // ← standalone, não IonicModule!
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   standalone: true,
-  imports: [IonicModule]
+  imports: [
+    CommonModule,
+    RouterModule,
+    IonMenu,
+    IonHeader,
+    IonToolbar,
+    IonContent,
+    IonFooter,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonItemDivider,
+  ]
 })
-export class MenuComponent  implements OnInit {
+export class MenuComponent implements OnInit {
 
-  sugestoes: any[] = []; // Define que sugestoes é uma lista vazia
+  usuario = {
+    nome: 'Nome do Usuário',
+    email: 'email@exemplo.com'
+  };
 
-  constructor() { }
+  isAdmin = false;
+
+  constructor(
+    private menuCtrl: MenuController,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
-  // Adicione a função que o HTML chama
-  selecionar(item: any) {
-    console.log('Item selecionado:', item);
+  logout() {
+    this.menuCtrl.close();
+    this.router.navigate(['/login']);
+  }
+
+  fecharMenu() {
+    this.menuCtrl.close();
   }
 }

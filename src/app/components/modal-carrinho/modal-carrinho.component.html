@@ -1,34 +1,43 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Carrinho</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="fecharModal()">Fechar</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="ion-padding">
+
+  <!-- Handle de arraste + título inline -->
+  <div class="modal-handle"></div>
+  
   <div *ngIf="view === 'lista'">
-    <h2 class="section-title">Minha Lista</h2>
+    <div class="modal-header">
+      <h2 class="section-title">Minha Lista</h2>
+      <ion-button fill="clear" (click)="fecharModal()">Fechar</ion-button>
+    </div>
+
     <ion-list>
       <ion-item *ngFor="let item of produtos">
         <ion-label>{{ item.nome }}</ion-label>
       </ion-item>
     </ion-list>
-    
-    <ion-button expand="block" fill="outline">＋ adicionar item</ion-button>
-    <ion-button expand="block" (click)="view = 'resultado'">Comparar Preços</ion-button>
+
+    <ion-button expand="block" fill="outline" class="ion-margin-top">
+      ＋ Adicionar item
+    </ion-button>
+    <ion-button expand="block" color="primary" (click)="view = 'resultado'">
+      Comparar Preços
+    </ion-button>
   </div>
 
   <div *ngIf="view === 'resultado'">
-    <h2 class="section-title">Melhores Preços</h2>
+    <div class="modal-header">
+      <h2 class="section-title">Melhores Preços</h2>
+      <ion-button fill="clear" (click)="view = 'lista'">Voltar</ion-button>
+    </div>
+
     <ion-card>
       <ion-card-content>
         <strong>R$ 102,24</strong>
       </ion-card-content>
     </ion-card>
-    
-    <ion-button expand="block" (click)="view = 'lista'">Voltar</ion-button>
-    <ion-button expand="block">Ver Rotas</ion-button>
+
+    <ion-button expand="block" color="primary">
+      Ver Rotas
+    </ion-button>
   </div>
+
 </ion-content>

@@ -1,26 +1,53 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule} from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
+  IonContent,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonCard,
+  IonCardContent,
+  ModalController
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-modal-carrinho',
   templateUrl: './modal-carrinho.component.html',
   styleUrls: ['./modal-carrinho.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [
+    CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonCard,
+    IonCardContent
+  ]
 })
-export class ModalCarrinhoComponent  implements OnInit {
+export class ModalCarrinhoComponent implements OnInit {
 
-  view: string = 'lista'; // Começa na visualização de lista
-  produtos: any[] = [];   // Lista de produtos vazia
+  view: string = 'lista';
+  produtos: any[] = [
+    { nome: 'Café Tradicional 3 Corações' },
+    { nome: 'Açúcar Refinado União' }
+  ];
 
-  constructor() { }
+  constructor(private modalCtrl: ModalController) {}
 
   ngOnInit() {}
 
   fecharModal() {
-    console.log('Fechando modal...');
-    // Aqui você adicionaria o código para fechar o modal do Ionic
+    this.modalCtrl.dismiss();
   }
-
 }

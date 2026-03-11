@@ -1,25 +1,37 @@
-<ion-footer>
-  <ion-toolbar>
-    <div class="footer-container">
-      <ion-button fill="clear" routerLink="/ticket">
-        <ion-icon name="ticket-outline" slot="icon-only"></ion-icon>
-      </ion-button>
+<div class="footer-wrapper">
 
-      <ion-button fill="clear" routerLink="/home">
-        <ion-icon name="home-outline" slot="icon-only"></ion-icon>
-      </ion-button>
+  <!-- Carrinho FORA do footer para não ser cortado -->
+  <div class="cart-btn-wrapper">
+    <ion-button fill="clear" class="cart-btn" (click)="abrirCarrinho()">
+      <img src="assets/img/car.png" class="cart-icon">
+    </ion-button>
+  </div>
 
-      <ion-button fill="clear" (click)="abrirCarrinho()">
-        <ion-icon name="cart-outline" slot="icon-only"></ion-icon>
-      </ion-button>
+  <ion-footer>
+    <ion-toolbar>
+      <div class="footer-container">
 
-      <ion-button fill="clear" routerLink="/notificacoes">
-        <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
-      </ion-button>
+        <ion-button fill="clear" routerLink="/ticket">
+          <img src="assets/img/ticket.png" slot="icon-only" class="footer-icon">
+        </ion-button>
 
-      <ion-button fill="clear" routerLink="/login">
-        <ion-icon name="person-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </div>
-  </ion-toolbar>
-</ion-footer>
+        <ion-button fill="clear" routerLink="/home">
+          <img src="assets/img/home.png" slot="icon-only" class="footer-icon">
+        </ion-button>
+
+        <!-- Espaço reservado para o carrinho no centro -->
+        <div class="cart-placeholder"></div>
+
+        <ion-button fill="clear" routerLink="/notificacoes">
+          <img src="assets/img/notificacao.png" slot="icon-only" class="footer-icon">
+        </ion-button>
+
+        <ion-button fill="clear" routerLink="/login">
+          <img src="assets/img/usuario1.png" slot="icon-only" class="footer-icon">
+        </ion-button>
+
+      </div>
+    </ion-toolbar>
+  </ion-footer>
+
+</div>

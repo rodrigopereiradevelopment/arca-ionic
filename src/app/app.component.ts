@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core'; // 1. Adicione o OnInit
+import { Component, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { MenuComponent } from './components/menu/menu.component'; // 👈 adicione
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet],
+  imports: [
+    IonApp,
+    IonRouterOutlet,
+    MenuComponent  // 👈 adicione
+  ],
 })
-export class AppComponent implements OnInit { // 2. Implemente o OnInit
+export class AppComponent implements OnInit {
   
   constructor() {}
 
-  // 3. O código agora fica DENTRO da classe
   ngOnInit() {
     setTimeout(() => {
       const overlay = document.getElementById('intro-overlay');
