@@ -35,3 +35,39 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+#intro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff; /* Ajuste a cor aqui */
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center;      /* Centraliza verticalmente */
+  z-index: 2000;
+  transition: opacity 1s ease-out;
+}
+
+#intro-overlay img {
+  width: 50%; /* Ajuste o tamanho do logo */
+  max-width: 250px;
+  height: auto;
+}
+
+ion-content {
+  --background: #ffffff;
+  height: 100%;
+}
+/* Teste de visibilidade forçada */
+/* Teste de visibilidade total - Alvo ampliado */
+swiper-container, .swiper, .mySwiper {
+  display: block !important;
+  border: 5px solid red !important; 
+  min-height: 300px !important;
+  width: 100% !important;
+  z-index: 9999 !important;
+  background: yellow !important;
+  visibility: visible !important;
+}

@@ -1,27 +1,19 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+swiper-container {
+  display: block;
+  width: 100%;
+  height: auto; /* Deixa a altura se ajustar à imagem */
+  aspect-ratio: 16 / 9; /* Mantém a proporção de banner */
+  margin: 15px 0;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+swiper-slide {
+  padding: 0 10px; /* Dá um respiro nas laterais */
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px; /* Bordas arredondadas profissionais */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }

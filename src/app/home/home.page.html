@@ -1,20 +1,24 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <swiper-container [loop]="true" [autoplay]="true" pagination="true" slides-per-view="1">
+    <swiper-slide><img src="assets/img/Compare1.png" alt="Banner 1"></swiper-slide>
+    <swiper-slide><img src="assets/img/Compare.png" alt="Banner 2"></swiper-slide>
+    <swiper-slide><img src="assets/img/Descontos.png" alt="Banner 3"></swiper-slide>
+    <swiper-slide><img src="assets/img/Descubra.png" alt="Banner 4"></swiper-slide>
+    <swiper-slide><img src="assets/img/Economia.png" alt="Banner 5"></swiper-slide>
+    <swiper-slide><img src="assets/img/Ofertas.png" alt="Banner 6"></swiper-slide>
+  </swiper-container>
+      
+  <swiper-container [loop]="true" [autoplay]="{ delay: 4000 }" pagination="true" slides-per-view="1">
+    <swiper-slide><img src="assets/img/Promocao3.png" alt="Promo 1"></swiper-slide>
+    <swiper-slide><img src="assets/img/Promocao1.png" alt="Promo 2"></swiper-slide>
+    <swiper-slide><img src="assets/img/Promocao.png" alt="Promo 3"></swiper-slide>
+    <swiper-slide><img src="assets/img/Promocao2.png" alt="Promo 4"></swiper-slide>
+  </swiper-container>
+
 </ion-content>
+
+<app-footer></app-footer>
+<app-modal-carrinho></app-modal-carrinho>

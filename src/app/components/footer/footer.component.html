@@ -1,0 +1,25 @@
+<ion-footer>
+  <ion-toolbar>
+    <div class="footer-container">
+      <ion-button fill="clear" routerLink="/ticket">
+        <ion-icon name="ticket-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" routerLink="/home">
+        <ion-icon name="home-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" (click)="abrirCarrinho()">
+        <ion-icon name="cart-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" routerLink="/notificacoes">
+        <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" routerLink="/login">
+        <ion-icon name="person-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
