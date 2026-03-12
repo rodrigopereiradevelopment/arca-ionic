@@ -1,19 +1,43 @@
-swiper-container {
+.banner-top {
   display: block;
   width: 100%;
-  height: auto; /* Deixa a altura se ajustar à imagem */
-  aspect-ratio: 16 / 9; /* Mantém a proporção de banner */
-  margin: 15px 0;
+  padding: 12px 8px 4px;
+
+  swiper-slide {
+    padding: 0 4px;
+
+    img {
+      width: 100%;
+      height: 270px;
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: block;
+    }
+  }
 }
 
-swiper-slide {
-  padding: 0 10px; /* Dá um respiro nas laterais */
-}
-
-swiper-slide img {
+.banner-promo {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 15px; /* Bordas arredondadas profissionais */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  padding: 4px 8px 0;
+  margin: 8px 0 0;
+
+  swiper-slide {
+    padding: 0 10px;
+
+    img {
+      width: 270px;
+      height: 100%; // ← aumentei para não cortar
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: block;
+    }
+  }
+}
+
+ion-content {
+  --overflow: auto; // ← mudei de hidden para auto
+  --padding-bottom: 0;
 }
