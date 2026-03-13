@@ -21,5 +21,13 @@ export const routes: Routes = [
   {
     path: 'mapa-rotas',
     loadComponent: () => import('./pages/mapa-rotas/mapa-rotas.page').then(m => m.MapaRotasPage)
-  }
+  },
+  {
+    path: 'termos',
+    loadComponent: () => import('./pages/termos/termos.page').then( m => m.TermosPage)
+  },
+  {
+  path: 'privacidade',
+  loadComponent: () => import('./pages/privacidade/privacidade.page').then(m => m.PrivacidadePage)
+}
 ];

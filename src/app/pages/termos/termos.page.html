@@ -1,0 +1,139 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <a routerLink="/cadastro" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+  </div>
+
+  <div class="container">
+
+    <h1>Termos de Uso — App ARCA</h1>
+    <p class="subtitulo">
+      Estes Termos regem o uso do aplicativo de comparação de preços ARCA.
+      Seu uso implica na aceitação integral deste documento e da
+      <a routerLink="/privacidade">Política de Privacidade</a>.
+    </p>
+    <p class="data">Última atualização: {{ dataAtualizacao }}</p>
+
+    <ion-accordion-group>
+
+      <ion-accordion value="objeto">
+        <ion-item slot="header">
+          <ion-label>1. Objeto e Aceitação</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          Estes Termos de Uso regem o acesso e o uso do App ARCA, uma ferramenta
+          que fornece informações de preços e comparação de produtos em mercados
+          de Mogi Mirim. Ao acessar ou usar o App ARCA, você concorda com estes Termos.
+        </div>
+      </ion-accordion>
+
+      <ion-accordion value="isencao">
+        <ion-item slot="header">
+          <ion-label>2. Isenção de Garantias e Responsabilidade</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p><strong>2.1. Natureza Informativa:</strong> O App ARCA é uma ferramenta
+          de referência e não uma loja virtual. Todas as informações de preços,
+          estoque e promoções são fornecidas por fontes terceiras e podem estar
+          desatualizadas.</p>
+          <p><strong>2.2. Sem Garantia de Preço Final:</strong> O App ARCA
+          <strong>NÃO GARANTE</strong> a exatidão, integralidade ou validade dos
+          preços e estoque. O preço final é de exclusiva responsabilidade do
+          estabelecimento comercial. Sempre confira o preço na prateleira.</p>
+          <p><strong>2.3. Limitação de Dano:</strong> O App ARCA não se
+          responsabiliza por prejuízos decorrentes do uso ou impossibilidade de
+          uso das informações do aplicativo.</p>
+        </div>
+      </ion-accordion>
+
+      <ion-accordion value="responsabilidades">
+        <ion-item slot="header">
+          <ion-label>3. Cadastro e Responsabilidades do Usuário</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>3.1. O usuário é responsável pela veracidade dos dados cadastrais fornecidos.</p>
+          <p>3.2. A senha é pessoal e intransferível. O usuário é responsável por
+          todas as atividades realizadas em sua conta.</p>
+          <p>3.3. <strong>Geolocalização:</strong> O usuário deve conceder permissão
+          de localização para que o serviço principal do App ARCA possa ser prestado.</p>
+          <p>3.4. <strong>Cancelamento de Conta:</strong> O usuário pode solicitar
+          o cancelamento de sua conta a qualquer momento através das configurações
+          do aplicativo. Os dados serão removidos conforme a LGPD (Lei 13.709/2018).</p>
+        </div>
+      </ion-accordion>
+
+      <ion-accordion value="avaliacoes">
+        <ion-item slot="header">
+          <ion-label>4. Conteúdo do Usuário e Avaliações</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>4.1. O usuário é o único responsável pelas avaliações e comentários postados.</p>
+          <p>4.2. É proibido publicar conteúdo ilegal, difamatório, ofensivo,
+          falso ou que viole direitos de terceiros.</p>
+        </div>
+      </ion-accordion>
+
+      <ion-accordion value="propriedade">
+        <ion-item slot="header">
+          <ion-label>5. Propriedade Intelectual</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          O código, o design, o nome App ARCA e a base de dados agregada de preços
+          são de propriedade do Desenvolvedor. O uso não autorizado é proibido.
+        </div>
+      </ion-accordion>
+
+      <ion-accordion value="lgpd">
+        <ion-item slot="header">
+          <ion-label>6. LGPD — Lei Geral de Proteção de Dados</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>6.1. O App ARCA está em conformidade com a Lei 13.709/2018 (LGPD).</p>
+          <p>6.2. Os dados coletados são utilizados exclusivamente para a prestação
+          dos serviços do aplicativo.</p>
+          <p>6.3. O prazo de retenção dos dados é de até 5 anos após o cancelamento
+          da conta, salvo obrigação legal diversa.</p>
+          <p>6.4. Para exercer seus direitos de titular (acesso, correção, exclusão),
+          entre em contato através das configurações do aplicativo.</p>
+        </div>
+      </ion-accordion>
+
+      <ion-accordion value="cookies">
+        <ion-item slot="header">
+          <ion-label>7. Cookies e Localização</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>7.1. O App ARCA utiliza dados de localização para encontrar mercados
+          próximos ao usuário.</p>
+          <p>7.2. O usuário pode revogar a permissão de localização nas configurações
+          do dispositivo a qualquer momento.</p>
+          <p>7.3. Dados de uso podem ser coletados de forma anônima para melhoria
+          do serviço.</p>
+        </div>
+      </ion-accordion>
+
+      <ion-accordion value="disposicoes">
+        <ion-item slot="header">
+          <ion-label>8. Disposições Finais</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          Estes Termos de Uso são regidos pelas leis da República Federativa do Brasil.
+          Fica eleito o Foro da Comarca de <strong>Mogi Mirim, São Paulo</strong>,
+          para dirimir quaisquer dúvidas ou litígios decorrentes destes Termos.
+        </div>
+      </ion-accordion>
+
+    </ion-accordion-group>
+
+    <a routerLink="/privacidade" class="btn-privacidade">
+      📄 Acessar Política de Privacidade completa
+    </a>
+
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 ARCA - Compare preços e economize em Mogi Mirim</p>
+  </div>
+
+</ion-content>

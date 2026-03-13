@@ -1,0 +1,219 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <a routerLink="/termos" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+  </div>
+
+  <div class="container">
+
+    <h1>Política de Privacidade — App ARCA</h1>
+    <p class="subtitulo">
+      Esta Política descreve como o App ARCA coleta, usa, armazena e
+      compartilha suas informações. Ao utilizar o aplicativo, você concorda
+      com os termos desta Política.
+    </p>
+    <p class="data">Última atualização: {{ dataAtualizacao }}</p>
+
+    <!-- Link rápido para Termos -->
+    <a routerLink="/termos" class="btn-termos">
+      📋 Ver Termos de Uso
+    </a>
+
+    <ion-accordion-group>
+
+      <!-- Introdução -->
+      <ion-accordion value="introducao">
+        <ion-item slot="header">
+          <ion-label>Introdução e Definições</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          Esta Política de Privacidade descreve como o App ARCA, uma plataforma
+          de comparação de preços em mercados e supermercados de Mogi Mirim,
+          coleta, usa, armazena e compartilha as suas informações. Ao utilizar
+          o aplicativo, você concorda com os termos desta Política e com nossa
+          <a routerLink="/termos" class="link">Política de Termos de Uso</a>.
+        </div>
+      </ion-accordion>
+
+      <!-- Dados coletados -->
+      <ion-accordion value="dados">
+        <ion-item slot="header">
+          <ion-label>I. Quais Dados Coletamos e Por Quê</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>Coletamos informações necessárias para fornecer, manter e melhorar
+          nossos serviços, com base nas seguintes finalidades:</p>
+
+          <ion-grid class="tabela">
+            <ion-row class="cabecalho">
+              <ion-col size="4"><strong>Tipo de Dado</strong></ion-col>
+              <ion-col size="5"><strong>Finalidade</strong></ion-col>
+              <ion-col size="3"><strong>Base Legal</strong></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Nome, E-mail, Senha</ion-col>
+              <ion-col size="5">Autenticação e comunicação de serviço</ion-col>
+              <ion-col size="3">Execução de Contrato</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">CPF (opcional)</ion-col>
+              <ion-col size="5">Prevenção de fraude e validação de identidade</ion-col>
+              <ion-col size="3">Consentimento</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Geolocalização</ion-col>
+              <ion-col size="5">Exibir preços e mercados mais próximos</ion-col>
+              <ion-col size="3">Consentimento</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Histórico de Pesquisa</ion-col>
+              <ion-col size="5">Personalização da experiência</ion-col>
+              <ion-col size="3">Interesse Legítimo</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Dados de Nota Fiscal (opcional)</ion-col>
+              <ion-col size="5">Atualização da base de preços</ion-col>
+              <ion-col size="3">Consentimento Específico</ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <p class="mt">Para segurança dos seus dados, utilizamos criptografia
+          e o protocolo HTTPS em todas as comunicações.</p>
+        </div>
+      </ion-accordion>
+
+      <!-- Cookies -->
+      <ion-accordion value="cookies">
+        <ion-item slot="header">
+          <ion-label>II. Cookies e Tecnologias de Rastreamento</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          Utilizamos cookies e tecnologias similares para rastrear a atividade
+          no App ARCA, incluindo dados de uso para fins de análise e melhoria
+          de performance. Você pode gerenciar as preferências de cookies
+          diretamente nas configurações do seu dispositivo.
+        </div>
+      </ion-accordion>
+
+      <!-- Notificações -->
+      <ion-accordion value="emails">
+        <ion-item slot="header">
+          <ion-label>III. Notificações e E-mails</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          O usuário concorda em receber comunicações essenciais sobre o serviço
+          (mudanças nos Termos, recuperação de senha). O envio de alertas de
+          preço e e-mails promocionais pode ser desativado nas configurações
+          do aplicativo.
+        </div>
+      </ion-accordion>
+
+      <!-- Aceitação -->
+      <ion-accordion value="aceitacao">
+        <ion-item slot="header">
+          <ion-label>IV. Aceitação da Política de Privacidade</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          O <strong>Cadastro</strong>, o <strong>Login</strong> ou o
+          <strong>Uso Contínuo</strong> do App ARCA implica na sua aceitação
+          desta Política de Privacidade e dos Termos de Uso. Caso não concorde,
+          você deve descontinuar o uso do aplicativo e solicitar a exclusão
+          de sua conta.
+        </div>
+      </ion-accordion>
+
+      <!-- Retenção -->
+      <ion-accordion value="retencao">
+        <ion-item slot="header">
+          <ion-label>V. Retenção e Exclusão de Dados</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>Seus dados serão retidos pelo tempo necessário para cumprir as
+          finalidades desta política. O usuário pode solicitar a exclusão de
+          sua conta a qualquer momento nas configurações do aplicativo.</p>
+          <p>Após a solicitação, os dados pessoais serão eliminados no prazo
+          de <strong>15 dias</strong>, exceto aqueles que precisem ser mantidos
+          por obrigações legais. O histórico de pesquisa é mantido enquanto
+          a conta estiver ativa.</p>
+        </div>
+      </ion-accordion>
+
+      <!-- Direitos LGPD -->
+      <ion-accordion value="direitos">
+        <ion-item slot="header">
+          <ion-label>VI. Seus Direitos — LGPD (Lei 13.709/2018)</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>Em cumprimento à LGPD, você tem o direito de solicitar a qualquer
+          momento:</p>
+          <p>✅ <strong>Acesso</strong> aos seus dados pessoais</p>
+          <p>✅ <strong>Correção</strong> de dados incompletos ou incorretos</p>
+          <p>✅ <strong>Portabilidade</strong> dos seus dados</p>
+          <p>✅ <strong>Anonimização</strong> ou <strong>Exclusão</strong> dos dados</p>
+          <p>✅ <strong>Oposição</strong> ao tratamento de dados</p>
+          <p>Para exercer esses direitos, entre em contato com nosso
+          Encarregado de Dados (DPO) pelo e-mail:
+          <strong>privacidade@apparca.com.br</strong>. As solicitações serão
+          respondidas em até <strong>15 dias</strong> conforme previsto na LGPD.</p>
+        </div>
+      </ion-accordion>
+
+      <!-- Alterações -->
+      <ion-accordion value="alteracoes">
+        <ion-item slot="header">
+          <ion-label>VII. Alterações nesta Política</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          Reservamo-nos o direito de modificar esta Política. Sempre que houver
+          alterações significativas, o usuário será notificado por e-mail ou
+          notificação dentro do aplicativo e poderá ser solicitado a reaceitar
+          os novos termos.
+        </div>
+      </ion-accordion>
+
+      <!-- Segurança -->
+      <ion-accordion value="seguranca">
+        <ion-item slot="header">
+          <ion-label>VIII. Segurança dos Dados</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          O App ARCA utiliza todas as medidas técnicas e administrativas
+          possíveis para proteger os seus dados pessoais, incluindo criptografia,
+          controle de acesso e monitoramento contínuo. Recomendamos que o
+          usuário mantenha seu dispositivo seguro e atualizado.
+        </div>
+      </ion-accordion>
+
+      <!-- Compartilhamento -->
+      <ion-accordion value="compartilhamento">
+        <ion-item slot="header">
+          <ion-label>IX. Compartilhamento de Informações</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>Não vendemos ou alugamos seus dados pessoais. Podemos
+          compartilhá-los apenas com:</p>
+          <p><strong>1. Prestadores de Serviço:</strong> Empresas que nos
+          auxiliam na operação, como servidores de hospedagem, provedores
+          de mapa e serviços de análise de uso.</p>
+          <p><strong>2. Dados Anonimizados:</strong> Dados de consumo poderão
+          ser compartilhados com terceiros <strong>apenas de forma
+          anonimizada</strong>, sem identificação do usuário, para fins de
+          análise estatística de mercado.</p>
+        </div>
+      </ion-accordion>
+
+    </ion-accordion-group>
+
+    <!-- Link para Termos -->
+    <a routerLink="/termos" class="btn-termos-bottom">
+      📋 Acessar Termos de Uso completos
+    </a>
+
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 ARCA - Compare preços e economize em Mogi Mirim</p>
+  </div>
+
+</ion-content>
