@@ -35,8 +35,16 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
-            "scripts": [],
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss",
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css"
+            ],
+            "scripts": [
+              "node_modules/leaflet/dist/leaflet.js",
+              "node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.js"
+            ],
             "browser": "src/main.ts"
           },
           "configurations": {
@@ -109,8 +117,16 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
-            "scripts": []
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss",
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css"
+            ],
+            "scripts": [
+              "node_modules/leaflet/dist/leaflet.js",
+              "node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.js"
+            ]
           },
           "configurations": {
             "ci": {

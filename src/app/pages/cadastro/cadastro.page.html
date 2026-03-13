@@ -1,0 +1,136 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <img src="assets/img/logo.png" class="logo" alt="Logotipo ARCA">
+    <h1>Compare preços e economize!</h1>
+  </div>
+
+  <div class="container">
+    <div class="form-card">
+      <h2>Criar Conta no ARCA</h2>
+
+      <!-- Dados Básicos -->
+      <fieldset>
+        <legend>Dados Básicos (Obrigatório)</legend>
+
+        <div class="input-container">
+          <span class="icon">👤</span>
+          <ion-input class="input-field" type="text" placeholder="Nome Completo"
+            [(ngModel)]="form.nome"></ion-input>
+        </div>
+
+        <div class="input-container">
+          <span class="icon">✉️</span>
+          <ion-input class="input-field" type="email" placeholder="Seu melhor e-mail"
+            [(ngModel)]="form.email"></ion-input>
+        </div>
+
+        <div class="input-container">
+          <span class="icon">🔒</span>
+          <ion-input class="input-field" [type]="mostrarSenha ? 'text' : 'password'"
+            placeholder="Senha (mínimo 8 caracteres)" [(ngModel)]="form.senha"></ion-input>
+          <button class="toggle-senha" (click)="toggleSenha()">👁</button>
+        </div>
+
+        <div class="input-container">
+          <span class="icon">🔒</span>
+          <ion-input class="input-field" [type]="mostrarConfirmSenha ? 'text' : 'password'"
+            placeholder="Confirme a Senha" [(ngModel)]="form.confirmSenha"></ion-input>
+          <button class="toggle-senha" (click)="toggleConfirmSenha()">👁</button>
+        </div>
+      </fieldset>
+
+      <!-- Informações Adicionais -->
+      <fieldset>
+        <legend>Informações Adicionais (Opcional)</legend>
+
+        <div class="input-container">
+          <span class="icon">🪪</span>
+          <ion-input class="input-field" type="text" placeholder="CPF (opcional)"
+            [(ngModel)]="form.cpf"></ion-input>
+        </div>
+
+        <div class="input-container">
+          <span class="icon">📞</span>
+          <ion-input class="input-field" type="tel" placeholder="Telefone (opcional)"
+            [(ngModel)]="form.telefone"></ion-input>
+        </div>
+
+        <div class="input-container">
+          <span class="icon">📍</span>
+          <ion-input class="input-field" type="text" [value]="form.cidade" readonly></ion-input>
+        </div>
+        <small>Atualmente disponível apenas em Mogi Mirim</small>
+      </fieldset>
+
+      <!-- Preferências -->
+      <fieldset>
+        <legend>Preferências</legend>
+
+        <div class="checkbox-group">
+          <ion-checkbox [(ngModel)]="form.notifPush"></ion-checkbox>
+          <span>🔔 Receber notificações push</span>
+        </div>
+
+        <div class="checkbox-group">
+          <ion-checkbox [(ngModel)]="form.notifEmail"></ion-checkbox>
+          <span>✉️ Receber ofertas por e-mail</span>
+        </div>
+
+        <div class="checkbox-group">
+          <ion-checkbox [(ngModel)]="form.notifPromocoes"></ion-checkbox>
+          <span>🏷️ Receber alertas de promoções</span>
+        </div>
+
+        <div class="range-group">
+          <ion-label>Raio de busca ({{ form.raioBusca }} km):</ion-label>
+          <ion-range [(ngModel)]="form.raioBusca" min="5" max="30" color="primary"></ion-range>
+        </div>
+
+        <div class="checkbox-group">
+          <ion-checkbox [(ngModel)]="form.modoEscuro"></ion-checkbox>
+          <span>🌙 Modo escuro</span>
+        </div>
+      </fieldset>
+
+      <!-- Permissões -->
+      <fieldset>
+        <legend>Permissões</legend>
+        <div class="checkbox-group">
+          <ion-checkbox [(ngModel)]="form.permitirLocalizacao"></ion-checkbox>
+          <span>📍 Permitir acesso à minha localização</span>
+        </div>
+        <small>Para encontrar os supermercados mais próximos</small>
+      </fieldset>
+
+      <!-- Termos -->
+      <fieldset>
+        <legend>Termos de Uso</legend>
+        <div class="checkbox-group">
+          <ion-checkbox [(ngModel)]="form.aceiteTermos"></ion-checkbox>
+          <span>Li e aceito os <a routerLink="/termos">termos de uso</a> e
+            <a routerLink="/privacidade">política de privacidade</a>.</span>
+        </div>
+      </fieldset>
+
+      <!-- Botões -->
+      <div class="button-group">
+        <ion-button expand="block" class="btn-primary" (click)="criar()">
+          ✅ Criar Conta
+        </ion-button>
+        <ion-button expand="block" fill="outline" class="btn-secondary" (click)="limpar()">
+          🔄 Limpar
+        </ion-button>
+      </div>
+
+      <div class="login-link">
+        Já tem uma conta? <a routerLink="/login">Fazer login</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 ARCA - Compare preços e economize em Mogi Mirim</p>
+  </div>
+
+</ion-content>

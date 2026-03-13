@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButtons,
   IonButton,
   IonContent,
   IonList,
@@ -22,10 +20,7 @@ import {
   standalone: true,
   imports: [
     CommonModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
+    RouterModule,
     IonButton,
     IonContent,
     IonList,
@@ -43,11 +38,19 @@ export class ModalCarrinhoComponent implements OnInit {
     { nome: 'Açúcar Refinado União' }
   ];
 
-  constructor(private modalCtrl: ModalController) {}
+  constructor(
+    private modalCtrl: ModalController,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
   fecharModal() {
     this.modalCtrl.dismiss();
+  }
+
+  verRotas() {
+    this.modalCtrl.dismiss();
+    this.router.navigate(['/mapa-rotas']);
   }
 }

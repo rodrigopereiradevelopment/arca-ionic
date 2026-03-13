@@ -1,0 +1,184 @@
+:host {
+  --cor-primaria: #00BF9F;
+  --cor-secundaria: #39e6c2;
+  --cor-fundo: #ffffff;
+  --cor-texto-escuro: #333;
+  --cor-input-fundo: #00D5B2;
+  --cor-suave: #ccc;
+  --sombra-card: 0 8px 15px rgba(0, 0, 0, 0.2);
+  --sombra-input: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+ion-content {
+  --background: var(--cor-fundo);
+}
+
+// Topo
+.topo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: var(--cor-secundaria);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+
+  .logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 22px;
+    box-shadow: var(--sombra-input);
+    margin: 15px;
+  }
+}
+
+// Área central
+.area-central {
+  padding: 140px 20px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+// Card
+.card-login {
+  width: 100%;
+  max-width: 400px;
+  background: var(--cor-secundaria);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: var(--sombra-card);
+
+  ion-label {
+    font-weight: bold;
+    color: var(--cor-texto-escuro);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .input-custom {
+    --background: var(--cor-input-fundo);
+    --color: var(--cor-texto-escuro);
+    --border-radius: 15px;
+    --box-shadow: var(--sombra-input);
+    --padding-start: 15px;
+    --padding-end: 15px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+  }
+}
+
+// Link cadastro
+.cadastro {
+  text-align: end;
+  margin: 10px 0 25px;
+  font-size: 15px;
+  color: var(--cor-texto-escuro);
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+}
+
+// Botão entrar
+.btn-entrar {
+  --background: var(--cor-primaria);
+  --color: var(--cor-texto-escuro);
+  --border-radius: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0 30px;
+}
+
+// Divisor
+.divisor-social {
+  border: none;
+  border-top: 1px solid var(--cor-suave);
+  margin: 15px 0 25px;
+}
+
+// Botões sociais
+.social-box {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+
+  .btn-social {
+    flex: 1;
+    --border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    height: 52px;
+
+    img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      margin-right: 8px;
+    }
+
+    &.facebook {
+      --background: #3b5998;
+      --color: white;
+    }
+
+    &.google {
+      --background: var(--cor-input-fundo);
+      --color: var(--cor-texto-escuro);
+      --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  }
+}
+
+// Rodapé
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: var(--cor-secundaria);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    color: var(--cor-texto-escuro);
+    font-size: 14px;
+    margin: 0;
+    text-align: center;
+    padding: 0 10px;
+  }
+}
+
+// Mobile
+@media (max-width: 480px) {
+  .topo {
+    height: 90px;
+    border-radius: 0;
+  }
+
+  .area-central {
+    padding-top: 100px;
+    padding-bottom: 80px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .card-login {
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .social-box {
+    flex-direction: column;
+  }
+}

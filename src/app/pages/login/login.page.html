@@ -1,0 +1,56 @@
+<ion-content [fullscreen]="true">
+
+  <!-- Topo com logo -->
+  <div class="topo">
+    <img src="assets/img/logo.jpeg" class="logo" alt="Logotipo ARCA">
+  </div>
+
+  <!-- Card de login -->
+  <div class="area-central">
+    <div class="card-login">
+
+      <ion-label>Usuário</ion-label>
+      <ion-input
+        type="text"
+        [(ngModel)]="username"
+        autocomplete="username"
+        class="input-custom">
+      </ion-input>
+
+      <ion-label>Senha</ion-label>
+      <ion-input
+        type="password"
+        [(ngModel)]="password"
+        autocomplete="current-password"
+        class="input-custom">
+      </ion-input>
+
+      <a routerLink="/cadastro" class="cadastro">Não tem conta? Cadastre-se</a>
+
+      <ion-button expand="block" class="btn-entrar" (click)="login()">
+        Entrar
+      </ion-button>
+
+      <hr class="divisor-social">
+
+      <div class="social-box">
+        <ion-button class="btn-social facebook" (click)="loginFacebook()">
+          <img src="assets/img/facebook.png" alt="Facebook">
+          Facebook
+        </ion-button>
+
+        <ion-button class="btn-social google" (click)="loginGoogle()">
+          <img src="assets/img/google.png" alt="Google">
+          Google
+        </ion-button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <div class="footer">
+    <p>&copy; 2025 ARCA - Compare preços e economize em Mogi Mirim</p>
+  </div>
+
+</ion-content>

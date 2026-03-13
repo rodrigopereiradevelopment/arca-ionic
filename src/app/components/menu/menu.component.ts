@@ -40,7 +40,7 @@ export class MenuComponent implements OnInit {
     email: 'email@exemplo.com'
   };
 
-  isAdmin = false;
+  isAdmin = true;
 
   constructor(
     private menuCtrl: MenuController,

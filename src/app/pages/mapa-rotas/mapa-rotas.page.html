@@ -1,0 +1,40 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar-topo">
+      <img src="assets/img/sair.png" alt="Voltar" class="icone-voltar">
+    </a>
+    <img src="assets/img/logo.jpeg" class="logo" alt="Logo">
+  </div>
+
+  <div class="container-lista">
+    <button class="btn-acao-mapa" (click)="toggleLista()">
+      Ver Mercados ({{ mercados.length }} Opções)
+    </button>
+<div class="lista-opcoes" *ngIf="listaVisivel">
+  <div class="mercado-item" *ngFor="let mercado of mercados; let i = index">
+    <div>
+      <strong>{{ i + 1 }}. {{ mercado.nome }}</strong><br>
+      <span>Total: {{ mercado.preco }}</span>
+    </div>
+    <button 
+      class="btn-rota" 
+      type="button"
+      (click)="tracarRota(null, {lat: mercado.lat, lng: mercado.lng}); $event.stopPropagation()">
+      Traçar Rota
+    </button>
+  </div>
+</div>
+  </div>
+
+  <div id="mapa"></div>
+<!-- teste temporário -->
+<button style="position:fixed;top:200px;left:10px;z-index:9999;background:red;color:white;padding:10px;" 
+  (click)="tracarRota(null, {lat: -22.4250, lng: -46.9400})">
+  TESTE ROTA
+</button>
+  <div class="footer">
+    <p>&copy; 2025 ARCA - Compare preços e economize em Mogi Mirim</p>
+  </div>
+
+</ion-content>
