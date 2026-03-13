@@ -1,0 +1,133 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+  </div>
+
+  <div class="container">
+
+    <!-- DADOS DO MERCADO -->
+    <h2 class="section-title">🏪 Dados do Mercado</h2>
+
+    <div class="form-group">
+      <label>Nome do Mercado <span class="required">*</span></label>
+      <input type="text" [(ngModel)]="form.nome" placeholder="Nome do mercado">
+    </div>
+
+    <div class="form-group">
+      <label>CNPJ <span class="required">*</span></label>
+      <input type="text" [(ngModel)]="form.cnpj" placeholder="00.000.000/0000-00" maxlength="18">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Telefone <span class="required">*</span></label>
+        <input type="tel" [(ngModel)]="form.telefone" placeholder="(00) 00000-0000">
+      </div>
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" [(ngModel)]="form.email" placeholder="contato@mercado.com">
+      </div>
+    </div>
+
+    <!-- ENDEREÇO -->
+    <h2 class="section-title">📍 Endereço</h2>
+
+    <div class="form-group cep-group">
+      <label>CEP <span class="required">*</span></label>
+      <div class="cep-row">
+        <input type="text" [(ngModel)]="form.cep" placeholder="00000-000" maxlength="9">
+        <button class="btn-cep" (click)="buscarCep()" [disabled]="buscandoCep">
+          {{ buscandoCep ? '...' : 'Buscar' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Rua <span class="required">*</span></label>
+      <input type="text" [(ngModel)]="form.rua" placeholder="Nome da rua">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Número <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="form.numero" placeholder="123">
+      </div>
+      <div class="form-group">
+        <label>Complemento</label>
+        <input type="text" [(ngModel)]="form.complemento" placeholder="Apto, Sala...">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Bairro <span class="required">*</span></label>
+      <input type="text" [(ngModel)]="form.bairro" placeholder="Nome do bairro">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Cidade <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="form.cidade" placeholder="Cidade">
+      </div>
+      <div class="form-group small">
+        <label>UF <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="form.estado" placeholder="SP" maxlength="2">
+      </div>
+    </div>
+
+    <!-- ÍCONE -->
+    <h2 class="section-title">📷 Ícone do Mercado</h2>
+
+    <label class="upload-area">
+      <input type="file" accept="image/*" (change)="onImagemSelecionada($event)" hidden>
+      <div *ngIf="!imagemPreview" class="upload-placeholder">
+        <span class="upload-icon">📷</span>
+        <span>Toque para enviar imagem</span>
+        <span class="upload-hint">PNG, JPG até 5MB</span>
+      </div>
+      <img *ngIf="imagemPreview" [src]="imagemPreview" class="img-preview" alt="Preview">
+    </label>
+
+    <!-- ADMIN DO PERFIL -->
+    <h2 class="section-title">👤 Responsável pelo Cadastro</h2>
+
+    <div class="form-group">
+      <label>Nome Completo <span class="required">*</span></label>
+      <input type="text" [(ngModel)]="form.admin_nome" placeholder="Nome completo">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>CPF <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="form.admin_cpf" placeholder="000.000.000-00" maxlength="14">
+      </div>
+      <div class="form-group">
+        <label>Telefone</label>
+        <input type="tel" [(ngModel)]="form.admin_telefone" placeholder="(00) 00000-0000">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>E-mail <span class="required">*</span></label>
+      <input type="email" [(ngModel)]="form.admin_email" placeholder="admin@email.com">
+    </div>
+
+    <div class="form-group">
+      <label>Senha <span class="required">*</span></label>
+      <input type="password" [(ngModel)]="form.admin_senha" placeholder="Mínimo 6 caracteres">
+    </div>
+
+    <p class="aviso-aprovacao">
+      ⚠️ Após o envio, seu cadastro será analisado pela equipe ARCA antes de ser publicado.
+    </p>
+
+    <!-- BOTÕES -->
+    <div class="botoes">
+      <button class="btn-limpar" (click)="limpar()">Limpar</button>
+      <button class="btn-enviar" (click)="enviar()">Enviar para Aprovação</button>
+    </div>
+
+  </div>
+
+</ion-content>

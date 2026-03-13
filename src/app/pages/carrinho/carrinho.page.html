@@ -1,0 +1,21 @@
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+
+    <div class="carrinho-item" *ngFor="let produto of produtos">
+      <img [src]="produto.img" [alt]="produto.nome" class="img-produto">
+      <span>{{ produto.nome }}</span>
+    </div>
+
+    <div class="carrinho-item adicionar">
+      <a routerLink="/home" class="link-adicionar">＋ adicionar a lista de compras</a>
+    </div>
+
+  </div>
+
+  <div class="botoes-fixos">
+    <a routerLink="/home" class="btn-voltar">Voltar</a>
+    <a routerLink="/comparar" class="btn-comparar">Comparar</a>
+  </div>
+
+</ion-content>

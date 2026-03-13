@@ -29,5 +29,25 @@ export const routes: Routes = [
   {
   path: 'privacidade',
   loadComponent: () => import('./pages/privacidade/privacidade.page').then(m => m.PrivacidadePage)
-}
+},
+  {
+    path: 'comparar',
+    loadComponent: () => import('./pages/comparar/comparar.page').then( m => m.CompararPage)
+  },
+  {
+    path: 'carrinho',
+    loadComponent: () => import('./pages/carrinho/carrinho.page').then( m => m.CarrinhoPage)
+  },
+  {
+    path: 'cadastrar-mercado',
+    loadComponent: () => import('./pages/cadastrar-mercado/cadastrar-mercado.page').then( m => m.CadastrarMercadoPage)
+  },
+  {
+    path: 'gerenciar-mercados',
+    loadComponent: () => import('./pages/gerenciar-mercados/gerenciar-mercados.page').then( m => m.GerenciarMercadosPage)
+  },
+  {
+    path: 'gerenciar-produtos',
+    loadComponent: () => import('./pages/gerenciar-produtos/gerenciar-produtos.page').then( m => m.GerenciarProdutosPage)
+  }
 ];

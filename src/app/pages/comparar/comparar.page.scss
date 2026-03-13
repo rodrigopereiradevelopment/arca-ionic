@@ -1,0 +1,90 @@
+ion-content {
+  --background: #f5f5f5;
+}
+
+.container {
+  padding: 20px 16px 100px;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.intro-texto {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 4px;
+  span {
+    color: #666;
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+}
+
+.titulo-card {
+  background: #22dbcf;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  h1 { margin: 0; font-size: 1.8em; }
+}
+
+.mercado-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  gap: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  background: white;
+  .img-posicao { width: 40px; height: 40px; object-fit: contain; }
+  .img-logo { width: 60px; height: 60px; object-fit: contain; border-radius: 50%; }
+  .preco { font-size: 1.4em; font-weight: bold; color: #333; flex-grow: 1; text-align: right; }
+}
+
+.aviso {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  border: 1px dashed #22dbcf;
+  background: #f0fff0;
+  border-radius: 10px;
+  span { font-size: 13px; line-height: 1.4; color: #666; }
+}
+
+.botoes-fixos {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  background: white;
+  border-top: 1px solid #eee;
+  z-index: 1000;
+  box-sizing: border-box;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+
+  .btn-voltar, .btn-imprimir, .btn-rota {
+    flex: 1;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  .btn-voltar { background: #eee; color: #333; }
+  .btn-imprimir { background: #22dbcf; color: white; }
+  .btn-rota { background: #b2ff66; color: #333; }
+}

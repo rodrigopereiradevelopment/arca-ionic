@@ -1,0 +1,319 @@
+ion-content { --background: #f5f5f5; }
+
+.topo {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 80px;
+  background: #39e6c2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  .btn-voltar {
+    position: absolute; left: 16px;
+    font-size: 24px; color: white;
+    text-decoration: none; font-weight: bold;
+  }
+  .logo {
+    width: 55px; height: 55px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+}
+
+.container {
+  padding: 100px 16px 40px;
+  max-width: 700px;
+  margin: 0 auto;
+
+  h1 { font-size: 20px; color: #333; margin-bottom: 4px; }
+  .subtitulo { font-size: 13px; color: #888; margin-bottom: 16px; }
+}
+
+.abas {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background: white;
+  padding: 6px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+
+  button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #888;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &.ativa {
+      background: #00BF9F;
+      color: white;
+    }
+  }
+}
+
+.painel-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+
+  .input-busca {
+    flex: 1; min-width: 160px;
+    padding: 11px 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    background: white;
+    outline: none;
+  }
+
+  .select-cat {
+    padding: 11px 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    background: white;
+    outline: none;
+  }
+
+  .btn-novo {
+    padding: 11px 20px;
+    background: #00BF9F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+  }
+}
+
+.produto-card {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
+  .prod-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+
+    strong { font-size: 15px; color: #333; }
+    .cat-badge {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #1565c0;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: bold;
+      width: fit-content;
+    }
+    .ean { font-size: 12px; color: #999; }
+    .precos-ativos { font-size: 12px; color: #00BF9F; }
+  }
+
+  .prod-acoes {
+    display: flex;
+    gap: 6px;
+    button {
+      padding: 8px 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .btn-editar { background: #e3f2fd; }
+    .btn-excluir { background: #f8d7da; }
+  }
+}
+
+.categoria-card {
+  background: white;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span { font-size: 15px; color: #333; font-weight: 500; }
+  .btn-excluir {
+    padding: 6px 10px;
+    background: #f8d7da;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+}
+
+.preco-card {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    strong { font-size: 15px; color: #333; }
+    span { font-size: 12px; color: #888; }
+  }
+  .valor {
+    font-size: 18px;
+    font-weight: bold;
+    color: #00BF9F;
+  }
+}
+
+.sem-resultados {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  padding: 40px 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: white;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  z-index: 1001;
+  max-height: 85vh;
+  overflow-y: auto;
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 10px;
+    position: sticky;
+    top: 0;
+    background: white;
+    border-bottom: 1px solid #eee;
+
+    h2 { font-size: 18px; color: #333; margin: 0; }
+    .btn-fechar {
+      background: #eee;
+      border: none;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
+
+  .modal-body { padding: 16px 20px 40px; }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+    .required { color: #ff6b6b; }
+  }
+
+  input, select {
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    background: white;
+    outline: none;
+    &:focus { border-color: #00BF9F; }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.upload-area {
+  display: block;
+  border: 2px dashed #00BF9F;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+
+  .upload-placeholder { color: #555; font-size: 14px; }
+  .img-preview {
+    width: 100px; height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 3px solid #00BF9F;
+  }
+}
+
+.modal-botoes {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+  margin-top: 20px;
+
+  .btn-cancelar {
+    padding: 14px;
+    background: #eee;
+    color: #333;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .btn-salvar {
+    padding: 14px;
+    background: #00BF9F;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 400px) {
+  .form-row { grid-template-columns: 1fr; }
+  .modal-botoes { grid-template-columns: 1fr; }
+  .abas button { font-size: 11px; padding: 8px 4px; }
+}

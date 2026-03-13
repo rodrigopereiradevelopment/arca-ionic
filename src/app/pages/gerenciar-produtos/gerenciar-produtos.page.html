@@ -1,0 +1,144 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+  </div>
+
+  <div class="container">
+
+    <h1>📦 Gerenciar Catálogo</h1>
+    <p class="subtitulo">Controle de produtos, categorias e preços.</p>
+
+    <!-- ABAS -->
+    <div class="abas">
+      <button [class.ativa]="abaAtiva === 'produtos'" (click)="abaAtiva = 'produtos'">
+        Produtos
+      </button>
+      <button [class.ativa]="abaAtiva === 'categorias'" (click)="abaAtiva = 'categorias'">
+        Categorias
+      </button>
+      <button [class.ativa]="abaAtiva === 'precos'" (click)="abaAtiva = 'precos'">
+        Preços Ativos
+      </button>
+    </div>
+
+    <!-- ABA PRODUTOS -->
+    <div *ngIf="abaAtiva === 'produtos'">
+
+      <div class="painel-filtros">
+        <input type="text" [(ngModel)]="filtroNome"
+          placeholder="Buscar por nome ou EAN..." class="input-busca">
+        <select [(ngModel)]="filtroCategoria" class="select-cat">
+          <option value="todas">Todas as categorias</option>
+          <option *ngFor="let c of categorias" [value]="c.nome">{{ c.nome }}</option>
+        </select>
+        <button class="btn-novo" (click)="abrirNovo()">＋ Novo</button>
+      </div>
+
+      <div class="produto-card" *ngFor="let p of produtosFiltrados">
+        <div class="prod-info">
+          <strong>{{ p.nome }}</strong>
+          <span class="cat-badge">{{ p.categoria }}</span>
+          <span class="ean">EAN: {{ p.ean }}</span>
+          <span class="precos-ativos">💰 {{ p.precosAtivos }} preço(s) ativo(s)</span>
+        </div>
+        <div class="prod-acoes">
+          <button class="btn-editar" (click)="editar(p)">✏️</button>
+          <button class="btn-excluir" (click)="excluir(p)">🗑️</button>
+        </div>
+      </div>
+
+      <p class="sem-resultados" *ngIf="produtosFiltrados.length === 0">
+        Nenhum produto encontrado.
+      </p>
+
+    </div>
+
+    <!-- ABA CATEGORIAS -->
+    <div *ngIf="abaAtiva === 'categorias'">
+
+      <div class="painel-filtros">
+        <input type="text" [(ngModel)]="novaCategoria"
+          placeholder="Nome da nova categoria..." class="input-busca">
+        <button class="btn-novo" (click)="adicionarCategoria()">＋ Adicionar</button>
+      </div>
+
+      <div class="categoria-card" *ngFor="let c of categorias">
+        <span>{{ c.nome }}</span>
+        <button class="btn-excluir" (click)="excluirCategoria(c)">🗑️</button>
+      </div>
+
+    </div>
+
+    <!-- ABA PREÇOS -->
+    <div *ngIf="abaAtiva === 'precos'">
+
+      <p class="subtitulo">Preços mais recentes reportados pelos usuários.</p>
+
+      <div class="preco-card" *ngFor="let p of precos">
+        <div>
+          <strong>{{ p.produto }}</strong>
+          <span>🏪 {{ p.mercado }}</span>
+          <span>📅 {{ p.data }}</span>
+        </div>
+        <span class="valor">R$ {{ p.valor.toFixed(2) }}</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MODAL OVERLAY -->
+  <div class="modal-overlay" *ngIf="modalAberto" (click)="modalAberto = false"></div>
+
+  <!-- MODAL PRODUTO -->
+  <div class="modal" *ngIf="modalAberto">
+    <div class="modal-header">
+      <h2>{{ modoEdicao ? '✏️ Editar Produto' : '＋ Novo Produto' }}</h2>
+      <button class="btn-fechar" (click)="modalAberto = false">✕</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label>Nome do Produto <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="produtoSelecionado.nome" placeholder="Ex: Café Tradicional">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Categoria <span class="required">*</span></label>
+          <select [(ngModel)]="produtoSelecionado.categoria">
+            <option value="">Selecione...</option>
+            <option *ngFor="let c of categorias" [value]="c.nome">{{ c.nome }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>EAN / Código de Barras</label>
+          <input type="text" [(ngModel)]="produtoSelecionado.ean" placeholder="0000000000000">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Foto do Produto</label>
+        <label class="upload-area">
+          <input type="file" accept="image/*" (change)="onImagemSelecionada($event)" hidden>
+          <div *ngIf="!imagemPreview" class="upload-placeholder">
+            <span>📷 Toque para enviar imagem</span>
+          </div>
+          <img *ngIf="imagemPreview" [src]="imagemPreview" class="img-preview" alt="Preview">
+        </label>
+      </div>
+
+      <div class="modal-botoes">
+        <button class="btn-cancelar" (click)="modalAberto = false">Cancelar</button>
+        <button class="btn-salvar" (click)="salvar()">
+          {{ modoEdicao ? 'Salvar' : 'Cadastrar' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

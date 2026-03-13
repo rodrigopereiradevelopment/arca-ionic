@@ -1,0 +1,200 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+  </div>
+
+  <div class="container">
+
+    <h1>🏢 Gerenciar Mercados</h1>
+    <p class="subtitulo">Aprovação, edição e controle dos estabelecimentos cadastrados.</p>
+
+    <!-- FILTROS -->
+    <div class="painel-filtros">
+      <input
+        type="text"
+        [(ngModel)]="filtroNome"
+        placeholder="Buscar por nome, CNPJ ou cidade..."
+        class="input-busca">
+
+      <select [(ngModel)]="filtroStatus" class="select-status">
+        <option value="todos">Todos</option>
+        <option value="aprovado">Aprovados</option>
+        <option value="pendente">Pendentes</option>
+        <option value="desativado">Desativados</option>
+      </select>
+
+      <button class="btn-novo" (click)="abrirNovo()">＋ Novo Mercado</button>
+    </div>
+
+    <!-- LISTA DE MERCADOS -->
+    <div class="mercado-card" *ngFor="let m of mercadosFiltrados">
+      <div class="card-topo">
+        <div>
+          <strong>{{ m.nome }}</strong>
+          <span class="cidade">{{ m.cidade }} - {{ m.estado }}</span>
+        </div>
+        <span class="badge" [class]="'badge-' + m.status">
+          {{ statusLabel(m.status) }}
+        </span>
+      </div>
+
+      <div class="card-info">
+        <span>👤 {{ m.admin_nome }}</span>
+        <span>📄 {{ m.cnpj }}</span>
+        <span>📞 {{ m.telefone }}</span>
+      </div>
+
+      <div class="card-acoes">
+        <button class="btn-editar" (click)="editar(m)">✏️ Editar</button>
+        <button class="btn-aprovar" *ngIf="m.status !== 'aprovado'"
+          (click)="alterarStatus(m, 'aprovado')">✅ Aprovar</button>
+        <button class="btn-desativar" *ngIf="m.status === 'aprovado'"
+          (click)="alterarStatus(m, 'desativado')">🚫 Desativar</button>
+        <button class="btn-excluir" (click)="excluir(m)">🗑️</button>
+      </div>
+    </div>
+
+    <p class="sem-resultados" *ngIf="mercadosFiltrados.length === 0">
+      Nenhum mercado encontrado.
+    </p>
+
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" *ngIf="modalAberto" (click)="modalAberto = false"></div>
+
+  <div class="modal" *ngIf="modalAberto">
+    <div class="modal-header">
+      <h2>{{ modoEdicao ? '✏️ Editar Mercado' : '＋ Novo Mercado' }}</h2>
+      <button class="btn-fechar" (click)="modalAberto = false">✕</button>
+    </div>
+
+    <div class="modal-body">
+
+      <h3 class="section-title">🏪 Dados do Mercado</h3>
+
+      <div class="form-group">
+        <label>Nome <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="mercadoSelecionado.nome" placeholder="Nome do mercado">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>CNPJ <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="mercadoSelecionado.cnpj" placeholder="00.000.000/0000-00">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select [(ngModel)]="mercadoSelecionado.status">
+            <option value="pendente">Pendente</option>
+            <option value="aprovado">Aprovado</option>
+            <option value="desativado">Desativado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Telefone <span class="required">*</span></label>
+          <input type="tel" [(ngModel)]="mercadoSelecionado.telefone" placeholder="(00) 00000-0000">
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" [(ngModel)]="mercadoSelecionado.email" placeholder="contato@mercado.com">
+        </div>
+      </div>
+
+      <h3 class="section-title">📍 Endereço</h3>
+
+      <div class="form-group">
+        <label>CEP <span class="required">*</span></label>
+        <div class="cep-row">
+          <input type="text" [(ngModel)]="mercadoSelecionado.cep" placeholder="00000-000" maxlength="9">
+          <button class="btn-cep" (click)="buscarCep()" [disabled]="buscandoCep">
+            {{ buscandoCep ? '...' : 'Buscar' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Rua <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="mercadoSelecionado.rua" placeholder="Nome da rua">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Número <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="mercadoSelecionado.numero" placeholder="123">
+        </div>
+        <div class="form-group">
+          <label>Complemento</label>
+          <input type="text" [(ngModel)]="mercadoSelecionado.complemento" placeholder="Apto...">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Bairro <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="mercadoSelecionado.bairro" placeholder="Bairro">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Cidade <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="mercadoSelecionado.cidade" placeholder="Cidade">
+        </div>
+        <div class="form-group small">
+          <label>UF <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="mercadoSelecionado.estado" placeholder="SP" maxlength="2">
+        </div>
+      </div>
+
+      <h3 class="section-title">📷 Ícone</h3>
+      <label class="upload-area">
+        <input type="file" accept="image/*" (change)="onImagemSelecionada($event)" hidden>
+        <div *ngIf="!imagemPreview" class="upload-placeholder">
+          <span>📷 Toque para enviar imagem</span>
+        </div>
+        <img *ngIf="imagemPreview" [src]="imagemPreview" class="img-preview" alt="Preview">
+      </label>
+
+      <h3 class="section-title">👤 Responsável</h3>
+
+      <div class="form-group">
+        <label>Nome Completo <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="mercadoSelecionado.admin_nome" placeholder="Nome completo">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>CPF <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="mercadoSelecionado.admin_cpf" placeholder="000.000.000-00">
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="tel" [(ngModel)]="mercadoSelecionado.admin_telefone" placeholder="(00) 00000-0000">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>E-mail <span class="required">*</span></label>
+        <input type="email" [(ngModel)]="mercadoSelecionado.admin_email" placeholder="admin@email.com">
+      </div>
+
+      <div class="form-group">
+        <label>Senha {{ modoEdicao ? '(deixe em branco para manter)' : '*' }}</label>
+        <input type="password" [(ngModel)]="mercadoSelecionado.admin_senha" placeholder="Mínimo 6 caracteres">
+      </div>
+
+      <div class="modal-botoes">
+        <button class="btn-cancelar" (click)="modalAberto = false">Cancelar</button>
+        <button class="btn-salvar" (click)="salvar()">
+          {{ modoEdicao ? 'Salvar Alterações' : 'Cadastrar Mercado' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

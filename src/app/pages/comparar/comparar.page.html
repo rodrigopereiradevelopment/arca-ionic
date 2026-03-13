@@ -1,0 +1,39 @@
+<ion-content [fullscreen]="true">
+
+  <div class="container">
+
+    <div class="intro-texto">
+      <span>Esses são os melhores preços da sua lista de compras</span>
+      <span>Comparada entre os mercados cadastrados</span>
+    </div>
+
+    <div class="titulo-card">
+      <h1>Melhores Preços</h1>
+    </div>
+
+    <div class="mercado-item" *ngFor="let mercado of mercados">
+      <img [src]="mercado.posicao" [alt]="mercado.nome" class="img-posicao">
+      <img [src]="mercado.logo" [alt]="mercado.nome" class="img-logo">
+      <span class="preco">| {{ mercado.preco }}</span>
+    </div>
+
+    <div class="aviso">
+      <span>
+        <strong>Atenção:</strong> Os preços foram comparados usando a lista
+        toda de compras em cada mercado. Comprar os produtos separados pode
+        sair mais barato.
+      </span>
+      <span>
+        Você pode descobrir isso buscando pelos produtos separadamente no App.
+      </span>
+    </div>
+
+  </div>
+
+  <div class="botoes-fixos">
+    <a routerLink="/home" class="btn-voltar">Voltar</a>
+    <button class="btn-imprimir" onclick="window.print()">Salvar</button>
+    <a routerLink="/mapa-rotas" class="btn-rota">Ver Rotas</a>
+  </div>
+
+</ion-content>
