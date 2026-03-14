@@ -1,61 +1,105 @@
+ion-content {
+  --background: #00E3BD;
+}
 
-ion-menu {
-  --width: 280px;
+ion-footer {
+  --background: #00E3BD;
+}
 
-  ion-toolbar {
-    --background: #4DD9D5;
-    --min-height: 90px;
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 16px 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  margin-bottom: 10px;
 
-    .menu-profile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
+  .avatar {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 
-      .profile-icon {
-        width: 52px;
-        height: 52px;
-        border-radius: 50%;
-        border: 2px solid white;
-        object-fit: cover;
-      }
+  .perfil-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 
-      .user-info {
-        color: white;
+    strong { font-size: 15px; color: #333; }
+    .email { font-size: 11px; color: #555; }
+  }
+}
 
-        strong {
-          display: block;
-          font-size: 15px;
-        }
+.badge-tipo {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+  width: fit-content;
 
-        .email {
-          font-size: 12px;
-          opacity: 0.85;
-        }
-      }
+  &.tipo-usuario { background: #e3f2fd; color: #1565c0; }
+  &.tipo-moderador { background: #fff3cd; color: #856404; }
+  &.tipo-admin { background: #f3e5f5; color: #6a1b9a; }
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0 8px;
+  margin: 0 0 20px 0;
+
+  a {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    transition: background 0.2s;
+
+    &:hover { background: rgba(0,0,0,0.07); }
+
+    img {
+      width: 28px; height: 28px;
+      object-fit: cover;
+      border-radius: 10%;
+      margin-right: 12px;
     }
-  }
 
-  .menu-icon {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    margin-right: 4px;
+    span { font-size: 15px; }
   }
+}
 
-  ion-item {
-    --min-height: 50px;
-    --padding-start: 16px;
-    font-size: 14px;
+.separador {
+  padding: 12px 12px 4px;
+  span {
+    font-size: 10px;
+    font-weight: bold;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
+}
 
-  ion-item-divider {
-    --background: #f0f0f0;
-    min-height: 1px;
-    margin: 4px 0;
-  }
+.menu-footer {
+  padding: 10px 16px;
+  border-top: 1px solid rgba(0,0,0,0.1);
 
-  .logout-btn {
-    --color: var(--ion-color-danger);
+  .btn-sair {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    width: 100%;
+    border-radius: 8px;
+
+    img { width: 24px; height: 24px; }
+    span { font-size: 15px; color: #333; font-weight: 500; }
+
+    &:hover { background: rgba(0,0,0,0.05); }
   }
 }

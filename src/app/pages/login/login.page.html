@@ -1,56 +1,49 @@
 <ion-content [fullscreen]="true">
 
-  <!-- Topo com logo -->
   <div class="topo">
-    <img src="assets/img/logo.jpeg" class="logo" alt="Logotipo ARCA">
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
   </div>
 
-  <!-- Card de login -->
-  <div class="area-central">
-    <div class="card-login">
+  <div class="container">
 
-      <ion-label>Usuário</ion-label>
-      <ion-input
-        type="text"
-        [(ngModel)]="username"
-        autocomplete="username"
-        class="input-custom">
-      </ion-input>
+    <h1>Bem-vindo! 👋</h1>
+    <p class="subtitulo">Entre na sua conta ARCA</p>
 
-      <ion-label>Senha</ion-label>
-      <ion-input
-        type="password"
-        [(ngModel)]="password"
-        autocomplete="current-password"
-        class="input-custom">
-      </ion-input>
-
-      <a routerLink="/cadastro" class="cadastro">Não tem conta? Cadastre-se</a>
-
-      <ion-button expand="block" class="btn-entrar" (click)="login()">
-        Entrar
-      </ion-button>
-
-      <hr class="divisor-social">
-
-      <div class="social-box">
-        <ion-button class="btn-social facebook" (click)="loginFacebook()">
-          <img src="assets/img/facebook.png" alt="Facebook">
-          Facebook
-        </ion-button>
-
-        <ion-button class="btn-social google" (click)="loginGoogle()">
-          <img src="assets/img/google.png" alt="Google">
-          Google
-        </ion-button>
-      </div>
-
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" [(ngModel)]="email" placeholder="seu@email.com">
     </div>
-  </div>
 
-  <!-- Rodapé -->
-  <div class="footer">
-    <p>&copy; 2025 ARCA - Compare preços e economize em Mogi Mirim</p>
+    <div class="form-group">
+      <label>Senha</label>
+      <div class="senha-row">
+        <input [type]="mostrarSenha ? 'text' : 'password'"
+          [(ngModel)]="senha" placeholder="Sua senha">
+        <button class="btn-olho" (click)="mostrarSenha = !mostrarSenha">
+          {{ mostrarSenha ? '🙈' : '👁️' }}
+        </button>
+      </div>
+    </div>
+
+    <button class="btn-entrar" (click)="login()" [disabled]="carregando">
+      {{ carregando ? 'Entrando...' : 'Entrar' }}
+    </button>
+
+    <a routerLink="/cadastro" class="link-cadastro">
+      Não tem conta? <strong>Cadastre-se</strong>
+    </a>
+
+    <!-- ATALHOS PARA TESTE -->
+    <div class="atalhos">
+      <p class="atalhos-titulo">Acesso rápido para testes:</p>
+      <div class="atalhos-btns">
+        <button *ngFor="let a of acessos" class="btn-atalho"
+          (click)="preencherEmail(a.email)">
+          {{ a.tipo }}
+        </button>
+      </div>
+    </div>
+
   </div>
 
 </ion-content>

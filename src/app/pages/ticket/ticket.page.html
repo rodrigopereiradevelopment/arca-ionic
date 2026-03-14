@@ -1,0 +1,174 @@
+<ion-content [fullscreen]="true">
+
+  <!-- TOPO -->
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+    <button class="btn-novo-topo" (click)="abrirNovoTicket()">＋ Novo</button>
+  </div>
+
+  <!-- LISTA DE TICKETS -->
+  <div class="container" *ngIf="!ticketAberto">
+
+    <h1>🎫 Meus Tickets</h1>
+    <p class="subtitulo">Acompanhe seus chamados de suporte.</p>
+
+    <!-- FILTROS -->
+    <div class="filtros">
+      <button [class.ativo]="filtroAtivo === 'todos'"
+        (click)="filtroAtivo = 'todos'">Todos</button>
+      <button [class.ativo]="filtroAtivo === 'aberto'"
+        (click)="filtroAtivo = 'aberto'">🔴 Abertos</button>
+      <button [class.ativo]="filtroAtivo === 'analise'"
+        (click)="filtroAtivo = 'analise'">🟡 Em Análise</button>
+      <button [class.ativo]="filtroAtivo === 'resolvido'"
+        (click)="filtroAtivo = 'resolvido'">🟢 Resolvidos</button>
+    </div>
+
+    <!-- CARDS -->
+    <div class="ticket-card" *ngFor="let t of ticketsFiltrados"
+      (click)="abrirTicket(t)">
+
+      <div class="ticket-topo">
+        <span class="tipo-label">{{ tipoLabel(t.tipo) }}</span>
+        <span class="badge" [class]="statusCor(t.status)">
+          {{ statusLabel(t.status) }}
+        </span>
+      </div>
+
+      <strong class="ticket-titulo">{{ t.titulo }}</strong>
+      <p class="ticket-desc">{{ t.descricao }}</p>
+
+      <div class="ticket-rodape">
+        <span class="ticket-data">{{ formatarData(t.data) }}</span>
+        <span class="ticket-msgs">
+          💬 {{ t.mensagens.length }} mensagem(ns)
+        </span>
+      </div>
+
+    </div>
+
+    <div class="vazio" *ngIf="ticketsFiltrados.length === 0">
+      <span class="vazio-icone">🎫</span>
+      <p>Nenhum ticket encontrado.</p>
+      <button class="btn-abrir" (click)="abrirNovoTicket()">
+        ＋ Abrir Novo Ticket
+      </button>
+    </div>
+
+  </div>
+
+  <!-- CONVERSA DO TICKET -->
+  <div class="conversa" *ngIf="ticketAberto">
+
+    <div class="conversa-topo">
+      <button class="btn-voltar-conv" (click)="fecharTicket()">&#8592;</button>
+      <div class="conv-info">
+        <strong>{{ ticketAberto.titulo }}</strong>
+        <span class="badge" [class]="statusCor(ticketAberto.status)">
+          {{ statusLabel(ticketAberto.status) }}
+        </span>
+      </div>
+      <button class="btn-resolver"
+        *ngIf="ticketAberto.status !== 'resolvido'"
+        (click)="confirmarFechar(ticketAberto)">
+        ✅
+      </button>
+    </div>
+
+    <div class="mensagens">
+      <div
+        class="mensagem"
+        *ngFor="let m of ticketAberto.mensagens"
+        [class.msg-usuario]="m.autor === 'usuario'"
+        [class.msg-suporte]="m.autor === 'suporte'">
+
+        <div class="msg-autor">
+          {{ m.autor === 'usuario' ? '👤 Você' : '🛠️ Suporte ARCA' }}
+        </div>
+        <div class="msg-texto">{{ m.texto }}</div>
+        <div class="msg-data">{{ formatarData(m.data) }}</div>
+
+      </div>
+    </div>
+
+    <div class="input-mensagem"
+      *ngIf="ticketAberto.status !== 'resolvido'">
+      <input
+        type="text"
+        [(ngModel)]="novaMensagem"
+        placeholder="Digite sua mensagem..."
+        (keyup.enter)="enviarMensagem()">
+      <button (click)="enviarMensagem()">➤</button>
+    </div>
+
+    <div class="ticket-resolvido"
+      *ngIf="ticketAberto.status === 'resolvido'">
+      ✅ Este ticket foi resolvido.
+    </div>
+
+  </div>
+
+  <!-- MODAL OVERLAY -->
+  <div class="modal-overlay" *ngIf="modalAberto"
+    (click)="modalAberto = false"></div>
+
+  <!-- MODAL NOVO TICKET -->
+  <div class="modal" *ngIf="modalAberto">
+    <div class="modal-header">
+      <h2>🎫 Novo Ticket</h2>
+      <button class="btn-fechar" (click)="modalAberto = false">✕</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label>Tipo de Chamado <span class="required">*</span></label>
+        <select [(ngModel)]="novoTicket.tipo">
+          <option *ngFor="let t of tipos" [value]="t.value">
+            {{ t.label }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Título <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="novoTicket.titulo"
+          placeholder="Resumo do problema...">
+      </div>
+
+      <div class="form-group">
+        <label>Descrição <span class="required">*</span></label>
+        <textarea [(ngModel)]="novoTicket.descricao"
+          placeholder="Descreva detalhadamente..."
+          rows="4"></textarea>
+      </div>
+
+      <!-- FOTO (só para preço/mercado) -->
+      <div class="form-group" *ngIf="precisaFoto">
+        <label>📷 Foto como Evidência</label>
+        <label class="upload-area">
+          <input type="file" accept="image/*"
+            (change)="onImagemSelecionada($event)" hidden>
+          <div *ngIf="!imagemPreview" class="upload-placeholder">
+            <span>📷 Toque para anexar foto</span>
+            <span class="upload-hint">Foto da etiqueta ou prateleira</span>
+          </div>
+          <img *ngIf="imagemPreview" [src]="imagemPreview"
+            class="img-preview" alt="Preview">
+        </label>
+      </div>
+
+      <div class="modal-botoes">
+        <button class="btn-cancelar" (click)="modalAberto = false">
+          Cancelar
+        </button>
+        <button class="btn-salvar" (click)="enviarTicket()">
+          Enviar Ticket
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

@@ -1,0 +1,74 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+    <button class="btn-limpar" (click)="confirmarLimpar()">🗑️</button>
+  </div>
+
+  <div class="container">
+
+    <div class="cabecalho-lista">
+      <div>
+        <h1>🔔 Notificações</h1>
+        <p class="subtitulo">
+          {{ naoLidas }} não lida(s) · {{ notificacoes.length }} total
+        </p>
+      </div>
+      <button class="btn-marcar-todas" (click)="marcarTodasLidas()"
+        *ngIf="naoLidas > 0">
+        ✅ Marcar todas
+      </button>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros">
+      <button [class.ativo]="filtroAtivo === 'todas'"
+        (click)="filtroAtivo = 'todas'">Todas</button>
+      <button [class.ativo]="filtroAtivo === 'preco'"
+        (click)="filtroAtivo = 'preco'">💰 Preços</button>
+      <button [class.ativo]="filtroAtivo === 'promocao'"
+        (click)="filtroAtivo = 'promocao'">🏷️ Promoções</button>
+      <button [class.ativo]="filtroAtivo === 'alerta'"
+        (click)="filtroAtivo = 'alerta'">🛒 Alertas</button>
+      <button [class.ativo]="filtroAtivo === 'sistema'"
+        (click)="filtroAtivo = 'sistema'">📱 Sistema</button>
+    </div>
+
+    <!-- NOTIFICAÇÕES -->
+    <div
+      class="notif-card"
+      *ngFor="let n of notificacoesFiltradas"
+      [class.nao-lida]="!n.lida"
+      (click)="marcarLida(n)">
+
+      <div class="notif-icone" [style.background]="corTipo(n.tipo)">
+        {{ n.icone }}
+      </div>
+
+      <div class="notif-info">
+        <div class="notif-topo">
+          <strong>{{ n.titulo }}</strong>
+          <span class="tempo">{{ formatarData(n.data) }}</span>
+        </div>
+        <p class="mensagem">{{ n.mensagem }}</p>
+        <a *ngIf="n.rota" [routerLink]="n.rota" class="btn-ver"
+          (click)="$event.stopPropagation(); marcarLida(n)">
+          Ver detalhes →
+        </a>
+      </div>
+
+      <button class="btn-remover"
+        (click)="$event.stopPropagation(); remover(n)">✕</button>
+
+    </div>
+
+    <!-- VAZIO -->
+    <div class="vazio" *ngIf="notificacoesFiltradas.length === 0">
+      <span class="vazio-icone">🔔</span>
+      <p>Nenhuma notificação por aqui!</p>
+    </div>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,391 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <span class="titulo-topo">Meu Perfil</span>
+  </div>
+
+  <!-- CABEÇALHO DO PERFIL -->
+  <div class="perfil-header">
+    <label class="avatar-wrapper">
+      <input type="file" accept="image/*"
+        (change)="onImagemSelecionada($event)" hidden>
+      <img [src]="imagemPreview || 'assets/img/usuario.png'"
+        class="avatar" alt="Avatar">
+      <span class="avatar-edit">📷</span>
+    </label>
+    <h2>{{ authService.usuario?.nome }}</h2>
+    <span class="badge-tipo" [class]="'tipo-' + authService.tipo">
+      {{ authService.tipo | titlecase }}
+    </span>
+    <div class="stats">
+      <div class="stat">
+        <strong>{{ carrinhoService.lista.length }}</strong>
+        <span>Na Lista</span>
+      </div>
+      <div class="stat">
+        <strong>{{ historicoService.lista.length }}</strong>
+        <span>Histórico</span>
+      </div>
+      <div class="stat">
+        <strong>{{ alertas.length }}</strong>
+        <span>Alertas</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABAS -->
+  <div class="abas">
+    <button [class.ativa]="abaAtiva === 'dados'"
+      (click)="abaAtiva = 'dados'">👤 Dados</button>
+    <button [class.ativa]="abaAtiva === 'enderecos'"
+      (click)="abaAtiva = 'enderecos'">📍 Endereços</button>
+    <button [class.ativa]="abaAtiva === 'alertas'"
+      (click)="abaAtiva = 'alertas'">🔔 Alertas</button>
+    <button [class.ativa]="abaAtiva === 'seguranca'"
+      (click)="abaAtiva = 'seguranca'">🔒 Segurança</button>
+  </div>
+
+  <div class="container">
+
+    <!-- ABA DADOS -->
+    <div *ngIf="abaAtiva === 'dados'">
+
+      <div class="secao-header">
+        <h3>Dados Pessoais</h3>
+        <button class="btn-editar-dados"
+          (click)="editandoDados = !editandoDados">
+          {{ editandoDados ? '✕ Cancelar' : '✏️ Editar' }}
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label>Nome Completo</label>
+        <input type="text" [(ngModel)]="dados.nome"
+          [readonly]="!editandoDados">
+      </div>
+
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" [(ngModel)]="dados.email"
+          [readonly]="!editandoDados">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>CPF</label>
+          <input type="text" [(ngModel)]="dados.cpf"
+            [readonly]="!editandoDados">
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="tel" [(ngModel)]="dados.telefone"
+            [readonly]="!editandoDados">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Cidade</label>
+          <input type="text" [(ngModel)]="dados.cidade"
+            [readonly]="!editandoDados">
+        </div>
+        <div class="form-group small">
+          <label>UF</label>
+          <input type="text" [(ngModel)]="dados.estado"
+            [readonly]="!editandoDados" maxlength="2">
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="editandoDados">
+        <label>Raio de Busca: {{ dados.raio }} km</label>
+        <input type="range" [(ngModel)]="dados.raio"
+          min="1" max="30" step="1" class="range-input">
+      </div>
+
+      <button class="btn-salvar-dados" *ngIf="editandoDados"
+        (click)="salvarDados()">
+        💾 Salvar Alterações
+      </button>
+
+      <!-- PREFERÊNCIAS -->
+      <h3 class="secao-titulo">Preferências</h3>
+
+      <div class="preferencia-item">
+        <div>
+          <strong>Notificações Push</strong>
+          <span>Alertas de preço no celular</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="preferencias.notifPush">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="preferencia-item">
+        <div>
+          <strong>Notificações por E-mail</strong>
+          <span>Resumo semanal de preços</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="preferencias.notifEmail">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="preferencia-item">
+        <div>
+          <strong>Promoções</strong>
+          <span>Receber ofertas especiais</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="preferencias.notifPromocoes">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- LINKS RÁPIDOS -->
+      <h3 class="secao-titulo">Acesso Rápido</h3>
+
+      <div class="links-rapidos">
+        <a routerLink="/historico" class="link-rapido">
+          📋 Histórico de Pesquisas
+        </a>
+        <a routerLink="/ticket" class="link-rapido">
+          🎫 Meus Tickets
+        </a>
+        <a routerLink="/termos" class="link-rapido">
+          📄 Termos de Uso
+        </a>
+        <a routerLink="/privacidade" class="link-rapido">
+          🔒 Política de Privacidade
+        </a>
+      </div>
+
+    </div>
+
+    <!-- ABA ENDEREÇOS -->
+    <div *ngIf="abaAtiva === 'enderecos'">
+
+      <div class="secao-header">
+        <h3>Meus Endereços</h3>
+        <button class="btn-editar-dados" (click)="abrirNovoEndereco()">
+          ＋ Novo
+        </button>
+      </div>
+
+      <div class="endereco-card" *ngFor="let e of enderecos"
+        [class.principal]="e.principal">
+
+        <div class="end-info">
+          <div class="end-topo">
+            <strong>{{ e.apelido }}</strong>
+            <span class="badge-principal" *ngIf="e.principal">
+              ⭐ Principal
+            </span>
+          </div>
+          <span>{{ e.rua }}, {{ e.numero }}
+            {{ e.complemento ? '— ' + e.complemento : '' }}</span>
+          <span>{{ e.bairro }} · {{ e.cidade }}/{{ e.estado }}</span>
+          <span>CEP: {{ e.cep }}</span>
+        </div>
+
+        <div class="end-acoes">
+          <button (click)="editarEndereco(e)">✏️</button>
+          <button (click)="definirPrincipal(e)"
+            *ngIf="!e.principal">⭐</button>
+          <button (click)="excluirEndereco(e)"
+            *ngIf="!e.principal">🗑️</button>
+        </div>
+
+      </div>
+
+      <p class="vazio-texto" *ngIf="enderecos.length === 0">
+        Nenhum endereço cadastrado.
+      </p>
+
+    </div>
+
+    <!-- ABA ALERTAS -->
+    <div *ngIf="abaAtiva === 'alertas'">
+
+      <div class="secao-header">
+        <h3>Alertas de Preço</h3>
+        <a routerLink="/pesquisar-produtos" class="btn-editar-dados">
+          ＋ Novo
+        </a>
+      </div>
+
+      <div class="alerta-card" *ngFor="let a of alertas"
+        [class.inativo]="!a.ativo">
+
+        <div class="alerta-info">
+          <strong>{{ a.produto }}</strong>
+          <span>Preço alvo: <b>R$ {{ a.precoAlvo.toFixed(2) }}</b></span>
+          <span>Preço atual: R$ {{ a.precoAtual.toFixed(2) }}</span>
+          <span class="economia" *ngIf="a.precoAtual > a.precoAlvo">
+            Faltam R$ {{ (a.precoAtual - a.precoAlvo).toFixed(2) }} para atingir
+          </span>
+          <span class="atingido" *ngIf="a.precoAtual <= a.precoAlvo">
+            ✅ Preço alvo atingido!
+          </span>
+        </div>
+
+        <div class="alerta-acoes">
+          <label class="toggle small">
+            <input type="checkbox" [checked]="a.ativo"
+              (change)="toggleAlerta(a)">
+            <span class="slider"></span>
+          </label>
+          <button class="btn-excluir-alerta"
+            (click)="excluirAlerta(a)">🗑️</button>
+        </div>
+
+      </div>
+
+      <p class="vazio-texto" *ngIf="alertas.length === 0">
+        Nenhum alerta criado. Pesquise produtos para criar alertas!
+      </p>
+
+    </div>
+
+    <!-- ABA SEGURANÇA -->
+    <div *ngIf="abaAtiva === 'seguranca'">
+
+      <h3 class="secao-titulo">Alterar Senha</h3>
+
+      <div class="form-group">
+        <label>Senha Atual</label>
+        <div class="senha-row">
+          <input [type]="senhas.mostrarAtual ? 'text' : 'password'"
+            [(ngModel)]="senhas.atual" placeholder="Senha atual">
+          <button class="btn-olho"
+            (click)="senhas.mostrarAtual = !senhas.mostrarAtual">
+            {{ senhas.mostrarAtual ? '🙈' : '👁️' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nova Senha</label>
+        <div class="senha-row">
+          <input [type]="senhas.mostrarNova ? 'text' : 'password'"
+            [(ngModel)]="senhas.nova" placeholder="Mínimo 6 caracteres">
+          <button class="btn-olho"
+            (click)="senhas.mostrarNova = !senhas.mostrarNova">
+            {{ senhas.mostrarNova ? '🙈' : '👁️' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Confirmar Nova Senha</label>
+        <div class="senha-row">
+          <input [type]="senhas.mostrarConfirmar ? 'text' : 'password'"
+            [(ngModel)]="senhas.confirmar" placeholder="Repita a nova senha">
+          <button class="btn-olho"
+            (click)="senhas.mostrarConfirmar = !senhas.mostrarConfirmar">
+            {{ senhas.mostrarConfirmar ? '🙈' : '👁️' }}
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-salvar-dados" (click)="alterarSenha()">
+        🔒 Alterar Senha
+      </button>
+
+      <h3 class="secao-titulo danger">Zona de Perigo</h3>
+
+      <button class="btn-excluir-conta" (click)="confirmarExcluirConta()">
+        🗑️ Excluir Minha Conta
+      </button>
+
+      <p class="aviso-exclusao">
+        ⚠️ A exclusão é irreversível. Todos os dados serão removidos
+        conforme a LGPD (Lei 13.709/2018).
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- MODAL ENDEREÇO -->
+  <div class="modal-overlay" *ngIf="modalEnderecoAberto"
+    (click)="modalEnderecoAberto = false"></div>
+
+  <div class="modal" *ngIf="modalEnderecoAberto">
+    <div class="modal-header">
+      <h2>{{ editandoEndereco ? '✏️ Editar' : '＋ Novo' }} Endereço</h2>
+      <button class="btn-fechar"
+        (click)="modalEnderecoAberto = false">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label>Apelido <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="enderecoForm.apelido"
+          placeholder="Ex: Casa, Trabalho...">
+      </div>
+
+      <div class="form-group">
+        <label>CEP <span class="required">*</span></label>
+        <div class="cep-row">
+          <input type="text" [(ngModel)]="enderecoForm.cep"
+            placeholder="00000-000" maxlength="9">
+          <button class="btn-cep" (click)="buscarCep()"
+            [disabled]="buscandoCep">
+            {{ buscandoCep ? '...' : 'Buscar' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Rua <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="enderecoForm.rua"
+          placeholder="Nome da rua">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Número <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="enderecoForm.numero"
+            placeholder="123">
+        </div>
+        <div class="form-group">
+          <label>Complemento</label>
+          <input type="text" [(ngModel)]="enderecoForm.complemento"
+            placeholder="Apto...">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Bairro</label>
+        <input type="text" [(ngModel)]="enderecoForm.bairro"
+          placeholder="Bairro">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Cidade</label>
+          <input type="text" [(ngModel)]="enderecoForm.cidade"
+            placeholder="Cidade">
+        </div>
+        <div class="form-group small">
+          <label>UF</label>
+          <input type="text" [(ngModel)]="enderecoForm.estado"
+            placeholder="SP" maxlength="2">
+        </div>
+      </div>
+
+      <div class="modal-botoes">
+        <button class="btn-cancelar"
+          (click)="modalEnderecoAberto = false">Cancelar</button>
+        <button class="btn-salvar" (click)="salvarEndereco()">
+          {{ editandoEndereco ? 'Salvar' : 'Adicionar' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

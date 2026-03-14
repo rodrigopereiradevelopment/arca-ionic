@@ -71,3 +71,6 @@ ion-footer {
   z-index: 999 !important;
   position: relative !important;
 }
+app-footer ion-footer {
+  --background: #39e6c2 !important;
+}

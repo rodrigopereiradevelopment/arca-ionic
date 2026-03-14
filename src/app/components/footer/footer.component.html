@@ -1,37 +1,35 @@
 <div class="footer-wrapper">
 
-  <!-- Carrinho FORA do footer para não ser cortado -->
-  <div class="cart-btn-wrapper">
-    <ion-button fill="clear" class="cart-btn" (click)="abrirCarrinho()">
-      <img src="assets/img/car.png" class="cart-icon">
-    </ion-button>
-  </div>
+  <button class="cart-btn-wrapper" (click)="abrirCarrinho()">
+    <div class="cart-btn">
+      <img src="assets/img/car.png" alt="Carrinho" class="btn-icon">
+    </div>
+  </button>
 
   <ion-footer>
-    <ion-toolbar>
-      <div class="footer-container">
+    <div class="footer-btns">
 
-        <ion-button fill="clear" routerLink="/ticket">
-          <img src="assets/img/ticket.png" slot="icon-only" class="footer-icon">
-        </ion-button>
+      <a routerLink="/ticket" class="footer-btn">
+        <img src="assets/img/ticket.png" alt="Ticket" class="btn-icon">
+      </a>
 
-        <ion-button fill="clear" routerLink="/home">
-          <img src="assets/img/home.png" slot="icon-only" class="footer-icon">
-        </ion-button>
+      <a routerLink="/home" class="footer-btn">
+        <img src="assets/img/home.png" alt="Início" class="btn-icon">
+      </a>
 
-        <!-- Espaço reservado para o carrinho no centro -->
-        <div class="cart-placeholder"></div>
+      <div class="footer-btn espaco"></div>
 
-        <ion-button fill="clear" routerLink="/notificacoes">
-          <img src="assets/img/notificacao.png" slot="icon-only" class="footer-icon">
-        </ion-button>
+      <a routerLink="/notificacoes" class="footer-btn">
+        <img src="assets/img/notificacao.png" alt="Notificações" class="btn-icon">
+      </a>
 
-        <ion-button fill="clear" routerLink="/login">
-          <img src="assets/img/usuario1.png" slot="icon-only" class="footer-icon">
-        </ion-button>
+      <!-- SE LOGADO → PERFIL | SE NÃO → LOGIN -->
+      <a [routerLink]="authService.logado ? '/perfil' : '/login'"
+        class="footer-btn">
+        <img src="assets/img/usuario1.png" alt="Perfil" class="btn-icon">
+      </a>
 
-      </div>
-    </ion-toolbar>
+    </div>
   </ion-footer>
 
 </div>
