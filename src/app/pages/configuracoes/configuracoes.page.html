@@ -1,13 +1,238 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>configuracoes</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">configuracoes</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+    <span class="titulo-topo">Configurações</span>
+  </div>
+
+  <div class="container">
+
+    <div class="secao">
+      <h3 class="secao-titulo">🎨 Aparência</h3>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Modo Escuro</strong>
+          <span>Interface com fundo escuro</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="aparencia.modoEscuro" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Alto Contraste</strong>
+          <span>Aumenta o contraste das cores</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="aparencia.altoContraste" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="secao">
+      <h3 class="secao-titulo">♿ Acessibilidade</h3>
+      <div class="config-item coluna">
+        <div class="config-info">
+          <strong>Tamanho da Fonte</strong>
+          <span>Ajuste o tamanho do texto</span>
+        </div>
+        <div class="fonte-btns">
+          <button *ngFor="let f of tamanhosFonte"
+            [class.ativo]="acessibilidade.tamanhoFonte === f.value"
+            (click)="acessibilidade.tamanhoFonte = f.value; onToggle()">
+            {{ f.label }}
+          </button>
+        </div>
+      </div>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Texto em Negrito</strong>
+          <span>Deixa todos os textos em negrito</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="acessibilidade.negrito" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="config-item coluna">
+        <div class="config-info">
+          <strong>Espaçamento entre Linhas</strong>
+          <span>Aumenta o espaço entre as linhas</span>
+        </div>
+        <div class="espaco-btns">
+          <button [class.ativo]="acessibilidade.espacamentoLinhas === 'normal'"
+            (click)="acessibilidade.espacamentoLinhas = 'normal'; onToggle()">Normal</button>
+          <button [class.ativo]="acessibilidade.espacamentoLinhas === 'amplo'"
+            (click)="acessibilidade.espacamentoLinhas = 'amplo'; onToggle()">Amplo</button>
+        </div>
+      </div>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Reduzir Animações</strong>
+          <span>Remove efeitos de transição</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="acessibilidade.reduzirAnimacoes" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Suporte a Leitor de Tela</strong>
+          <span>Ativa atributos de acessibilidade ARIA</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="acessibilidade.leitorTela" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="secao">
+      <h3 class="secao-titulo">📍 Localização</h3>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Localização Automática</strong>
+          <span>Usa o GPS do dispositivo</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="localizacao.automatica" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="config-item coluna">
+        <div class="config-info">
+          <strong>Raio de Busca: {{ localizacao.raio }} km</strong>
+          <span>Distância máxima para buscar mercados</span>
+        </div>
+        <input type="range" [(ngModel)]="localizacao.raio"
+          min="1" max="30" step="1" class="range-input" (change)="onToggle()">
+        <div class="range-labels">
+          <span>1 km</span><span>15 km</span><span>30 km</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="secao">
+      <h3 class="secao-titulo">🔔 Notificações</h3>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Notificações Push</strong>
+          <span>Alertas no celular</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="notificacoes.push" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Alertas de Preço</strong>
+          <span>Avisa quando o preço cai</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="notificacoes.alertasPreco" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Promoções</strong>
+          <span>Ofertas especiais dos mercados</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="notificacoes.promocoes" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Notificações por E-mail</strong>
+          <span>Resumo semanal de preços</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="notificacoes.email" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="secao">
+      <h3 class="secao-titulo">🛒 Preferências de Compra</h3>
+      <div class="config-item coluna">
+        <div class="config-info">
+          <strong>Ordenação Padrão</strong>
+          <span>Como os resultados são exibidos</span>
+        </div>
+        <div class="espaco-btns">
+          <button [class.ativo]="preferencias.ordenacaoPadrao === 'preco'"
+            (click)="preferencias.ordenacaoPadrao = 'preco'; onToggle()">💰 Menor Preço</button>
+          <button [class.ativo]="preferencias.ordenacaoPadrao === 'distancia'"
+            (click)="preferencias.ordenacaoPadrao = 'distancia'; onToggle()">📍 Mais Próximo</button>
+        </div>
+      </div>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Apenas Mercados Aprovados</strong>
+          <span>Oculta mercados pendentes</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="preferencias.apenasAprovados" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="secao">
+      <h3 class="secao-titulo">🔒 Privacidade e Dados</h3>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Salvar Histórico</strong>
+          <span>Guarda suas pesquisas recentes</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="privacidade.salvarHistorico" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Dados Anônimos</strong>
+          <span>Ajuda a melhorar o app</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="privacidade.dadosAnonimos" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <button class="btn-limpar" (click)="confirmarLimparHistorico()">
+        🗑️ Limpar Histórico
+        <span>{{ historicoService.lista.length }} itens</span>
+      </button>
+      <button class="btn-limpar" (click)="confirmarLimparLista()">
+        🛒 Limpar Lista de Compras
+        <span>{{ carrinhoService.lista.length }} itens</span>
+      </button>
+    </div>
+
+    <div class="secao">
+      <h3 class="secao-titulo">📱 Sobre o App</h3>
+      <a routerLink="/ajuda" class="link-config">❓ Ajuda e Suporte</a>
+      <a routerLink="/termos" class="link-config">📄 Termos de Uso</a>
+      <a routerLink="/privacidade" class="link-config">🔒 Política de Privacidade</a>
+      <div class="versao-info">
+        <span>ARCA v1.0.0</span>
+        <span>Mogi Mirim, SP — Brasil</span>
+      </div>
+    </div>
+
+    <button class="btn-resetar" (click)="resetarConfiguracoes()">
+      🔄 Restaurar Configurações Padrão
+    </button>
+
+  </div>
+
 </ion-content>
