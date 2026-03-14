@@ -1,13 +1,133 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>ajuda</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">ajuda</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+    <span class="titulo-topo">Ajuda</span>
+  </div>
+
+  <!-- ABAS -->
+  <div class="abas">
+    <button [class.ativa]="abaAtiva === 'chat'"
+      (click)="abaAtiva = 'chat'">💬 Assistente</button>
+    <button [class.ativa]="abaAtiva === 'faq'"
+      (click)="abaAtiva = 'faq'">❓ FAQ</button>
+    <button [class.ativa]="abaAtiva === 'guia'"
+      (click)="abaAtiva = 'guia'">📖 Guia</button>
+    <button [class.ativa]="abaAtiva === 'sobre'"
+      (click)="abaAtiva = 'sobre'">📄 Sobre</button>
+  </div>
+
+  <!-- ABA CHAT -->
+  <div class="chat-wrapper" *ngIf="abaAtiva === 'chat'">
+
+    <div class="mensagens" #chatContainer>
+
+      <div class="mensagem"
+        *ngFor="let m of mensagens"
+        [class.msg-usuario]="m.autor === 'usuario'"
+        [class.msg-ia]="m.autor === 'ia'">
+
+        <div class="msg-avatar" *ngIf="m.autor === 'ia'">🤖</div>
+        <div class="msg-balao">
+          <p>{{ m.texto }}</p>
+        </div>
+
+      </div>
+
+      <!-- DIGITANDO -->
+      <div class="mensagem msg-ia" *ngIf="carregando">
+        <div class="msg-avatar">🤖</div>
+        <div class="msg-balao digitando">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="chat-input">
+      <input
+        type="text"
+        [(ngModel)]="mensagem"
+        placeholder="Digite sua dúvida..."
+        (keyup.enter)="enviarMensagem()"
+        [disabled]="carregando">
+      <button (click)="enviarMensagem()" [disabled]="carregando">
+        ➤
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ABA FAQ -->
+  <div class="container" *ngIf="abaAtiva === 'faq'">
+    <h2 class="secao-titulo">Perguntas Frequentes</h2>
+    <ion-accordion-group>
+      <ion-accordion *ngFor="let f of faqs" [value]="f.pergunta">
+        <ion-item slot="header">
+          <ion-label>{{ f.pergunta }}</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          {{ f.resposta }}
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+
+    <div class="ticket-sugestao">
+      <p>Não encontrou sua resposta?</p>
+      <a routerLink="/ticket" class="btn-ticket">
+        🎫 Abrir Ticket de Suporte
+      </a>
+    </div>
+  </div>
+
+  <!-- ABA GUIA -->
+  <div class="container" *ngIf="abaAtiva === 'guia'">
+    <h2 class="secao-titulo">Como usar o ARCA</h2>
+
+    <div class="passo-card" *ngFor="let p of passos; let i = index">
+      <div class="passo-numero">{{ i + 1 }}</div>
+      <div class="passo-icone">{{ p.icone }}</div>
+      <div class="passo-info">
+        <strong>{{ p.titulo }}</strong>
+        <span>{{ p.desc }}</span>
+      </div>
+    </div>
+
+    <div class="ticket-sugestao">
+      <p>Ainda com dúvidas?</p>
+      <button class="btn-ticket" (click)="abaAtiva = 'chat'">
+        💬 Falar com Assistente
+      </button>
+    </div>
+  </div>
+
+  <!-- ABA SOBRE -->
+  <div class="container" *ngIf="abaAtiva === 'sobre'">
+
+    <div class="sobre-logo">
+      <img src="assets/img/logo.png" alt="ARCA Logo">
+      <h2>ARCA</h2>
+      <span>Compare preços e economize</span>
+      <span class="versao">Versão 1.0.0</span>
+    </div>
+
+    <div class="sobre-card">
+      <p>O ARCA é um aplicativo de comparação de preços de supermercados desenvolvido para Mogi Mirim, SP. Projeto desenvolvido como Trabalho de Conclusão de Curso.</p>
+    </div>
+
+    <div class="links-sobre">
+      <a routerLink="/termos" class="link-sobre">📄 Termos de Uso</a>
+      <a routerLink="/privacidade" class="link-sobre">🔒 Política de Privacidade</a>
+      <a routerLink="/ticket" class="link-sobre">🎫 Suporte</a>
+    </div>
+
+    <div class="contato-card">
+      <h3>Fale Conosco</h3>
+      <p>📧 contato@apparca.com.br</p>
+      <p>🌐 Mogi Mirim, SP — Brasil</p>
+    </div>
+
+  </div>
+
 </ion-content>
