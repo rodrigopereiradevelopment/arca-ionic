@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonContent, ToastController } from '@ionic/angular/standalone';
+import { HistoricoService } from '../../services/historico.service';
 import { CarrinhoService } from '../../services/carrinho.service';
 
 interface Preco {
@@ -107,14 +108,24 @@ export class PesquisarProdutosPage implements OnInit {
 
   constructor(
     private toastCtrl: ToastController,
-    public carrinhoService: CarrinhoService
+    public carrinhoService: CarrinhoService,
+    private historicoService: HistoricoService
   ) {}
 
   ngOnInit() {}
 
   toggleExpanir(p: Produto) { p.expandido = !p.expandido; }
 
-  abrirModal(p: Produto) { this.modalProduto = p; }
+  abrirModal(p: Produto) {
+    this.modalProduto = p;
+    this.historicoService.adicionar({
+      tipo: 'pesquisa',
+      descricao: p.nome,
+      detalhe: 'Menor preço: R$ ' + p.menorPreco.toFixed(2) + ' no ' + p.mercadoMaisBarato,
+      icone: '🔍',
+      rota: '/pesquisar-produtos'
+    });
+  }
 
   async adicionarLista(p: Produto) {
     this.carrinhoService.adicionar({

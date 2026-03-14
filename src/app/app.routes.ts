@@ -61,5 +61,9 @@ export const routes: Routes = [
   {
     path: 'pesquisar-produtos',
     loadComponent: () => import('./pages/pesquisar-produtos/pesquisar-produtos.page').then( m => m.PesquisarProdutosPage)
+  },
+  {
+    path: 'historico',
+    loadComponent: () => import('./pages/historico/historico.page').then( m => m.HistoricoPage)
   }
 ];

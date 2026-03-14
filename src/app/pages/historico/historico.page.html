@@ -1,0 +1,56 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+    <button class="btn-limpar" (click)="confirmarLimpar()">🗑️ Limpar</button>
+  </div>
+
+  <div class="container">
+
+    <h1>📋 Histórico</h1>
+    <p class="subtitulo">Suas pesquisas, comparações e rotas recentes.</p>
+
+    <!-- FILTROS -->
+    <div class="filtros">
+      <button [class.ativo]="filtroAtivo === 'todos'"
+        (click)="filtroAtivo = 'todos'">Todos</button>
+      <button [class.ativo]="filtroAtivo === 'pesquisa'"
+        (click)="filtroAtivo = 'pesquisa'">🔍 Pesquisas</button>
+      <button [class.ativo]="filtroAtivo === 'comparacao'"
+        (click)="filtroAtivo = 'comparacao'">💰 Comparações</button>
+      <button [class.ativo]="filtroAtivo === 'rota'"
+        (click)="filtroAtivo = 'rota'">🗺️ Rotas</button>
+    </div>
+
+    <!-- LISTA -->
+    <div class="historico-card"
+      *ngFor="let item of itensFiltrados"
+      (click)="navegarPara(item)">
+
+      <div class="icone" [style.background]="corTipo(item.tipo)">
+        {{ item.icone }}
+      </div>
+
+      <div class="info">
+        <strong>{{ item.descricao }}</strong>
+        <span class="detalhe">{{ item.detalhe }}</span>
+        <span class="tempo">{{ formatarData(item.data) }}</span>
+      </div>
+
+      <button class="btn-remover"
+        (click)="$event.stopPropagation(); remover(item)">✕</button>
+
+    </div>
+
+    <div class="vazio" *ngIf="itensFiltrados.length === 0">
+      <span class="vazio-icone">📋</span>
+      <p>Nenhum item no histórico ainda.</p>
+      <a routerLink="/pesquisar-produtos" class="btn-pesquisar">
+        🔍 Pesquisar Produtos
+      </a>
+    </div>
+
+  </div>
+
+</ion-content>
