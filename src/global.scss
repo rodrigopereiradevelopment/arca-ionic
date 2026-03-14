@@ -74,3 +74,22 @@ ion-footer {
 app-footer ion-footer {
   --background: #39e6c2 !important;
 }
+
+/* Fix compatibilidade entre browsers */
+ion-app {
+  background: #ffffff;
+}
+
+app-footer ion-footer {
+  background: #39e6c2 !important;
+  --background: #39e6c2 !important;
+}
+
+/* Remove faixa branca do topo */
+ion-header::after {
+  display: none !important;
+}
+
+ion-footer::before {
+  display: none !important;
+}

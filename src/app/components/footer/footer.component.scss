@@ -37,9 +37,11 @@
 }
 
 ion-footer {
-  --background: #39e6c2;
+  --background: #00BF9F;
+  background:  #00BF9F!important;
   --min-height: 60px;
   padding-bottom: 0 !important;
+  &::before { display: none !important; }
   &::after { display: none !important; }
 }
 
@@ -49,6 +51,7 @@ ion-footer {
   align-items: center;
   height: 60px;
   padding: 0 8px;
+  background: #39e6c2;
 
   .footer-btn {
     display: flex;
@@ -64,6 +67,7 @@ ion-footer {
       width: 26px;
       height: 26px;
       object-fit: contain;
+      filter: brightness(0) invert(1);
     }
   }
 }
