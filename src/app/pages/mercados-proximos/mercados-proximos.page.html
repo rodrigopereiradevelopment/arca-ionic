@@ -1,0 +1,73 @@
+<ion-content [fullscreen]="true">
+
+  <!-- TOPO -->
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+    <span class="titulo-topo">Mercados Próximos</span>
+  </div>
+
+  <!-- MAPA -->
+  <div id="mapa-proximos"></div>
+
+  <!-- FILTROS FLUTUANTES -->
+  <div class="filtros-flutuantes">
+    <select [(ngModel)]="filtroDistancia" class="select-dist">
+      <option [value]="1">até 1 km</option>
+      <option [value]="3">até 3 km</option>
+      <option [value]="5">até 5 km</option>
+      <option [value]="10">até 10 km</option>
+    </select>
+    <select [(ngModel)]="ordenacao" class="select-ord">
+      <option value="distancia">+ Próximo</option>
+      <option value="nome">Nome A-Z</option>
+    </select>
+  </div>
+
+  <!-- BOTÃO TOGGLE LISTA -->
+  <button class="btn-toggle-lista" (click)="toggleLista()">
+    {{ listaVisivel ? '▼ Ocultar Lista' : '▲ Ver Mercados (' + mercadosFiltrados.length + ')' }}
+  </button>
+
+  <!-- BOTTOM SHEET -->
+  <div class="bottom-sheet" [class.visivel]="listaVisivel">
+
+    <div class="drag-handle"></div>
+
+    <div class="lista-mercados">
+
+      <div
+        class="mercado-card"
+        *ngFor="let m of mercadosFiltrados"
+        [class.selecionado]="mercadoSelecionado?.id === m.id"
+        (click)="centralizarMercado(m)">
+
+        <img [src]="m.logo" [alt]="m.nome" class="mercado-logo"
+          onerror="this.src='assets/img/mercado.png'">
+
+        <div class="mercado-info">
+          <strong>{{ m.nome }}</strong>
+          <span>🕐 {{ m.horario }}</span>
+          <span>📞 {{ m.telefone }}</span>
+        </div>
+
+        <div class="mercado-direita">
+          <span class="badge-dist" [style.background]="corDistancia(m.distancia)">
+            {{ m.distancia }} km
+          </span>
+          <div class="mercado-btns">
+            <a [routerLink]="['/mapa-rotas']" class="btn-rota">🗺️ Rota</a>
+            <a [routerLink]="['/comparar']" class="btn-precos">💰 Preços</a>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="sem-resultados" *ngIf="mercadosFiltrados.length === 0">
+        Nenhum mercado encontrado neste raio.
+      </p>
+
+    </div>
+  </div>
+
+</ion-content>

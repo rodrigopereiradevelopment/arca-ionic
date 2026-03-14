@@ -1,0 +1,291 @@
+ion-content { --background: #f5f5f5; }
+
+.topo {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 80px;
+  background: #39e6c2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  .btn-voltar {
+    position: absolute; left: 16px;
+    font-size: 24px; color: white;
+    text-decoration: none; font-weight: bold;
+  }
+  .logo {
+    width: 55px; height: 55px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+}
+
+.container {
+  padding: 100px 16px 40px;
+  max-width: 700px;
+  margin: 0 auto;
+
+  h1 { font-size: 20px; color: #333; margin-bottom: 4px; }
+  .subtitulo { font-size: 13px; color: #888; margin-bottom: 16px; }
+  .contagem { font-size: 12px; color: #aaa; margin-bottom: 12px; }
+}
+
+.painel-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+
+  .input-busca {
+    flex: 1; min-width: 160px;
+    padding: 11px 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    background: white;
+    outline: none;
+  }
+
+  .select-perfil {
+    padding: 11px 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    background: white;
+    outline: none;
+  }
+
+  .btn-novo {
+    padding: 11px 20px;
+    background: #00BF9F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+  }
+}
+
+.usuario-card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+  .card-topo {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+
+    .avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: #39e6c2;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      strong { font-size: 15px; color: #333; }
+      .email { font-size: 12px; color: #888; }
+      .data { font-size: 11px; color: #bbb; }
+    }
+
+    .badges {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-end;
+    }
+  }
+
+  .badge {
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+
+    &.badge-admin { background: #f3e5f5; color: #6a1b9a; }
+    &.badge-mod { background: #e3f2fd; color: #1565c0; }
+    &.badge-user { background: #f5f5f5; color: #555; }
+    &.badge-ativo { background: #d4edda; color: #155724; }
+    &.badge-bloqueado { background: #f8d7da; color: #721c24; }
+  }
+
+  .card-acoes {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 12px;
+
+    .label-acoes {
+      font-size: 11px;
+      color: #aaa;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .perfil-btns {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+
+      button {
+        flex: 1;
+        padding: 8px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #888;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &.ativo {
+          border-color: #00BF9F;
+          background: #00BF9F;
+          color: white;
+        }
+      }
+    }
+
+    .acao-btns {
+      display: flex;
+      gap: 8px;
+
+      button {
+        flex: 1;
+        padding: 9px;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .btn-status { background: #fff3cd; color: #856404; }
+      .btn-excluir { background: #f8d7da; color: #721c24; }
+    }
+  }
+}
+
+.sem-resultados {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  padding: 40px 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: white;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  z-index: 1001;
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 10px;
+    border-bottom: 1px solid #eee;
+
+    h2 { font-size: 18px; color: #333; margin: 0; }
+    .btn-fechar {
+      background: #eee;
+      border: none;
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
+
+  .modal-body { padding: 16px 20px 40px; }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+    .required { color: #ff6b6b; }
+  }
+
+  input, select {
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    background: white;
+    outline: none;
+    &:focus { border-color: #00BF9F; }
+  }
+}
+
+.aviso-convite {
+  padding: 12px;
+  background: #e8f5e9;
+  border-left: 4px solid #00BF9F;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.modal-botoes {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+
+  .btn-cancelar {
+    padding: 14px;
+    background: #eee;
+    color: #333;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .btn-salvar {
+    padding: 14px;
+    background: #00BF9F;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}

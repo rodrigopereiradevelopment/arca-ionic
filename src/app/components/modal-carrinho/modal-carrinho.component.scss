@@ -18,3 +18,29 @@
     font-weight: bold;
   }
 }
+.item-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #f0fff9;
+  border-radius: 10px;
+  margin: 12px 0;
+  font-size: 15px;
+
+  strong { color: #00BF9F; font-size: 17px; }
+}
+
+.lista-vazia {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+  padding: 20px 0;
+}

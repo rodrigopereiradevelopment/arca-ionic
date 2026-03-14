@@ -1,0 +1,112 @@
+<ion-content [fullscreen]="true">
+
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+  </div>
+
+  <div class="container">
+
+    <h1>👥 Gerenciar Usuários</h1>
+    <p class="subtitulo">Visualize e controle as permissões de acesso dos usuários.</p>
+
+    <!-- FILTROS -->
+    <div class="painel-filtros">
+      <input type="text" [(ngModel)]="filtroNome"
+        placeholder="Buscar por nome ou e-mail..." class="input-busca">
+
+      <select [(ngModel)]="filtroPerfil" class="select-perfil">
+        <option value="todos">Todos os perfis</option>
+        <option value="admin">Administrador</option>
+        <option value="moderador">Moderador</option>
+        <option value="usuario">Usuário</option>
+      </select>
+
+      <button class="btn-novo" (click)="modalAberto = true">＋ Convidar</button>
+    </div>
+
+    <!-- CONTAGEM -->
+    <p class="contagem">{{ usuariosFiltrados.length }} usuário(s) encontrado(s)</p>
+
+    <!-- CARDS USUÁRIOS -->
+    <div class="usuario-card" *ngFor="let u of usuariosFiltrados">
+
+      <div class="card-topo">
+        <div class="avatar">{{ u.nome.charAt(0) }}</div>
+        <div class="info">
+          <strong>{{ u.nome }}</strong>
+          <span class="email">{{ u.email }}</span>
+          <span class="data">Cadastro: {{ u.dataCadastro }}</span>
+        </div>
+        <div class="badges">
+          <span class="badge" [class]="perfilCor(u.perfil)">{{ perfilLabel(u.perfil) }}</span>
+          <span class="badge" [class]="u.status === 'ativo' ? 'badge-ativo' : 'badge-bloqueado'">
+            {{ u.status === 'ativo' ? '✅ Ativo' : '🚫 Bloqueado' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="card-acoes">
+        <span class="label-acoes">Alterar perfil:</span>
+        <div class="perfil-btns">
+          <button [class.ativo]="u.perfil === 'usuario'"
+            (click)="alterarPerfil(u, 'usuario')">Usuário</button>
+          <button [class.ativo]="u.perfil === 'moderador'"
+            (click)="alterarPerfil(u, 'moderador')">Moderador</button>
+          <button [class.ativo]="u.perfil === 'admin'"
+            (click)="alterarPerfil(u, 'admin')">Admin</button>
+        </div>
+        <div class="acao-btns">
+          <button class="btn-status" (click)="alterarStatus(u)">
+            {{ u.status === 'ativo' ? '🚫 Bloquear' : '✅ Desbloquear' }}
+          </button>
+          <button class="btn-excluir" (click)="excluir(u)">🗑️ Remover</button>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="sem-resultados" *ngIf="usuariosFiltrados.length === 0">
+      Nenhum usuário encontrado.
+    </p>
+
+  </div>
+
+  <!-- MODAL OVERLAY -->
+  <div class="modal-overlay" *ngIf="modalAberto" (click)="modalAberto = false"></div>
+
+  <!-- MODAL CONVITE -->
+  <div class="modal" *ngIf="modalAberto">
+    <div class="modal-header">
+      <h2>✉️ Convidar Usuário</h2>
+      <button class="btn-fechar" (click)="modalAberto = false">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label>E-mail <span class="required">*</span></label>
+        <input type="email" [(ngModel)]="conviteEmail" placeholder="usuario@email.com">
+      </div>
+
+      <div class="form-group">
+        <label>Perfil</label>
+        <select [(ngModel)]="convitePerfil">
+          <option value="usuario">Usuário</option>
+          <option value="moderador">Moderador</option>
+          <option value="admin">Administrador</option>
+        </select>
+      </div>
+
+      <p class="aviso-convite">
+        📧 O usuário receberá um e-mail com o link de acesso ao sistema.
+      </p>
+
+      <div class="modal-botoes">
+        <button class="btn-cancelar" (click)="modalAberto = false">Cancelar</button>
+        <button class="btn-salvar" (click)="enviarConvite()">Enviar Convite</button>
+      </div>
+
+    </div>
+  </div>
+
+</ion-content>

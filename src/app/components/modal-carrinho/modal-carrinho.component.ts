@@ -1,17 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import {
-  IonButton,
-  IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonCard,
-  IonCardContent,
-  ModalController
+  IonButton, IonContent, IonList, IonItem,
+  IonLabel, IonCard, IonCardContent, ModalController
 } from '@ionic/angular/standalone';
+import { CarrinhoService } from '../../services/carrinho.service';
 
 @Component({
   selector: 'app-modal-carrinho',
@@ -19,35 +13,26 @@ import {
   styleUrls: ['./modal-carrinho.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
-    RouterModule,
-    IonButton,
-    IonContent,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonCard,
-    IonCardContent
+    CommonModule, RouterModule,
+    IonButton, IonContent, IonList, IonItem,
+    IonLabel, IonCard, IonCardContent
   ]
 })
 export class ModalCarrinhoComponent implements OnInit {
 
   view: string = 'lista';
-  produtos: any[] = [
-    { nome: 'Café Tradicional 3 Corações' },
-    { nome: 'Açúcar Refinado União' }
-  ];
 
   constructor(
     private modalCtrl: ModalController,
-    private router: Router
+    private router: Router,
+    public carrinhoService: CarrinhoService
   ) {}
 
   ngOnInit() {}
 
-  fecharModal() {
-    this.modalCtrl.dismiss();
-  }
+  fecharModal() { this.modalCtrl.dismiss(); }
+
+  remover(id: number) { this.carrinhoService.remover(id); }
 
   verRotas() {
     this.modalCtrl.dismiss();

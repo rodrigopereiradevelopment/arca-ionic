@@ -49,5 +49,17 @@ export const routes: Routes = [
   {
     path: 'gerenciar-produtos',
     loadComponent: () => import('./pages/gerenciar-produtos/gerenciar-produtos.page').then( m => m.GerenciarProdutosPage)
+  },
+  {
+    path: 'gerenciar-usuarios',
+    loadComponent: () => import('./pages/gerenciar-usuarios/gerenciar-usuarios.page').then( m => m.GerenciarUsuariosPage)
+  },
+  {
+    path: 'mercados-proximos',
+    loadComponent: () => import('./pages/mercados-proximos/mercados-proximos.page').then( m => m.MercadosProximosPage)
+  },
+  {
+    path: 'pesquisar-produtos',
+    loadComponent: () => import('./pages/pesquisar-produtos/pesquisar-produtos.page').then( m => m.PesquisarProdutosPage)
   }
 ];

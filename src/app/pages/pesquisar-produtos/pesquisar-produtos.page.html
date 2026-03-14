@@ -1,0 +1,140 @@
+<ion-content [fullscreen]="true">
+
+  <!-- TOPO -->
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        [(ngModel)]="busca"
+        placeholder="Buscar produto ou código de barras...">
+      <button *ngIf="busca" class="btn-limpar-busca" (click)="busca = ''">✕</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- CATEGORIAS -->
+    <div class="categorias-scroll">
+      <button
+        *ngFor="let cat of categorias"
+        class="cat-btn"
+        [class.ativa]="categoriaAtiva === cat"
+        (click)="categoriaAtiva = cat">
+        {{ cat }}
+      </button>
+    </div>
+
+    <!-- ORDENAÇÃO E CONTAGEM -->
+    <div class="barra-opcoes">
+      <span class="contagem">{{ produtosFiltrados.length }} produto(s)</span>
+      <div class="ordenacao">
+        <span>Ordenar:</span>
+        <button [class.ativo]="ordenacao === 'preco'" (click)="ordenacao = 'preco'">
+          💰 Menor Preço
+        </button>
+        <button [class.ativo]="ordenacao === 'nome'" (click)="ordenacao = 'nome'">
+          🔤 A-Z
+        </button>
+      </div>
+    </div>
+
+    <!-- LISTA DE PRODUTOS -->
+    <div class="produto-card" *ngFor="let p of produtosFiltrados">
+
+      <!-- CARD PRINCIPAL -->
+      <div class="card-main" (click)="abrirModal(p)">
+        <img [src]="p.img" [alt]="p.nome" class="prod-img"
+          onerror="this.src='assets/img/Produto 1.png'">
+
+        <div class="prod-info">
+          <strong>{{ p.nome }}</strong>
+          <span class="cat-tag">{{ p.categoria }}</span>
+          <div class="preco-destaque">
+            <span class="menor-preco">R$ {{ p.menorPreco.toFixed(2) }}</span>
+            <span class="mercado-barato">em {{ p.mercadoMaisBarato }}</span>
+          </div>
+        </div>
+
+        <div class="card-acoes">
+          <button
+            class="btn-lista"
+            [class.adicionado]="naLista(p.id)"
+            (click)="$event.stopPropagation(); adicionarLista(p)">
+            {{ naLista(p.id) ? '✅' : '＋' }}
+          </button>
+          <button
+            class="btn-expandir"
+            (click)="$event.stopPropagation(); toggleExpanir(p)">
+            {{ p.expandido ? '▲' : '▼' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- PREÇOS EXPANDIDOS -->
+      <div class="precos-expandidos" *ngIf="p.expandido">
+        <div class="preco-row" *ngFor="let pr of p.precos">
+          <img [src]="pr.posicao" class="img-posicao" alt="posição">
+          <img [src]="pr.logo" class="img-logo" [alt]="pr.mercado"
+            onerror="this.src='assets/img/mercado.png'">
+          <span class="nome-mercado">{{ pr.mercado }}</span>
+          <span class="valor-preco">R$ {{ pr.valor.toFixed(2) }}</span>
+        </div>
+        <button class="btn-alerta" (click)="criarAlerta(p)">
+          🔔 Criar Alerta de Preço
+        </button>
+      </div>
+
+    </div>
+
+    <p class="sem-resultados" *ngIf="produtosFiltrados.length === 0">
+      Nenhum produto encontrado. Tente outra busca!
+    </p>
+
+  </div>
+
+  <!-- MODAL PRODUTO -->
+  <div class="modal-overlay" *ngIf="modalProduto" (click)="modalProduto = null"></div>
+  <div class="modal-produto" *ngIf="modalProduto">
+
+    <div class="modal-handle"></div>
+
+    <button class="btn-fechar-modal" (click)="modalProduto = null">✕</button>
+
+    <img [src]="modalProduto.img" [alt]="modalProduto.nome" class="modal-img"
+      onerror="this.src='assets/img/Produto 1.png'">
+
+    <div class="modal-info">
+      <h2>{{ modalProduto.nome }}</h2>
+      <span class="cat-tag">{{ modalProduto.categoria }}</span>
+      <span class="ean">EAN: {{ modalProduto.ean }}</span>
+    </div>
+
+    <h3 class="modal-titulo-precos">💰 Comparativo de Preços</h3>
+
+    <div class="modal-precos">
+      <div class="preco-row" *ngFor="let pr of modalProduto.precos">
+        <img [src]="pr.posicao" class="img-posicao" alt="posição">
+        <img [src]="pr.logo" class="img-logo" [alt]="pr.mercado"
+          onerror="this.src='assets/img/mercado.png'">
+        <span class="nome-mercado">{{ pr.mercado }}</span>
+        <span class="valor-preco">R$ {{ pr.valor.toFixed(2) }}</span>
+      </div>
+    </div>
+
+    <div class="modal-botoes">
+      <button
+        class="btn-add-lista"
+        [class.adicionado]="naLista(modalProduto.id)"
+        (click)="adicionarLista(modalProduto)">
+        {{ naLista(modalProduto.id) ? '✅ Na Lista' : '＋ Adicionar à Lista' }}
+      </button>
+      <button class="btn-alerta-modal" (click)="criarAlerta(modalProduto)">
+        🔔 Criar Alerta
+      </button>
+    </div>
+
+  </div>
+
+</ion-content>
