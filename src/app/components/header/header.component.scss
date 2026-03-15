@@ -1,13 +1,21 @@
-ion-toolbar {
-  --background:#00BF9F; // teal do ARCA
-  --color: white;
+// ESTA PARTE É A MAIS IMPORTANTE:
+:host {
+  display: block !important;    // Força o componente a ocupar espaço
+  width: 100% !important;       // Garante que ele use toda a largura
+  min-height: 60px !important;  // Define uma altura mínima fixa
+  background-color: #00BF9F;    // Cor de fundo de segurança
+}
 
-  // Ícone do menu
+ion-toolbar {
+  --background: #00BF9F;
+  --color: white;
+  --min-height: 60px; // Garante que a toolbar interna também abra
+  display: flex !important;
+
   ion-menu-button {
-    color: white;
+    --color: white;
   }
 
-  // Barra de busca
   ion-searchbar {
     --background: white;
     --border-radius: 25px;
@@ -15,9 +23,11 @@ ion-toolbar {
     --placeholder-color: #999;
     --color: #333;
     --icon-color: #4DD9D5;
-    padding: 4px 8px 4px 0;
+    padding: 4px 8px;
   }
 }
+
+// O restante do seu código (suggestions, etc) continua abaixo...
 
 // Remove a linha/borda padrão do header
 ion-header {
