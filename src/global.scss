@@ -93,36 +93,3 @@ ion-header::after {
 ion-footer::before {
   display: none !important;
 }
-/* --- CORREÇÃO PARA O GITHUB PAGES / MOBILE --- */
-
-/* --- CORREÇÃO FINAL PARA O LAYOUT MOBILE (GITHUB PAGES) --- */
-
-/* 1. Ajuste do Container do Header (Onde o componente mora) */
-ion-header {
-  background-color: #00BF9F !important;
-  /* Garante o respiro para o notch do celular e barra de status */
-  padding-top: var(--ion-safe-area-top) !important;
-  
-  /* Remove a linha/sombra padrão que o Ionic coloca no header */
-  &::after {
-    display: none !important;
-  }
-}
-
-/* 2. Garante que o componente customizado ocupe o espaço correto */
-app-header {
-  display: block;
-  width: 100%;
-}
-
-/* 3. Ajuste do Conteúdo para não subir e nem ficar com buracos */
-ion-content {
-  --offset-top: 0px !important;
-  --padding-top: 0px !important;
-}
-
-/* 4. Remove textos fantasmas ou margens estranhas no topo do App */
-ion-app {
-  background: #ffffff;
-}
-

@@ -33,9 +33,7 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
-              },
-              "src/favicon.ico", 
-             "src/_redirects"
+              }
             ],
             "styles": [
               "src/global.scss",
@@ -59,8 +57,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "20kb",
-                  "maximumError": "50kb"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ],
               "fileReplacements": [
@@ -93,6 +91,7 @@
               "buildTarget": "app:build:development"
             },
             "ci": {
+              "progress": false
             }
           },
           "defaultConfiguration": "development"

@@ -1,19 +1,13 @@
-:host {
-  display: block;
-  width: 100%;
-  min-height: 56px; 
-}
-
 ion-toolbar {
-  --background: #00BF9F;
+  --background:#00BF9F; // teal do ARCA
   --color: white;
-  --border-style: none;
-  --min-height: 60px;
 
+  // Ícone do menu
   ion-menu-button {
-    --color: white;
+    color: white;
   }
 
+  // Barra de busca
   ion-searchbar {
     --background: white;
     --border-radius: 25px;
@@ -21,55 +15,33 @@ ion-toolbar {
     --placeholder-color: #999;
     --color: #333;
     --icon-color: #4DD9D5;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-inline-start: 12px;
-    padding-inline-end: 12px;
+    padding: 4px 8px 4px 0;
   }
 }
 
+// Remove a linha/borda padrão do header
+ion-header {
+  &::after {
+    display: none;
+  }
+}
+
+// Sugestões de busca
 .suggestions-container {
   position: absolute;
-  top: 100%;
-  left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 999;
   background: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   border-radius: 0 0 12px 12px;
-  max-height: 300px;
-  overflow-y: auto;
 
   ion-item {
-    --min-height: 48px; 
+    --min-height: 40px;
     font-size: 14px;
-    --color: #333;
-    
-    ion-icon {
-      color: #777;
-      margin-right: 8px;
+    cursor: pointer;
+
+    &:hover {
+      --background: #f0fffe;
     }
   }
 }
-/* Forçar a visibilidade do componente customizado */
-app-header {
-  display: block !important;
-  min-height: 60px !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* Forçar a toolbar a aceitar a cor e altura */
-app-header ion-toolbar {
-  --background: #00BF9F !important;
-  height: 60px !important;
-  display: flex !important;
-}
-
-/* Garantir que o botão de menu e busca não sumam */
-app-header ion-menu-button, 
-app-header ion-searchbar {
-  display: block !important;
-  visibility: visible !important;
-}
-
