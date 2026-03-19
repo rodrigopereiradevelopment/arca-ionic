@@ -45,11 +45,11 @@ export class PesquisarProdutosPage implements OnInit {
     {
       id: 1, nome: 'Café Tradicional 3 Corações 500g',
       categoria: 'Bebidas', ean: '7896005800027',
-      img: 'assets/img/Produto 1.png',
+      img: 'assets/img/Produto1.png',
       menorPreco: 18.90, mercadoMaisBarato: 'Big Bom',
       expandido: false,
       precos: [
-        { mercado: 'Big Bom', logo: 'assets/img/BigBom Icon.png', valor: 18.90, posicao: 'assets/img/ouro.png' },
+        { mercado: 'Big Bom', logo: 'assets/img/BigBom-Icon.png', valor: 18.90, posicao: 'assets/img/ouro.png' },
         { mercado: 'SMC', logo: 'assets/img/SMC.png', valor: 20.50, posicao: 'assets/img/prata.png' },
         { mercado: 'SPN', logo: 'assets/img/spn.png', valor: 21.90, posicao: 'assets/img/bronze.png' }
       ]
@@ -57,23 +57,23 @@ export class PesquisarProdutosPage implements OnInit {
     {
       id: 2, nome: 'Açúcar Refinado União 1kg',
       categoria: 'Mercearia', ean: '7891910000197',
-      img: 'assets/img/Produto 2.png',
+      img: 'assets/img/Produto2.png',
       menorPreco: 4.99, mercadoMaisBarato: 'SMC',
       expandido: false,
       precos: [
         { mercado: 'SMC', logo: 'assets/img/SMC.png', valor: 4.99, posicao: 'assets/img/ouro.png' },
-        { mercado: 'Big Bom', logo: 'assets/img/BigBom Icon.png', valor: 5.49, posicao: 'assets/img/prata.png' },
+        { mercado: 'Big Bom', logo: 'assets/img/BigBom-Icon.png', valor: 5.49, posicao: 'assets/img/prata.png' },
         { mercado: 'SPN', logo: 'assets/img/spn.png', valor: 5.89, posicao: 'assets/img/bronze.png' }
       ]
     },
     {
       id: 3, nome: 'Arroz Branco Prato Fino 5kg',
       categoria: 'Mercearia', ean: '7896006702018',
-      img: 'assets/img/Produto 3.png',
+      img: 'assets/img/Produto3.png',
       menorPreco: 22.50, mercadoMaisBarato: 'Big Bom',
       expandido: false,
       precos: [
-        { mercado: 'Big Bom', logo: 'assets/img/BigBom Icon.png', valor: 22.50, posicao: 'assets/img/ouro.png' },
+        { mercado: 'Big Bom', logo: 'assets/img/BigBom-Icon.png', valor: 22.50, posicao: 'assets/img/ouro.png' },
         { mercado: 'SPN', logo: 'assets/img/spn.png', valor: 23.90, posicao: 'assets/img/prata.png' },
         { mercado: 'SMC', logo: 'assets/img/SMC.png', valor: 24.50, posicao: 'assets/img/bronze.png' }
       ]
@@ -81,13 +81,13 @@ export class PesquisarProdutosPage implements OnInit {
     {
       id: 4, nome: 'Leite Integral Itambé 1L',
       categoria: 'Laticínios', ean: '7896051113395',
-      img: 'assets/img/Produto 1.png',
+      img: 'assets/img/Produto1.png',
       menorPreco: 4.29, mercadoMaisBarato: 'SPN',
       expandido: false,
       precos: [
         { mercado: 'SPN', logo: 'assets/img/spn.png', valor: 4.29, posicao: 'assets/img/ouro.png' },
         { mercado: 'SMC', logo: 'assets/img/SMC.png', valor: 4.59, posicao: 'assets/img/prata.png' },
-        { mercado: 'Big Bom', logo: 'assets/img/BigBom Icon.png', valor: 4.79, posicao: 'assets/img/bronze.png' }
+        { mercado: 'Big Bom', logo: 'assets/img/BigBom-Icon.png', valor: 4.79, posicao: 'assets/img/bronze.png' }
       ]
     }
   ];

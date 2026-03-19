@@ -1,14 +1,42 @@
+
+ion-toolbar {
+  --background:#22dbcf;
+  --color: white;
+
+  ion-menu-button {
+    color: white;
+  }
+
+  ion-searchbar {
+    --background: white;
+    --border-radius: 25px;
+    --box-shadow: none;
+    --placeholder-color: #999;
+    --color: #333;
+    --icon-color: #4DD9D5;
+    padding: 4px 8px 4px 0;
+  }
+}
+
+ion-header::after {
+  display: none;
+}
 .banner-top {
-  display: block;
+  display: flex;
   width: 100%;
   padding: 12px 8px 4px;
+  min-height: 100px;
 
   swiper-slide {
+    display: flex;
+    justify-content: center;
     padding: 0 4px;
+    align-items: center;
+    
 
     img {
       width: 100%;
-      height: 270px;
+      height: auto;
       object-fit: cover;
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -41,3 +69,4 @@ ion-content {
   --overflow: auto; // ← mudei de hidden para auto
   --padding-bottom: 0;
 }
+
