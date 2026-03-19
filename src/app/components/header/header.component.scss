@@ -1,16 +1,14 @@
-// ESTA PARTE É A MAIS IMPORTANTE:
 :host {
-  display: block !important;    // Força o componente a ocupar espaço
-  width: 100% !important;       // Garante que ele use toda a largura
-  min-height: 60px !important;  // Define uma altura mínima fixa
-  background-color: #00BF9F;    // Cor de fundo de segurança
+  display: block;
+  width: 100%;
+  min-height: 56px; 
 }
 
 ion-toolbar {
   --background: #00BF9F;
   --color: white;
-  --min-height: 60px; // Garante que a toolbar interna também abra
-  display: flex !important;
+  --border-style: none;
+  --min-height: 60px;
 
   ion-menu-button {
     --color: white;
@@ -23,35 +21,55 @@ ion-toolbar {
     --placeholder-color: #999;
     --color: #333;
     --icon-color: #4DD9D5;
-    padding: 4px 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-inline-start: 12px;
+    padding-inline-end: 12px;
   }
 }
 
-// O restante do seu código (suggestions, etc) continua abaixo...
-
-// Remove a linha/borda padrão do header
-ion-header {
-  &::after {
-    display: none;
-  }
-}
-
-// Sugestões de busca
 .suggestions-container {
   position: absolute;
+  top: 100%;
+  left: 0;
   width: 100%;
-  z-index: 999;
+  z-index: 1000;
   background: white;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   border-radius: 0 0 12px 12px;
+  max-height: 300px;
+  overflow-y: auto;
 
   ion-item {
-    --min-height: 40px;
+    --min-height: 48px; 
     font-size: 14px;
-    cursor: pointer;
-
-    &:hover {
-      --background: #f0fffe;
+    --color: #333;
+    
+    ion-icon {
+      color: #777;
+      margin-right: 8px;
     }
   }
 }
+/* Forçar a visibilidade do componente customizado */
+app-header {
+  display: block !important;
+  min-height: 60px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Forçar a toolbar a aceitar a cor e altura */
+app-header ion-toolbar {
+  --background: #00BF9F !important;
+  height: 60px !important;
+  display: flex !important;
+}
+
+/* Garantir que o botão de menu e busca não sumam */
+app-header ion-menu-button, 
+app-header ion-searchbar {
+  display: block !important;
+  visibility: visible !important;
+}
+
