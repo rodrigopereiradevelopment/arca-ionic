@@ -13,8 +13,8 @@ export interface ItemLista {
 export class CarrinhoService {
 
   private itens = new BehaviorSubject<ItemLista[]>([
-    { id: 1, nome: 'Café Tradicional 3 Corações', img: 'assets/img/Produto 1.png', menorPreco: 18.90, mercadoMaisBarato: 'Big Bom' },
-    { id: 2, nome: 'Açúcar Refinado União', img: 'assets/img/Produto 2.png', menorPreco: 4.99, mercadoMaisBarato: 'SMC' }
+    { id: 1, nome: 'Café Tradicional 3 Corações', img: 'assets/img/Produto1.png', menorPreco: 18.90, mercadoMaisBarato: 'Big Bom' },
+    { id: 2, nome: 'Açúcar Refinado União', img: 'assets/img/Produto2.png', menorPreco: 4.99, mercadoMaisBarato: 'SMC' }
   ]);
 
   itens$ = this.itens.asObservable();

@@ -12,9 +12,9 @@ import { IonContent } from '@ionic/angular/standalone';
 })
 export class CarrinhoPage implements OnInit {
   produtos = [
-    { nome: 'Café Tradicional 3 Corações', img: 'assets/img/Produto 1.png' },
-    { nome: 'Açúcar Refinado União', img: 'assets/img/Produto 2.png' },
-    { nome: 'Arroz Branco Prato Fino', img: 'assets/img/Produto 3.png' }
+    { nome: 'Café Tradicional 3 Corações', img: 'assets/img/Produto1.png' },
+    { nome: 'Açúcar Refinado União', img: 'assets/img/Produto2.png' },
+    { nome: 'Arroz Branco Prato Fino', img: 'assets/img/Produto3.png' }
   ];
   constructor() {}
   ngOnInit() {}
