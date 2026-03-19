@@ -25,7 +25,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #ffffff;
+  background: #fff;//radial-gradient(circle, #fff 0%, #22dbcf 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,7 +34,7 @@
 
   img {
     width: 50%;
-    max-width: 250px;
+    max-width: 400px;
     height: auto;
   }
 }
@@ -42,7 +42,6 @@
 /* Background padrão do app */
 ion-content {
   --background: #ffffff;
-  height: 100%;
 }
 
 /* Swiper */
@@ -93,36 +92,21 @@ ion-header::after {
 ion-footer::before {
   display: none !important;
 }
-/* --- CORREÇÃO PARA O GITHUB PAGES / MOBILE --- */
-
-/* --- CORREÇÃO FINAL PARA O LAYOUT MOBILE (GITHUB PAGES) --- */
-
-/* 1. Ajuste do Container do Header (Onde o componente mora) */
-ion-header {
-  background-color: #00BF9F !important;
-  /* Garante o respiro para o notch do celular e barra de status */
-  padding-top: var(--ion-safe-area-top) !important;
-  
-  /* Remove a linha/sombra padrão que o Ionic coloca no header */
-  &::after {
-    display: none !important;
-  }
+app-header ion-toolbar {
+  --background: #00BF9F;
+  --color: white;
 }
 
-/* 2. Garante que o componente customizado ocupe o espaço correto */
-app-header {
-  display: block;
-  width: 100%;
+app-header ion-menu-button {
+  color: white;
 }
 
-/* 3. Ajuste do Conteúdo para não subir e nem ficar com buracos */
-ion-content {
-  --offset-top: 0px !important;
-  --padding-top: 0px !important;
+app-header ion-searchbar {
+  --background: white;
+  --border-radius: 25px;
+  --box-shadow: none;
+  --placeholder-color: #999;
+  --color: #333;
+  --icon-color: #4DD9D5;
+  padding: 4px 8px 4px 0;
 }
-
-/* 4. Remove textos fantasmas ou margens estranhas no topo do App */
-ion-app {
-  background: #ffffff;
-}
-

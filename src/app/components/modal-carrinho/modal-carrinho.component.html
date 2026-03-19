@@ -11,7 +11,7 @@
     <ion-list>
       <ion-item *ngFor="let item of carrinhoService.itens$ | async">
         <img [src]="item.img" slot="start" class="item-img"
-          onerror="this.src='assets/img/Produto 1.png'">
+          onerror="this.src='assets/img/Produto1.png'">
         <ion-label>
           <h3>{{ item.nome }}</h3>
           <p>R$ {{ item.menorPreco.toFixed(2) }} — {{ item.mercadoMaisBarato }}</p>

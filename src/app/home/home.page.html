@@ -1,18 +1,19 @@
-<!--home.page.html-->
-<ion-header class="ion-no-border">
-  <app-header></app-header>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-searchbar
+      placeholder="Categoria / Produto"
+      showCancelButton="never">
+    </ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="false">
 
-  <!-- Banners: 2 lado a lado -->
-  <swiper-container
-    loop="true"
-    autoplay="true"
-    pagination="true"
-    slides-per-view="2"
-    space-between="8"
-    class="banner-top">
+  <swiper-container loop="true" autoplay="true" pagination="true"
+    slides-per-view="2" space-between="8" class="banner-top">
     <swiper-slide><img src="assets/img/Compare1.png" alt="Banner 1"></swiper-slide>
     <swiper-slide><img src="assets/img/Compare.png" alt="Banner 2"></swiper-slide>
     <swiper-slide><img src="assets/img/Descontos.png" alt="Banner 3"></swiper-slide>
@@ -21,14 +22,8 @@
     <swiper-slide><img src="assets/img/Ofertas.png" alt="Banner 6"></swiper-slide>
   </swiper-container>
 
-  <!-- Promoções: 1 por vez -->
-  <swiper-container
-    loop="true"
-    autoplay="true"
-    pagination="true"
-    slides-per-view="1.05"
-    space-between="12"
-    class="banner-promo">
+  <swiper-container loop="true" autoplay="true" pagination="true"
+    slides-per-view="1.05" space-between="12" class="banner-promo">
     <swiper-slide><img src="assets/img/Promocao3.png" alt="Promo 1"></swiper-slide>
     <swiper-slide><img src="assets/img/Promocao1.png" alt="Promo 2"></swiper-slide>
     <swiper-slide><img src="assets/img/Promocao.png" alt="Promo 3"></swiper-slide>
