@@ -1,4 +1,4 @@
- <ion-toolbar>
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -6,16 +6,14 @@
     <ion-searchbar 
       placeholder="Categoria / Produto" 
       (ionInput)="buscar($event)"
-      show-cancel-button="never">
+      showCancelButton="never">
     </ion-searchbar>
   </ion-toolbar>
 
   <div class="suggestions-container" *ngIf="sugestoes.length > 0">
-    <ion-list lines="none">
-      <ion-item *ngFor="let item of sugestoes" (click)="selecionar(item)" button>
-        <ion-icon name="search-outline" slot="start" size="small"></ion-icon>
+    <ion-list>
+      <ion-item *ngFor="let item of sugestoes" (click)="selecionar(item)">
         <ion-label>{{ item.nome }}</ion-label>
       </ion-item>
     </ion-list>
   </div>
-  

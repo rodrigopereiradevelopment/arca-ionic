@@ -46,7 +46,7 @@
       <!-- CARD PRINCIPAL -->
       <div class="card-main" (click)="abrirModal(p)">
         <img [src]="p.img" [alt]="p.nome" class="prod-img"
-          onerror="this.src='assets/img/Produto 1.png'">
+          onerror="this.src='assets/img/Produto1.png'">
 
         <div class="prod-info">
           <strong>{{ p.nome }}</strong>
@@ -103,7 +103,7 @@
     <button class="btn-fechar-modal" (click)="modalProduto = null">✕</button>
 
     <img [src]="modalProduto.img" [alt]="modalProduto.nome" class="modal-img"
-      onerror="this.src='assets/img/Produto 1.png'">
+      onerror="this.src='assets/img/Produto1.png'">
 
     <div class="modal-info">
       <h2>{{ modalProduto.nome }}</h2>

@@ -8,7 +8,7 @@ import 'leaflet-routing-machine';
 
 const MERCADOS = [
   { id: 1, nome: 'Big Bom', lat: -22.4250, lng: -46.9400, distancia: 0.8,
-    horario: '07:00 - 22:00', telefone: '(19) 3862-0001', logo: 'assets/img/BigBom Icon.png' },
+    horario: '07:00 - 22:00', telefone: '(19) 3862-0001', logo: 'assets/img/BigBom-Icon.png' },
   { id: 2, nome: 'Supermercado SMC', lat: -22.4350, lng: -46.9550, distancia: 1.4,
     horario: '08:00 - 21:00', telefone: '(19) 3862-0002', logo: 'assets/img/SMC.png' },
   { id: 3, nome: 'Supermercado SPN', lat: -22.4450, lng: -46.9700, distancia: 2.1,
