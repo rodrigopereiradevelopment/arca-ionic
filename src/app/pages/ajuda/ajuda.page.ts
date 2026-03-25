@@ -6,7 +6,6 @@ import {
   IonContent, IonAccordion, IonAccordionGroup,
   IonItem, IonLabel
 } from '@ionic/angular/standalone';
-import { environment } from '../../../environments/environment';
 
 interface Mensagem {
   autor: 'usuario' | 'ia';
@@ -122,32 +121,14 @@ export class AjudaPage implements OnInit {
   }
 
   async chamarGemini(pergunta: string): Promise<string> {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${environment.geminiKey}`;
-
-    const body = {
-      contents: [{
-        parts: [{
-          text: `Você é o assistente virtual do app ARCA, um aplicativo de comparação de preços de supermercados em Mogi Mirim, São Paulo, Brasil. 
-          
-Responda sempre em português brasileiro de forma amigável, clara e objetiva. 
-Foque em ajudar com dúvidas sobre o app: pesquisar produtos, comparar preços, montar lista de compras, traçar rotas para mercados, criar alertas de preço, abrir tickets de suporte.
-Se a pergunta não for relacionada ao app, redirecione gentilmente para temas do ARCA.
-Mantenha respostas curtas (máximo 3 parágrafos).
-
-Pergunta do usuário: ${pergunta}`
-        }]
-      }]
-    };
-
-    const res = await fetch(url, {
+    const res = await fetch('http://localhost:3000/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      body: JSON.stringify({ pergunta })
     });
 
     const data = await res.json();
-    console.log('Gemini response:', JSON.stringify(data));
-    return data.candidates[0].content.parts[0].text;
+    return data.resposta;
   }
 
   scrollChat() {
