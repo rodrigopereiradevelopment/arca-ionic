@@ -197,3 +197,41 @@ Este projeto foi desenvolvido para fins acadêmicos, mas melhorias e sugestões 
 
 Projeto desenvolvido para fins acadêmicos (TCC).
 © ARCA — Mogi Mirim, SP — 2025
+
+---
+
+## 📚 Referências e Tecnologias
+
+### 🖥️ Front-end
+- [Ionic Framework](https://ionicframework.com/docs)
+- [Angular](https://angular.dev/overview)
+- [TypeScript](https://www.typescriptlang.org/docs/)
+- [W3Schools - HTML](https://www.w3schools.com/html/)
+- [W3Schools - CSS](https://www.w3schools.com/css/)
+- [W3Schools - JavaScript](https://www.w3schools.com/js/)
+- [Leaflet](https://leafletjs.com)
+
+### ⚙️ Back-end
+- [Next.js](https://nextjs.org/docs)
+- [Python](https://docs.python.org/3/)
+- [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+- [Scrapy](https://docs.scrapy.org/en/latest/)
+- [Playwright](https://playwright.dev/docs/intro)
+
+### 🗄️ Banco de Dados
+- [MongoDB](https://www.mongodb.com/docs/)
+- [PostgreSQL](https://www.postgresql.org/docs/)
+- [Supabase](https://supabase.com/docs)
+
+### 🤖 Inteligência Artificial
+- [Google Gemini API](https://ai.google.dev/docs)
+
+### 🖼️ Imagens
+- [Pexels](https://www.pexels.com)
+- [Pexels API](https://www.pexels.com/api/documentation)
+- [Open Food Facts](https://world.openfoodfacts.org)
+- [Open Food Facts API](https://wiki.openfoodfacts.org/API)
+
+### 🎵 Áudio
+- [Pixabay Music](https://pixabay.com/music/) — músicas royalty-free
+- [Freesound](https://freesound.org) — sons de UI (licença Creative Commons — verificar por arquivo)
