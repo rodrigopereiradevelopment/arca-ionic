@@ -97,10 +97,13 @@ Fontes de dados (Scraping / App / Usuários)
 * Supabase / PostgreSQL
 * MongoDB
 
-### Raspagem de Dados
+## 📡 Integração de Dados
 
-* Python (Selenium, BeautifulSoup, Requests, Pandas)
+Atualmente, o ecossistema ARCA consome dados diretamente das APIs dos estabelecimentos, garantindo maior precisão e velocidade:
 
+* **Arquitetura:** Python 3.12 com bibliotecas `requests` e `json`.
+* **Fluxo:** Mapeamento de endpoints nativos -> Extração de JSON -> Tratamento de dados -> MongoDB.
+* 
 ---
 
 ## 🔐 Controle de Acesso
