@@ -199,7 +199,7 @@ Este projeto foi desenvolvido para fins acadêmicos, mas melhorias e sugestões 
 ## 📝 Licença
 
 Projeto desenvolvido para fins acadêmicos (TCC).
-© ARCA — Mogi Mirim, SP — 2025
+© ARCA — Mogi Mirim , SP — 2025
 
 ---
 
