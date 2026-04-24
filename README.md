@@ -192,7 +192,7 @@ Este projeto foi desenvolvido para fins acadêmicos, mas melhorias e sugestões 
 **Orientador:** Prof. Maurício Aparecido das Neves
 **Coordenadora do Curso:** Prof.ª Simone Andreia de Campos Camargo
 
-📍 ETEC Pedro Ferreira Alves — Mogi Mirim, SP
+📍 ETEC Pedro Ferreira Alves — Mogi Mirim , SP
 
 ---
 
