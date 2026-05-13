@@ -8,6 +8,7 @@
       <input
         type="text"
         [(ngModel)]="busca"
+        (input)="handleSearch($event)"
         placeholder="Buscar produto ou código de barras...">
       <button *ngIf="busca" class="btn-limpar-busca" (click)="busca = ''">✕</button>
     </div>
