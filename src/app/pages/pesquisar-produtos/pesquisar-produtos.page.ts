@@ -35,6 +35,19 @@ const MERCADOS: Record<number, { nome: string; logo: string }> = {
   6: { nome: 'Ponto Novo', logo: 'assets/img/pontonovo.png' },
 };
 
+// Mapeamento de categoria_id para nome da categoria
+const CATEGORIAS: Record<number, string> = {
+  1: 'Bebidas',
+  2: 'Mercearia',
+  3: 'Bebidas',      // Águas, refrigerantes, etc.
+  4: 'Laticínios',
+  5: 'Hortifruti',
+  6: 'Carnes',
+  7: 'Limpeza',
+  8: 'Higiene',
+  9: 'Outros'       // Biscoitos, etc.
+};
+
 const MEDALHAS = ['assets/img/ouro.png', 'assets/img/prata.png', 'assets/img/bronze.png'];
 
 @Component({
@@ -104,8 +117,8 @@ export class PesquisarProdutosPage implements OnInit {
     return {
       id: p.id,
       nome: p.nome,
-      categoria: p.categoria ?? 'Outros',
-      ean: p.ean ?? '',
+      categoria: CATEGORIAS[p.categoria_id] ?? 'Outros',  // USA categoria_id
+      ean: p.codigo_barras ?? '',                         // USA codigo_barras
       img: p.imagem_url ?? 'assets/img/Produto1.png',
       menorPreco: precosOrdenados[0]?.valor ?? 0,
       mercadoMaisBarato: precosOrdenados[0]?.mercado ?? '-',
