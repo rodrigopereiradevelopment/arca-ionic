@@ -66,6 +66,12 @@
             {{ naLista(p.id) ? '✅' : '＋' }}
           </button>
           <button
+            class="btn-comparar"
+            [class.selecionado]="comparacaoService.contem(p.id)"
+            (click)="$event.stopPropagation(); toggleComparar(p)">
+            {{ comparacaoService.contem(p.id) ? '📊✅' : '📊' }}
+          </button>
+          <button
             class="btn-expandir"
             (click)="$event.stopPropagation(); toggleExpanir(p)">
             {{ p.expandido ? '▲' : '▼' }}

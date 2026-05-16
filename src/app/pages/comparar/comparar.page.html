@@ -1,38 +1,45 @@
 <ion-content [fullscreen]="true">
-
-  <div class="container">
+  <div class="container" *ngIf="!loading; else loadingTemplate">
 
     <div class="intro-texto">
       <span>Esses são os melhores preços da sua lista de compras</span>
       <span>Comparada entre os mercados cadastrados</span>
+      <span class="qtd-produtos">{{ produtosSelecionados.length }} produto(s) selecionado(s)</span>
     </div>
 
     <div class="titulo-card">
       <h1>Melhores Preços</h1>
     </div>
 
-    <div class="mercado-item" *ngFor="let mercado of mercados">
-      <img [src]="mercado.posicao" [alt]="mercado.nome" class="img-posicao">
-      <img [src]="mercado.logo" [alt]="mercado.nome" class="img-logo">
-      <span class="preco">| {{ mercado.preco }}</span>
+    <div class="mercado-item" *ngFor="let mercado of mercados; let i = index">
+      <img [src]="mercado.posicao" [alt]="mercado.nome" class="img-posicao" *ngIf="mercado.posicao">
+      <span class="posicao-numero" *ngIf="!mercado.posicao">{{ i + 1 }}º</span>
+      <img [src]="mercado.logo" [alt]="mercado.nome" class="img-logo"
+           onerror="this.src='assets/img/mercado.png'">
+      <span class="nome-mercado">{{ mercado.nome }}</span>
+      <span class="preco">{{ mercado.precoFormatado }}</span>
     </div>
 
-    <div class="aviso">
-      <span>
-        <strong>Atenção:</strong> Os preços foram comparados usando a lista
-        toda de compras em cada mercado. Comprar os produtos separados pode
-        sair mais barato.
-      </span>
-      <span>
-        Você pode descobrir isso buscando pelos produtos separadamente no App.
-      </span>
+    <div class="aviso" *ngIf="produtosSelecionados.length === 0">
+      <span>Nenhum produto selecionado. Busque produtos e clique em 📊 para comparar.</span>
+    </div>
+
+    <div class="aviso" *ngIf="produtosSelecionados.length > 0">
+      <span><strong>Atenção:</strong> Comprar os produtos separados pode sair mais barato.</span>
     </div>
 
   </div>
 
+  <ng-template #loadingTemplate>
+    <div class="loading-container" style="text-align:center; padding: 40px;">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Calculando melhor mercado para sua cesta...</p>
+    </div>
+  </ng-template>
+
   <div class="botoes-fixos">
-    <a routerLink="/home" class="btn-voltar">Voltar</a>
-    <button class="btn-imprimir" onclick="window.print()">Salvar</button>
+    <a routerLink="/pesquisar-produtos" class="btn-voltar">Adicionar Mais</a>
+    <button class="btn-imprimir" (click)="limparSelecao()">Limpar</button>
     <a routerLink="/mapa-rotas" class="btn-rota">Ver Rotas</a>
   </div>
 
