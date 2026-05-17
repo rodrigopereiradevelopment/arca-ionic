@@ -7,12 +7,18 @@ import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 
 const MERCADOS = [
-  { id: 1, nome: 'Big Bom', lat: -22.4250, lng: -46.9400, distancia: 0.8,
-    horario: '07:00 - 22:00', telefone: '(19) 3862-0001', logo: 'assets/img/BigBom-Icon.png' },
-  { id: 2, nome: 'Supermercado SMC', lat: -22.4350, lng: -46.9550, distancia: 1.4,
-    horario: '08:00 - 21:00', telefone: '(19) 3862-0002', logo: 'assets/img/SMC.png' },
-  { id: 3, nome: 'Supermercado SPN', lat: -22.4450, lng: -46.9700, distancia: 2.1,
-    horario: '07:30 - 22:30', telefone: '(19) 3862-0003', logo: 'assets/img/spn.png' }
+  { id: 1, nome: 'Imperial', lat: -22.4383822, lng: -46.9327464, distancia: 0,
+    horario: '07:00 - 20:00', telefone: '(19) 3862-4117', logo: 'assets/img/imperial.png' },
+  { id: 2, nome: 'Ponto Novo', lat: -22.4313656, lng: -46.9527085, distancia: 0,
+    horario: '07:00 - 21:00', telefone: '(19) 3851-5530', logo: 'assets/img/pontonovo.jpeg' },
+  { id: 3, nome: 'GoodBom', lat: -22.4006202, lng: -46.9700459, distancia: 0,
+    horario: '07:00 - 22:00', telefone: '(19) 3815-3010', logo: 'assets/img/goodbom.png' },
+  { id: 4, nome: 'Atacadao', lat: -22.4022876, lng: -46.9727049, distancia: 0,
+    horario: '07:00 - 22:00', telefone: '(19) 3022-0468', logo: 'assets/img/atacadao.png' },
+  { id: 5, nome: 'Pague Menos', lat: -22.3522237, lng: -46.9464079, distancia: 0,
+    horario: '07:00 - 22:00', telefone: '(19) 3851-9300', logo: 'assets/img/paguemenos.png' },
+  { id: 6, nome: 'Sao Vicente', lat: -22.4269813, lng: -46.9552736, distancia: 0,
+    horario: '07:00 - 22:00', telefone: '(19) 3805-7777', logo: 'assets/img/saovicente.png' }
 ];
 
 @Component({
