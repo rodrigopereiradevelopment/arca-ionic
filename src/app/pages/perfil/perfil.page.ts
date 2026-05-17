@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -63,15 +64,7 @@ export class PerfilPage implements OnInit {
     mostrarConfirmar: false
   };
 
-  enderecos: Endereco[] = [
-    {
-      id: 1, apelido: 'Casa',
-      cep: '13800-000', rua: 'Rua das Flores',
-      numero: '100', complemento: 'Apto 12',
-      bairro: 'Centro', cidade: 'Mogi Mirim',
-      estado: 'SP', principal: true
-    }
-  ];
+  enderecos: Endereco[] = [];
 
   enderecoForm: Endereco = this.novoEndereco();
 
@@ -101,7 +94,26 @@ export class PerfilPage implements OnInit {
     if (u) {
       this.dados.nome = u.nome;
       this.dados.email = u.email;
+      this.carregarPerfil(u.token);
     }
+  }
+
+  async carregarPerfil(token: string) {
+    try {
+      const res = await fetch(environment.apiUrl + '/api/auth/perfil?token=' + token);
+      const data = await res.json();
+      if (data.nome) this.dados.nome = data.nome;
+      if (data.telefone) this.dados.telefone = data.telefone;
+      if (data.cidade) this.dados.cidade = data.cidade;
+    } catch {}
+    await this.carregarEnderecos(token);
+  }
+
+  async carregarEnderecos(token: string) {
+    try {
+      const res = await fetch(environment.apiUrl + '/api/auth/enderecos?token=' + token);
+      this.enderecos = await res.json();
+    } catch {}
   }
 
   onImagemSelecionada(event: any) {
@@ -114,8 +126,28 @@ export class PerfilPage implements OnInit {
   }
 
   async salvarDados() {
-    this.editandoDados = false;
-    await this.toast('Dados atualizados! ✅', 'success');
+    const usuario = this.authService.usuario;
+    if (!usuario?.token) {
+      await this.toast('Sessão expirada. Faça login novamente.', 'danger'); return;
+    }
+    try {
+      const res = await fetch(environment.apiUrl + '/api/auth/perfil', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: usuario.token,
+          nome: this.dados.nome,
+          telefone: this.dados.telefone,
+          cidade: this.dados.cidade
+        })
+      });
+      const data = await res.json();
+      if (data.erro) { await this.toast(data.erro, 'danger'); return; }
+      this.editandoDados = false;
+      await this.toast('Dados atualizados! ✅', 'success');
+    } catch {
+      await this.toast('Erro ao salvar dados.', 'danger');
+    }
   }
 
   // ENDEREÇOS
@@ -154,7 +186,15 @@ export class PerfilPage implements OnInit {
         {
           text: 'Excluir', role: 'destructive',
           handler: async () => {
-            this.enderecos = this.enderecos.filter(x => x.id !== e.id);
+            const token = this.authService.usuario?.token;
+            if (token) {
+              await fetch(environment.apiUrl + '/api/auth/enderecos', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token, id: e.id })
+              });
+              await this.carregarEnderecos(token);
+            }
             await this.toast('Endereço removido!', 'warning');
           }
         }
@@ -168,16 +208,24 @@ export class PerfilPage implements OnInit {
       await this.toast('Preencha os campos obrigatórios!', 'warning');
       return;
     }
-    if (this.editandoEndereco) {
-      const idx = this.enderecos.findIndex(e => e.id === this.enderecoForm.id);
-      if (idx >= 0) this.enderecos[idx] = { ...this.enderecoForm };
-      await this.toast('Endereço atualizado!', 'success');
-    } else {
-      this.enderecoForm.id = Date.now();
-      this.enderecos.push({ ...this.enderecoForm });
-      await this.toast('Endereço adicionado!', 'success');
-    }
-    this.modalEnderecoAberto = false;
+    const token = this.authService.usuario?.token;
+    if (!token) { await this.toast('Sessão expirada.', 'danger'); return; }
+    try {
+      const method = this.editandoEndereco ? 'PUT' : 'POST';
+      const body = this.editandoEndereco
+        ? { token, ...this.enderecoForm }
+        : { token, ...this.enderecoForm };
+      const res = await fetch(environment.apiUrl + '/api/auth/enderecos', {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (data.erro) { await this.toast(data.erro, 'danger'); return; }
+      await this.carregarEnderecos(token);
+      this.modalEnderecoAberto = false;
+      await this.toast(this.editandoEndereco ? 'Endereço atualizado! ✅' : 'Endereço adicionado! ✅', 'success');
+    } catch { await this.toast('Erro ao salvar endereço.', 'danger'); }
   }
 
   async buscarCep() {
@@ -223,9 +271,24 @@ export class PerfilPage implements OnInit {
     if (this.senhas.nova.length < 6) {
       await this.toast('Senha deve ter mínimo 6 caracteres!', 'warning'); return;
     }
-    this.senhas = { atual: '', nova: '', confirmar: '',
-      mostrarAtual: false, mostrarNova: false, mostrarConfirmar: false };
-    await this.toast('Senha alterada com sucesso! ✅', 'success');
+    const usuario = this.authService.usuario;
+    if (!usuario?.token) {
+      await this.toast('Sessão expirada. Faça login novamente.', 'danger'); return;
+    }
+    try {
+      const res = await fetch(environment.apiUrl + '/api/auth/alterar-senha', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: usuario.token, novaSenha: this.senhas.nova })
+      });
+      const data = await res.json();
+      if (data.erro) { await this.toast(data.erro, 'danger'); return; }
+      this.senhas = { atual: '', nova: '', confirmar: '',
+        mostrarAtual: false, mostrarNova: false, mostrarConfirmar: false };
+      await this.toast('Senha alterada com sucesso! ✅', 'success');
+    } catch {
+      await this.toast('Erro ao alterar senha.', 'danger');
+    }
   }
 
   async confirmarExcluirConta() {
