@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { ToastController } from '@ionic/angular/standalone';
 import {
   IonContent,
   IonButton,
@@ -54,7 +56,7 @@ export class CadastroPage implements OnInit {
   mostrarSenha = false;
   mostrarConfirmSenha = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService, private toastCtrl: ToastController) {}
 
   ngOnInit() {}
 
@@ -66,17 +68,31 @@ export class CadastroPage implements OnInit {
     this.mostrarConfirmSenha = !this.mostrarConfirmSenha;
   }
 
-  criar() {
+  async criar() {
     if (!this.form.aceiteTermos) {
-      alert('Aceite os termos de uso para continuar.');
+      await this.toast('Aceite os termos de uso para continuar.', 'warning');
       return;
     }
     if (this.form.senha !== this.form.confirmSenha) {
-      alert('As senhas não coincidem.');
+      await this.toast('As senhas não coincidem.', 'danger');
       return;
     }
-    console.log('Cadastro:', this.form);
-    this.router.navigate(['/home']);
+    if (!this.form.nome || !this.form.email || !this.form.senha) {
+      await this.toast('Preencha nome, e-mail e senha.', 'warning');
+      return;
+    }
+    const result = await this.authService.cadastrar(this.form.nome, this.form.email, this.form.senha);
+    if (!result.ok) {
+      await this.toast(result.erro || 'Erro ao cadastrar.', 'danger');
+      return;
+    }
+    await this.toast('Conta criada! Faça login.', 'success');
+    this.router.navigate(['/login']);
+  }
+
+  async toast(msg: string, color: string) {
+    const t = await this.toastCtrl.create({ message: msg, duration: 3000, color, position: 'top' });
+    await t.present();
   }
 
   limpar() {
