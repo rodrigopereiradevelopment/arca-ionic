@@ -63,7 +63,7 @@ export class CompararPage {
                   'nome=' + encodeURIComponent(produto.nome) + '&mercadoId=' + mercadoId
                 );
               }
-              return preco;
+              return preco * (produto.quantidade || 1);
             })
           );
           const total = precos.reduce((a, b) => a + b, 0);

@@ -1,21 +1,40 @@
 <ion-content [fullscreen]="true">
-
   <div class="container">
+
+    <div *ngIf="produtos.length === 0" class="vazio">
+      <p>Sua lista está vazia.</p>
+    </div>
 
     <div class="carrinho-item" *ngFor="let produto of produtos">
       <img [src]="produto.img" [alt]="produto.nome" class="img-produto">
-      <span>{{ produto.nome }}</span>
+      <div class="info">
+        <span class="nome">{{ produto.nome }}</span>
+        <span class="preco" *ngIf="produto.menorPreco > 0">
+          R$ {{ produto.menorPreco.toFixed(2) }} — {{ produto.mercadoMaisBarato }}
+        </span>
+      </div>
+      <div class="quantidade">
+        <button (click)="decrementar(produto.id)">−</button>
+        <span>{{ produto.quantidade }}</span>
+        <button (click)="incrementar(produto.id)">+</button>
+      </div>
+      <button class="btn-remover" (click)="remover(produto.id)">🗑️</button>
     </div>
 
     <div class="carrinho-item adicionar">
-      <a routerLink="/home" class="link-adicionar">＋ adicionar a lista de compras</a>
+      <a routerLink="/pesquisar-produtos" class="link-adicionar">＋ adicionar produto</a>
+    </div>
+
+    <div class="total" *ngIf="produtos.length > 0">
+      <span>Total estimado:</span>
+      <strong>R$ {{ total.toFixed(2) }}</strong>
     </div>
 
   </div>
 
   <div class="botoes-fixos">
-    <a routerLink="/home" class="btn-voltar">Voltar</a>
-    <a routerLink="/comparar" class="btn-comparar">Comparar</a>
+    <a routerLink="/pesquisar-produtos" class="btn-voltar">Voltar</a>
+    <button class="btn-limpar" (click)="limparTudo()" *ngIf="produtos.length > 0">Limpar</button>
+    <a routerLink="/comparar" class="btn-comparar" (click)="compararPrecos()">Comparar</a>
   </div>
-
 </ion-content>

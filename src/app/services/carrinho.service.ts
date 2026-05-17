@@ -7,36 +7,55 @@ export interface ItemLista {
   img: string;
   menorPreco: number;
   mercadoMaisBarato: string;
+  quantidade: number;
 }
 
 @Injectable({ providedIn: 'root' })
 export class CarrinhoService {
 
-  private itens = new BehaviorSubject<ItemLista[]>([
-    { id: 1, nome: 'Café Tradicional 3 Corações', img: 'assets/img/Produto1.png', menorPreco: 18.90, mercadoMaisBarato: 'Big Bom' },
-    { id: 2, nome: 'Açúcar Refinado União', img: 'assets/img/Produto2.png', menorPreco: 4.99, mercadoMaisBarato: 'SMC' }
-  ]);
+  private itens = new BehaviorSubject<ItemLista[]>([]);
 
   itens$ = this.itens.asObservable();
 
   get lista() { return this.itens.getValue(); }
 
-  adicionar(item: ItemLista) {
+  adicionar(item: Omit<ItemLista, 'quantidade'>) {
     const atual = this.itens.getValue();
-    if (!atual.find(i => i.id === item.id)) {
-      this.itens.next([...atual, item]);
+    const existente = atual.find(i => i.id === item.id);
+    if (existente) {
+      this.itens.next(atual.map(i => i.id === item.id ? { ...i, quantidade: i.quantidade + 1 } : i));
+    } else {
+      this.itens.next([...atual, { ...item, quantidade: 1 }]);
+    }
+  }
+
+  incrementar(id: number) {
+    this.itens.next(this.lista.map(i => i.id === id ? { ...i, quantidade: i.quantidade + 1 } : i));
+  }
+
+  decrementar(id: number) {
+    const item = this.lista.find(i => i.id === id);
+    if (!item) return;
+    if (item.quantidade <= 1) {
+      this.remover(id);
+    } else {
+      this.itens.next(this.lista.map(i => i.id === id ? { ...i, quantidade: i.quantidade - 1 } : i));
     }
   }
 
   remover(id: number) {
-    this.itens.next(this.itens.getValue().filter(i => i.id !== id));
+    this.itens.next(this.lista.filter(i => i.id !== id));
   }
 
   contem(id: number) {
-    return this.itens.getValue().some(i => i.id === id);
+    return this.lista.some(i => i.id === id);
+  }
+
+  limpar() {
+    this.itens.next([]);
   }
 
   get total() {
-    return this.lista.reduce((acc, i) => acc + i.menorPreco, 0);
+    return this.lista.reduce((acc, i) => acc + (i.menorPreco * i.quantidade), 0);
   }
 }
