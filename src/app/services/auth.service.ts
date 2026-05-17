@@ -1,27 +1,22 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 export type TipoUsuario = 'usuario' | 'moderador' | 'admin' | null;
 
 export interface Usuario {
-  id: number;
+  id: string;
   nome: string;
   email: string;
   tipo: TipoUsuario;
+  token: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
   private usuarioAtual = new BehaviorSubject<Usuario | null>(null);
   usuario$ = this.usuarioAtual.asObservable();
-
-  private usuarios: Usuario[] = [
-    { id: 1, nome: 'João Silva', email: 'usuario@arca.com', tipo: 'usuario' },
-    { id: 2, nome: 'Maria Santos', email: 'moderador@arca.com', tipo: 'moderador' },
-    { id: 3, nome: 'Admin ARCA', email: 'admin@arca.com', tipo: 'admin' }
-  ];
 
   constructor(private router: Router) {
     const salvo = localStorage.getItem('arca_usuario');
@@ -35,18 +30,40 @@ export class AuthService {
   get isModerador() { return this.tipo === 'moderador' || this.isAdmin; }
   get isUsuario() { return this.tipo === 'usuario'; }
 
-  login(email: string, senha: string): boolean {
-    const encontrado = this.usuarios.find(u => u.email === email);
-    if (encontrado) {
-      this.usuarioAtual.next(encontrado);
-      localStorage.setItem('arca_usuario', JSON.stringify(encontrado));
-      this.redirecionarPorTipo(encontrado.tipo);
+  async login(email: string, senha: string): Promise<boolean> {
+    try {
+      const res = await fetch(environment.apiUrl + '/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha })
+      });
+      if (!res.ok) return false;
+      const usuario = await res.json();
+      if (usuario.erro) return false;
+      this.usuarioAtual.next(usuario);
+      localStorage.setItem('arca_usuario', JSON.stringify(usuario));
+      this.redirecionarPorTipo(usuario.tipo);
       return true;
-    }
-    return false;
+    } catch { return false; }
   }
 
-  logout() {
+  async cadastrar(nome: string, email: string, senha: string): Promise<{ ok: boolean; erro?: string }> {
+    try {
+      const res = await fetch(environment.apiUrl + '/api/auth/cadastro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, senha })
+      });
+      const data = await res.json();
+      if (data.erro) return { ok: false, erro: data.erro };
+      return { ok: true };
+    } catch (e: any) { return { ok: false, erro: e.message }; }
+  }
+
+  async logout() {
+    try {
+      await fetch(environment.apiUrl + '/api/auth/logout', { method: 'POST' });
+    } catch {}
     this.usuarioAtual.next(null);
     localStorage.removeItem('arca_usuario');
     this.router.navigate(['/login']);

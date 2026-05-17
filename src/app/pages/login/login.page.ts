@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
       return;
     }
     this.carregando = true;
-    const ok = this.authService.login(this.email, this.senha);
+    const ok = await this.authService.login(this.email, this.senha);
     if (!ok) await this.toast('E-mail ou senha incorretos!', 'danger');
     this.carregando = false;
   }
