@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Lista Rapida</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="exemplo">
+    <p>Digite um produto por linha:</p>
+    <pre>arroz 5kg
+leite integral 1lt
+sabao em po 800g</pre>
+  </div>
+
+  <textarea
+    class="lista-input"
+    [(ngModel)]="textoLista"
+    placeholder="Digite os produtos aqui..."
+    rows="10">
+  </textarea>
+
+  <div *ngIf="buscando" class="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Buscando produtos...</p>
+  </div>
+
+  <div *ngIf="erros.length > 0" class="erros">
+    <p>Nao encontrados:</p>
+    <ul>
+      <li *ngFor="let e of erros">{{ e }}</li>
+    </ul>
+  </div>
+
+  <ion-button expand="block" (click)="buscarEComparar()" [disabled]="buscando || !textoLista.trim()">
+    Comparar Precos
+  </ion-button>
+</ion-content>

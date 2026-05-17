@@ -25,6 +25,7 @@ export class MenuComponent implements OnInit {
     { label: 'Início', rota: '/home', img: 'assets/img/inicio.png' },
     { label: 'Pesquisar Produtos', rota: '/pesquisar-produtos', img: 'assets/img/lupa1.png' },
     { label: 'Mercados Próximos', rota: '/mercados-proximos', img: 'assets/img/mercado.png' },
+    { label: 'Lista Rápida', rota: '/lista-rapida', img: 'assets/img/lista.png' },
     { label: 'Comparar Preços', rota: '/comparar', img: 'assets/img/comparar.png' },
     { label: 'Meu Carrinho', rota: '/carrinho', img: 'assets/img/car.png' },
     { label: 'Histórico', rota: '/historico', img: 'assets/img/historico.png' },

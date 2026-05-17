@@ -35,6 +35,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'lista-rapida',
+    loadComponent: () => import('./pages/lista-rapida/lista-rapida.page').then(m => m.ListaRapidaPage),
+    canActivate: [authGuard]
+  },
+  {
     path: 'comparar',
     loadComponent: () => import('./pages/comparar/comparar.page').then(m => m.CompararPage),
     canActivate: [authGuard]
