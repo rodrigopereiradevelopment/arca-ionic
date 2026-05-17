@@ -12,12 +12,24 @@ export interface ItemLista {
 
 @Injectable({ providedIn: 'root' })
 export class CarrinhoService {
-
-  private itens = new BehaviorSubject<ItemLista[]>([]);
-
+  private readonly KEY = 'arca_carrinho';
+  private itens = new BehaviorSubject<ItemLista[]>(this.carregar());
   itens$ = this.itens.asObservable();
 
   get lista() { return this.itens.getValue(); }
+
+  private carregar(): ItemLista[] {
+    try {
+      const salvo = localStorage.getItem(this.KEY);
+      return salvo ? JSON.parse(salvo) : [];
+    } catch { return []; }
+  }
+
+  private salvar() {
+    try {
+      localStorage.setItem(this.KEY, JSON.stringify(this.itens.getValue()));
+    } catch {}
+  }
 
   adicionar(item: Omit<ItemLista, 'quantidade'>) {
     const atual = this.itens.getValue();
@@ -27,10 +39,12 @@ export class CarrinhoService {
     } else {
       this.itens.next([...atual, { ...item, quantidade: 1 }]);
     }
+    this.salvar();
   }
 
   incrementar(id: number) {
     this.itens.next(this.lista.map(i => i.id === id ? { ...i, quantidade: i.quantidade + 1 } : i));
+    this.salvar();
   }
 
   decrementar(id: number) {
@@ -40,11 +54,13 @@ export class CarrinhoService {
       this.remover(id);
     } else {
       this.itens.next(this.lista.map(i => i.id === id ? { ...i, quantidade: i.quantidade - 1 } : i));
+      this.salvar();
     }
   }
 
   remover(id: number) {
     this.itens.next(this.lista.filter(i => i.id !== id));
+    this.salvar();
   }
 
   contem(id: number) {
@@ -53,6 +69,7 @@ export class CarrinhoService {
 
   limpar() {
     this.itens.next([]);
+    this.salvar();
   }
 
   get total() {

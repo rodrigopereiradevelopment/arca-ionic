@@ -33,6 +33,8 @@ export class ModalCarrinhoComponent implements OnInit {
   fecharModal() { this.modalCtrl.dismiss(); }
 
   remover(id: number) { this.carrinhoService.remover(id); }
+  incrementar(id: number) { this.carrinhoService.incrementar(id); }
+  decrementar(id: number) { this.carrinhoService.decrementar(id); }
 
   verRotas() {
     this.modalCtrl.dismiss();

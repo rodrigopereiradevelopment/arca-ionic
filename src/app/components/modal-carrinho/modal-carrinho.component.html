@@ -1,13 +1,10 @@
 <ion-content class="ion-padding">
-
   <div class="modal-handle"></div>
-
   <div *ngIf="view === 'lista'">
     <div class="modal-header">
       <h2 class="section-title">🛒 Minha Lista</h2>
       <ion-button fill="clear" (click)="fecharModal()">Fechar</ion-button>
     </div>
-
     <ion-list>
       <ion-item *ngFor="let item of carrinhoService.itens$ | async">
         <img [src]="item.img" slot="start" class="item-img"
@@ -16,48 +13,44 @@
           <h3>{{ item.nome }}</h3>
           <p>R$ {{ item.menorPreco.toFixed(2) }} — {{ item.mercadoMaisBarato }}</p>
         </ion-label>
-        <ion-button fill="clear" slot="end" color="danger"
-          (click)="remover(item.id)">🗑️</ion-button>
+        <div slot="end" class="qty-controls">
+          <ion-button fill="clear" color="danger" (click)="decrementar(item.id)">−</ion-button>
+          <span class="qty">{{ item.quantidade }}</span>
+          <ion-button fill="clear" color="primary" (click)="incrementar(item.id)">+</ion-button>
+          <ion-button fill="clear" color="medium" (click)="remover(item.id)">🗑️</ion-button>
+        </div>
       </ion-item>
     </ion-list>
-
     <div class="total" *ngIf="(carrinhoService.itens$ | async)?.length">
       <span>Total estimado:</span>
       <strong>R$ {{ carrinhoService.total.toFixed(2) }}</strong>
     </div>
-
     <p class="lista-vazia"
       *ngIf="!(carrinhoService.itens$ | async)?.length">
       Lista vazia! Pesquise produtos para adicionar. 🛒
     </p>
-
     <ion-button expand="block" fill="outline" class="ion-margin-top"
       routerLink="/pesquisar-produtos" (click)="fecharModal()">
       🔍 Pesquisar Produtos
     </ion-button>
-
     <ion-button expand="block" color="primary"
       (click)="view = 'resultado'"
       [disabled]="!(carrinhoService.itens$ | async)?.length">
       Comparar Preços
     </ion-button>
   </div>
-
   <div *ngIf="view === 'resultado'">
     <div class="modal-header">
       <h2 class="section-title">Melhores Preços</h2>
       <ion-button fill="clear" (click)="view = 'lista'">Voltar</ion-button>
     </div>
-
     <ion-card>
       <ion-card-content>
         <strong>Total estimado: R$ {{ carrinhoService.total.toFixed(2) }}</strong>
       </ion-card-content>
     </ion-card>
-
     <ion-button expand="block" color="primary" (click)="verRotas()">
       Ver Rotas
     </ion-button>
   </div>
-
 </ion-content>

@@ -44,3 +44,15 @@
   font-size: 14px;
   padding: 20px 0;
 }
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.qty {
+  font-size: 1rem;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
