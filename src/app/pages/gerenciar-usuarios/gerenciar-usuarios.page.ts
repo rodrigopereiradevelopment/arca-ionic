@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonContent, ToastController } from '@ionic/angular/standalone';
+import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 interface Usuario {
-  id: number;
+  id: string;
   nome: string;
   email: string;
-  perfil: 'admin' | 'moderador' | 'usuario';
-  status: 'ativo' | 'bloqueado';
+  role: 'admin' | 'moderador' | 'user';
   dataCadastro: string;
 }
 
@@ -20,69 +21,83 @@ interface Usuario {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
-export class GerenciarUsuariosPage implements OnInit {
-
+export class GerenciarUsuariosPage {
   modalAberto = false;
   filtroNome = '';
   filtroPerfil = 'todos';
-  conviteEmail = '';
-  convitePerfil: 'admin' | 'moderador' | 'usuario' = 'usuario';
-
-  usuarios: Usuario[] = [
-    { id: 1, nome: 'João Silva', email: 'joao@email.com', perfil: 'admin', status: 'ativo', dataCadastro: '01/01/2026' },
-    { id: 2, nome: 'Maria Santos', email: 'maria@email.com', perfil: 'moderador', status: 'ativo', dataCadastro: '15/01/2026' },
-    { id: 3, nome: 'Pedro Costa', email: 'pedro@email.com', perfil: 'usuario', status: 'ativo', dataCadastro: '20/01/2026' },
-    { id: 4, nome: 'Ana Souza', email: 'ana@email.com', perfil: 'usuario', status: 'bloqueado', dataCadastro: '05/02/2026' }
-  ];
+  usuarios: Usuario[] = [];
+  carregando = false;
 
   get usuariosFiltrados() {
     return this.usuarios.filter(u => {
-      const nomeOk = u.nome.toLowerCase().includes(this.filtroNome.toLowerCase()) ||
-                     u.email.toLowerCase().includes(this.filtroNome.toLowerCase());
-      const perfilOk = this.filtroPerfil === 'todos' || u.perfil === this.filtroPerfil;
+      const nomeOk = u.nome?.toLowerCase().includes(this.filtroNome.toLowerCase()) ||
+                     u.email?.toLowerCase().includes(this.filtroNome.toLowerCase());
+      const perfilOk = this.filtroPerfil === 'todos' || u.role === this.filtroPerfil;
       return nomeOk && perfilOk;
     });
   }
 
-  constructor(private toastCtrl: ToastController) {}
-  ngOnInit() {}
+  constructor(
+    private authService: AuthService,
+    private toastCtrl: ToastController
+  ) {}
 
-  async alterarPerfil(u: Usuario, perfil: 'admin' | 'moderador' | 'usuario') {
-    u.perfil = perfil;
-    await this.toast(`Perfil de ${u.nome} alterado para ${this.perfilLabel(perfil)}!`, 'success');
+  async ionViewWillEnter() {
+    await this.carregarUsuarios();
   }
 
-  async alterarStatus(u: Usuario) {
-    u.status = u.status === 'ativo' ? 'bloqueado' : 'ativo';
-    const msg = u.status === 'ativo' ? `${u.nome} desbloqueado!` : `${u.nome} bloqueado!`;
-    await this.toast(msg, u.status === 'ativo' ? 'success' : 'warning');
+  async carregarUsuarios() {
+    const token = this.authService.usuario?.token;
+    if (!token) return;
+    this.carregando = true;
+    try {
+      const res = await fetch(`${environment.apiUrl}/api/auth/usuarios?token=${token}`);
+      this.usuarios = await res.json();
+    } catch { await this.toast('Erro ao carregar usuários.', 'danger'); }
+    this.carregando = false;
+  }
+
+  async alterarRole(u: Usuario, role: 'admin' | 'moderador' | 'user') {
+    const token = this.authService.usuario?.token;
+    if (!token) return;
+    try {
+      const res = await fetch(`${environment.apiUrl}/api/auth/usuarios`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, userId: u.id, role })
+      });
+      const data = await res.json();
+      if (data.erro) { await this.toast(data.erro, 'danger'); return; }
+      u.role = role;
+      await this.toast(`${u.nome} agora é ${this.roleLabel(role)}!`, 'success');
+    } catch { await this.toast('Erro ao alterar perfil.', 'danger'); }
   }
 
   async excluir(u: Usuario) {
-    this.usuarios = this.usuarios.filter(x => x.id !== u.id);
-    await this.toast(`${u.nome} removido!`, 'danger');
+    const token = this.authService.usuario?.token;
+    if (!token) return;
+    try {
+      const res = await fetch(`${environment.apiUrl}/api/auth/usuarios`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, userId: u.id })
+      });
+      const data = await res.json();
+      if (data.erro) { await this.toast(data.erro, 'danger'); return; }
+      this.usuarios = this.usuarios.filter(x => x.id !== u.id);
+      await this.toast(`${u.nome} removido!`, 'danger');
+    } catch { await this.toast('Erro ao excluir usuário.', 'danger'); }
   }
 
-  async enviarConvite() {
-    if (!this.conviteEmail) {
-      await this.toast('Digite o e-mail do convidado!', 'warning');
-      return;
-    }
-    await this.toast(`Convite enviado para ${this.conviteEmail}!`, 'success');
-    this.conviteEmail = '';
-    this.convitePerfil = 'usuario';
-    this.modalAberto = false;
-  }
-
-  perfilLabel(p: string) {
-    if (p === 'admin') return 'Administrador';
-    if (p === 'moderador') return 'Moderador';
+  roleLabel(r: string) {
+    if (r === 'admin') return 'Administrador';
+    if (r === 'moderador') return 'Moderador';
     return 'Usuário';
   }
 
-  perfilCor(p: string) {
-    if (p === 'admin') return 'badge-admin';
-    if (p === 'moderador') return 'badge-mod';
+  roleCor(r: string) {
+    if (r === 'admin') return 'badge-admin';
+    if (r === 'moderador') return 'badge-mod';
     return 'badge-user';
   }
 
