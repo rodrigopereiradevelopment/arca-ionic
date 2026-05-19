@@ -72,7 +72,6 @@ ion-content { --background: #f5f5f5; }
   cursor: pointer;
   margin-top: 8px;
   box-shadow: 0 4px 12px rgba(0,191,159,0.4);
-
   &:disabled { opacity: 0.6; }
 }
 
@@ -86,43 +85,63 @@ ion-content { --background: #f5f5f5; }
   strong { color: #00BF9F; }
 }
 
-.atalhos {
-  margin-top: 32px;
-  padding: 16px;
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+.divisor {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  gap: 12px;
 
-  .atalhos-titulo {
-    font-size: 12px;
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #ddd;
+  }
+
+  span {
+    font-size: 13px;
     color: #aaa;
-    text-align: center;
-    margin-bottom: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+}
+
+.social-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-social {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #ddd;
+  border-radius: 25px;
+  background: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s;
+
+  img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
   }
 
-  .atalhos-btns {
-    display: flex;
-    gap: 8px;
+  &:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+}
 
-    .btn-atalho {
-      flex: 1;
-      padding: 10px;
-      border: 2px solid #00BF9F;
-      border-radius: 10px;
-      background: white;
-      color: #00BF9F;
-      font-size: 13px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.2s;
+.btn-google {
+  color: #444;
+  &:hover { border-color: #4285F4; }
+}
 
-      &:hover {
-        background: #00BF9F;
-        color: white;
-      }
-    }
-  }
+.btn-facebook {
+  color: #1877F2;
+  border-color: #1877F2;
+  &:hover { background: #1877F2; color: white; }
 }

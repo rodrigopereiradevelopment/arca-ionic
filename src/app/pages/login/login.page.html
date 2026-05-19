@@ -1,11 +1,8 @@
 <ion-content [fullscreen]="true">
-
   <div class="topo">
     <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
   </div>
-
   <div class="container">
-
     <h1>Bem-vindo! 👋</h1>
     <p class="subtitulo">Entre na sua conta ARCA</p>
 
@@ -33,17 +30,18 @@
       Não tem conta? <strong>Cadastre-se</strong>
     </a>
 
-    <!-- ATALHOS PARA TESTE -->
-    <div class="atalhos">
-      <p class="atalhos-titulo">Acesso rápido para testes:</p>
-      <div class="atalhos-btns">
-        <button *ngFor="let a of acessos" class="btn-atalho"
-          (click)="preencherEmail(a.email)">
-          {{ a.tipo }}
-        </button>
-      </div>
+    <div class="divisor">
+      <span>ou continue com</span>
+    </div>
+
+    <div class="social-btns">
+      <button class="btn-social btn-google" (click)="loginGoogle()">
+        <img src="assets/img/google.png" alt="Google"> Entrar com Google
+      </button>
+      <button class="btn-social btn-facebook" (click)="loginFacebook()">
+        <img src="assets/img/facebook.png" alt="Facebook"> Entrar com Facebook
+      </button>
     </div>
 
   </div>
-
 </ion-content>

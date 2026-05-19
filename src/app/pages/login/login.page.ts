@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -12,25 +12,17 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
 
   email = '';
   senha = '';
   mostrarSenha = false;
   carregando = false;
 
-  acessos = [
-    { tipo: 'Usuário', email: 'usuario@arca.com' },
-    { tipo: 'Moderador', email: 'moderador@arca.com' },
-    { tipo: 'Admin', email: 'admin@arca.com' }
-  ];
-
   constructor(
     private authService: AuthService,
     private toastCtrl: ToastController
   ) {}
-
-  ngOnInit() {}
 
   async login() {
     if (!this.email || !this.senha) {
@@ -43,9 +35,12 @@ export class LoginPage implements OnInit {
     this.carregando = false;
   }
 
-  preencherEmail(email: string) {
-    this.email = email;
-    this.senha = '123456';
+  loginGoogle() {
+    window.location.href = 'https://srajnelbzbyzxjmjjqku.supabase.co/auth/v1/authorize?provider=google&redirect_to=http://localhost:8100';
+  }
+
+  loginFacebook() {
+    window.location.href = 'https://srajnelbzbyzxjmjjqku.supabase.co/auth/v1/authorize?provider=facebook&redirect_to=http://localhost:8100';
   }
 
   async toast(msg: string, color: string) {
