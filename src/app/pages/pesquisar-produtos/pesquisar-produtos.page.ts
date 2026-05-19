@@ -106,7 +106,7 @@ export class PesquisarProdutosPage implements OnInit {
       id: p.id, nome: p.nome,
       categoria: CATEGORIAS[p.categoria_id] ?? 'Outros',
       ean: p.codigo_barras ?? '',
-      img: p.imagem_url ?? 'assets/img/Produto1.png',
+      img: (p.imagem_url && !p.imagem_url.includes('mobilesim')) ? p.imagem_url : (p.codigo_barras ? `https://images.openfoodfacts.org/images/products/${p.codigo_barras}/front_pt.400.jpg` : 'assets/img/Produto1.png'),
       menorPreco: precosOrdenados[0]?.valor ?? 0,
       mercadoMaisBarato: precosOrdenados[0]?.mercado ?? '-',
       precos: precosOrdenados, expandido: false
