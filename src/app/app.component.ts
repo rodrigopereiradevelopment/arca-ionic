@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { MenuComponent } from './components/menu/menu.component'; // 👈 adicione
+import { MenuComponent } from './components/menu/menu.component';
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,22 +10,38 @@ import { MenuComponent } from './components/menu/menu.component'; // 👈 adicio
   imports: [
     IonApp,
     IonRouterOutlet,
-    MenuComponent  // 👈 adicione
+    MenuComponent
   ],
 })
 export class AppComponent implements OnInit {
-  
-  constructor() {}
 
-  ngOnInit() {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  async ngOnInit() {
+    // Intro overlay
     setTimeout(() => {
       const overlay = document.getElementById('intro-overlay');
       if (overlay) {
         overlay.style.opacity = '0';
-        setTimeout(() => {
-          overlay.style.display = 'none';
-        }, 1000); 
+        setTimeout(() => overlay.style.display = 'none', 1000);
       }
-    }, 2000); 
+    }, 2000);
+    
+// Captura token OAuth do redirect do Supabase
+    const hash = window.location.hash;
+    if (hash.includes('access_token')) {
+      const params = new URLSearchParams(hash.replace('#', ''));
+      const token = params.get('access_token');
+      if (token) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        const ok = await this.authService.loginComToken(token);
+        if (ok) {
+          this.router.navigate(['/home']);
+        }
+      }
+    }
   }
 }

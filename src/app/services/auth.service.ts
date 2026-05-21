@@ -47,6 +47,22 @@ export class AuthService {
     } catch { return false; }
   }
 
+  async loginComToken(token: string): Promise<boolean> {
+    try {
+      const res = await fetch(environment.apiUrl + '/api/auth/login-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+      if (!res.ok) return false;
+      const usuario = await res.json();
+      if (usuario.erro) return false;
+      this.usuarioAtual.next(usuario);
+      localStorage.setItem('arca_usuario', JSON.stringify(usuario));
+      return true;
+    } catch { return false; }
+  }
+
   async cadastrar(nome: string, email: string, senha: string): Promise<{ ok: boolean; erro?: string }> {
     try {
       const res = await fetch(environment.apiUrl + '/api/auth/cadastro', {
