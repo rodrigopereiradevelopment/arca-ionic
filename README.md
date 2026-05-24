@@ -1,240 +1,175 @@
-# 🛒 ARCA — Comparador de Preços de Supermercados
+# 🛒 ARCA Ionic — Comparador de Preços
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Plataforma](https://img.shields.io/badge/plataforma-mobile-blue)
-![Stack](https://img.shields.io/badge/stack-Ionic%20%7C%20Angular%20%7C%20Next.js-informational)
-![Banco](https://img.shields.io/badge/database-PostgreSQL%20%7C%20MongoDB-green)
+[![Ionic](https://img.shields.io/badge/Ionic-8-blue?logo=ionic)](https://ionicframework.com/)
+[![Angular](https://img.shields.io/badge/Angular-20-red?logo=angular)](https://angular.io/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Vercel](https://img.shields.io/badge/API-Vercel-black?logo=vercel)](https://arca-next.vercel.app)
 
-Desenvolvido como Trabalho de Conclusão de Curso (TCC) do curso **Técnico em Desenvolvimento de Sistemas** — ETEC Pedro Ferreira Alves, Mogi Mirim/SP. Previsão de conclusão: julho de 2025.
+**TCC — ETEC Pedro Ferreira Alves — Mogi Mirim/SP — 2025/2026**
 
-Aplicativo mobile para comparação de preços em supermercados, com foco em economia nas compras do dia a dia.
+App mobile para comparação de preços em supermercados. O usuário pesquisa produtos, monta sua lista de compras e descobre qual mercado oferece o menor preço total para a cesta completa.
 
----
-
-## 📸 Preview
-
-| Home | Cadastro | Menu | Mapa |
-|------|----------|------|------|
-| ![Home](docs/screens/home.png) | ![Cadastro](docs/screens/cadastro.png) | ![Menu](docs/screens/menu.png) | ![Mapa](docs/screens/mapa.png) |
+> 🔗 **API Backend:** [arca-next](https://github.com/rodrigopereiradevelopment/arca-next) — https://arca-next.vercel.app  
+> 🕷️ **Scraper:** [arca-scraper](https://github.com/rodrigopereiradevelopment/arca-scraper)
 
 ---
 
-## 📱 Sobre o Projeto
+## 🏗️ Arquitetura Completa
 
-O **ARCA** permite ao usuário visualizar e comparar preços de produtos entre diferentes supermercados da cidade.
-
-Os dados são obtidos por múltiplas fontes:
-
-* Atualização manual pelos supermercados
-* Raspagem automática de dados (Python)
-* Reportes dos usuários
-
-Essa abordagem busca manter os dados sempre atualizados e confiáveis.
+```
+🕷️  arca-scraper (Python + GitHub Actions)
+         ↓ 2x por semana
+🗄️  MongoDB Atlas (53.633 produtos — Bronze)
+         ↓ ETL
+🏺  Supabase PostgreSQL (Gold)
+     ├── pg_trgm (busca fuzzy)
+     ├── 6 mercados com coordenadas reais
+     └── histórico de preços
+         ↓
+🚀  arca-next (Vercel — API)
+     ├── /api/produtos/search
+     ├── /api/produtos/preco
+     ├── /api/produtos/preco-similar
+     └── /api/auth/*
+         ↓
+📱  ESTE APP (Ionic + Angular)
+```
 
 ---
 
 ## ✨ Funcionalidades
 
-### Usuário
-
-* Pesquisa e comparação de produtos
-* Lista de compras
-* Mercados próximos e rotas
-* Alertas de preço
-* Histórico de pesquisas
-* Assistente com IA
-* Acessibilidade
-
-### Supermercado *(em desenvolvimento)*
-
-* Gerenciamento de preços
-* Atualização em tempo real
-* Estatísticas
-
-### Administração
-
-* Gerenciamento de produtos e categorias
-* Controle de usuários e permissões
-* Moderação de preços
+| Funcionalidade | Descrição | Status |
+|----------------|-----------|--------|
+| 🔍 **Busca fuzzy** | Encontra produtos mesmo com erros de digitação | ✅ |
+| 🛒 **Carrinho** | Adiciona produtos com quantidade (+/-) | ✅ |
+| 📊 **Lista Rápida** | Digite sua lista e compare automaticamente | ✅ |
+| 🥇 **Ranking de mercados** | 6 mercados ordenados do mais barato ao mais caro | ✅ |
+| 🏅 **Medalhas** | Ouro, prata e bronze para os 3 melhores | ✅ |
+| 🗺️ **Mapa e rotas** | Localização real dos mercados + rotas (Leaflet) | ✅ |
+| 💾 **Persistência** | Carrinho salvo no localStorage | ✅ |
+| 🤖 **Assistente IA** | Chat com Google Gemini | ✅ |
+| 👤 **Login/Cadastro** | Autenticação via Supabase Auth | ✅ |
+| 🔔 **Alertas de preço** | Notificação quando preço cai | ⏳ |
 
 ---
 
-## 🧠 Diferencial
+## 🏪 Mercados Monitorados
 
-Além da comparação de preços individuais, o ARCA permite analisar a **lista completa de compras** para identificar a melhor combinação de mercados e economia total.
+| Mercado | Localização | Coordenadas |
+|---------|------------|-------------|
+| Imperial | R. Artur Juliani, 623 | -22.4383, -46.9327 |
+| Ponto Novo | Av. Prof. Adib Chaib, 2750 | -22.4313, -46.9527 |
+| GoodBom | Av. Pedro Botesi, 2800 | -22.4006, -46.9700 |
+| Atacadão | Av. Pedro Botesi, 2855 | -22.4022, -46.9727 |
+| Pague Menos | Av. Bandeirantes, 721 (Mogi Guaçu) | -22.3522, -46.9464 |
+| São Vicente | R. Do Tucura, 105 | -22.4269, -46.9552 |
 
 ---
 
-## 🏗️ Arquitetura Simplificada
+## 🔄 Fluxo do Usuário
 
 ```
-Fontes de dados (Scraping / App / Usuários)
-                ↓
-        MongoDB (dados brutos)
-                ↓
-     Tratamento e normalização
-                ↓
-     PostgreSQL (dados tratados)
-                ↓
-         API (Next.js)
-                ↓
-     Aplicativo mobile (Ionic)
+1. Abre o app
+2. Pesquisa "arroz 5kg" (busca fuzzy no Supabase)
+3. Adiciona ao carrinho (quantidade: 2)
+4. Repete para outros produtos
+   — OU —
+   Usa Lista Rápida: digita todos os produtos de uma vez
+5. Clica em "Comparar Preços"
+6. Vê ranking dos 6 mercados com total da cesta
+      🥇 Atacadão:   R$ 102,50
+      🥈 GoodBom:    R$ 108,33
+      🥉 PagueMenos: R$ 115,90
+7. Escolhe o mercado e vê a rota no mapa
 ```
 
 ---
 
-## 🚀 Tecnologias
-
-### Frontend
-
-* Ionic + Angular
-* Leaflet (mapas e geolocalização)
-* Leaflet Routing Machine (rotas)
-
-### Backend
-
-* Next.js (API / BFF)
-* Supabase / PostgreSQL
-* MongoDB
-
-## 📡 Integração de Dados
-
-Atualmente, o ecossistema ARCA consome dados diretamente das APIs dos estabelecimentos, garantindo maior precisão e velocidade:
-
-* **Arquitetura:** Python 3.12 com bibliotecas `requests` e `json`.
-* **Fluxo:** Mapeamento de endpoints nativos -> Extração de JSON -> Tratamento de dados -> MongoDB.
-* 
----
-
-## 🔐 Controle de Acesso
-
-* Usuário — funcionalidades do app
-* Moderador — gerenciamento de produtos
-* Administrador — acesso completo
-
----
-
-## ⚙️ Execução Local
-
-> Requer Node.js 18+ e Ionic CLI instalado.
+## 🚀 Executar Localmente
 
 ```bash
 git clone https://github.com/rodrigopereiradevelopment/arca-ionic.git
 cd arca-ionic
 npm install
 ionic serve
+# http://localhost:8100
 ```
 
-Acesse: http://localhost:8100
+Crie `src/environments/environment.ts`:
 
----
-
-## 🔒 Configuração
-
-Crie o arquivo:
-
-```bash
-src/environments/environment.ts
-```
-
-```ts
+```typescript
 export const environment = {
   production: false,
-  geminiKey: 'SUA_CHAVE_AQUI'
+  apiUrl: 'http://localhost:3000' // ou https://arca-next.vercel.app
 };
 ```
 
-📌 Alternativa recomendada: crie também um arquivo `environment.example.ts` como referência. O arquivo real não deve ser versionado.
+---
+
+## 📁 Estrutura
+
+```
+arca-ionic/
+├── src/app/
+│   ├── pages/
+│   │   ├── pesquisar-produtos/   # Busca com fuzzy match
+│   │   ├── comparar/             # Ranking com medalhas
+│   │   ├── lista-rapida/         # Comparação por texto livre
+│   │   ├── mapa-rotas/           # Leaflet + rotas reais
+│   │   ├── mercados-proximos/    # Mapa dos 6 mercados
+│   │   ├── login/                # Autenticação
+│   │   └── cadastro/             # Registro de usuário
+│   ├── services/
+│   │   ├── carrinho.service.ts   # Carrinho + localStorage
+│   │   ├── comparacao.service.ts # Seleção + localStorage
+│   │   └── auth.service.ts       # Auth via arca-next
+│   └── components/
+│       ├── modal-carrinho/       # Modal com +/- por produto
+│       ├── menu/                 # Menu lateral
+│       └── footer/               # Rodapé fixo
+└── src/environments/
+    ├── environment.ts            # Dev (localhost)
+    └── environment.prod.ts       # Prod (Vercel)
+```
 
 ---
 
-## 📊 Banco de Dados
+## 🛠️ Tecnologias
 
-Principais entidades do sistema:
-
-* Usuário
-* Supermercado
-* Produto
-* Categoria
-* Preço
-* Lista de compras
-* Histórico
-* Alertas
+| Tecnologia | Versão | Uso |
+|------------|--------|-----|
+| Ionic | 8 | Framework mobile |
+| Angular | 20 | Framework frontend |
+| TypeScript | 5 | Linguagem |
+| Leaflet | 1.9 | Mapas |
+| Leaflet Routing Machine | 3.2 | Rotas entre mercados |
+| Supabase JS | 2 | Auth client |
 
 ---
 
-## 🔮 Roadmap
+## 📊 Destaques Técnicos
 
-* [ ] Integração completa com Supabase
-* [ ] API em Next.js
-* [ ] Interface para supermercados
-* [ ] Automatização da raspagem
-* [ ] Deploy da aplicação
-* [ ] Testes automatizados
-
----
-
-## 🤝 Contribuição
-
-Este projeto foi desenvolvido para fins acadêmicos, mas melhorias e sugestões são bem-vindas.
+- **Busca fuzzy** com `pg_trgm` — encontra "acucar" mesmo digitando "açúcar"
+- **Comparação paralela** com `Promise.all` — 6 mercados em ~4s em vez de ~72s
+- **`ionViewWillEnter`** em vez de `ngOnInit` — evita cache do Ionic
+- **localStorage** — carrinho e comparação persistem entre sessões
+- **Fallback por similaridade** — se não achar pelo ID, busca pelo nome
+- **Coordenadas reais** de todos os mercados via Google Places API
 
 ---
 
 ## 👨‍🎓 Equipe
 
-**Alunos — 3° Módulo, Técnico em Desenvolvimento de Sistemas (2025)**
+| Nome | Papel |
+|------|-------|
+| Rodrigo Pereira | Desenvolvedor Full Stack |
+| Bruno | Colaborador |
+| Miguel | Colaborador |
+| Félix | Colaborador |
 
-* Rodrigo
-* Bruno
-* Miguel
-* Felix
+**Orientador:** Prof. Maurício Aparecido das Neves  
+**Coordenadora:** Prof.ª Simone Andreia de Campos Camargo  
+📍 ETEC Pedro Ferreira Alves — Mogi Mirim/SP
 
-**Orientador:** Prof. Maurício Aparecido das Neves
-**Coordenadora do Curso:** Prof.ª Simone Andreia de Campos Camargo
-
-📍 ETEC Pedro Ferreira Alves — Mogi Mirim, SP
-
----
-
-## 📝 Licença
-
-Projeto desenvolvido para fins acadêmicos (TCC).
-© ARCA — Mogi Mirim , SP — 2025
-
----
-
-## 📚 Referências e Tecnologias
-
-### 🖥️ Front-end
-- [Ionic Framework](https://ionicframework.com/docs)
-- [Angular](https://angular.dev/overview)
-- [TypeScript](https://www.typescriptlang.org/docs/)
-- [W3Schools - HTML](https://www.w3schools.com/html/)
-- [W3Schools - CSS](https://www.w3schools.com/css/)
-- [W3Schools - JavaScript](https://www.w3schools.com/js/)
-- [Leaflet](https://leafletjs.com)
-
-### ⚙️ Back-end
-- [Next.js](https://nextjs.org/docs)
-- [Python](https://docs.python.org/3/)
-- [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
-- [Scrapy](https://docs.scrapy.org/en/latest/)
-- [Playwright](https://playwright.dev/docs/intro)
-
-### 🗄️ Banco de Dados
-- [MongoDB](https://www.mongodb.com/docs/)
-- [PostgreSQL](https://www.postgresql.org/docs/)
-- [Supabase](https://supabase.com/docs)
-
-### 🤖 Inteligência Artificial
-- [Google Gemini API](https://ai.google.dev/docs)
-
-### 🖼️ Imagens
-- [Pexels](https://www.pexels.com)
-- [Pexels API](https://www.pexels.com/api/documentation)
-- [Open Food Facts](https://world.openfoodfacts.org)
-- [Open Food Facts API](https://wiki.openfoodfacts.org/API)
-
-### 🎵 Áudio
-- [Pixabay Music](https://pixabay.com/music/) — músicas royalty-free
-- [Freesound](https://freesound.org) — sons de UI (licença Creative Commons — verificar por arquivo)
+📝 **Licença:** MIT © ARCA 2025/2026
