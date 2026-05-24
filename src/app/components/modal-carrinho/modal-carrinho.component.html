@@ -39,18 +39,25 @@
       Comparar Preços
     </ion-button>
   </div>
-  <div *ngIf="view === 'resultado'">
-    <div class="modal-header">
-      <h2 class="section-title">Melhores Preços</h2>
-      <ion-button fill="clear" (click)="view = 'lista'">Voltar</ion-button>
-    </div>
-    <ion-card>
-      <ion-card-content>
-        <strong>Total estimado: R$ {{ carrinhoService.total.toFixed(2) }}</strong>
-      </ion-card-content>
-    </ion-card>
-    <ion-button expand="block" color="primary" (click)="verRotas()">
-      Ver Rotas
-    </ion-button>
+<div *ngIf="view === 'resultado'">
+  <div class="modal-header">
+    <h2 class="section-title">🏆 Melhores Preços</h2>
+    <ion-button fill="clear" (click)="view = 'lista'">Voltar</ion-button>
   </div>
+
+  <ion-card *ngFor="let m of carrinhoService.comparacaoMercados.slice(0,3); let i = index">
+    <ion-card-content>
+      <div class="mercado-linha">
+        <span>{{ i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉' }}</span>
+        <strong>{{ m.mercado }}</strong>
+        <span>R$ {{ m.total.toFixed(2) }}</span>
+      </div>
+      <small>{{ m.itens }} de {{ (carrinhoService.itens$ | async)?.length }} itens encontrados</small>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" color="primary" (click)="verRotas()">
+    Ver Rotas para o Mais Barato
+  </ion-button>
+</div>
 </ion-content>

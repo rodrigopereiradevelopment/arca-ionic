@@ -8,6 +8,7 @@ export interface ItemLista {
   menorPreco: number;
   mercadoMaisBarato: string;
   quantidade: number;
+  precosPorMercado: { [mercado: string]: number }; // ← adicionado
 }
 
 @Injectable({ providedIn: 'root' })
@@ -74,5 +75,22 @@ export class CarrinhoService {
 
   get total() {
     return this.lista.reduce((acc, i) => acc + (i.menorPreco * i.quantidade), 0);
+  }
+
+  // ← dentro da classe agora
+  get comparacaoMercados() {
+    const totais: { [mercado: string]: { total: number; itens: number } } = {};
+
+    for (const item of this.lista) {
+      for (const [mercado, preco] of Object.entries(item.precosPorMercado ?? {})) {
+        if (!totais[mercado]) totais[mercado] = { total: 0, itens: 0 };
+        totais[mercado].total += (preco as number) * item.quantidade;
+        totais[mercado].itens += 1;
+      }
+    }
+
+    return Object.entries(totais)
+      .map(([mercado, d]) => ({ mercado, total: d.total, itens: d.itens }))
+      .sort((a, b) => a.total - b.total);
   }
 }
