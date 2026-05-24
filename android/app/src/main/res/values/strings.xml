@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">arca-ionic</string>
+    <string name="title_activity_main">arca-ionic</string>
+    <string name="package_name">com.arca.ionic</string>
+    <string name="custom_url_scheme">com.arca.ionic</string>
+</resources>
