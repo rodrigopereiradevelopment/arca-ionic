@@ -34,6 +34,131 @@ ion-content {
   h1 { margin: 0; font-size: 1.8em; }
 }
 
+/* ===== NOVAS CLASSES PARA CARDS EXPANSÍVEIS ===== */
+.mercado-card {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+
+.mercado-header {
+  padding: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: #f9f9f9;
+  }
+}
+
+.mercado-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  
+  .img-posicao { 
+    width: 40px; 
+    height: 40px; 
+    object-fit: contain; 
+  }
+  
+  .posicao-numero {
+    min-width: 40px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  .img-logo { 
+    width: 60px; 
+    height: 60px; 
+    object-fit: contain; 
+    border-radius: 50%; 
+  }
+  
+  .nome-mercado {
+    flex: 1;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  
+  .preco { 
+    font-size: 1.2em; 
+    font-weight: bold; 
+    color: #28a745; 
+    flex-shrink: 0;
+  }
+  
+  .expand-icon {
+    font-size: 0.8rem;
+    color: #888;
+    margin-left: 4px;
+    flex-shrink: 0;
+  }
+}
+
+.itens-info {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: #666;
+  padding-left: 8px;
+}
+
+.detalhes-produtos {
+  border-top: 1px solid #eee;
+  background: #fafafa;
+  padding: 12px;
+}
+
+.detalhe-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  .item-info {
+    display: flex;
+    gap: 16px;
+    flex: 2;
+    
+    .item-nome {
+      font-size: 0.85rem;
+      color: #333;
+    }
+    
+    .item-quantidade {
+      font-size: 0.75rem;
+      color: #888;
+      min-width: 40px;
+    }
+  }
+  
+  .item-preco {
+    flex: 1;
+    text-align: right;
+    
+    .preco-ok {
+      color: #28a745;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+    
+    .preco-faltante {
+      color: #dc3545;
+      font-size: 0.7rem;
+    }
+  }
+}
+/* ===== FIM DAS NOVAS CLASSES ===== */
+
+/* Mantém a classe antiga para compatibilidade (se ainda for usada em algum lugar) */
 .mercado-item {
   display: flex;
   align-items: center;

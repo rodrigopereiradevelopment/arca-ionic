@@ -5,8 +5,23 @@ import { IonContent, IonSpinner, ToastController } from '@ionic/angular/standalo
 import { ComparacaoService } from '../../services/comparacao.service';
 import { environment } from '../../../environments/environment';
 
+interface ProdutoDetalhe {
+  id: number;
+  nome: string;
+  quantidade: number;
+  precoEncontrado: number;
+}
+
 interface MercadoComPreco {
-  id: number; nome: string; logo: string; posicao: string; preco: number; precoFormatado: string;
+  id: number;
+  nome: string;
+  logo: string;
+  posicao: string;
+  preco: number;
+  precoFormatado: string;
+  itens: number;
+  expandido: boolean;
+  produtos: ProdutoDetalhe[];
 }
 
 @Component({
@@ -51,27 +66,51 @@ export class CompararPage {
       const resultados = await Promise.all(
         entradas.map(async ([id, info]) => {
           const mercadoId = Number(id);
-          const precos = await Promise.all(
-            this.produtosSelecionados.map(async (produto) => {
-              let preco = await this.buscarPreco(
-                '/api/produtos/preco',
-                'produtoId=' + produto.id + '&mercadoId=' + mercadoId
+          let total = 0;
+          let itensEncontrados = 0;
+          const produtosDetalhe: ProdutoDetalhe[] = [];
+
+          for (const produto of this.produtosSelecionados) {
+            let preco = await this.buscarPreco(
+              '/api/produtos/preco',
+              'produtoId=' + produto.id + '&mercadoId=' + mercadoId
+            );
+            if (preco === 0) {
+              preco = await this.buscarPreco(
+                '/api/produtos/preco-similar',
+                'nome=' + encodeURIComponent(produto.nome) + '&mercadoId=' + mercadoId
               );
-              if (preco === 0) {
-                preco = await this.buscarPreco(
-                  '/api/produtos/preco-similar',
-                  'nome=' + encodeURIComponent(produto.nome) + '&mercadoId=' + mercadoId
-                );
-              }
-              return preco * (produto.quantidade || 1);
-            })
-          );
-          const total = precos.reduce((a, b) => a + b, 0);
-          return { id: mercadoId, nome: info.nome, logo: info.logo, preco: total };
+            }
+            
+            const quantidade = produto.quantidade || 1;
+            produtosDetalhe.push({
+              id: produto.id,
+              nome: produto.nome,
+              quantidade: quantidade,
+              precoEncontrado: preco
+            });
+            
+            if (preco > 0) {
+              total += preco * quantidade;
+              itensEncontrados++;
+            }
+          }
+          
+          return { 
+            id: mercadoId, 
+            nome: info.nome, 
+            logo: info.logo, 
+            preco: total,
+            itens: itensEncontrados,
+            expandido: false,
+            produtos: produtosDetalhe
+          };
         })
       );
+      
       const comDados = resultados.filter(r => r.preco > 0).sort((a, b) => a.preco - b.preco);
       const semDados = resultados.filter(r => r.preco === 0);
+      
       console.log('DEBUG comDados:', comDados.length, 'semDados:', semDados.length);
       this.mercados = [...comDados, ...semDados].map((r, i) => ({
         ...r,
@@ -101,6 +140,11 @@ export class CompararPage {
     this.comparacaoService.limpar();
     this.mercados = [];
     this.produtosSelecionados = [];
+  }
+
+  // NOVO MÉTODO - Expande/colapsa o card
+  toggleExpandir(mercado: MercadoComPreco) {
+    mercado.expandido = !mercado.expandido;
   }
 
   private async mostrarToast(msg: string, color: string) {

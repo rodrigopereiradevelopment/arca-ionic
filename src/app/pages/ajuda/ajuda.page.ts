@@ -6,6 +6,7 @@ import {
   IonContent, IonAccordion, IonAccordionGroup,
   IonItem, IonLabel
 } from '@ionic/angular/standalone';
+import { environment } from '../../../environments/environment';
 
 interface Mensagem {
   autor: 'usuario' | 'ia';
@@ -121,7 +122,10 @@ export class AjudaPage implements OnInit {
   }
 
   async chamarGemini(pergunta: string): Promise<string> {
-    const res = await fetch('http://localhost:3000/api/chat', {
+    // Correção aqui: mapeia direto a propriedade apiUrl do arquivo environment importado
+    const urlBackend = `${environment.apiUrl}/api/chat`; 
+
+    const res = await fetch(urlBackend, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pergunta })

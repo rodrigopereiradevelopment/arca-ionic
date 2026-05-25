@@ -1,10 +1,13 @@
 <ion-content class="ion-padding">
   <div class="modal-handle"></div>
+  
+  <!-- TELA DA LISTA -->
   <div *ngIf="view === 'lista'">
     <div class="modal-header">
       <h2 class="section-title">🛒 Minha Lista</h2>
       <ion-button fill="clear" (click)="fecharModal()">Fechar</ion-button>
     </div>
+    
     <ion-list>
       <ion-item *ngFor="let item of carrinhoService.itens$ | async">
         <img [src]="item.img" slot="start" class="item-img"
@@ -21,43 +24,71 @@
         </div>
       </ion-item>
     </ion-list>
+    
     <div class="total" *ngIf="(carrinhoService.itens$ | async)?.length">
       <span>Total estimado:</span>
       <strong>R$ {{ carrinhoService.total.toFixed(2) }}</strong>
     </div>
-    <p class="lista-vazia"
-      *ngIf="!(carrinhoService.itens$ | async)?.length">
+    
+    <p class="lista-vazia" *ngIf="!(carrinhoService.itens$ | async)?.length">
       Lista vazia! Pesquise produtos para adicionar. 🛒
     </p>
+    
     <ion-button expand="block" fill="outline" class="ion-margin-top"
       routerLink="/pesquisar-produtos" (click)="fecharModal()">
       🔍 Pesquisar Produtos
     </ion-button>
+    
     <ion-button expand="block" color="primary"
-      (click)="view = 'resultado'"
+      (click)="toggleComparacao()"
       [disabled]="!(carrinhoService.itens$ | async)?.length">
       Comparar Preços
     </ion-button>
   </div>
-<div *ngIf="view === 'resultado'">
-  <div class="modal-header">
-    <h2 class="section-title">🏆 Melhores Preços</h2>
-    <ion-button fill="clear" (click)="view = 'lista'">Voltar</ion-button>
+
+  <!-- TELA DE RESULTADO DA COMPARAÇÃO -->
+  <div *ngIf="view === 'resultado'">
+    <div class="modal-header">
+      <h2 class="section-title">🏆 Melhores Preços</h2>
+      <ion-button fill="clear" (click)="toggleComparacao()">Voltar</ion-button>
+    </div>
+
+    <!-- TOP 3 MERCADOS COM MEDALHAS -->
+    <ion-card *ngFor="let m of comparacaoMercados.slice(0,3); let i = index">
+      <ion-card-content>
+        <div class="mercado-linha">
+          <span class="medalha">{{ i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉' }}</span>
+          <strong class="mercado-nome">{{ m.mercado }}</strong>
+          <span class="mercado-total">R$ {{ m.total.toFixed(2) }}</span>
+        </div>
+        <small class="itens-encontrados">
+          {{ m.itens }} de {{ (carrinhoService.itens$ | async)?.length }} itens encontrados
+        </small>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- DEMais MERCADOS (sem medalha) -->
+    <ion-card *ngFor="let m of comparacaoMercados.slice(3); let i = index">
+      <ion-card-content>
+        <div class="mercado-linha">
+          <span class="medalha">{{ i + 4 }}º</span>
+          <strong class="mercado-nome">{{ m.mercado }}</strong>
+          <span class="mercado-total">R$ {{ m.total.toFixed(2) }}</span>
+        </div>
+        <small class="itens-encontrados">
+          {{ m.itens }} de {{ (carrinhoService.itens$ | async)?.length }} itens encontrados
+        </small>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- MENSAGEM SE NENHUM MERCADO TIVER PREÇOS -->
+    <p class="sem-resultados" *ngIf="comparacaoMercados.length === 0">
+      Nenhum preço encontrado para os produtos da lista.
+    </p>
+
+    <ion-button expand="block" color="primary" (click)="verRotas()" 
+      [disabled]="comparacaoMercados.length === 0">
+      🗺️ Ver Rotas para o Mais Barato
+    </ion-button>
   </div>
-
-  <ion-card *ngFor="let m of carrinhoService.comparacaoMercados.slice(0,3); let i = index">
-    <ion-card-content>
-      <div class="mercado-linha">
-        <span>{{ i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉' }}</span>
-        <strong>{{ m.mercado }}</strong>
-        <span>R$ {{ m.total.toFixed(2) }}</span>
-      </div>
-      <small>{{ m.itens }} de {{ (carrinhoService.itens$ | async)?.length }} itens encontrados</small>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-button expand="block" color="primary" (click)="verRotas()">
-    Ver Rotas para o Mais Barato
-  </ion-button>
-</div>
 </ion-content>

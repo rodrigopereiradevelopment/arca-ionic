@@ -11,13 +11,42 @@
       <h1>Melhores Preços</h1>
     </div>
 
-    <div class="mercado-item" *ngFor="let mercado of mercados; let i = index">
-      <img [src]="mercado.posicao" [alt]="mercado.nome" class="img-posicao" *ngIf="mercado.posicao">
-      <span class="posicao-numero" *ngIf="!mercado.posicao">{{ i + 1 }}º</span>
-      <img [src]="mercado.logo" [alt]="mercado.nome" class="img-logo"
-           onerror="this.src='assets/img/mercado.png'">
-      <span class="nome-mercado">{{ mercado.nome }}</span>
-      <span class="preco">{{ mercado.precoFormatado }}</span>
+    <!-- CARDS DOS MERCADOS COM EXPANSÃO -->
+    <div class="mercado-card" *ngFor="let mercado of mercados; let i = index">
+      
+      <!-- CABEÇALHO DO CARD (CLICÁVEL) -->
+      <div class="mercado-header" (click)="toggleExpandir(mercado)">
+        <div class="mercado-info">
+          <img [src]="mercado.posicao" [alt]="mercado.nome" class="img-posicao" *ngIf="mercado.posicao">
+          <span class="posicao-numero" *ngIf="!mercado.posicao">{{ i + 1 }}º</span>
+          <img [src]="mercado.logo" [alt]="mercado.nome" class="img-logo"
+               onerror="this.src='assets/img/mercado.png'">
+          <span class="nome-mercado">{{ mercado.nome }}</span>
+          <span class="preco">{{ mercado.precoFormatado }}</span>
+          <span class="expand-icon">{{ mercado.expandido ? '▲' : '▼' }}</span>
+        </div>
+        <div class="itens-info">
+          {{ mercado.itens }} de {{ produtosSelecionados.length }} itens encontrados
+        </div>
+      </div>
+
+      <!-- DETALHES EXPANDIDOS -->
+      <div class="detalhes-produtos" *ngIf="mercado.expandido">
+        <div class="detalhe-item" *ngFor="let item of mercado.produtos">
+          <div class="item-info">
+            <span class="item-nome">{{ item.nome }}</span>
+            <span class="item-quantidade">{{ item.quantidade }}x</span>
+          </div>
+          <div class="item-preco">
+            <span *ngIf="item.precoEncontrado > 0" class="preco-ok">
+              R$ {{ (item.precoEncontrado * item.quantidade).toFixed(2) }}
+            </span>
+            <span *ngIf="item.precoEncontrado === 0" class="preco-faltante">
+              ⚠️ Não encontrado
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="aviso" *ngIf="produtosSelecionados.length === 0">
