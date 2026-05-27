@@ -130,14 +130,55 @@
       </div>
     </div>
 
+    <!-- ✨ SEÇÃO DE QUANTIDADE (AGORA DENTRO DO MODAL!) -->
+    <h3 class="modal-titulo-quantidade">📦 Quantidade</h3>
+
+    <div class="modal-quantidade">
+      <div class="quantidade-controle">
+        <button 
+          class="btn-quantidade"
+          (click)="diminuirQuantidade(modalProduto!)"
+          [disabled]="modalProduto!.quantidade <= 1">
+          ➖
+        </button>
+        
+        <div class="quantidade-display">
+          <input 
+            type="number" 
+            [(ngModel)]="modalProduto!.quantidade"
+            (change)="modalProduto!.quantidade = Math.max(1, modalProduto!.quantidade)"
+            min="1"
+            class="input-quantidade">
+          <span class="texto-quantidade">{{ modalProduto!.quantidade }}x</span>
+        </div>
+        
+        <button 
+          class="btn-quantidade"
+          (click)="aumentarQuantidade(modalProduto!)">
+          ➕
+        </button>
+      </div>
+
+      <div class="preco-quantidade">
+        <div class="preco-item">
+          <span class="label">Preço unitário:</span>
+          <span class="valor">R$ {{ modalProduto!.menorPreco.toFixed(2) }}</span>
+        </div>
+        <div class="preco-item total">
+          <span class="label">Total ({{ modalProduto!.quantidade }}x):</span>
+          <span class="valor">R$ {{ (modalProduto!.menorPreco * modalProduto!.quantidade).toFixed(2) }}</span>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-botoes">
       <button
         class="btn-add-lista"
         [class.adicionado]="naLista(modalProduto.id)"
-        (click)="adicionarLista(modalProduto)">
+        (click)="adicionarLista(modalProduto!)">
         {{ naLista(modalProduto.id) ? '✅ Na Lista' : '＋ Adicionar à Lista' }}
       </button>
-      <button class="btn-alerta-modal" (click)="criarAlerta(modalProduto)">
+      <button class="btn-alerta-modal" (click)="criarAlerta(modalProduto!)">
         🔔 Criar Alerta
       </button>
     </div>

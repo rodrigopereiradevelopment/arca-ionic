@@ -10,6 +10,7 @@ interface ProdutoDetalhe {
   nome: string;
   quantidade: number;
   precoEncontrado: number;
+  naoEncontrado?: boolean;
 }
 
 interface MercadoComPreco {
@@ -58,83 +59,77 @@ export class CompararPage {
     await this.calcularCesta();
   }
 
+  // NOVO: Usa o endpoint /api/comparar em lote (UMA única chamada)
   async calcularCesta() {
     this.loading = true;
     this.mercados = [];
+    
     try {
-      const entradas = Object.entries(this.SUPERMERCADOS);
-      const resultados = await Promise.all(
-        entradas.map(async ([id, info]) => {
-          const mercadoId = Number(id);
-          let total = 0;
-          let itensEncontrados = 0;
-          const produtosDetalhe: ProdutoDetalhe[] = [];
+      // Prepara a lista de produtos com quantidades
+      const produtosPayload = this.produtosSelecionados.map(p => ({
+        id: p.id,
+        nome: p.nome,
+        quantidade: p.quantidade || 1
+      }));
 
-          for (const produto of this.produtosSelecionados) {
-            let preco = await this.buscarPreco(
-              '/api/produtos/preco',
-              'produtoId=' + produto.id + '&mercadoId=' + mercadoId
-            );
-            if (preco === 0) {
-              preco = await this.buscarPreco(
-                '/api/produtos/preco-similar',
-                'nome=' + encodeURIComponent(produto.nome) + '&mercadoId=' + mercadoId
-              );
-            }
-            
-            const quantidade = produto.quantidade || 1;
-            produtosDetalhe.push({
-              id: produto.id,
-              nome: produto.nome,
-              quantidade: quantidade,
-              precoEncontrado: preco
-            });
-            
-            if (preco > 0) {
-              total += preco * quantidade;
-              itensEncontrados++;
-            }
-          }
+      console.log('📦 Enviando para comparação:', produtosPayload);
+
+      // Única chamada à API
+      const response = await fetch(`${environment.apiUrl}/api/comparar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ produtos: produtosPayload })
+      });
+
+      const data = await response.json();
+      console.log('📊 Resposta da API:', data);
+
+      if (data.sucesso && data.mercados) {
+        // Mapeia a resposta para o formato da interface
+        this.mercados = data.mercados.map((m: any, i: number) => {
+          // Busca a logo pelo ID do mercado
+          const mercadoInfo = this.SUPERMERCADOS[m.id];
           
-          return { 
-            id: mercadoId, 
-            nome: info.nome, 
-            logo: info.logo, 
-            preco: total,
-            itens: itensEncontrados,
+          // Processa os produtos para o formato esperado
+          const produtosDetalhe: ProdutoDetalhe[] = m.produtos.map((prod: any) => ({
+            id: prod.id || 0,
+            nome: prod.nome,
+            quantidade: prod.quantidade,
+            precoEncontrado: prod.precoUnitario || 0,
+            naoEncontrado: prod.naoEncontrado || false
+          }));
+
+          return {
+            id: m.id,
+            nome: m.nome,
+            logo: mercadoInfo?.logo || 'assets/img/mercado.png',
+            preco: m.total,
+            precoFormatado: m.total > 0 ? `R$ ${m.total.toFixed(2)}` : 'Sem dados',
+            itens: m.itensEncontrados,
+            posicao: i === 0 && m.total > 0 ? 'assets/img/ouro.png'
+                   : i === 1 && m.total > 0 ? 'assets/img/prata.png'
+                   : i === 2 && m.total > 0 ? 'assets/img/bronze.png' : '',
             expandido: false,
             produtos: produtosDetalhe
           };
-        })
-      );
+        });
+        
+        console.log('✅ Mercados processados:', this.mercados.length);
+      } else {
+        console.error('❌ Erro na resposta da API:', data);
+        this.mostrarToast('Erro ao comparar preços', 'danger');
+      }
       
-      const comDados = resultados.filter(r => r.preco > 0).sort((a, b) => a.preco - b.preco);
-      const semDados = resultados.filter(r => r.preco === 0);
-      
-      console.log('DEBUG comDados:', comDados.length, 'semDados:', semDados.length);
-      this.mercados = [...comDados, ...semDados].map((r, i) => ({
-        ...r,
-        posicao: i === 0 && r.preco > 0 ? 'assets/img/ouro.png'
-               : i === 1 && r.preco > 0 ? 'assets/img/prata.png'
-               : i === 2 && r.preco > 0 ? 'assets/img/bronze.png' : '',
-        precoFormatado: r.preco > 0 ? 'R$ ' + r.preco.toFixed(2) : 'Sem dados'
-      }));
-    } catch (e) {
-      console.error('ERRO calcularCesta:', e);
+    } catch (error) {
+      console.error('❌ Erro ao chamar /api/comparar:', error);
+      this.mostrarToast('Erro de conexão com o servidor', 'danger');
     } finally {
       this.loading = false;
     }
   }
 
-  async buscarPreco(rota: string, params: string): Promise<number> {
-    try {
-      const res = await fetch(environment.apiUrl + rota + '?' + params);
-      const data = await res.json();
-      return data.preco || 0;
-    } catch {
-      return 0;
-    }
-  }
+  // Remove os métodos antigos (buscarPreco não é mais necessário)
+  // async buscarPreco(rota: string, params: string): Promise<number> { ... }  // REMOVA ESTE
 
   limparSelecao() {
     this.comparacaoService.limpar();
@@ -142,7 +137,7 @@ export class CompararPage {
     this.produtosSelecionados = [];
   }
 
-  // NOVO MÉTODO - Expande/colapsa o card
+  // Expande/colapsa o card
   toggleExpandir(mercado: MercadoComPreco) {
     mercado.expandido = !mercado.expandido;
   }

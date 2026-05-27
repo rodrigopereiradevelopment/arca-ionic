@@ -9,9 +9,14 @@
       <img [src]="produto.img" [alt]="produto.nome" class="img-produto">
       <div class="info">
         <span class="nome">{{ produto.nome }}</span>
+
+        <!-- ✨ MUDANÇA: mostra subtotal (preço × quantidade) -->
         <span class="preco" *ngIf="produto.menorPreco > 0">
-          R$ {{ produto.menorPreco.toFixed(2) }} — {{ produto.mercadoMaisBarato }}
+          R$ {{ (produto.menorPreco * produto.quantidade).toFixed(2) }}
+          — {{ produto.mercadoMaisBarato }}
+          <small>(R$ {{ produto.menorPreco.toFixed(2) }} cada)</small>
         </span>
+
       </div>
       <div class="quantidade">
         <button (click)="decrementar(produto.id)">−</button>
@@ -26,6 +31,8 @@
     </div>
 
     <div class="total" *ngIf="produtos.length > 0">
+      <!-- ✨ MUDANÇA: mostra resumo de itens -->
+      <small>{{ carrinhoService.quantidadeTotal }} itens em {{ carrinhoService.quantidadeProdutos }} produto(s)</small>
       <span>Total estimado:</span>
       <strong>R$ {{ total.toFixed(2) }}</strong>
     </div>

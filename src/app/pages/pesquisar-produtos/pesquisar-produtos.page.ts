@@ -25,15 +25,16 @@ interface Produto {
   mercadoMaisBarato: string;
   precos: Preco[];
   expandido: boolean;
+  quantidade: number;  // ✨ NOVO
 }
 
 const MERCADOS: Record<number, { nome: string; logo: string }> = {
-  1: { nome: 'GoodBom',     logo: 'assets/img/goodbom.png' },
-  2: { nome: 'PagueMenos',  logo: 'assets/img/paguemenos.png' },
+  1: { nome: 'GoodBom',    logo: 'assets/img/goodbom.png' },
+  2: { nome: 'PagueMenos', logo: 'assets/img/paguemenos.png' },
   3: { nome: 'São Vicente', logo: 'assets/img/saovicente.png' },
-  4: { nome: 'Atacadão',    logo: 'assets/img/atacadao.png' },
-  5: { nome: 'Imperial',    logo: 'assets/img/imperial.png' },
-  6: { nome: 'Ponto Novo',  logo: 'assets/img/pontonovo.png' },
+  4: { nome: 'Atacadão',   logo: 'assets/img/atacadao.png' },
+  5: { nome: 'Imperial',   logo: 'assets/img/imperial.png' },
+  6: { nome: 'Ponto Novo', logo: 'assets/img/pontonovo.png' },
 };
 
 const CATEGORIAS: Record<number, string> = {
@@ -52,6 +53,7 @@ const MEDALHAS = ['assets/img/ouro.png', 'assets/img/prata.png', 'assets/img/bro
   imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
 export class PesquisarProdutosPage implements OnInit {
+  Math = Math;
   busca = '';
   categoriaAtiva = 'Todas';
   ordenacao: 'preco' | 'nome' = 'preco';
@@ -103,18 +105,16 @@ export class PesquisarProdutosPage implements OnInit {
         return { mercado: m.nome, logo: m.logo, valor: pr.preco, posicao: MEDALHAS[i] ?? '' };
       });
     return {
-      id: p.id, nome: p.nome,
+      id: p.id, 
+      nome: p.nome,
       categoria: CATEGORIAS[p.categoria_id] ?? 'Outros',
       ean: p.codigo_barras ?? '',
-      img: (p.imagem_url && !p.imagem_url.includes('mobilesim'))
-        ? p.imagem_url
-        : (p.codigo_barras
-            ? `https://images.openfoodfacts.org/images/products/${p.codigo_barras}/front_pt.400.jpg`
-            : 'assets/img/Produto1.png'),
+      img: p.imagem_url ?? 'assets/img/Produto1.png',
       menorPreco: precosOrdenados[0]?.valor ?? 0,
       mercadoMaisBarato: precosOrdenados[0]?.mercado ?? '-',
-      precos: precosOrdenados,
-      expandido: false
+      precos: precosOrdenados, 
+      expandido: false,
+      quantidade: 1  // ✨ NOVO: começa com 1
     };
   }
 
@@ -125,10 +125,17 @@ export class PesquisarProdutosPage implements OnInit {
   }
 
   toggleExpanir(p: Produto) { p.expandido = !p.expandido; }
-
+  
   toggleComparar(p: Produto) {
     if (this.comparacaoService.contem(p.id)) this.comparacaoService.remover(p.id);
-    else this.comparacaoService.adicionar(p);
+    else this.comparacaoService.adicionar({ 
+      id: p.id, 
+      nome: p.nome, 
+      img: p.img, 
+      menorPreco: p.menorPreco, 
+      mercadoMaisBarato: p.mercadoMaisBarato,
+      quantidade: p.quantidade  // ✨ NOVO
+    });
   }
 
   abrirModal(p: Produto) {
@@ -140,29 +147,54 @@ export class PesquisarProdutosPage implements OnInit {
     });
   }
 
+  // ✨ MELHORADO: Adicionar com quantidade
   async adicionarLista(p: Produto) {
-    const precosPorMercado: { [mercado: string]: number } = {};
-    p.precos.forEach(pr => precosPorMercado[pr.mercado] = pr.valor);
-
-    this.carrinhoService.adicionar({
-      id: p.id,
-      nome: p.nome,
-      img: p.img,
-      menorPreco: p.menorPreco,
+    this.carrinhoService.adicionar({ 
+      id: p.id, 
+      nome: p.nome, 
+      img: p.img, 
+      menorPreco: p.menorPreco, 
       mercadoMaisBarato: p.mercadoMaisBarato,
-      precosPorMercado
+      quantidade: p.quantidade  // ✨ Envia a quantidade!
     });
-    this.mostrarToast(`${p.nome} adicionado à lista! ✅`, 'success');
+    
+    if (p.quantidade > 1) {
+      this.mostrarToast(`${p.nome} (${p.quantidade}x) adicionado! ✅`, 'success');
+    } else {
+      this.mostrarToast(`${p.nome} adicionado à lista! ✅`, 'success');
+    }
+    
+    // Reset quantidade depois de adicionar
+    p.quantidade = 1;
   }
 
-  async criarAlerta(p: Produto) {
-    this.mostrarToast(`Alerta criado para ${p.nome}! 🔔`, 'primary');
+  // ✨ NOVO: Aumentar quantidade no modal
+  aumentarQuantidade(p: Produto) {
+    p.quantidade++;
   }
 
-  naLista(id: number) { return this.carrinhoService.contem(id); }
+  // ✨ NOVO: Diminuir quantidade no modal
+  diminuirQuantidade(p: Produto) {
+    if (p.quantidade > 1) {
+      p.quantidade--;
+    }
+  }
+
+  async criarAlerta(p: Produto) { 
+    this.mostrarToast(`Alerta criado para ${p.nome}! 🔔`, 'primary'); 
+  }
+
+  naLista(id: number) { 
+    return this.carrinhoService.contem(id); 
+  }
 
   private async mostrarToast(message: string, color: string) {
-    const t = await this.toastCtrl.create({ message, duration: 2000, color, position: 'top' });
+    const t = await this.toastCtrl.create({ 
+      message, 
+      duration: 2000, 
+      color, 
+      position: 'top' 
+    });
     await t.present();
   }
 }

@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -7,90 +8,97 @@ export interface ItemLista {
   img: string;
   menorPreco: number;
   mercadoMaisBarato: string;
-  quantidade: number;
-  precosPorMercado: { [mercado: string]: number }; // ← adicionado
+  quantidade: number;  // ✨ NOVO
 }
 
 @Injectable({ providedIn: 'root' })
 export class CarrinhoService {
-  private readonly KEY = 'arca_carrinho';
-  private itens = new BehaviorSubject<ItemLista[]>(this.carregar());
+
+  private itens = new BehaviorSubject<ItemLista[]>([]);
+
   itens$ = this.itens.asObservable();
 
   get lista() { return this.itens.getValue(); }
 
-  private carregar(): ItemLista[] {
-    try {
-      const salvo = localStorage.getItem(this.KEY);
-      return salvo ? JSON.parse(salvo) : [];
-    } catch { return []; }
-  }
-
-  private salvar() {
-    try {
-      localStorage.setItem(this.KEY, JSON.stringify(this.itens.getValue()));
-    } catch {}
-  }
-
-  adicionar(item: Omit<ItemLista, 'quantidade'>) {
+  // ✨ Adicionar com quantidade
+  adicionar(item: ItemLista) {
     const atual = this.itens.getValue();
-    const existente = atual.find(i => i.id === item.id);
-    if (existente) {
-      this.itens.next(atual.map(i => i.id === item.id ? { ...i, quantidade: i.quantidade + 1 } : i));
+    const existe = atual.find(i => i.id === item.id);
+
+    if (existe) {
+      // Se já existe, aumenta quantidade
+      this.itens.next(
+        atual.map(i =>
+          i.id === item.id
+            ? { ...i, quantidade: i.quantidade + (item.quantidade || 1) }
+            : i
+        )
+      );
     } else {
-      this.itens.next([...atual, { ...item, quantidade: 1 }]);
+      // Novo item (com quantidade padrão 1 se não informar)
+      this.itens.next([...atual, { ...item, quantidade: item.quantidade || 1 }]);
     }
-    this.salvar();
   }
 
+  // ✨ NOVO: Aumentar quantidade
   incrementar(id: number) {
-    this.itens.next(this.lista.map(i => i.id === id ? { ...i, quantidade: i.quantidade + 1 } : i));
-    this.salvar();
+    this.itens.next(
+      this.lista.map(i =>
+        i.id === id ? { ...i, quantidade: i.quantidade + 1 } : i
+      )
+    );
   }
 
+  // ✨ NOVO: Diminuir quantidade
   decrementar(id: number) {
-    const item = this.lista.find(i => i.id === id);
-    if (!item) return;
-    if (item.quantidade <= 1) {
+    this.itens.next(
+      this.lista
+        .map(i =>
+          i.id === id && i.quantidade > 1
+            ? { ...i, quantidade: i.quantidade - 1 }
+            : i
+        )
+        .filter(i => i.quantidade > 0) // Remove se quantidade chegar a 0
+    );
+  }
+
+  // ✨ NOVO: Definir quantidade específica
+  definirQuantidade(id: number, quantidade: number) {
+    if (quantidade <= 0) {
       this.remover(id);
-    } else {
-      this.itens.next(this.lista.map(i => i.id === id ? { ...i, quantidade: i.quantidade - 1 } : i));
-      this.salvar();
+      return;
     }
+    this.itens.next(
+      this.lista.map(i =>
+        i.id === id ? { ...i, quantidade } : i
+      )
+    );
   }
 
   remover(id: number) {
-    this.itens.next(this.lista.filter(i => i.id !== id));
-    this.salvar();
+    this.itens.next(this.itens.getValue().filter(i => i.id !== id));
   }
 
   contem(id: number) {
-    return this.lista.some(i => i.id === id);
+    return this.itens.getValue().some(i => i.id === id);
   }
 
   limpar() {
     this.itens.next([]);
-    this.salvar();
   }
 
+  // ✨ MELHORADO: Total multiplicado por quantidade
   get total() {
     return this.lista.reduce((acc, i) => acc + (i.menorPreco * i.quantidade), 0);
   }
 
-  // ← dentro da classe agora
-  get comparacaoMercados() {
-    const totais: { [mercado: string]: { total: number; itens: number } } = {};
+  // ✨ NOVO: Contar itens (soma de quantidades)
+  get quantidadeTotal() {
+    return this.lista.reduce((acc, i) => acc + i.quantidade, 0);
+  }
 
-    for (const item of this.lista) {
-      for (const [mercado, preco] of Object.entries(item.precosPorMercado ?? {})) {
-        if (!totais[mercado]) totais[mercado] = { total: 0, itens: 0 };
-        totais[mercado].total += (preco as number) * item.quantidade;
-        totais[mercado].itens += 1;
-      }
-    }
-
-    return Object.entries(totais)
-      .map(([mercado, d]) => ({ mercado, total: d.total, itens: d.itens }))
-      .sort((a, b) => a.total - b.total);
+  // ✨ NOVO: Contar produtos diferentes
+  get quantidadeProdutos() {
+    return this.lista.length;
   }
 }
