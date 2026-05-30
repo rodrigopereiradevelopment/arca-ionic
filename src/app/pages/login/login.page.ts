@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonContent, ToastController } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -35,14 +36,15 @@ export class LoginPage {
     this.carregando = false;
   }
 
-  loginGoogle() {
-    window.location.href = 'https://srajnelbzbyzxjmjjqku.supabase.co/auth/v1/authorize?provider=google&redirect_to=http://localhost:8100';
+ loginGoogle() {
+    const urlRetorno = environment.production ? 'https://arca-ionic.vercel.app' : 'http://localhost:8100';
+    window.location.href = `https://srajnelbzbyzxjmjjqku.supabase.co/auth/v1/authorize?provider=google&redirect_to=${urlRetorno}`;
   }
 
   loginFacebook() {
-    window.location.href = 'https://srajnelbzbyzxjmjjqku.supabase.co/auth/v1/authorize?provider=facebook&redirect_to=http://localhost:8100';
+    const urlRetorno = environment.production ? 'https://arca-ionic.vercel.app' : 'http://localhost:8100';
+    window.location.href = `https://srajnelbzbyzxjmjjqku.supabase.co/auth/v1/authorize?provider=facebook&redirect_to=${urlRetorno}`;
   }
-
   async toast(msg: string, color: string) {
     const t = await this.toastCtrl.create({
       message: msg, duration: 3000, color, position: 'top'
