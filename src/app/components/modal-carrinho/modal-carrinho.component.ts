@@ -70,55 +70,43 @@ export class ModalCarrinhoComponent implements OnInit {
   }
 
   async carregarComparacao() {
-    // Pega os itens atuais via subscribe
-    this.carrinhoService.itens$.subscribe(async (itens) => {
-      if (itens.length === 0) return;
+  const itens = this.carrinhoService.lista;
+  if (itens.length === 0) return;
 
-      const resultados: MercadoComparacao[] = [];
+  try {
+    const produtosPayload = itens.map(item => ({
+      id: item.id,
+      nome: item.nome,
+      quantidade: item.quantidade || 1
+    }));
 
-      for (const [id, nome] of Object.entries(this.SUPERMERCADOS)) {
-        const mercadoId = Number(id);
-        let total = 0;
-        let itensEncontrados = 0;
+    const res = await fetch(`${environment.apiUrl}/api/comparar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ produtos: produtosPayload })
+    });
 
-        for (const item of itens) {
-          const preco = await this.buscarPrecoProduto(item.id, mercadoId);
-          if (preco > 0) {
-            total += preco * item.quantidade;
-            itensEncontrados++;
-          }
-        }
+    const data = await res.json();
 
-        resultados.push({
-          id: mercadoId,
-          mercado: nome,
-          total: total,
-          itens: itensEncontrados
-        });
-      }
-
-      this.comparacaoMercados = resultados
-        .filter(r => r.total > 0)
-        .sort((a, b) => a.total - b.total);
-    }).unsubscribe();
-  }
-
-  async buscarPrecoProduto(produtoId: number, mercadoId: number): Promise<number> {
-    try {
-      const res = await fetch(
-        `${environment.apiUrl}/api/produtos/preco?produtoId=${produtoId}&mercadoId=${mercadoId}`
-      );
-      const data = await res.json();
-      return data.preco || 0;
-    } catch {
-      return 0;
+    if (data.sucesso && data.mercados) {
+      this.comparacaoMercados = data.mercados
+        .filter((m: any) => m.total > 0)
+        .map((m: any) => ({
+          id: m.id,
+          mercado: m.nome,
+          total: m.total,
+          itens: m.itensEncontrados
+        }));
     }
+  } catch (err) {
+    console.error('Erro na comparação:', err);
   }
+}
 
-  async toggleComparacao() {
-    if (this.view === 'resultado') {
-      await this.carregarComparacao();
-    }
-    this.view = this.view === 'lista' ? 'resultado' : 'lista';
+async toggleComparacao() {
+  if (this.view === 'lista') {
+    await this.carregarComparacao();
   }
+  this.view = this.view === 'lista' ? 'resultado' : 'lista';
+}
 }
