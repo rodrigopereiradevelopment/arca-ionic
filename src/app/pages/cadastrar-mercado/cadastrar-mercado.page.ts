@@ -12,6 +12,8 @@ import {
   IonSelectOption,
   ToastController
 } from '@ionic/angular/standalone';
+import { MercadoService } from '../../services/mercado.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-cadastrar-mercado',
@@ -54,8 +56,13 @@ export class CadastrarMercadoPage implements OnInit {
 
   imagemPreview: string | null = null;
   buscandoCep = false;
+  enviando = false;
 
-  constructor(private toastCtrl: ToastController) {}
+  constructor(
+    private toastCtrl: ToastController,
+    private mercadoSvc: MercadoService,
+    private auth: AuthService
+  ) {}
   ngOnInit() {}
 
   async buscarCep() {
@@ -111,8 +118,20 @@ export class CadastrarMercadoPage implements OnInit {
       await this.toast('Preencha todos os campos obrigatórios!', 'warning');
       return;
     }
-    await this.toast('Mercado enviado para aprovação! ✅', 'success');
-    this.limpar();
+    const token = this.auth.usuario?.token;
+    if (!token) {
+      await this.toast('Faça login para cadastrar um mercado!', 'warning');
+      return;
+    }
+    this.enviando = true;
+    const resultado = await this.mercadoSvc.criar(this.form, token);
+    this.enviando = false;
+    if (resultado) {
+      await this.toast('Mercado enviado para aprovação! ✅', 'success');
+      this.limpar();
+    } else {
+      await this.toast('Erro ao cadastrar mercado. Tente novamente!', 'danger');
+    }
   }
 
   async toast(msg: string, color: string) {

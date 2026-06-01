@@ -5,21 +5,25 @@ import { RouterModule } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
+import { MercadoService, Mercado } from '../../services/mercado.service';
 
-const MERCADOS = [
-  { id: 1, nome: 'Imperial', lat: -22.4383822, lng: -46.9327464, distancia: 0,
-    horario: '07:00 - 20:00', telefone: '(19) 3862-4117', logo: 'assets/img/imperial.png' },
-  { id: 2, nome: 'Ponto Novo', lat: -22.4313656, lng: -46.9527085, distancia: 0,
-    horario: '07:00 - 21:00', telefone: '(19) 3851-5530', logo: 'assets/img/pontonovo.jpeg' },
-  { id: 3, nome: 'GoodBom', lat: -22.4006202, lng: -46.9700459, distancia: 0,
-    horario: '07:00 - 22:00', telefone: '(19) 3815-3010', logo: 'assets/img/goodbom.png' },
-  { id: 4, nome: 'Atacadao', lat: -22.4022876, lng: -46.9727049, distancia: 0,
-    horario: '07:00 - 22:00', telefone: '(19) 3022-0468', logo: 'assets/img/atacadao.png' },
-  { id: 5, nome: 'Pague Menos', lat: -22.3522237, lng: -46.9464079, distancia: 0,
-    horario: '07:00 - 22:00', telefone: '(19) 3851-9300', logo: 'assets/img/paguemenos.png' },
-  { id: 6, nome: 'Sao Vicente', lat: -22.4269813, lng: -46.9552736, distancia: 0,
-    horario: '07:00 - 22:00', telefone: '(19) 3805-7777', logo: 'assets/img/saovicente.png' }
-];
+function calcDistancia(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+const LOGOS: Record<number, string> = {
+  1: 'assets/img/imperial.png',
+  2: 'assets/img/pontonovo.jpeg',
+  3: 'assets/img/goodbom.png',
+  4: 'assets/img/atacadao.png',
+  5: 'assets/img/paguemenos.png',
+  6: 'assets/img/saovicente.png'
+};
 
 @Component({
   selector: 'app-mercados-proximos',
@@ -36,7 +40,8 @@ export class MercadosProximosPage implements OnInit, AfterViewInit {
   ordenacao: 'distancia' | 'nome' = 'distancia';
   mercadoSelecionado: any = null;
   origemUsuario: any = null;
-  mercados = MERCADOS;
+  mercados: (Mercado & { distancia: number; horario: string; logo: string })[] = [];
+  carregando = true;
 
   get mercadosFiltrados() {
     return this.mercados
@@ -52,11 +57,24 @@ export class MercadosProximosPage implements OnInit, AfterViewInit {
     return '#e74c3c';
   }
 
-  constructor() {}
+  constructor(private mercadoSvc: MercadoService) {}
   ngOnInit() {}
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
+    await this.carregarMercados();
     setTimeout(() => this.iniciarMapa(), 300);
+  }
+
+  async carregarMercados() {
+    this.carregando = true;
+    const lista = await this.mercadoSvc.listar('aprovado');
+    this.mercados = lista.map(m => ({
+      ...m,
+      distancia: 0,
+      horario: '',
+      logo: LOGOS[m.id] || 'assets/img/mercado.png'
+    }));
+    this.carregando = false;
   }
 
   iniciarMapa() {
@@ -83,6 +101,7 @@ export class MercadosProximosPage implements OnInit, AfterViewInit {
     this.map.setView(e.latlng, 14);
     L.marker(e.latlng, { icon: this.iconeAzul() })
       .addTo(this.map).bindPopup('📍 Você está aqui').openPopup();
+    this.calcularDistancias();
     this.adicionarMarcadores();
   }
 
@@ -91,11 +110,24 @@ export class MercadosProximosPage implements OnInit, AfterViewInit {
     this.origemUsuario = padrao;
     L.marker(padrao, { icon: this.iconeAzul() })
       .addTo(this.map).bindPopup('📍 Localização padrão').openPopup();
+    this.calcularDistancias();
     this.adicionarMarcadores();
+  }
+
+  calcularDistancias() {
+    if (!this.origemUsuario) return;
+    this.mercados.forEach(m => {
+      if (m.latitude && m.longitude) {
+        m.distancia = parseFloat(
+          calcDistancia(this.origemUsuario.lat, this.origemUsuario.lng, m.latitude, m.longitude).toFixed(1)
+        );
+      }
+    });
   }
 
   adicionarMarcadores() {
     this.mercados.forEach(mercado => {
+      if (!mercado.latitude || !mercado.longitude) return;
       const cor = mercado.distancia <= 1 ? 'green' :
                   mercado.distancia <= 2 ? 'gold' : 'red';
       const icon = L.icon({
@@ -103,9 +135,9 @@ export class MercadosProximosPage implements OnInit, AfterViewInit {
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
       });
-      L.marker([mercado.lat, mercado.lng], { icon })
+      L.marker([mercado.latitude, mercado.longitude], { icon })
         .addTo(this.map)
-        .bindPopup(`<b>${mercado.nome}</b><br>📏 ${mercado.distancia} km<br>🕐 ${mercado.horario}`)
+        .bindPopup(`<b>${mercado.nome}</b><br>📏 ${mercado.distancia} km`)
         .on('click', () => {
           this.mercadoSelecionado = mercado;
           this.listaVisivel = true;
@@ -114,7 +146,7 @@ export class MercadosProximosPage implements OnInit, AfterViewInit {
   }
 
   centralizarMercado(mercado: any) {
-    this.map.setView([mercado.lat, mercado.lng], 16);
+    this.map.setView([mercado.latitude, mercado.longitude], 16);
     this.mercadoSelecionado = mercado;
   }
 

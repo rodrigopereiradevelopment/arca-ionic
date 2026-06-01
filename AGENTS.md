@@ -1,7 +1,26 @@
+# arca-ionic — App Mobile
+
+```bash
+ng serve                  # Dev em http://localhost:4200
+ng test                   # Testes unitários (Karma + Jasmine)
+ng lint                   # ESLint
+```
+
+- **Standalone components** (sem NgModules), lazy loading em todas as rotas
+- **HashLocationStrategy** — URLs com `#`
+- **Estado**: `BehaviorSubject` + `localStorage` (sem NgRx/Signals)
+- **Ciclo de vida**: usar `ionViewWillEnter` em vez de `ngOnInit` (evita cache do Ionic)
+- `environment.ts` aponta para `http://192.168.1.3:3000` (IP fixo, não localhost)
+- **IDs de mercados** (hardcoded): `1=GoodBom`, `2=PagueMenos`, `3=SaoVicente`, `4=Atacadao`, `5=Imperial`, `6=PontoNovo`
+- **Páginas de mercado usam dados mockados** — `/gerenciar-mercados`, `/cadastrar-mercado`, `/mercados-proximos` não têm API; dados fictícios em memória
+- **Auth**: Supabase OAuth (Google/Facebook) + API customizada. Token em `localStorage` chave `arca_usuario`
+- **Rotas duplicadas**: `configuracoes`, `ajuda`, `perfil` aparecem 2x em `app.routes.ts` — a 2ª sem `canActivate`, tornando-as públicas
+- Sem `@supabase/supabase-js` instalado — Supabase usado só para redirect OAuth
+
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **meu-app-ionic** (757 symbols, 1350 relationships, 5 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **meu-app-ionic** (2698 symbols, 6229 relationships, 224 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 

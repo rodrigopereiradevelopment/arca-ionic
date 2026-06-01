@@ -8,28 +8,8 @@ import {
   IonButton,
   ToastController
 } from '@ionic/angular/standalone';
-
-interface Mercado {
-  id: number;
-  nome: string;
-  cidade: string;
-  status: 'aprovado' | 'pendente' | 'desativado';
-  responsavel: string;
-  cnpj: string;
-  telefone: string;
-  email: string;
-  cep: string;
-  rua: string;
-  numero: string;
-  complemento: string;
-  bairro: string;
-  estado: string;
-  admin_nome: string;
-  admin_cpf: string;
-  admin_email: string;
-  admin_telefone: string;
-  admin_senha: string;
-}
+import { MercadoService, Mercado } from '../../services/mercado.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-gerenciar-mercados',
@@ -46,27 +26,11 @@ export class GerenciarMercadosPage implements OnInit {
   filtroNome = '';
   filtroStatus = 'todos';
   imagemPreview: string | null = null;
+  carregando = true;
 
-  mercados: Mercado[] = [
-    { id: 1, nome: 'Big Bom', cidade: 'Mogi Mirim', status: 'aprovado', responsavel: 'João Silva',
-      cnpj: '00.000.000/0001-00', telefone: '(19) 99999-0001', email: 'bigbom@email.com',
-      cep: '13800-000', rua: 'Rua das Flores', numero: '100', complemento: '', bairro: 'Centro',
-      estado: 'SP', admin_nome: 'João Silva', admin_cpf: '000.000.000-00',
-      admin_email: 'joao@bigbom.com', admin_telefone: '(19) 99999-0001', admin_senha: '' },
-    { id: 2, nome: 'Supermercado SMC', cidade: 'Mogi Mirim', status: 'pendente', responsavel: 'Maria Santos',
-      cnpj: '00.000.000/0002-00', telefone: '(19) 99999-0002', email: 'smc@email.com',
-      cep: '13800-100', rua: 'Av. Brasil', numero: '200', complemento: '', bairro: 'Jardim',
-      estado: 'SP', admin_nome: 'Maria Santos', admin_cpf: '111.111.111-11',
-      admin_email: 'maria@smc.com', admin_telefone: '(19) 99999-0002', admin_senha: '' },
-    { id: 3, nome: 'Supermercado SPN', cidade: 'Mogi Mirim', status: 'desativado', responsavel: 'Pedro Costa',
-      cnpj: '00.000.000/0003-00', telefone: '(19) 99999-0003', email: 'spn@email.com',
-      cep: '13800-200', rua: 'Rua São Paulo', numero: '300', complemento: '', bairro: 'Vila Nova',
-      estado: 'SP', admin_nome: 'Pedro Costa', admin_cpf: '222.222.222-22',
-      admin_email: 'pedro@spn.com', admin_telefone: '(19) 99999-0003', admin_senha: '' }
-  ];
-
+  mercados: Mercado[] = [];
   mercadoSelecionado: Mercado = this.novoMercado();
-  
+
   get mercadosFiltrados() {
     return this.mercados.filter(m => {
       const nomeOk = m.nome.toLowerCase().includes(this.filtroNome.toLowerCase()) ||
@@ -77,15 +41,29 @@ export class GerenciarMercadosPage implements OnInit {
     });
   }
 
-  constructor(private toastCtrl: ToastController) {}
-  ngOnInit() {}
+  constructor(
+    private toastCtrl: ToastController,
+    private mercadoSvc: MercadoService,
+    private auth: AuthService
+  ) {}
+
+  async ngOnInit() {
+    await this.carregarMercados();
+  }
+
+  async carregarMercados() {
+    this.carregando = true;
+    this.mercados = await this.mercadoSvc.listar();
+    this.carregando = false;
+  }
 
   novoMercado(): Mercado {
     return {
       id: 0, nome: '', cidade: '', status: 'pendente', responsavel: '',
       cnpj: '', telefone: '', email: '', cep: '', rua: '', numero: '',
       complemento: '', bairro: '', estado: '',
-      admin_nome: '', admin_cpf: '', admin_email: '', admin_telefone: '', admin_senha: ''
+      admin_nome: '', admin_cpf: '', admin_email: '', admin_telefone: '', admin_senha: '',
+      logo_url: '', latitude: 0, longitude: 0, endereco: ''
     };
   }
 
@@ -103,14 +81,28 @@ export class GerenciarMercadosPage implements OnInit {
     this.modalAberto = true;
   }
 
-  async alterarStatus(m: Mercado, status: 'aprovado' | 'pendente' | 'desativado') {
-    m.status = status;
-    await this.toast(`Mercado ${status}!`, 'success');
+  async alterarStatus(m: Mercado, novoStatus: 'aprovado' | 'pendente' | 'desativado') {
+    const token = this.auth.usuario?.token;
+    if (!token) return;
+    const ok = await this.mercadoSvc.atualizar(m.id, { ...m, status: novoStatus }, token);
+    if (ok) {
+      m.status = novoStatus;
+      await this.toast(`Mercado ${novoStatus === 'aprovado' ? 'aprovado' : novoStatus === 'desativado' ? 'desativado' : 'pendente'}!`, 'success');
+    } else {
+      await this.toast('Erro ao alterar status!', 'danger');
+    }
   }
 
   async excluir(m: Mercado) {
-    this.mercados = this.mercados.filter(x => x.id !== m.id);
-    await this.toast('Mercado excluído!', 'danger');
+    const token = this.auth.usuario?.token;
+    if (!token) return;
+    const ok = await this.mercadoSvc.excluir(m.id, token);
+    if (ok) {
+      this.mercados = this.mercados.filter(x => x.id !== m.id);
+      await this.toast('Mercado excluído!', 'danger');
+    } else {
+      await this.toast('Erro ao excluir!', 'danger');
+    }
   }
 
   async salvar() {
@@ -118,14 +110,27 @@ export class GerenciarMercadosPage implements OnInit {
       await this.toast('Preencha os campos obrigatórios!', 'warning');
       return;
     }
+    const token = this.auth.usuario?.token;
+    if (!token) {
+      await this.toast('Sessão expirada!', 'danger');
+      return;
+    }
     if (this.modoEdicao) {
-      const idx = this.mercados.findIndex(m => m.id === this.mercadoSelecionado.id);
-      if (idx >= 0) this.mercados[idx] = { ...this.mercadoSelecionado };
-      await this.toast('Mercado atualizado!', 'success');
+      const ok = await this.mercadoSvc.atualizar(this.mercadoSelecionado.id, this.mercadoSelecionado, token);
+      if (ok) {
+        await this.carregarMercados();
+        await this.toast('Mercado atualizado!', 'success');
+      } else {
+        await this.toast('Erro ao atualizar!', 'danger');
+      }
     } else {
-      this.mercadoSelecionado.id = Date.now();
-      this.mercados.push({ ...this.mercadoSelecionado });
-      await this.toast('Mercado cadastrado!', 'success');
+      const ok = await this.mercadoSvc.criar(this.mercadoSelecionado, token);
+      if (ok) {
+        await this.carregarMercados();
+        await this.toast('Mercado cadastrado!', 'success');
+      } else {
+        await this.toast('Erro ao cadastrar!', 'danger');
+      }
     }
     this.modalAberto = false;
   }
