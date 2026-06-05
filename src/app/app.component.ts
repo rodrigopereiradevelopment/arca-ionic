@@ -55,7 +55,10 @@ export class AppComponent implements OnInit {
     }
 
     this.authService.usuario$.subscribe(u => {
-      if (u) this.carrinhoService.carregarDoServidor();
+      if (u) {
+        this.carrinhoService.carregarDoServidor();
+        this.configService.carregarDoServidor();
+      }
     });
   }
 }
