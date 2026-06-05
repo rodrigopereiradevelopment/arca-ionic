@@ -10,33 +10,36 @@
     <h1>📦 Gerenciar Catálogo</h1>
     <p class="subtitulo">Controle de produtos, categorias e preços.</p>
 
+    <div *ngIf="carregando" class="loading">Carregando...</div>
+    <div *ngIf="erro" class="erro">{{ erro }}</div>
+
     <!-- ABAS -->
-    <div class="abas">
-      <button [class.ativa]="abaAtiva === 'produtos'" (click)="abaAtiva = 'produtos'">
+    <div class="abas" *ngIf="!carregando">
+      <button [class.ativa]="abaAtiva === 'produtos'" (click)="selecionarAba('produtos')">
         Produtos
       </button>
-      <button [class.ativa]="abaAtiva === 'categorias'" (click)="abaAtiva = 'categorias'">
+      <button [class.ativa]="abaAtiva === 'categorias'" (click)="selecionarAba('categorias')">
         Categorias
       </button>
-      <button [class.ativa]="abaAtiva === 'precos'" (click)="abaAtiva = 'precos'">
+      <button [class.ativa]="abaAtiva === 'precos'" (click)="selecionarAba('precos')">
         Preços Ativos
       </button>
     </div>
 
     <!-- ABA PRODUTOS -->
-    <div *ngIf="abaAtiva === 'produtos'">
+    <div *ngIf="abaAtiva === 'produtos' && !carregando">
 
       <div class="painel-filtros">
-        <input type="text" [(ngModel)]="filtroNome"
+        <input type="text" [value]="filtroNome" (input)="onBuscaChange($any($event).target.value)"
           placeholder="Buscar por nome ou EAN..." class="input-busca">
-        <select [(ngModel)]="filtroCategoria" class="select-cat">
+        <select [(ngModel)]="filtroCategoria" (ngModelChange)="onCategoriaChange()">
           <option value="todas">Todas as categorias</option>
           <option *ngFor="let c of categorias" [value]="c.nome">{{ c.nome }}</option>
         </select>
         <button class="btn-novo" (click)="abrirNovo()">＋ Novo</button>
       </div>
 
-      <div class="produto-card" *ngFor="let p of produtosFiltrados">
+      <div class="produto-card" *ngFor="let p of produtos">
         <div class="prod-info">
           <strong>{{ p.nome }}</strong>
           <span class="cat-badge">{{ p.categoria }}</span>
@@ -49,14 +52,20 @@
         </div>
       </div>
 
-      <p class="sem-resultados" *ngIf="produtosFiltrados.length === 0">
+      <div class="mais-container" *ngIf="temMais && !carregando">
+        <button class="btn-mais" (click)="mostrarMais()" [disabled]="carregandoMais">
+          {{ carregandoMais ? 'Carregando...' : 'Mostrar mais' }}
+        </button>
+      </div>
+
+      <p class="sem-resultados" *ngIf="!carregando && produtos.length === 0">
         Nenhum produto encontrado.
       </p>
 
     </div>
 
     <!-- ABA CATEGORIAS -->
-    <div *ngIf="abaAtiva === 'categorias'">
+    <div *ngIf="abaAtiva === 'categorias' && !carregando">
 
       <div class="painel-filtros">
         <input type="text" [(ngModel)]="novaCategoria"
@@ -72,18 +81,24 @@
     </div>
 
     <!-- ABA PREÇOS -->
-    <div *ngIf="abaAtiva === 'precos'">
+    <div *ngIf="abaAtiva === 'precos' && !carregando">
 
       <p class="subtitulo">Preços mais recentes reportados pelos usuários.</p>
+      <div *ngIf="carregandoRecentes" class="loading">Carregando...</div>
 
-      <div class="preco-card" *ngFor="let p of precos">
+      <div class="preco-card" *ngFor="let p of precosRecentes">
         <div>
-          <strong>{{ p.produto }}</strong>
-          <span>🏪 {{ p.mercado }}</span>
-          <span>📅 {{ p.data }}</span>
+          <strong>{{ p.produto || p.supermercado }}</strong>
+          <span>🏪 {{ p.supermercado }}</span>
+          <span>📅 {{ formatarData(p.data_coleta) }}</span>
+          <span *ngIf="p.promocao" class="promo-badge">🔥 Promoção</span>
         </div>
-        <span class="valor">R$ {{ p.valor.toFixed(2) }}</span>
+        <span class="valor">R$ {{ p.preco.toFixed(2) }}</span>
       </div>
+
+      <p class="sem-resultados" *ngIf="precosRecentes.length === 0 && !carregandoRecentes">
+        Nenhum preço encontrado.
+      </p>
 
     </div>
 
@@ -120,6 +135,22 @@
         </div>
       </div>
 
+      <div class="form-row">
+        <div class="form-group">
+          <label>Marca</label>
+          <input type="text" [(ngModel)]="produtoSelecionado.marca" placeholder="Ex: 3 Corações">
+        </div>
+        <div class="form-group">
+          <label>Peso / Volume</label>
+          <input type="text" [(ngModel)]="produtoSelecionado.peso_volume" placeholder="Ex: 500g">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Descrição</label>
+        <textarea [(ngModel)]="produtoSelecionado.descricao" placeholder="Descrição do produto..." rows="2"></textarea>
+      </div>
+
       <div class="form-group">
         <label>Foto do Produto</label>
         <label class="upload-area">
@@ -129,6 +160,29 @@
           </div>
           <img *ngIf="imagemPreview" [src]="imagemPreview" class="img-preview" alt="Preview">
         </label>
+      </div>
+
+      <!-- PREÇOS DO PRODUTO (somente edição) -->
+      <div *ngIf="modoEdicao" class="precos-section">
+        <div class="precos-header">
+          <h3>💰 Preços nos mercados</h3>
+          <span *ngIf="carregandoPrecos" class="loading-sm">Carregando...</span>
+        </div>
+
+        <div class="preco-item" *ngFor="let pr of precosProduto">
+          <div class="preco-info">
+            <span class="mercado-nome">{{ pr.supermercado }}</span>
+            <span class="preco-data">{{ formatarData(pr.data_coleta) }}</span>
+          </div>
+          <div class="preco-valor-area">
+            <span class="preco-valor">R$ {{ pr.preco.toFixed(2) }}</span>
+            <span *ngIf="pr.promocao" class="promo-tag">Promoção</span>
+          </div>
+        </div>
+
+        <p class="sem-precos" *ngIf="precosProduto.length === 0 && !carregandoPrecos">
+          Nenhum preço registrado para este produto.
+        </p>
       </div>
 
       <div class="modal-botoes">

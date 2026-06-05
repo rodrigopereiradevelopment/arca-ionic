@@ -191,11 +191,117 @@ ion-content { --background: #f5f5f5; }
   }
 }
 
+.precos-section {
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 14px;
+
+  .precos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    h3 { font-size: 15px; color: #333; margin: 0; }
+    .loading-sm { font-size: 12px; color: #999; }
+  }
+
+  .preco-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 6px;
+
+    .preco-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .mercado-nome { font-size: 14px; font-weight: 600; color: #333; }
+      .preco-data { font-size: 11px; color: #999; }
+    }
+
+    .preco-valor-area {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .preco-valor { font-size: 16px; font-weight: bold; color: #00BF9F; }
+      .promo-tag {
+        font-size: 10px;
+        background: #fff3cd;
+        color: #856404;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .sem-precos {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    padding: 16px 0;
+  }
+}
+
+.promo-badge {
+  display: inline-block;
+  font-size: 11px;
+  background: #fff3cd;
+  color: #856404;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  width: fit-content;
+}
+
 .sem-resultados {
   text-align: center;
   color: #999;
   font-size: 14px;
   padding: 40px 0;
+}
+
+.loading {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+  padding: 40px 0;
+}
+
+.erro {
+  text-align: center;
+  color: #e74c3c;
+  font-size: 14px;
+  padding: 20px 0;
+  background: #fdf0ef;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.mais-container {
+  text-align: center;
+  margin: 16px 0;
+
+  .btn-mais {
+    padding: 12px 32px;
+    background: transparent;
+    color: #00BF9F;
+    border: 2px solid #00BF9F;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover { background: #00BF9F; color: white; }
+    &:disabled { opacity: 0.5; cursor: default; }
+  }
 }
 
 .modal-overlay {
@@ -252,14 +358,20 @@ ion-content { --background: #f5f5f5; }
     .required { color: #ff6b6b; }
   }
 
-  input, select {
+  input, select, textarea {
     padding: 12px 14px;
     border: 1px solid #ddd;
     border-radius: 10px;
     font-size: 14px;
     background: white;
     outline: none;
+    font-family: inherit;
     &:focus { border-color: #00BF9F; }
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 50px;
   }
 }
 
