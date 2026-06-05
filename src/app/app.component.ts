@@ -3,6 +3,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { MenuComponent } from './components/menu/menu.component';
 import { AuthService } from './services/auth.service';
 import { ConfigService } from './services/config.service';
+import { CarrinhoService } from './services/carrinho.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private configService: ConfigService,
+    private carrinhoService: CarrinhoService,
     private router: Router
   ) {}
 
@@ -47,5 +49,13 @@ export class AppComponent implements OnInit {
         }
       }
     }
+
+    if (this.authService.logado) {
+      this.carrinhoService.carregarDoServidor();
+    }
+
+    this.authService.usuario$.subscribe(u => {
+      if (u) this.carrinhoService.carregarDoServidor();
+    });
   }
 }

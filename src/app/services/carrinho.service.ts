@@ -1,6 +1,7 @@
-
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 export interface ItemLista {
   id: number;
@@ -8,75 +9,91 @@ export interface ItemLista {
   img: string;
   menorPreco: number;
   mercadoMaisBarato: string;
-  quantidade: number;  // ✨ NOVO
+  quantidade: number;
 }
+
+const STORAGE_KEY = 'arca_carrinho';
 
 @Injectable({ providedIn: 'root' })
 export class CarrinhoService {
-
+  private auth = inject(AuthService);
   private itens = new BehaviorSubject<ItemLista[]>([]);
+  private syncPendente = false;
 
   itens$ = this.itens.asObservable();
-
   get lista() { return this.itens.getValue(); }
+  get total() { return this.lista.reduce((acc, i) => acc + (i.menorPreco * i.quantidade), 0); }
+  get quantidadeTotal() { return this.lista.reduce((acc, i) => acc + i.quantidade, 0); }
+  get quantidadeProdutos() { return this.lista.length; }
 
-  // ✨ Adicionar com quantidade
+  constructor() {
+    this.carregarDoStorage();
+  }
+
+  async carregarDoServidor() {
+    if (!this.auth.logado) return;
+    try {
+      const token = this.auth.usuario?.token;
+      const res = await fetch(`${environment.apiUrl}/api/carrinho`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.itens && data.itens.length > 0) {
+        const mapeados: ItemLista[] = data.itens.map((i: any) => ({
+          id: i.produto_id,
+          nome: i.nome,
+          img: i.imagem_url || 'assets/img/Produto1.png',
+          menorPreco: 0,
+          mercadoMaisBarato: '',
+          quantidade: i.quantidade,
+        }));
+        this.itens.next(mapeados);
+        this.salvarStorage();
+      }
+    } catch {
+      /* offline — usa localStorage */
+    }
+  }
+
   adicionar(item: ItemLista) {
     const atual = this.itens.getValue();
     const existe = atual.find(i => i.id === item.id);
-
     if (existe) {
-      // Se já existe, aumenta quantidade
-      this.itens.next(
-        atual.map(i =>
-          i.id === item.id
-            ? { ...i, quantidade: i.quantidade + (item.quantidade || 1) }
-            : i
-        )
-      );
+      this.itens.next(atual.map(i =>
+        i.id === item.id ? { ...i, quantidade: i.quantidade + (item.quantidade || 1) } : i
+      ));
     } else {
-      // Novo item (com quantidade padrão 1 se não informar)
       this.itens.next([...atual, { ...item, quantidade: item.quantidade || 1 }]);
     }
+    this.posMutacao();
   }
 
-  // ✨ NOVO: Aumentar quantidade
   incrementar(id: number) {
-    this.itens.next(
-      this.lista.map(i =>
-        i.id === id ? { ...i, quantidade: i.quantidade + 1 } : i
-      )
-    );
+    this.itens.next(this.lista.map(i =>
+      i.id === id ? { ...i, quantidade: i.quantidade + 1 } : i
+    ));
+    this.posMutacao();
   }
 
-  // ✨ NOVO: Diminuir quantidade
   decrementar(id: number) {
     this.itens.next(
-      this.lista
-        .map(i =>
-          i.id === id && i.quantidade > 1
-            ? { ...i, quantidade: i.quantidade - 1 }
-            : i
-        )
-        .filter(i => i.quantidade > 0) // Remove se quantidade chegar a 0
+      this.lista.map(i =>
+        i.id === id && i.quantidade > 1 ? { ...i, quantidade: i.quantidade - 1 } : i
+      ).filter(i => i.quantidade > 0)
     );
+    this.posMutacao();
   }
 
-  // ✨ NOVO: Definir quantidade específica
   definirQuantidade(id: number, quantidade: number) {
-    if (quantidade <= 0) {
-      this.remover(id);
-      return;
-    }
-    this.itens.next(
-      this.lista.map(i =>
-        i.id === id ? { ...i, quantidade } : i
-      )
-    );
+    if (quantidade <= 0) { this.remover(id); return; }
+    this.itens.next(this.lista.map(i => i.id === id ? { ...i, quantidade } : i));
+    this.posMutacao();
   }
 
   remover(id: number) {
     this.itens.next(this.itens.getValue().filter(i => i.id !== id));
+    this.posMutacao();
   }
 
   contem(id: number) {
@@ -85,20 +102,43 @@ export class CarrinhoService {
 
   limpar() {
     this.itens.next([]);
+    this.posMutacao();
   }
 
-  // ✨ MELHORADO: Total multiplicado por quantidade
-  get total() {
-    return this.lista.reduce((acc, i) => acc + (i.menorPreco * i.quantidade), 0);
+  private posMutacao() {
+    this.salvarStorage();
+    this.agendarSync();
   }
 
-  // ✨ NOVO: Contar itens (soma de quantidades)
-  get quantidadeTotal() {
-    return this.lista.reduce((acc, i) => acc + i.quantidade, 0);
+  private salvarStorage() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.lista));
   }
 
-  // ✨ NOVO: Contar produtos diferentes
-  get quantidadeProdutos() {
-    return this.lista.length;
+  private carregarDoStorage() {
+    try {
+      const salvo = localStorage.getItem(STORAGE_KEY);
+      if (salvo) this.itens.next(JSON.parse(salvo));
+    } catch { /* ignora */ }
+  }
+
+  private async agendarSync() {
+    if (this.syncPendente || !this.auth.logado) return;
+    this.syncPendente = true;
+    const token = this.auth.usuario?.token;
+    try {
+      const payload = this.lista.map(i => ({
+        produto_id: i.id,
+        quantidade: i.quantidade,
+      }));
+      await fetch(`${environment.apiUrl}/api/carrinho`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, itens: payload }),
+      });
+    } catch {
+      /* falha silenciosa — próximo sync tenta de novo */
+    } finally {
+      this.syncPendente = false;
+    }
   }
 }
