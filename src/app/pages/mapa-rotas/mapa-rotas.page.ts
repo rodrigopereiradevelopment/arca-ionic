@@ -1,18 +1,21 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import { MERCADOS_MAP, MERCADOS_COORDS } from '../../constants/mercados';
+import { CarrinhoService } from '../../services/carrinho.service';
+import { environment } from '../../../environments/environment';
 
-const mercadosMaisBaratos = Object.entries(MERCADOS_COORDS).map(([id, coords]) => ({
-  id: Number(id),
-  nome: MERCADOS_MAP[Number(id)]?.nome ?? 'Mercado',
-  lat: coords.lat,
-  lng: coords.lng,
-  preco: "R$ --"
-}));
+interface MercadoMapa {
+  id: number;
+  nome: string;
+  lat: number;
+  lng: number;
+  preco: string;
+  precoNum: number;
+}
 
 @Component({
   selector: 'app-mapa-rotas',
@@ -22,18 +25,65 @@ const mercadosMaisBaratos = Object.entries(MERCADOS_COORDS).map(([id, coords]) =
   imports: [CommonModule, RouterModule, IonContent]
 })
 export class MapaRotasPage implements OnInit, AfterViewInit {
+  private carrinhoService = inject(CarrinhoService);
 
   map: any;
   routingControl: any = null;
   listaVisivel = false;
-  mercados = mercadosMaisBaratos;
   origemUsuario: any = null;
+  carregando = false;
 
-  constructor() {}
+  mercados: MercadoMapa[];
+
+  constructor() {
+    this.mercados = Object.entries(MERCADOS_COORDS).map(([id, coords]) => ({
+      id: Number(id),
+      nome: MERCADOS_MAP[Number(id)]?.nome ?? 'Mercado',
+      lat: coords.lat,
+      lng: coords.lng,
+      preco: 'R$ --',
+      precoNum: 0,
+    }));
+  }
+
   ngOnInit() {}
 
   ngAfterViewInit() {
+    this.carregarPrecos();
     setTimeout(() => this.iniciarMapa(), 300);
+  }
+
+  private async carregarPrecos() {
+    const itens = this.carrinhoService.lista;
+    if (itens.length === 0) return;
+
+    this.carregando = true;
+    try {
+      const payload = itens.map(i => ({ id: i.id, nome: i.nome, quantidade: i.quantidade || 1 }));
+      const res = await fetch(`${environment.apiUrl}/api/comparar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ produtos: payload }),
+      });
+      const data = await res.json();
+      if (data.sucesso && data.mercados) {
+        const precoPorId: Record<number, number> = {};
+        data.mercados.forEach((m: any) => { precoPorId[m.id] = m.total; });
+
+        this.mercados.forEach(m => {
+          const total = precoPorId[m.id];
+          if (total && total > 0) {
+            m.precoNum = total;
+            m.preco = `R$ ${total.toFixed(2)}`;
+          }
+        });
+        this.mercados.sort((a, b) => a.precoNum - b.precoNum);
+      }
+    } catch {
+      /* fallback — R$ -- */
+    } finally {
+      this.carregando = false;
+    }
   }
 
   iniciarMapa() {
@@ -79,6 +129,12 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
         .bindPopup(`<b>${mercado.nome}</b><br>${mercado.preco}`)
         .on('click', () => this.tracarRota(origem, destino));
     });
+
+    if (this.mercados.length > 0 && this.mercados[0].precoNum > 0) {
+      const melhor = this.mercados[0];
+      const destino = L.latLng(melhor.lat, melhor.lng);
+      setTimeout(() => this.tracarRota(origem, destino), 500);
+    }
   }
 
   tracarRota(origem: any, destino: any) {
