@@ -31,7 +31,9 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
   routingControl: any = null;
   listaVisivel = false;
   origemUsuario: any = null;
-  carregando = false;
+  carregando = true;
+  private markers: L.Marker[] = [];
+  private aguardandoLocalizacao = true;
 
   mercados: MercadoMapa[];
 
@@ -55,9 +57,8 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
 
   private async carregarPrecos() {
     const itens = this.carrinhoService.lista;
-    if (itens.length === 0) return;
+    if (itens.length === 0) { this.carregando = false; return; }
 
-    this.carregando = true;
     try {
       const payload = itens.map(i => ({ id: i.id, nome: i.nome, quantidade: i.quantidade || 1 }));
       const res = await fetch(`${environment.apiUrl}/api/comparar`, {
@@ -77,13 +78,27 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
             m.preco = `R$ ${total.toFixed(2)}`;
           }
         });
-        this.mercados.sort((a, b) => a.precoNum - b.precoNum);
+        this.mercados.sort((a, b) => {
+          if (a.precoNum === 0 && b.precoNum === 0) return 0;
+          if (a.precoNum === 0) return 1;
+          if (b.precoNum === 0) return -1;
+          return a.precoNum - b.precoNum;
+        });
+
+        this.atualizarMarcadores();
       }
     } catch {
-      /* fallback — R$ -- */
+      /* fallback */
     } finally {
       this.carregando = false;
     }
+  }
+
+  private atualizarMarcadores() {
+    this.markers.forEach((marker, i) => {
+      const m = this.mercados[i];
+      if (m) marker.setPopupContent(`<b>${m.nome}</b><br>${m.preco}`);
+    });
   }
 
   iniciarMapa() {
@@ -102,6 +117,7 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
     this.origemUsuario = e.latlng;
     this.map.setView(e.latlng, 15);
     L.marker(e.latlng).addTo(this.map).bindPopup("Sua Localização").openPopup();
+    this.aguardandoLocalizacao = false;
     this.adicionarMarcadores(e.latlng);
   }
 
@@ -110,10 +126,12 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
     const padrao = L.latLng(-22.4400, -46.9650);
     this.origemUsuario = padrao;
     L.marker(padrao).addTo(this.map).bindPopup("Partida Padrão (Mogi Mirim)").openPopup();
+    this.aguardandoLocalizacao = false;
     this.adicionarMarcadores(padrao);
   }
 
   adicionarMarcadores(origem: any) {
+    this.markers = [];
     const marketIcon = L.icon({
       iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -122,18 +140,19 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
       popupAnchor: [1, -34],
       shadowSize: [41, 41]
     });
+
     this.mercados.forEach(mercado => {
       const destino = L.latLng(mercado.lat, mercado.lng);
-      L.marker(destino, { icon: marketIcon })
+      const marker = L.marker(destino, { icon: marketIcon })
         .addTo(this.map)
         .bindPopup(`<b>${mercado.nome}</b><br>${mercado.preco}`)
         .on('click', () => this.tracarRota(origem, destino));
+      this.markers.push(marker);
     });
 
     if (this.mercados.length > 0 && this.mercados[0].precoNum > 0) {
       const melhor = this.mercados[0];
-      const destino = L.latLng(melhor.lat, melhor.lng);
-      setTimeout(() => this.tracarRota(origem, destino), 500);
+      setTimeout(() => this.tracarRota(origem, L.latLng(melhor.lat, melhor.lng)), 500);
     }
   }
 
@@ -145,10 +164,8 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
       this.map.removeControl(this.routingControl);
     }
 
-    const dest = L.latLng(destino.lat, destino.lng);
-
     this.routingControl = (L as any).Routing.control({
-      waypoints: [org, dest],
+      waypoints: [org, destino],
       routeWhileDragging: false,
       showAlternatives: false,
       collapsed: false
