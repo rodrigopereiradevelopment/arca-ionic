@@ -49,6 +49,94 @@ ion-content {
   }
 }
 
+.total {
+  text-align: center;
+  padding: 16px;
+  background: var(--arca-surface);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px var(--arca-shadow-lg);
+
+  small { display: block; color: var(--arca-text-secondary); font-size: 13px; margin-bottom: 4px; }
+  strong { font-size: 22px; color: var(--arca-tertiary); }
+}
+
+.historico-section {
+  margin-top: 8px;
+}
+
+.btn-historico-toggle {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 10px;
+  background: var(--arca-surface);
+  color: var(--arca-text);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px var(--arca-shadow-md);
+
+  .seta { font-size: 12px; margin-left: 8px; }
+}
+
+.historico-body {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.historico-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--arca-surface);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px var(--arca-shadow-md);
+  gap: 10px;
+
+  .historico-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    strong { font-size: 14px; color: var(--arca-text); }
+    small { font-size: 12px; color: var(--arca-text-secondary); }
+  }
+
+  .historico-acoes {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    .btn-restaurar {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 20px;
+      background: var(--arca-tertiary);
+      color: var(--arca-text-white);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-excluir {
+      padding: 6px 8px;
+      border: none;
+      border-radius: 20px;
+      background: transparent;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
+}
+
 .botoes-fixos {
   position: fixed;
   bottom: 0;
@@ -63,7 +151,7 @@ ion-content {
   box-sizing: border-box;
   box-shadow: 0 -2px 8px var(--arca-shadow-md);
 
-  .btn-voltar, .btn-comparar {
+  .btn-voltar, .btn-comparar, .btn-salvar {
     flex: 1;
     padding: 14px;
     border-radius: 25px;
@@ -84,5 +172,10 @@ ion-content {
   .btn-comparar {
     background: var(--arca-tertiary);
     color: var(--arca-text-white);
+  }
+
+  .btn-salvar {
+    background: var(--arca-fav-bg);
+    color: var(--arca-tertiary);
   }
 }

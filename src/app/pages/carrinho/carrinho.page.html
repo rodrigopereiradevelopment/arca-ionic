@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
   <div class="container">
 
-    <div *ngIf="produtos.length === 0" class="vazio">
+    <div *ngIf="produtos.length === 0 && !carregandoHistorico && historico.length === 0" class="vazio">
       <p>Sua lista está vazia.</p>
     </div>
 
@@ -9,19 +9,16 @@
       <img [src]="produto.img" [alt]="produto.nome" class="img-produto">
       <div class="info">
         <span class="nome">{{ produto.nome }}</span>
-
-        <!-- ✨ MUDANÇA: mostra subtotal (preço × quantidade) -->
         <span class="preco" *ngIf="produto.menorPreco > 0">
           R$ {{ (produto.menorPreco * produto.quantidade).toFixed(2) }}
           — {{ produto.mercadoMaisBarato }}
           <small>(R$ {{ produto.menorPreco.toFixed(2) }} cada)</small>
         </span>
-
       </div>
       <div class="quantidade">
         <button (click)="decrementar(produto.id)" aria-label="Remover">−</button>
         <span>{{ produto.quantidade }}</span>
-        <button (click)="incrementar(produto.id)">+</button>
+        <button (click)="incrementar(produto.id)" aria-label="Adicionar">+</button>
       </div>
       <button class="btn-remover" (click)="remover(produto.id)" aria-label="Excluir">🗑️</button>
     </div>
@@ -31,16 +28,42 @@
     </div>
 
     <div class="total" *ngIf="produtos.length > 0">
-      <!-- ✨ MUDANÇA: mostra resumo de itens -->
       <small>{{ carrinhoService.quantidadeTotal }} itens em {{ carrinhoService.quantidadeProdutos }} produto(s)</small>
       <span>Total estimado:</span>
       <strong>R$ {{ total.toFixed(2) }}</strong>
+    </div>
+
+    <!-- HISTÓRICO -->
+    <div class="historico-section" *ngIf="auth.logado">
+      <button class="btn-historico-toggle" (click)="toggleHistorico()">
+        <span aria-hidden="true">📋</span> Histórico de Listas
+        <span class="seta">{{ historicoAberto ? '▲' : '▼' }}</span>
+      </button>
+
+      <div class="historico-body" *ngIf="historicoAberto">
+        <div *ngIf="carregandoHistorico" class="loading">Carregando...</div>
+        <div *ngIf="!carregandoHistorico && historico.length === 0" class="vazio-historico">
+          Nenhuma lista salva ainda.
+        </div>
+        <div class="historico-item" *ngFor="let h of historico">
+          <div class="historico-info">
+            <strong>{{ h.nome }}</strong>
+            <small>{{ h.itens.length }} item(ns) — {{ h.created_at | date:'dd/MM/yyyy HH:mm' }}</small>
+            <small *ngIf="h.total_estimado > 0">R$ {{ h.total_estimado.toFixed(2) }}</small>
+          </div>
+          <div class="historico-acoes">
+            <button class="btn-restaurar" (click)="restaurarLista(h)" aria-label="Restaurar lista">↩ Restaurar</button>
+            <button class="btn-excluir" (click)="excluirLista(h)" aria-label="Excluir lista">🗑️</button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
 
   <div class="botoes-fixos">
     <a routerLink="/pesquisar-produtos" class="btn-voltar">Voltar</a>
+    <button class="btn-salvar" (click)="salvarLista()" *ngIf="produtos.length > 0 && auth.logado" aria-label="Salvar lista">💾 Salvar</button>
     <button class="btn-limpar" (click)="limparTudo()" *ngIf="produtos.length > 0">Limpar</button>
     <a routerLink="/comparar" class="btn-comparar" (click)="compararPrecos()">Comparar</a>
   </div>

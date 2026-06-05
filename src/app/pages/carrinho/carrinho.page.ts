@@ -1,10 +1,11 @@
-
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonContent, ToastController } from '@ionic/angular/standalone';
 import { CarrinhoService, ItemLista } from '../../services/carrinho.service';
 import { ComparacaoService } from '../../services/comparacao.service';
+import { AuthService } from '../../services/auth.service';
+import { HistoricoListasService, HistoricoLista } from '../../services/historico-listas.service';
 
 @Component({
   selector: 'app-carrinho',
@@ -14,25 +15,26 @@ import { ComparacaoService } from '../../services/comparacao.service';
   imports: [CommonModule, RouterModule, IonContent]
 })
 export class CarrinhoPage {
-  produtos: ItemLista[] = [];
+  private toastCtrl = inject(ToastController);
+  private comparacaoService = inject(ComparacaoService);
+  protected auth = inject(AuthService);
+  protected carrinhoService = inject(CarrinhoService);
+  private historicoSvc = inject(HistoricoListasService);
 
-  constructor(
-    public carrinhoService: CarrinhoService,  // ✨ Mudou de private para public
-    private comparacaoService: ComparacaoService,
-    private toastCtrl: ToastController
-  ) {}
+  produtos: ItemLista[] = [];
+  historico: HistoricoLista[] = [];
+  historicoAberto = false;
+  carregandoHistorico = false;
 
   ionViewWillEnter() {
     this.produtos = this.carrinhoService.lista;
   }
 
-  // ✨ NOVO: Aumentar quantidade
   incrementar(id: number) {
     this.carrinhoService.incrementar(id);
     this.produtos = this.carrinhoService.lista;
   }
 
-  // ✨ NOVO: Diminuir quantidade
   decrementar(id: number) {
     this.carrinhoService.decrementar(id);
     this.produtos = this.carrinhoService.lista;
@@ -48,37 +50,74 @@ export class CarrinhoPage {
     return this.carrinhoService.total;
   }
 
-  // ✨ MELHORADO: Comparação com quantidade
   compararPrecos() {
     this.comparacaoService.limpar();
-    
-    // Passa produtos COM quantidade
     this.produtos.forEach(p => {
       this.comparacaoService.adicionar({
-        id: p.id,
-        nome: p.nome,
-        img: p.img,
-        menorPreco: p.menorPreco,
-        mercadoMaisBarato: p.mercadoMaisBarato,
-        quantidade: p.quantidade  // ✨ Envia quantidade!
+        id: p.id, nome: p.nome, img: p.img,
+        menorPreco: p.menorPreco, mercadoMaisBarato: p.mercadoMaisBarato,
+        quantidade: p.quantidade
       });
-    });
-    
-    console.log('✅ Comparação iniciada com quantidades:');
-    this.produtos.forEach(p => {
-      console.log(`  ${p.nome}: ${p.quantidade}x`);
     });
   }
 
+  async salvarLista() {
+    const salva = await this.historicoSvc.salvar('Lista salva', this.produtos);
+    if (salva) {
+      this.historico.unshift(salva);
+      this.mostrarToast('Lista salva! 💾', 'success');
+    } else {
+      this.mostrarToast('Erro ao salvar lista', 'danger');
+    }
+  }
+
+  async restaurarLista(h: HistoricoLista) {
+    const ok = await this.historicoSvc.restaurar(h.id);
+    if (ok) {
+      this.carrinhoService.carregarDoServidor();
+      setTimeout(() => {
+        this.produtos = this.carrinhoService.lista;
+        this.mostrarToast('Lista restaurada! ↩', 'success');
+      }, 500);
+    } else {
+      this.mostrarToast('Erro ao restaurar lista', 'danger');
+    }
+  }
+
+  async excluirLista(h: HistoricoLista) {
+    const ok = await this.historicoSvc.excluir(h.id);
+    if (ok) {
+      this.historico = this.historico.filter(x => x.id !== h.id);
+      this.mostrarToast('Lista excluída', 'medium');
+    }
+  }
+
+  async toggleHistorico() {
+    this.historicoAberto = !this.historicoAberto;
+    if (this.historicoAberto && this.historico.length === 0) {
+      await this.carregarHistorico();
+    }
+  }
+
+  async carregarHistorico() {
+    this.carregandoHistorico = true;
+    this.historico = await this.historicoSvc.listar();
+    this.carregandoHistorico = false;
+  }
+
   async limparTudo() {
+    if (this.produtos.length > 0 && this.auth.logado) {
+      await this.historicoSvc.salvar('Lista salva', this.produtos);
+    }
     this.carrinhoService.limpar();
     this.comparacaoService.limpar();
     this.produtos = [];
-    const t = await this.toastCtrl.create({ 
-      message: 'Lista limpa!', 
-      duration: 2000, 
-      color: 'medium', 
-      position: 'top' 
+    this.mostrarToast('Lista limpa!', 'medium');
+  }
+
+  private async mostrarToast(message: string, color: string) {
+    const t = await this.toastCtrl.create({
+      message, duration: 2000, color, position: 'top'
     });
     await t.present();
   }
