@@ -26,6 +26,9 @@ interface MercadoComPreco {
   produtos: ProdutoDetalhe[];
 }
 
+const CACHE_KEY = 'arca_compare_cache';
+const CACHE_TTL = 30 * 60 * 1000; // 30 minutos
+
 @Component({
   selector: 'app-comparar',
   templateUrl: './comparar.page.html',
@@ -42,31 +45,50 @@ export class CompararPage {
 
   async ionViewWillEnter() {
     this.produtosSelecionados = this.comparacaoService.getProdutos();
-    console.log('DEBUG ionViewWillEnter - produtos:', this.produtosSelecionados.length);
     if (this.produtosSelecionados.length === 0) {
       this.mostrarToast('Nenhum produto selecionado', 'warning');
-      this.loading = false;
       return;
     }
-    await this.calcularCesta();
+
+    const cache = this.lerCache();
+    const payload = this.produtosSelecionados.map(p => ({
+      id: p.id, nome: p.nome, quantidade: p.quantidade || 1
+    }));
+    const hash = this.hashPayload(payload);
+
+    if (cache && cache.hash === hash && Date.now() - cache.timestamp < CACHE_TTL) {
+      this.mercados = cache.mercados;
+      this.mostrarToast('Resultados da comparação', 'success');
+      return;
+    }
+
+    await this.calcularCesta(payload, hash);
   }
 
-  // NOVO: Usa o endpoint /api/comparar em lote (UMA única chamada)
-  async calcularCesta() {
+  private hashPayload(payload: any[]): string {
+    return payload.map(p => `${p.id}x${p.quantidade}`).join('|');
+  }
+
+  private lerCache(): { hash: string; timestamp: number; mercados: MercadoComPreco[] } | null {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private salvarCache(hash: string, mercados: MercadoComPreco[]) {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ hash, timestamp: Date.now(), mercados }));
+    } catch {}
+  }
+
+  async calcularCesta(produtosPayload: any[], hash: string) {
     this.loading = true;
     this.mercados = [];
-    
+
     try {
-      // Prepara a lista de produtos com quantidades
-      const produtosPayload = this.produtosSelecionados.map(p => ({
-        id: p.id,
-        nome: p.nome,
-        quantidade: p.quantidade || 1
-      }));
-
-      console.log('📦 Enviando para comparação:', produtosPayload);
-
-      // Única chamada à API
       const response = await fetch(`${environment.apiUrl}/api/comparar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -74,15 +96,11 @@ export class CompararPage {
       });
 
       const data = await response.json();
-      console.log('📊 Resposta da API:', data);
 
       if (data.sucesso && data.mercados) {
-        // Mapeia a resposta para o formato da interface
         this.mercados = data.mercados.map((m: any, i: number) => {
-          // Busca a logo pelo ID do mercado
           const mercadoInfo = MERCADOS_MAP[m.id];
-          
-          // Processa os produtos para o formato esperado
+
           const produtosDetalhe: ProdutoDetalhe[] = m.produtos.map((prod: any) => ({
             id: prod.id || 0,
             nome: prod.nome,
@@ -105,31 +123,25 @@ export class CompararPage {
             produtos: produtosDetalhe
           };
         });
-        
-        console.log('✅ Mercados processados:', this.mercados.length);
+
+        this.salvarCache(hash, this.mercados);
       } else {
-        console.error('❌ Erro na resposta da API:', data);
         this.mostrarToast('Erro ao comparar preços', 'danger');
       }
-      
-    } catch (error) {
-      console.error('❌ Erro ao chamar /api/comparar:', error);
+    } catch {
       this.mostrarToast('Erro de conexão com o servidor', 'danger');
     } finally {
       this.loading = false;
     }
   }
 
-  // Remove os métodos antigos (buscarPreco não é mais necessário)
-  // async buscarPreco(rota: string, params: string): Promise<number> { ... }  // REMOVA ESTE
-
   limparSelecao() {
     this.comparacaoService.limpar();
     this.mercados = [];
     this.produtosSelecionados = [];
+    localStorage.removeItem(CACHE_KEY);
   }
 
-  // Expande/colapsa o card
   toggleExpandir(mercado: MercadoComPreco) {
     mercado.expandido = !mercado.expandido;
   }
