@@ -1,9 +1,9 @@
 ion-content {
-  --background: #00E3BD;
+  --background: var(--arca-primary);
 }
 
 ion-footer {
-  --background: #00E3BD;
+  --background: var(--arca-primary);
 }
 
 .perfil {
@@ -11,7 +11,7 @@ ion-footer {
   align-items: center;
   gap: 12px;
   padding: 60px 16px 20px;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid var(--arca-shadow-md);
   margin-bottom: 10px;
 
   .avatar {
@@ -25,8 +25,8 @@ ion-footer {
     flex-direction: column;
     gap: 2px;
 
-    strong { font-size: 15px; color: #333; }
-    .email { font-size: 11px; color: #555; }
+    strong { font-size: 15px; color: var(--arca-text); }
+    .email { font-size: 11px; color: var(--arca-text-medium); }
   }
 }
 
@@ -38,9 +38,9 @@ ion-footer {
   font-weight: bold;
   width: fit-content;
 
-  &.tipo-usuario { background: #e3f2fd; color: #1565c0; }
-  &.tipo-moderador { background: #fff3cd; color: #856404; }
-  &.tipo-admin { background: #f3e5f5; color: #6a1b9a; }
+  &.tipo-usuario { background: var(--arca-info-bg); color: var(--arca-info-text); }
+  &.tipo-moderador { background: var(--arca-warning-bg); color: var(--arca-warning-text); }
+  &.tipo-admin { background: var(--arca-admin-bg); color: var(--arca-admin-text); }
 }
 
 .menu-list {
@@ -54,10 +54,10 @@ ion-footer {
     padding: 10px 12px;
     border-radius: 8px;
     text-decoration: none;
-    color: #333;
+    color: var(--arca-text);
     transition: background 0.2s;
 
-    &:hover { background: rgba(0,0,0,0.07); }
+    &:hover { background: var(--arca-shadow-sm); }
 
     img {
       width: 28px; height: 28px;
@@ -75,7 +75,7 @@ ion-footer {
   span {
     font-size: 10px;
     font-weight: bold;
-    color: #555;
+    color: var(--arca-text-medium);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
@@ -83,7 +83,7 @@ ion-footer {
 
 .menu-footer {
   padding: 10px 16px;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid var(--arca-shadow-md);
 
   .btn-sair {
     display: flex;
@@ -98,8 +98,8 @@ ion-footer {
     border-radius: 8px;
 
     img { width: 24px; height: 24px; }
-    span { font-size: 15px; color: #333; font-weight: 500; }
+    span { font-size: 15px; color: var(--arca-text); font-weight: 500; }
 
-    &:hover { background: rgba(0,0,0,0.05); }
+    &:hover { background: var(--arca-shadow-xs); }
   }
 }

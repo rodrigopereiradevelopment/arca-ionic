@@ -1,11 +1,11 @@
 :host {
-  --cor-primaria: #00BF9F;
-  --cor-secundaria: #39e6c2;
+  --cor-primaria: var(--arca-secondary);
+  --cor-secundaria: var(--arca-primary);
   --cor-fundo: #ffffff;
-  --cor-texto-escuro: #333;
-  --cor-input-fundo: #00D5B2;
-  --sombra-card: 0 8px 15px rgba(0, 0, 0, 0.2);
-  --sombra-input: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  --cor-texto-escuro: var(--arca-text);
+  --cor-input-fundo: var(--arca-secondary);
+  --sombra-card: 0 8px 15px var(--arca-shadow-xl);
+  --sombra-input: 5px 5px 10px var(--arca-overlay);
 }
 
 ion-content {
@@ -112,7 +112,7 @@ fieldset {
 
 small {
   display: block;
-  color: #666;
+  color: var(--arca-text-secondary);
   font-size: 12px;
   margin-top: -10px;
   margin-bottom: 12px;
@@ -131,7 +131,7 @@ small {
   margin-bottom: 12px;
 
   ion-range {
-    --bar-background: #ccc;
+    --bar-background: var(--arca-border-input);
     --bar-background-active: var(--cor-primaria);
     --knob-background: var(--cor-primaria);
   }
@@ -145,7 +145,7 @@ small {
 
   .btn-primary {
     --background: var(--cor-primaria);
-    --color: white;
+    --color: var(--arca-text-white);
     --border-radius: 15px;
     font-weight: bold;
   }

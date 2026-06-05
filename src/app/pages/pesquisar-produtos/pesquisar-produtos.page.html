@@ -4,13 +4,13 @@
   <div class="topo">
     <a routerLink="/home" class="btn-voltar">&#8592;</a>
     <div class="search-bar">
-      <span class="search-icon">🔍</span>
+      <span class="search-icon"><span aria-hidden="true">🔍</span></span>
       <input
         type="text"
         [(ngModel)]="busca"
         (input)="handleSearch($event)"
         placeholder="Buscar produto ou código de barras...">
-      <button *ngIf="busca" class="btn-limpar-busca" (click)="busca = ''">✕</button>
+      <button *ngIf="busca" class="btn-limpar-busca" (click)="busca = ''" aria-label="Fechar">✕</button>
     </div>
   </div>
 
@@ -45,7 +45,7 @@
     <div class="produto-card" *ngFor="let p of produtosFiltrados">
 
       <!-- CARD PRINCIPAL -->
-      <div class="card-main" (click)="abrirModal(p)">
+      <div class="card-main" (click)="abrirModal(p)" role="button" tabindex="0">
         <img [src]="p.img" [alt]="p.nome" class="prod-img"
           onerror="this.src='assets/img/Produto1.png'">
 
@@ -102,12 +102,12 @@
   </div>
 
   <!-- MODAL PRODUTO -->
-  <div class="modal-overlay" *ngIf="modalProduto" (click)="modalProduto = null"></div>
+  <div class="modal-overlay" *ngIf="modalProduto" (click)="modalProduto = null" role="button" tabindex="0"></div>
   <div class="modal-produto" *ngIf="modalProduto">
 
     <div class="modal-handle"></div>
 
-    <button class="btn-fechar-modal" (click)="modalProduto = null">✕</button>
+    <button class="btn-fechar-modal" (click)="modalProduto = null" aria-label="Fechar">✕</button>
 
     <img [src]="modalProduto.img" [alt]="modalProduto.nome" class="modal-img"
       onerror="this.src='assets/img/Produto1.png'">
@@ -118,7 +118,7 @@
       <span class="ean">EAN: {{ modalProduto.ean }}</span>
     </div>
 
-    <h3 class="modal-titulo-precos">💰 Comparativo de Preços</h3>
+    <h3 class="modal-titulo-precos"><span aria-hidden="true">💰</span> Comparativo de Preços</h3>
 
     <div class="modal-precos">
       <div class="preco-row" *ngFor="let pr of modalProduto.precos">
@@ -131,7 +131,7 @@
     </div>
 
     <!-- ✨ SEÇÃO DE QUANTIDADE (AGORA DENTRO DO MODAL!) -->
-    <h3 class="modal-titulo-quantidade">📦 Quantidade</h3>
+    <h3 class="modal-titulo-quantidade"><span aria-hidden="true">📦</span> Quantidade</h3>
 
     <div class="modal-quantidade">
       <div class="quantidade-controle">

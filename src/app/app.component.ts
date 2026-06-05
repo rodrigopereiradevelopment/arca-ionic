@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { MenuComponent } from './components/menu/menu.component';
 import { AuthService } from './services/auth.service';
+import { ConfigService } from './services/config.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,10 +18,13 @@ export class AppComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private configService: ConfigService,
     private router: Router
   ) {}
 
   async ngOnInit() {
+    this.configService.init();
+
     // Intro overlay
     setTimeout(() => {
       const overlay = document.getElementById('intro-overlay');

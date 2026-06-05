@@ -12,7 +12,7 @@
         (change)="onImagemSelecionada($event)" hidden>
       <img [src]="imagemPreview || 'assets/img/usuario.png'"
         class="avatar" alt="Avatar">
-      <span class="avatar-edit">📷</span>
+      <span class="avatar-edit"><span aria-hidden="true">📷</span></span>
     </label>
     <h2>{{ authService.usuario?.nome }}</h2>
     <span class="badge-tipo" [class]="'tipo-' + authService.tipo">
@@ -191,11 +191,11 @@
         </div>
 
         <div class="end-acoes">
-          <button (click)="editarEndereco(e)">✏️</button>
+          <button (click)="editarEndereco(e)" aria-label="Editar">✏️</button>
           <button (click)="definirPrincipal(e)"
-            *ngIf="!e.principal">⭐</button>
+            *ngIf="!e.principal" aria-label="Definir como principal">⭐</button>
           <button (click)="excluirEndereco(e)"
-            *ngIf="!e.principal">🗑️</button>
+            *ngIf="!e.principal" aria-label="Excluir">🗑️</button>
         </div>
 
       </div>
@@ -238,7 +238,7 @@
             <span class="slider"></span>
           </label>
           <button class="btn-excluir-alerta"
-            (click)="excluirAlerta(a)">🗑️</button>
+            (click)="excluirAlerta(a)" aria-label="Excluir">🗑️</button>
         </div>
 
       </div>
@@ -311,27 +311,27 @@
 
   <!-- MODAL ENDEREÇO -->
   <div class="modal-overlay" *ngIf="modalEnderecoAberto"
-    (click)="modalEnderecoAberto = false"></div>
+    (click)="modalEnderecoAberto = false" role="button" tabindex="0"></div>
 
   <div class="modal" *ngIf="modalEnderecoAberto">
     <div class="modal-header">
       <h2>{{ editandoEndereco ? '✏️ Editar' : '＋ Novo' }} Endereço</h2>
       <button class="btn-fechar"
-        (click)="modalEnderecoAberto = false">✕</button>
+        (click)="modalEnderecoAberto = false" aria-label="Fechar">✕</button>
     </div>
     <div class="modal-body">
 
       <div class="form-group">
         <label>Apelido <span class="required">*</span></label>
         <input type="text" [(ngModel)]="enderecoForm.apelido"
-          placeholder="Ex: Casa, Trabalho...">
+          placeholder="Ex: Casa, Trabalho..." aria-required="true">
       </div>
 
       <div class="form-group">
         <label>CEP <span class="required">*</span></label>
         <div class="cep-row">
           <input type="text" [(ngModel)]="enderecoForm.cep"
-            placeholder="00000-000" maxlength="9">
+            placeholder="00000-000" maxlength="9" aria-required="true">
           <button class="btn-cep" (click)="buscarCep()"
             [disabled]="buscandoCep">
             {{ buscandoCep ? '...' : 'Buscar' }}
@@ -342,14 +342,14 @@
       <div class="form-group">
         <label>Rua <span class="required">*</span></label>
         <input type="text" [(ngModel)]="enderecoForm.rua"
-          placeholder="Nome da rua">
+          placeholder="Nome da rua" aria-required="true">
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>Número <span class="required">*</span></label>
           <input type="text" [(ngModel)]="enderecoForm.numero"
-            placeholder="123">
+            placeholder="123" aria-required="true">
         </div>
         <div class="form-group">
           <label>Complemento</label>

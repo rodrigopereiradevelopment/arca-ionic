@@ -1,5 +1,5 @@
 ion-content {
-  --background: #f5f5f5;
+  --background: var(--arca-bg);
 }
 
 .container {
@@ -17,7 +17,7 @@ ion-content {
   text-align: center;
   gap: 4px;
   span {
-    color: #666;
+    color: var(--arca-text-secondary);
     font-size: 13px;
     font-style: italic;
     line-height: 1.4;
@@ -25,12 +25,12 @@ ion-content {
 }
 
 .titulo-card {
-  background: #22dbcf;
-  color: white;
+  background: var(--arca-tertiary);
+  color: var(--arca-text-white);
   padding: 15px;
   border-radius: 10px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px var(--arca-shadow-xl);
   h1 { margin: 0; font-size: 1.8em; }
 }
 
@@ -38,8 +38,8 @@ ion-content {
 .mercado-card {
   margin-bottom: 16px;
   border-radius: 12px;
-  background: white;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  background: var(--arca-surface);
+  box-shadow: 0 4px 8px var(--arca-shadow-lg);
   overflow: hidden;
 }
 
@@ -49,7 +49,7 @@ ion-content {
   transition: background 0.2s;
   
   &:hover {
-    background: #f9f9f9;
+    background: var(--arca-bg-subtle);
   }
 }
 
@@ -87,13 +87,13 @@ ion-content {
   .preco { 
     font-size: 1.2em; 
     font-weight: bold; 
-    color: #28a745; 
+    color: var(--arca-preco); 
     flex-shrink: 0;
   }
   
   .expand-icon {
     font-size: 0.8rem;
-    color: #888;
+    color: var(--arca-text-muted);
     margin-left: 4px;
     flex-shrink: 0;
   }
@@ -102,13 +102,13 @@ ion-content {
 .itens-info {
   margin-top: 8px;
   font-size: 0.75rem;
-  color: #666;
+  color: var(--arca-text-secondary);
   padding-left: 8px;
 }
 
 .detalhes-produtos {
-  border-top: 1px solid #eee;
-  background: #fafafa;
+  border-top: 1px solid var(--arca-border-light);
+  background: var(--arca-bg-subtle);
   padding: 12px;
 }
 
@@ -117,7 +117,7 @@ ion-content {
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--arca-border-light);
   
   &:last-child {
     border-bottom: none;
@@ -130,12 +130,12 @@ ion-content {
     
     .item-nome {
       font-size: 0.85rem;
-      color: #333;
+      color: var(--arca-text);
     }
     
     .item-quantidade {
       font-size: 0.75rem;
-      color: #888;
+      color: var(--arca-text-muted);
       min-width: 40px;
     }
   }
@@ -145,13 +145,13 @@ ion-content {
     text-align: right;
     
     .preco-ok {
-      color: #28a745;
+      color: var(--arca-preco);
       font-weight: 500;
       font-size: 0.85rem;
     }
     
     .preco-faltante {
-      color: #dc3545;
+      color: var(--arca-error);
       font-size: 0.7rem;
     }
   }
@@ -165,11 +165,11 @@ ion-content {
   padding: 15px;
   gap: 15px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  background: white;
+  box-shadow: 0 4px 8px var(--arca-shadow-lg);
+  background: var(--arca-surface);
   .img-posicao { width: 40px; height: 40px; object-fit: contain; }
   .img-logo { width: 60px; height: 60px; object-fit: contain; border-radius: 50%; }
-  .preco { font-size: 1.4em; font-weight: bold; color: #333; flex-grow: 1; text-align: right; }
+  .preco { font-size: 1.4em; font-weight: bold; color: var(--arca-text); flex-grow: 1; text-align: right; }
 }
 
 .aviso {
@@ -177,10 +177,10 @@ ion-content {
   flex-direction: column;
   gap: 10px;
   padding: 15px;
-  border: 1px dashed #22dbcf;
-  background: #f0fff0;
+  border: 1px dashed var(--arca-tertiary);
+  background: var(--arca-fav-bg);
   border-radius: 10px;
-  span { font-size: 13px; line-height: 1.4; color: #666; }
+  span { font-size: 13px; line-height: 1.4; color: var(--arca-text-secondary); }
 }
 
 .botoes-fixos {
@@ -191,11 +191,11 @@ ion-content {
   display: flex;
   gap: 10px;
   padding: 12px;
-  background: white;
-  border-top: 1px solid #eee;
+  background: var(--arca-surface);
+  border-top: 1px solid var(--arca-border-light);
   z-index: 1000;
   box-sizing: border-box;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 -2px 8px var(--arca-shadow-md);
 
   .btn-voltar, .btn-imprimir, .btn-rota {
     flex: 1;
@@ -207,9 +207,9 @@ ion-content {
     text-align: center;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px var(--arca-shadow-lg);
   }
-  .btn-voltar { background: #eee; color: #333; }
-  .btn-imprimir { background: #22dbcf; color: white; }
-  .btn-rota { background: #b2ff66; color: #333; }
+  .btn-voltar { background: var(--arca-border-light); color: var(--arca-text); }
+  .btn-imprimir { background: var(--arca-tertiary); color: var(--arca-text-white); }
+  .btn-rota { background: #b2ff66; color: var(--arca-text); }
 }

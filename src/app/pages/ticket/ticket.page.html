@@ -10,7 +10,7 @@
   <!-- LISTA DE TICKETS -->
   <div class="container" *ngIf="!ticketAberto">
 
-    <h1>🎫 Meus Tickets</h1>
+    <h1><span aria-hidden="true">🎫</span> Meus Tickets</h1>
     <p class="subtitulo">Acompanhe seus chamados de suporte.</p>
 
     <!-- FILTROS -->
@@ -27,7 +27,7 @@
 
     <!-- CARDS -->
     <div class="ticket-card" *ngFor="let t of ticketsFiltrados"
-      (click)="abrirTicket(t)">
+      (click)="abrirTicket(t)" role="button" tabindex="0">
 
       <div class="ticket-topo">
         <span class="tipo-label">{{ tipoLabel(t.tipo) }}</span>
@@ -49,7 +49,7 @@
     </div>
 
     <div class="vazio" *ngIf="ticketsFiltrados.length === 0">
-      <span class="vazio-icone">🎫</span>
+      <span class="vazio-icone"><span aria-hidden="true">🎫</span></span>
       <p>Nenhum ticket encontrado.</p>
       <button class="btn-abrir" (click)="abrirNovoTicket()">
         ＋ Abrir Novo Ticket
@@ -99,7 +99,7 @@
         [(ngModel)]="novaMensagem"
         placeholder="Digite sua mensagem..."
         (keyup.enter)="enviarMensagem()">
-      <button (click)="enviarMensagem()">➤</button>
+      <button (click)="enviarMensagem()" aria-label="Enviar">➤</button>
     </div>
 
     <div class="ticket-resolvido"
@@ -111,20 +111,20 @@
 
   <!-- MODAL OVERLAY -->
   <div class="modal-overlay" *ngIf="modalAberto"
-    (click)="modalAberto = false"></div>
+    (click)="modalAberto = false" role="button" tabindex="0"></div>
 
   <!-- MODAL NOVO TICKET -->
   <div class="modal" *ngIf="modalAberto">
     <div class="modal-header">
-      <h2>🎫 Novo Ticket</h2>
-      <button class="btn-fechar" (click)="modalAberto = false">✕</button>
+      <h2><span aria-hidden="true">🎫</span> Novo Ticket</h2>
+      <button class="btn-fechar" (click)="modalAberto = false" aria-label="Fechar">✕</button>
     </div>
 
     <div class="modal-body">
 
       <div class="form-group">
         <label>Tipo de Chamado <span class="required">*</span></label>
-        <select [(ngModel)]="novoTicket.tipo">
+        <select [(ngModel)]="novoTicket.tipo" aria-required="true">
           <option *ngFor="let t of tipos" [value]="t.value">
             {{ t.label }}
           </option>
@@ -134,24 +134,24 @@
       <div class="form-group">
         <label>Título <span class="required">*</span></label>
         <input type="text" [(ngModel)]="novoTicket.titulo"
-          placeholder="Resumo do problema...">
+          placeholder="Resumo do problema..." aria-required="true">
       </div>
 
       <div class="form-group">
         <label>Descrição <span class="required">*</span></label>
         <textarea [(ngModel)]="novoTicket.descricao"
           placeholder="Descreva detalhadamente..."
-          rows="4"></textarea>
+          rows="4" aria-required="true"></textarea>
       </div>
 
       <!-- FOTO (só para preço/mercado) -->
       <div class="form-group" *ngIf="precisaFoto">
-        <label>📷 Foto como Evidência</label>
+        <label><span aria-hidden="true">📷</span> Foto como Evidência</label>
         <label class="upload-area">
           <input type="file" accept="image/*"
             (change)="onImagemSelecionada($event)" hidden>
           <div *ngIf="!imagemPreview" class="upload-placeholder">
-            <span>📷 Toque para anexar foto</span>
+            <span><span aria-hidden="true">📷</span> Toque para anexar foto</span>
             <span class="upload-hint">Foto da etiqueta ou prateleira</span>
           </div>
           <img *ngIf="imagemPreview" [src]="imagemPreview"

@@ -1,27 +1,27 @@
-ion-content { --background: #f5f5f5; }
+ion-content { --background: var(--arca-bg); }
 
 .topo {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 80px;
-  background: #39e6c2;
+  background: var(--arca-primary);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px var(--arca-shadow-md);
 
   .btn-voltar {
     position: absolute; left: 16px;
-    font-size: 24px; color: white;
+    font-size: 24px; color: var(--arca-text-white);
     text-decoration: none; font-weight: bold;
   }
   .logo {
     width: 55px; height: 55px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px var(--arca-shadow-xl);
   }
 }
 
@@ -30,9 +30,9 @@ ion-content { --background: #f5f5f5; }
   max-width: 700px;
   margin: 0 auto;
 
-  h1 { font-size: 20px; color: #333; margin-bottom: 4px; }
-  .subtitulo { font-size: 13px; color: #888; margin-bottom: 16px; }
-  .contagem { font-size: 12px; color: #aaa; margin-bottom: 12px; }
+  h1 { font-size: 20px; color: var(--arca-text); margin-bottom: 4px; }
+  .subtitulo { font-size: 13px; color: var(--arca-text-muted); margin-bottom: 16px; }
+  .contagem { font-size: 12px; color: var(--arca-text-lighter); margin-bottom: 12px; }
 }
 
 .painel-filtros {
@@ -44,26 +44,26 @@ ion-content { --background: #f5f5f5; }
   .input-busca {
     flex: 1; min-width: 160px;
     padding: 11px 14px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--arca-border);
     border-radius: 10px;
     font-size: 14px;
-    background: white;
+    background: var(--arca-surface);
     outline: none;
   }
 
   .select-perfil {
     padding: 11px 14px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--arca-border);
     border-radius: 10px;
     font-size: 14px;
-    background: white;
+    background: var(--arca-surface);
     outline: none;
   }
 
   .btn-novo {
     padding: 11px 20px;
-    background: #00BF9F;
-    color: white;
+    background: var(--arca-secondary);
+    color: var(--arca-text-white);
     border: none;
     border-radius: 10px;
     font-weight: bold;
@@ -73,11 +73,11 @@ ion-content { --background: #f5f5f5; }
 }
 
 .usuario-card {
-  background: white;
+  background: var(--arca-surface);
   border-radius: 14px;
   padding: 16px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px var(--arca-shadow-sm);
 
   .card-topo {
     display: flex;
@@ -88,8 +88,8 @@ ion-content { --background: #f5f5f5; }
     .avatar {
       width: 44px; height: 44px;
       border-radius: 50%;
-      background: #39e6c2;
-      color: white;
+      background: var(--arca-primary);
+      color: var(--arca-text-white);
       font-size: 20px;
       font-weight: bold;
       display: flex;
@@ -104,9 +104,9 @@ ion-content { --background: #f5f5f5; }
       flex-direction: column;
       gap: 2px;
 
-      strong { font-size: 15px; color: #333; }
-      .email { font-size: 12px; color: #888; }
-      .data { font-size: 11px; color: #bbb; }
+      strong { font-size: 15px; color: var(--arca-text); }
+      .email { font-size: 12px; color: var(--arca-text-muted); }
+      .data { font-size: 11px; color: var(--arca-text-lightest); }
     }
 
     .badges {
@@ -124,20 +124,20 @@ ion-content { --background: #f5f5f5; }
     font-weight: bold;
     white-space: nowrap;
 
-    &.badge-admin { background: #f3e5f5; color: #6a1b9a; }
-    &.badge-mod { background: #e3f2fd; color: #1565c0; }
-    &.badge-user { background: #f5f5f5; color: #555; }
-    &.badge-ativo { background: #d4edda; color: #155724; }
-    &.badge-bloqueado { background: #f8d7da; color: #721c24; }
+    &.badge-admin { background: var(--arca-admin-bg); color: var(--arca-admin-text); }
+    &.badge-mod { background: var(--arca-info-bg); color: var(--arca-info-text); }
+    &.badge-user { background: var(--arca-bg); color: var(--arca-text-medium); }
+    &.badge-ativo { background: var(--arca-success-bg); color: var(--arca-success-text); }
+    &.badge-bloqueado { background: var(--arca-danger-bg); color: var(--arca-danger-text); }
   }
 
   .card-acoes {
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid var(--arca-border-lighter);
     padding-top: 12px;
 
     .label-acoes {
       font-size: 11px;
-      color: #aaa;
+      color: var(--arca-text-lighter);
       font-weight: 600;
       display: block;
       margin-bottom: 8px;
@@ -151,19 +151,19 @@ ion-content { --background: #f5f5f5; }
       button {
         flex: 1;
         padding: 8px;
-        border: 2px solid #ddd;
+        border: 2px solid var(--arca-border);
         border-radius: 8px;
         font-size: 12px;
         font-weight: bold;
-        color: #888;
-        background: white;
+        color: var(--arca-text-muted);
+        background: var(--arca-surface);
         cursor: pointer;
         transition: all 0.2s;
 
         &.ativo {
-          border-color: #00BF9F;
-          background: #00BF9F;
-          color: white;
+          border-color: var(--arca-secondary);
+          background: var(--arca-secondary);
+          color: var(--arca-text-white);
         }
       }
     }
@@ -182,15 +182,15 @@ ion-content { --background: #f5f5f5; }
         cursor: pointer;
       }
 
-      .btn-status { background: #fff3cd; color: #856404; }
-      .btn-excluir { background: #f8d7da; color: #721c24; }
+      .btn-status { background: var(--arca-warning-bg); color: var(--arca-warning-text); }
+      .btn-excluir { background: var(--arca-danger-bg); color: var(--arca-danger-text); }
     }
   }
 }
 
 .sem-resultados {
   text-align: center;
-  color: #999;
+  color: var(--arca-text-light);
   font-size: 14px;
   padding: 40px 0;
 }
@@ -198,14 +198,14 @@ ion-content { --background: #f5f5f5; }
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: var(--arca-overlay);
   z-index: 1000;
 }
 
 .modal {
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  background: white;
+  background: var(--arca-surface);
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   z-index: 1001;
@@ -215,11 +215,11 @@ ion-content { --background: #f5f5f5; }
     justify-content: space-between;
     align-items: center;
     padding: 20px 20px 10px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--arca-border-light);
 
-    h2 { font-size: 18px; color: #333; margin: 0; }
+    h2 { font-size: 18px; color: var(--arca-text); margin: 0; }
     .btn-fechar {
-      background: #eee;
+      background: var(--arca-border-light);
       border: none;
       border-radius: 50%;
       width: 32px; height: 32px;
@@ -239,29 +239,29 @@ ion-content { --background: #f5f5f5; }
   label {
     font-size: 12px;
     font-weight: 600;
-    color: #555;
+    color: var(--arca-text-medium);
     margin-bottom: 5px;
-    .required { color: #ff6b6b; }
+    .required { color: var(--arca-required); }
   }
 
   input, select {
     padding: 12px 14px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--arca-border);
     border-radius: 10px;
     font-size: 14px;
-    background: white;
+    background: var(--arca-surface);
     outline: none;
-    &:focus { border-color: #00BF9F; }
+    &:focus { border-color: var(--arca-secondary); }
   }
 }
 
 .aviso-convite {
   padding: 12px;
-  background: #e8f5e9;
-  border-left: 4px solid #00BF9F;
+  background: var(--arca-info-card-bg);
+  border-left: 4px solid var(--arca-secondary);
   border-radius: 8px;
   font-size: 13px;
-  color: #555;
+  color: var(--arca-text-medium);
   margin-bottom: 20px;
 }
 
@@ -272,8 +272,8 @@ ion-content { --background: #f5f5f5; }
 
   .btn-cancelar {
     padding: 14px;
-    background: #eee;
-    color: #333;
+    background: var(--arca-border-light);
+    color: var(--arca-text);
     border: none;
     border-radius: 25px;
     font-weight: bold;
@@ -281,8 +281,8 @@ ion-content { --background: #f5f5f5; }
   }
   .btn-salvar {
     padding: 14px;
-    background: #00BF9F;
-    color: white;
+    background: var(--arca-secondary);
+    color: var(--arca-text-white);
     border: none;
     border-radius: 25px;
     font-weight: bold;

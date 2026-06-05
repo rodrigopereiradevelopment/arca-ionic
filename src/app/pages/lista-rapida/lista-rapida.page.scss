@@ -3,14 +3,14 @@
   margin-bottom: 16px;
 }
 .titulo { font-size: 1.4rem; font-weight: bold; margin: 0; }
-.subtitulo { color: #666; margin: 4px 0 0; }
+.subtitulo { color: var(--arca-text-secondary); margin: 4px 0 0; }
 .exemplo {
-  background: #f5f5f5;
+  background: var(--arca-bg);
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 16px;
   font-size: 0.85rem;
-  color: #555;
+  color: var(--arca-text-medium);
 }
 .exemplo pre { margin: 4px 0 0; font-family: monospace; }
 .lista-input {
@@ -25,7 +25,7 @@
 }
 .loading { text-align: center; padding: 16px; }
 .erros {
-  background: #fff3cd;
+  background: var(--arca-warning-bg);
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 16px;

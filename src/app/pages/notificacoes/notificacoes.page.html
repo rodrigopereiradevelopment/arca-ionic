@@ -3,14 +3,14 @@
   <div class="topo">
     <a routerLink="/home" class="btn-voltar">&#8592;</a>
     <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
-    <button class="btn-limpar" (click)="confirmarLimpar()">🗑️</button>
+    <button class="btn-limpar" (click)="confirmarLimpar()" aria-label="Excluir">🗑️</button>
   </div>
 
   <div class="container">
 
     <div class="cabecalho-lista">
       <div>
-        <h1>🔔 Notificações</h1>
+        <h1><span aria-hidden="true">🔔</span> Notificações</h1>
         <p class="subtitulo">
           {{ naoLidas }} não lida(s) · {{ notificacoes.length }} total
         </p>
@@ -40,7 +40,7 @@
       class="notif-card"
       *ngFor="let n of notificacoesFiltradas"
       [class.nao-lida]="!n.lida"
-      (click)="marcarLida(n)">
+      (click)="marcarLida(n)" role="button" tabindex="0">
 
       <div class="notif-icone" [style.background]="corTipo(n.tipo)">
         {{ n.icone }}
@@ -59,13 +59,13 @@
       </div>
 
       <button class="btn-remover"
-        (click)="$event.stopPropagation(); remover(n)">✕</button>
+        (click)="$event.stopPropagation(); remover(n)" aria-label="Fechar">✕</button>
 
     </div>
 
     <!-- VAZIO -->
     <div class="vazio" *ngIf="notificacoesFiltradas.length === 0">
-      <span class="vazio-icone">🔔</span>
+      <span class="vazio-icone"><span aria-hidden="true">🔔</span></span>
       <p>Nenhuma notificação por aqui!</p>
     </div>
 

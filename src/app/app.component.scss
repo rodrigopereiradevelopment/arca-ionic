@@ -1,5 +1,5 @@
 ion-content {
-  --background: #fff;
+  --background: var(--arca-surface);
 }
 
 .topo {
@@ -8,7 +8,7 @@ ion-content {
   left: 0;
   width: 100%;
   height: 120px;
-  background: #39e6c2;
+  background: var(--arca-primary);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   display: flex;
@@ -45,8 +45,8 @@ ion-content {
 
   .btn-acao-mapa {
     padding: 10px 15px;
-    background: #007bff;
-    color: white;
+    background: var(--arca-google);
+    color: var(--arca-text-white);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -58,15 +58,15 @@ ion-content {
     width: 280px;
     max-height: 60vh;
     overflow-y: auto;
-    background: white;
-    border: 1px solid #ccc;
+    background: var(--arca-surface);
+    border: 1px solid var(--arca-border-input);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px var(--arca-shadow-xl);
     padding: 10px;
 
     .mercado-item {
       padding: 10px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--arca-border-light);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -74,8 +74,8 @@ ion-content {
 
       .btn-rota {
         padding: 6px 10px;
-        background: #00BF9F;
-        color: white;
+        background: var(--arca-secondary);
+        color: var(--arca-text-white);
         border: none;
         border-radius: 5px;
         cursor: pointer;
@@ -100,7 +100,7 @@ ion-content {
   left: 0;
   width: 100%;
   height: 70px;
-  background: #39e6c2;
+  background: var(--arca-primary);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -108,7 +108,7 @@ ion-content {
 
   p {
     font-size: 13px;
-    color: #333;
+    color: var(--arca-text);
     margin: 0;
     text-align: center;
   }

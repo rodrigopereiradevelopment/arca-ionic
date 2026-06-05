@@ -1,5 +1,5 @@
 ion-content {
-  --background: #f5f5f5;
+  --background: var(--arca-bg);
 }
 
 // TOPO
@@ -7,7 +7,7 @@ ion-content {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 70px;
-  background: #39e6c2;
+  background: var(--arca-primary);
   display: flex;
   align-items: center;
   padding: 0 12px;
@@ -15,11 +15,11 @@ ion-content {
   z-index: 1000;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px var(--arca-shadow-md);
 
   .btn-voltar {
     font-size: 24px;
-    color: white;
+    color: var(--arca-text-white);
     text-decoration: none;
     font-weight: bold;
     flex-shrink: 0;
@@ -29,11 +29,11 @@ ion-content {
     flex: 1;
     display: flex;
     align-items: center;
-    background: white;
+    background: var(--arca-surface);
     border-radius: 25px;
     padding: 8px 14px;
     gap: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px var(--arca-shadow-md);
 
     .search-icon { font-size: 16px; }
 
@@ -49,7 +49,7 @@ ion-content {
       background: none;
       border: none;
       font-size: 14px;
-      color: #999;
+      color: var(--arca-text-light);
       cursor: pointer;
       padding: 0;
     }
@@ -74,21 +74,21 @@ ion-content {
 
   .cat-btn {
     padding: 7px 16px;
-    border: 2px solid #ddd;
+    border: 2px solid var(--arca-border);
     border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
-    color: #888;
-    background: white;
+    color: var(--arca-text-muted);
+    background: var(--arca-surface);
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.2s;
     flex-shrink: 0;
 
     &.ativa {
-      border-color: #00BF9F;
-      background: #00BF9F;
-      color: white;
+      border-color: var(--arca-secondary);
+      background: var(--arca-secondary);
+      color: var(--arca-text-white);
     }
   }
 }
@@ -102,7 +102,7 @@ ion-content {
 
   .contagem {
     font-size: 12px;
-    color: #aaa;
+    color: var(--arca-text-lighter);
   }
 
   .ordenacao {
@@ -110,22 +110,22 @@ ion-content {
     align-items: center;
     gap: 6px;
 
-    span { font-size: 12px; color: #aaa; }
+    span { font-size: 12px; color: var(--arca-text-lighter); }
 
     button {
       padding: 5px 10px;
-      border: 2px solid #ddd;
+      border: 2px solid var(--arca-border);
       border-radius: 10px;
       font-size: 11px;
       font-weight: bold;
-      color: #888;
-      background: white;
+      color: var(--arca-text-muted);
+      background: var(--arca-surface);
       cursor: pointer;
       transition: all 0.2s;
 
       &.ativo {
-        border-color: #00BF9F;
-        color: #00BF9F;
+        border-color: var(--arca-secondary);
+        color: var(--arca-secondary);
       }
     }
   }
@@ -133,10 +133,10 @@ ion-content {
 
 // CARD PRODUTO
 .produto-card {
-  background: white;
+  background: var(--arca-surface);
   border-radius: 14px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px var(--arca-shadow-sm);
   overflow: hidden;
 
   .card-main {
@@ -150,7 +150,7 @@ ion-content {
       width: 60px; height: 60px;
       object-fit: contain;
       border-radius: 10px;
-      background: #f9f9f9;
+      background: var(--arca-bg-subtle);
       flex-shrink: 0;
       padding: 4px;
     }
@@ -161,12 +161,12 @@ ion-content {
       flex-direction: column;
       gap: 3px;
 
-      strong { font-size: 14px; color: #333; line-height: 1.3; }
+      strong { font-size: 14px; color: var(--arca-text); line-height: 1.3; }
 
       .cat-tag {
         display: inline-block;
-        background: #e3f2fd;
-        color: #1565c0;
+        background: var(--arca-info-bg);
+        color: var(--arca-info-text);
         padding: 2px 8px;
         border-radius: 10px;
         font-size: 11px;
@@ -183,11 +183,11 @@ ion-content {
         .menor-preco {
           font-size: 16px;
           font-weight: bold;
-          color: #00BF9F;
+          color: var(--arca-secondary);
         }
         .mercado-barato {
           font-size: 11px;
-          color: #aaa;
+          color: var(--arca-text-lighter);
         }
       }
     }
@@ -209,16 +209,16 @@ ion-content {
       }
 
       .btn-lista {
-        background: #00BF9F;
-        color: white;
+        background: var(--arca-secondary);
+        color: var(--arca-text-white);
         font-size: 20px;
         font-weight: bold;
-        &.adicionado { background: #d4edda; }
+        &.adicionado { background: var(--arca-success-bg); }
       }
 
       .btn-expandir {
-        background: #f5f5f5;
-        color: #888;
+        background: var(--arca-bg);
+        color: var(--arca-text-muted);
         font-size: 12px;
       }
     }
@@ -226,16 +226,16 @@ ion-content {
 
   // PREÇOS EXPANDIDOS
   .precos-expandidos {
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid var(--arca-border-lighter);
     padding: 12px 14px;
-    background: #fafafa;
+    background: var(--arca-bg-subtle);
 
     .preco-row {
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 8px 0;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid var(--arca-border-lighter);
 
       &:last-of-type { border-bottom: none; }
 
@@ -244,21 +244,21 @@ ion-content {
         width: 36px; height: 36px;
         object-fit: contain;
         border-radius: 8px;
-        background: white;
+        background: var(--arca-surface);
         padding: 2px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 1px 4px var(--arca-shadow-md);
       }
-      .nome-mercado { flex: 1; font-size: 14px; color: #555; }
-      .valor-preco { font-size: 15px; font-weight: bold; color: #333; }
+      .nome-mercado { flex: 1; font-size: 14px; color: var(--arca-text-medium); }
+      .valor-preco { font-size: 15px; font-weight: bold; color: var(--arca-text); }
     }
 
     .btn-alerta {
       width: 100%;
       margin-top: 10px;
       padding: 10px;
-      background: #e8f5e9;
-      color: #00BF9F;
-      border: 2px solid #00BF9F;
+      background: var(--arca-info-card-bg);
+      color: var(--arca-secondary);
+      border: 2px solid var(--arca-secondary);
       border-radius: 10px;
       font-size: 13px;
       font-weight: bold;
@@ -269,7 +269,7 @@ ion-content {
 
 .sem-resultados {
   text-align: center;
-  color: #aaa;
+  color: var(--arca-text-lighter);
   font-size: 14px;
   padding: 40px 0;
 }
@@ -278,14 +278,14 @@ ion-content {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: var(--arca-overlay);
   z-index: 1000;
 }
 
 .modal-produto {
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  background: white;
+  background: var(--arca-surface);
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   z-index: 1001;
@@ -295,7 +295,7 @@ ion-content {
 
   .modal-handle {
     width: 40px; height: 4px;
-    background: #ddd;
+    background: var(--arca-border);
     border-radius: 2px;
     margin: 12px auto;
   }
@@ -303,7 +303,7 @@ ion-content {
   .btn-fechar-modal {
     position: absolute;
     top: 16px; right: 16px;
-    background: #eee;
+    background: var(--arca-border-light);
     border: none;
     border-radius: 50%;
     width: 32px; height: 32px;
@@ -317,9 +317,9 @@ ion-content {
     border-radius: 16px;
     display: block;
     margin: 0 auto 16px;
-    background: #f9f9f9;
+    background: var(--arca-bg-subtle);
     padding: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px var(--arca-shadow-md);
   }
 
   .modal-info {
@@ -329,12 +329,12 @@ ion-content {
     flex-direction: column;
     gap: 6px;
 
-    h2 { font-size: 17px; color: #333; margin: 0; }
-    .ean { font-size: 12px; color: #bbb; }
+    h2 { font-size: 17px; color: var(--arca-text); margin: 0; }
+    .ean { font-size: 12px; color: var(--arca-text-lightest); }
     .cat-tag {
       display: inline-block;
-      background: #e3f2fd;
-      color: #1565c0;
+      background: var(--arca-info-bg);
+      color: var(--arca-info-text);
       padding: 3px 10px;
       border-radius: 10px;
       font-size: 12px;
@@ -346,12 +346,12 @@ ion-content {
 
   .modal-titulo-precos {
     font-size: 15px;
-    color: #333;
+    color: var(--arca-text);
     margin-bottom: 12px;
   }
 
   .modal-precos {
-    background: #f9f9f9;
+    background: var(--arca-bg-subtle);
     border-radius: 12px;
     padding: 8px 12px;
     margin-bottom: 20px;
@@ -361,7 +361,7 @@ ion-content {
       align-items: center;
       gap: 10px;
       padding: 10px 0;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--arca-border-light);
 
       &:last-child { border-bottom: none; }
 
@@ -370,12 +370,12 @@ ion-content {
         width: 40px; height: 40px;
         object-fit: contain;
         border-radius: 8px;
-        background: white;
+        background: var(--arca-surface);
         padding: 2px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 1px 4px var(--arca-shadow-md);
       }
-      .nome-mercado { flex: 1; font-size: 14px; color: #555; }
-      .valor-preco { font-size: 16px; font-weight: bold; color: #00BF9F; }
+      .nome-mercado { flex: 1; font-size: 14px; color: var(--arca-text-medium); }
+      .valor-preco { font-size: 16px; font-weight: bold; color: var(--arca-secondary); }
     }
   }
 
@@ -386,22 +386,22 @@ ion-content {
 
     .btn-add-lista {
       padding: 14px;
-      background: #00BF9F;
-      color: white;
+      background: var(--arca-secondary);
+      color: var(--arca-text-white);
       border: none;
       border-radius: 25px;
       font-size: 15px;
       font-weight: bold;
       cursor: pointer;
 
-      &.adicionado { background: #d4edda; color: #155724; }
+      &.adicionado { background: var(--arca-success-bg); color: var(--arca-success-text); }
     }
 
     .btn-alerta-modal {
       padding: 14px;
-      background: #e8f5e9;
-      color: #00BF9F;
-      border: 2px solid #00BF9F;
+      background: var(--arca-info-card-bg);
+      color: var(--arca-secondary);
+      border: 2px solid var(--arca-secondary);
       border-radius: 25px;
       font-size: 14px;
       font-weight: bold;

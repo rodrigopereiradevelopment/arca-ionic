@@ -8,7 +8,7 @@
 
   <div class="container">
 
-    <h1>📋 Histórico</h1>
+    <h1><span aria-hidden="true">📋</span> Histórico</h1>
     <p class="subtitulo">Suas pesquisas, comparações e rotas recentes.</p>
 
     <!-- FILTROS -->
@@ -26,7 +26,7 @@
     <!-- LISTA -->
     <div class="historico-card"
       *ngFor="let item of itensFiltrados"
-      (click)="navegarPara(item)">
+      (click)="navegarPara(item)" role="button" tabindex="0">
 
       <div class="icone" [style.background]="corTipo(item.tipo)">
         {{ item.icone }}
@@ -39,12 +39,12 @@
       </div>
 
       <button class="btn-remover"
-        (click)="$event.stopPropagation(); remover(item)">✕</button>
+        (click)="$event.stopPropagation(); remover(item)" aria-label="Fechar">✕</button>
 
     </div>
 
     <div class="vazio" *ngIf="itensFiltrados.length === 0">
-      <span class="vazio-icone">📋</span>
+      <span class="vazio-icone"><span aria-hidden="true">📋</span></span>
       <p>Nenhum item no histórico ainda.</p>
       <a routerLink="/pesquisar-produtos" class="btn-pesquisar">
         🔍 Pesquisar Produtos

@@ -1,7 +1,7 @@
-ion-content { --background: #f5f5f5; }
+ion-content { --background: var(--arca-bg); }
 
 .topo {
-  background: #39e6c2;
+  background: var(--arca-primary);
   height: 200px;
   display: flex;
   justify-content: center;
@@ -12,7 +12,7 @@ ion-content { --background: #f5f5f5; }
   .logo {
     width: 100px; height: 100px;
     border-radius: 22px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px var(--arca-shadow-xl);
   }
 }
 
@@ -21,8 +21,8 @@ ion-content { --background: #f5f5f5; }
   max-width: 500px;
   margin: 0 auto;
 
-  h1 { font-size: 24px; color: #333; margin-bottom: 4px; }
-  .subtitulo { font-size: 14px; color: #888; margin-bottom: 28px; }
+  h1 { font-size: 24px; color: var(--arca-text); margin-bottom: 4px; }
+  .subtitulo { font-size: 14px; color: var(--arca-text-muted); margin-bottom: 28px; }
 }
 
 .form-group {
@@ -32,17 +32,17 @@ ion-content { --background: #f5f5f5; }
 
   label {
     font-size: 13px; font-weight: 600;
-    color: #555; margin-bottom: 6px;
+    color: var(--arca-text-medium); margin-bottom: 6px;
   }
 
   input {
     padding: 14px 16px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--arca-border);
     border-radius: 12px;
     font-size: 15px;
-    background: white;
+    background: var(--arca-surface);
     outline: none;
-    &:focus { border-color: #00BF9F; }
+    &:focus { border-color: var(--arca-secondary); }
   }
 }
 
@@ -52,8 +52,8 @@ ion-content { --background: #f5f5f5; }
   input { flex: 1; }
   .btn-olho {
     padding: 0 14px;
-    background: white;
-    border: 1px solid #ddd;
+    background: var(--arca-surface);
+    border: 1px solid var(--arca-border);
     border-radius: 12px;
     font-size: 18px;
     cursor: pointer;
@@ -63,15 +63,15 @@ ion-content { --background: #f5f5f5; }
 .btn-entrar {
   width: 100%;
   padding: 16px;
-  background: #00BF9F;
-  color: white;
+  background: var(--arca-secondary);
+  color: var(--arca-text-white);
   border: none;
   border-radius: 25px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
   margin-top: 8px;
-  box-shadow: 0 4px 12px rgba(0,191,159,0.4);
+  box-shadow: 0 4px 12px var(--arca-shadow-button);
   &:disabled { opacity: 0.6; }
 }
 
@@ -80,9 +80,9 @@ ion-content { --background: #f5f5f5; }
   text-align: center;
   margin-top: 16px;
   font-size: 14px;
-  color: #888;
+  color: var(--arca-text-muted);
   text-decoration: none;
-  strong { color: #00BF9F; }
+  strong { color: var(--arca-secondary); }
 }
 
 .divisor {
@@ -95,12 +95,12 @@ ion-content { --background: #f5f5f5; }
     content: '';
     flex: 1;
     height: 1px;
-    background: #ddd;
+    background: var(--arca-border);
   }
 
   span {
     font-size: 13px;
-    color: #aaa;
+    color: var(--arca-text-lighter);
     white-space: nowrap;
   }
 }
@@ -114,9 +114,9 @@ ion-content { --background: #f5f5f5; }
 .btn-social {
   width: 100%;
   padding: 14px 16px;
-  border: 1.5px solid #ddd;
+  border: 1.5px solid var(--arca-border);
   border-radius: 25px;
-  background: white;
+  background: var(--arca-surface);
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -132,16 +132,16 @@ ion-content { --background: #f5f5f5; }
     object-fit: contain;
   }
 
-  &:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  &:hover { box-shadow: 0 4px 12px var(--arca-shadow-md); }
 }
 
 .btn-google {
-  color: #444;
-  &:hover { border-color: #4285F4; }
+  color: var(--arca-text-input);
+  &:hover { border-color: var(--arca-google); }
 }
 
 .btn-facebook {
-  color: #1877F2;
-  border-color: #1877F2;
-  &:hover { background: #1877F2; color: white; }
+  color: var(--arca-facebook);
+  border-color: var(--arca-facebook);
+  &:hover { background: var(--arca-facebook); color: var(--arca-text-white); }
 }

@@ -1,2 +1,139 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+:root {
+  --arca-primary: #39e6c2;
+  --arca-primary-rgb: 57, 230, 194;
+  --arca-secondary: #00BF9F;
+  --arca-secondary-rgb: 0, 191, 159;
+  --arca-tertiary: #22dbcf;
+  --arca-quaternary: #4DD9D5;
+
+  --arca-bg: #f5f5f5;
+  --arca-surface: #ffffff;
+  --arca-surface-hover: #f0fff9;
+  --arca-bg-subtle: #f9f9f9;
+  --arca-bg-highlight: #f0fdfb;
+
+  --arca-text: #333333;
+  --arca-text-medium: #555555;
+  --arca-text-secondary: #666666;
+  --arca-text-muted: #888888;
+  --arca-text-light: #999999;
+  --arca-text-lighter: #aaaaaa;
+  --arca-text-lightest: #bbbbbb;
+  --arca-text-white: #ffffff;
+  --arca-text-input: #444444;
+
+  --arca-border: #dddddd;
+  --arca-border-light: #eeeeee;
+  --arca-border-lighter: #f0f0f0;
+  --arca-border-input: #cccccc;
+
+  --arca-overlay: rgba(0, 0, 0, 0.5);
+  --arca-shadow-xs: rgba(0, 0, 0, 0.05);
+  --arca-shadow-sm: rgba(0, 0, 0, 0.07);
+  --arca-shadow-md: rgba(0, 0, 0, 0.1);
+  --arca-shadow-lg: rgba(0, 0, 0, 0.15);
+  --arca-shadow-xl: rgba(0, 0, 0, 0.2);
+  --arca-shadow-button: rgba(0, 191, 159, 0.4);
+
+  --arca-info-bg: #e3f2fd;
+  --arca-info-text: #1565c0;
+  --arca-warning-bg: #fff3cd;
+  --arca-warning-text: #856404;
+  --arca-warning-border: #ffe082;
+  --arca-success-bg: #d4edda;
+  --arca-success-text: #155724;
+  --arca-danger-bg: #f8d7da;
+  --arca-danger-text: #721c24;
+  --arca-danger-border: #f5c6cb;
+  --arca-moderator-bg: #fff3cd;
+  --arca-moderator-text: #856404;
+  --arca-admin-bg: #f3e5f5;
+  --arca-admin-text: #6a1b9a;
+  --arca-error: #e74c3c;
+  --arca-required: #ff6b6b;
+  --arca-pending-bg: #fff8e1;
+  --arca-pending-border: #ffc107;
+
+  --arca-preco: #28a745;
+  --arca-info-card-bg: #e8f5e9;
+  --arca-added-bg: #d4edda;
+  --arca-fav-bg: #f0fff0;
+  --arca-facebook: #1877F2;
+  --arca-google: #4285F4;
+
+  --ion-color-primary: #39e6c2;
+  --ion-color-primary-rgb: 57, 230, 194;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #32cbaa;
+  --ion-color-primary-tint: #4de9c8;
+
+  --ion-color-secondary: #00BF9F;
+  --ion-color-secondary-rgb: 0, 191, 159;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #00a88c;
+  --ion-color-secondary-tint: #1ac5a9;
+
+  --ion-background-color: #f5f5f5;
+  --ion-text-color: #333333;
+}
+
+body.dark-theme {
+  --arca-bg: #121212;
+  --arca-surface: #1e1e1e;
+  --arca-surface-hover: #2a2a2a;
+  --arca-bg-subtle: #1a1a1a;
+  --arca-bg-highlight: #1a2a22;
+
+  --arca-text: #eeeeee;
+  --arca-text-medium: #cccccc;
+  --arca-text-secondary: #aaaaaa;
+  --arca-text-muted: #888888;
+  --arca-text-light: #666666;
+  --arca-text-lighter: #555555;
+  --arca-text-input: #cccccc;
+
+  --arca-border: #444444;
+  --arca-border-light: #333333;
+  --arca-border-lighter: #2a2a2a;
+
+  --arca-overlay: rgba(0, 0, 0, 0.7);
+  --arca-shadow-xs: rgba(0, 0, 0, 0.15);
+
+  --arca-info-bg: #1a3a5c;
+  --arca-info-text: #90caf9;
+  --arca-warning-bg: #3a3a1a;
+  --arca-warning-text: #ffd54f;
+  --arca-warning-border: #5a5a2a;
+  --arca-success-bg: #1a3a1a;
+  --arca-success-text: #81c784;
+  --arca-danger-bg: #3a1a1a;
+  --arca-danger-text: #e57373;
+  --arca-danger-border: #5a2a2a;
+  --arca-admin-bg: #2a1a3a;
+  --arca-admin-text: #ce93d8;
+  --arca-pending-bg: #3a3a1a;
+  --arca-fav-bg: #1a2a1a;
+
+  --ion-background-color: #121212;
+  --ion-text-color: #eeeeee;
+}
+
+body.alto-contraste {
+  --arca-text: #000000;
+  --arca-text-medium: #111111;
+  --arca-text-muted: #222222;
+  --arca-border: #000000;
+  --arca-bg: #ffffff;
+  --arca-surface: #ffffff;
+}
+
+body.alto-contraste.dark-theme {
+  --arca-text: #ffffff;
+  --arca-text-medium: #eeeeee;
+  --arca-text-muted: #cccccc;
+  --arca-border: #ffffff;
+  --arca-bg: #000000;
+  --arca-surface: #000000;
+}

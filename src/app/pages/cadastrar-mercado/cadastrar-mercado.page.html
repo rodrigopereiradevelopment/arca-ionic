@@ -8,22 +8,22 @@
   <div class="container">
 
     <!-- DADOS DO MERCADO -->
-    <h2 class="section-title">🏪 Dados do Mercado</h2>
+    <h2 class="section-title"><span aria-hidden="true">🏪</span> Dados do Mercado</h2>
 
     <div class="form-group">
       <label>Nome do Mercado <span class="required">*</span></label>
-      <input type="text" [(ngModel)]="form.nome" placeholder="Nome do mercado">
+      <input type="text" [(ngModel)]="form.nome" placeholder="Nome do mercado" aria-required="true">
     </div>
 
     <div class="form-group">
       <label>CNPJ <span class="required">*</span></label>
-      <input type="text" [(ngModel)]="form.cnpj" placeholder="00.000.000/0000-00" maxlength="18">
+      <input type="text" [(ngModel)]="form.cnpj" placeholder="00.000.000/0000-00" maxlength="18" aria-required="true">
     </div>
 
     <div class="form-row">
       <div class="form-group">
         <label>Telefone <span class="required">*</span></label>
-        <input type="tel" [(ngModel)]="form.telefone" placeholder="(00) 00000-0000">
+        <input type="tel" [(ngModel)]="form.telefone" placeholder="(00) 00000-0000" aria-required="true">
       </div>
       <div class="form-group">
         <label>E-mail</label>
@@ -32,12 +32,12 @@
     </div>
 
     <!-- ENDEREÇO -->
-    <h2 class="section-title">📍 Endereço</h2>
+    <h2 class="section-title"><span aria-hidden="true">📍</span> Endereço</h2>
 
     <div class="form-group cep-group">
       <label>CEP <span class="required">*</span></label>
       <div class="cep-row">
-        <input type="text" [(ngModel)]="form.cep" placeholder="00000-000" maxlength="9">
+        <input type="text" [(ngModel)]="form.cep" placeholder="00000-000" maxlength="9" aria-required="true">
         <button class="btn-cep" (click)="buscarCep()" [disabled]="buscandoCep">
           {{ buscandoCep ? '...' : 'Buscar' }}
         </button>
@@ -46,13 +46,13 @@
 
     <div class="form-group">
       <label>Rua <span class="required">*</span></label>
-      <input type="text" [(ngModel)]="form.rua" placeholder="Nome da rua">
+      <input type="text" [(ngModel)]="form.rua" placeholder="Nome da rua" aria-required="true">
     </div>
 
     <div class="form-row">
       <div class="form-group">
         <label>Número <span class="required">*</span></label>
-        <input type="text" [(ngModel)]="form.numero" placeholder="123">
+        <input type="text" [(ngModel)]="form.numero" placeholder="123" aria-required="true">
       </div>
       <div class="form-group">
         <label>Complemento</label>
@@ -62,13 +62,13 @@
 
     <div class="form-group">
       <label>Bairro <span class="required">*</span></label>
-      <input type="text" [(ngModel)]="form.bairro" placeholder="Nome do bairro">
+      <input type="text" [(ngModel)]="form.bairro" placeholder="Nome do bairro" aria-required="true">
     </div>
 
     <div class="form-row">
       <div class="form-group">
         <label>Cidade <span class="required">*</span></label>
-        <input type="text" [(ngModel)]="form.cidade" placeholder="Cidade">
+        <input type="text" [(ngModel)]="form.cidade" placeholder="Cidade" aria-required="true">
       </div>
       <div class="form-group small">
         <label>UF <span class="required">*</span></label>
@@ -77,12 +77,12 @@
     </div>
 
     <!-- ÍCONE -->
-    <h2 class="section-title">📷 Ícone do Mercado</h2>
+    <h2 class="section-title"><span aria-hidden="true">📷</span> Ícone do Mercado</h2>
 
     <label class="upload-area">
       <input type="file" accept="image/*" (change)="onImagemSelecionada($event)" hidden>
       <div *ngIf="!imagemPreview" class="upload-placeholder">
-        <span class="upload-icon">📷</span>
+        <span class="upload-icon"><span aria-hidden="true">📷</span></span>
         <span>Toque para enviar imagem</span>
         <span class="upload-hint">PNG, JPG até 5MB</span>
       </div>
@@ -90,11 +90,11 @@
     </label>
 
     <!-- ADMIN DO PERFIL -->
-    <h2 class="section-title">👤 Responsável pelo Cadastro</h2>
+    <h2 class="section-title"><span aria-hidden="true">👤</span> Responsável pelo Cadastro</h2>
 
     <div class="form-group">
       <label>Nome Completo <span class="required">*</span></label>
-      <input type="text" [(ngModel)]="form.admin_nome" placeholder="Nome completo">
+      <input type="text" [(ngModel)]="form.admin_nome" placeholder="Nome completo" aria-required="true">
     </div>
 
     <div class="form-row">
@@ -104,13 +104,13 @@
       </div>
       <div class="form-group">
         <label>Telefone</label>
-        <input type="tel" [(ngModel)]="form.admin_telefone" placeholder="(00) 00000-0000">
+        <input type="tel" [(ngModel)]="form.admin_telefone" placeholder="(00) 00000-0000" aria-required="true">
       </div>
     </div>
 
     <div class="form-group">
       <label>E-mail <span class="required">*</span></label>
-      <input type="email" [(ngModel)]="form.admin_email" placeholder="admin@email.com">
+      <input type="email" [(ngModel)]="form.admin_email" placeholder="admin@email.com" aria-required="true">
     </div>
 
     <div class="form-group">

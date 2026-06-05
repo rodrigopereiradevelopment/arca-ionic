@@ -7,7 +7,7 @@
 
   <div class="container">
 
-    <h1>📦 Gerenciar Catálogo</h1>
+    <h1><span aria-hidden="true">📦</span> Gerenciar Catálogo</h1>
     <p class="subtitulo">Controle de produtos, categorias e preços.</p>
 
     <div *ngIf="carregando" class="loading">Carregando...</div>
@@ -44,11 +44,11 @@
           <strong>{{ p.nome }}</strong>
           <span class="cat-badge">{{ p.categoria }}</span>
           <span class="ean">EAN: {{ p.ean }}</span>
-          <span class="precos-ativos">💰 {{ p.precosAtivos }} preço(s) ativo(s)</span>
+          <span class="precos-ativos"><span aria-hidden="true">💰</span> {{ p.precosAtivos }} preço(s) ativo(s)</span>
         </div>
         <div class="prod-acoes">
-          <button class="btn-editar" (click)="editar(p)">✏️</button>
-          <button class="btn-excluir" (click)="excluir(p)">🗑️</button>
+          <button class="btn-editar" (click)="editar(p)" aria-label="Editar">✏️</button>
+          <button class="btn-excluir" (click)="excluir(p)" aria-label="Excluir">🗑️</button>
         </div>
       </div>
 
@@ -75,7 +75,7 @@
 
       <div class="categoria-card" *ngFor="let c of categorias">
         <span>{{ c.nome }}</span>
-        <button class="btn-excluir" (click)="excluirCategoria(c)">🗑️</button>
+        <button class="btn-excluir" (click)="excluirCategoria(c)" aria-label="Excluir">🗑️</button>
       </div>
 
     </div>
@@ -89,9 +89,9 @@
       <div class="preco-card" *ngFor="let p of precosRecentes">
         <div>
           <strong>{{ p.produto || p.supermercado }}</strong>
-          <span>🏪 {{ p.supermercado }}</span>
-          <span>📅 {{ formatarData(p.data_coleta) }}</span>
-          <span *ngIf="p.promocao" class="promo-badge">🔥 Promoção</span>
+          <span><span aria-hidden="true">🏪</span> {{ p.supermercado }}</span>
+          <span><span aria-hidden="true">📅</span> {{ formatarData(p.data_coleta) }}</span>
+          <span *ngIf="p.promocao" class="promo-badge"><span aria-hidden="true">🔥</span> Promoção</span>
         </div>
         <span class="valor">R$ {{ p.preco.toFixed(2) }}</span>
       </div>
@@ -105,26 +105,26 @@
   </div>
 
   <!-- MODAL OVERLAY -->
-  <div class="modal-overlay" *ngIf="modalAberto" (click)="modalAberto = false"></div>
+  <div class="modal-overlay" *ngIf="modalAberto" (click)="modalAberto = false" role="button" tabindex="0"></div>
 
   <!-- MODAL PRODUTO -->
   <div class="modal" *ngIf="modalAberto">
     <div class="modal-header">
       <h2>{{ modoEdicao ? '✏️ Editar Produto' : '＋ Novo Produto' }}</h2>
-      <button class="btn-fechar" (click)="modalAberto = false">✕</button>
+      <button class="btn-fechar" (click)="modalAberto = false" aria-label="Fechar">✕</button>
     </div>
 
     <div class="modal-body">
 
       <div class="form-group">
         <label>Nome do Produto <span class="required">*</span></label>
-        <input type="text" [(ngModel)]="produtoSelecionado.nome" placeholder="Ex: Café Tradicional">
+        <input type="text" [(ngModel)]="produtoSelecionado.nome" placeholder="Ex: Café Tradicional" aria-required="true">
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>Categoria <span class="required">*</span></label>
-          <select [(ngModel)]="produtoSelecionado.categoria">
+          <select [(ngModel)]="produtoSelecionado.categoria" aria-required="true">
             <option value="">Selecione...</option>
             <option *ngFor="let c of categorias" [value]="c.nome">{{ c.nome }}</option>
           </select>
@@ -156,7 +156,7 @@
         <label class="upload-area">
           <input type="file" accept="image/*" (change)="onImagemSelecionada($event)" hidden>
           <div *ngIf="!imagemPreview" class="upload-placeholder">
-            <span>📷 Toque para enviar imagem</span>
+            <span><span aria-hidden="true">📷</span> Toque para enviar imagem</span>
           </div>
           <img *ngIf="imagemPreview" [src]="imagemPreview" class="img-preview" alt="Preview">
         </label>
@@ -165,7 +165,7 @@
       <!-- PREÇOS DO PRODUTO (somente edição) -->
       <div *ngIf="modoEdicao" class="precos-section">
         <div class="precos-header">
-          <h3>💰 Preços nos mercados</h3>
+          <h3><span aria-hidden="true">💰</span> Preços nos mercados</h3>
           <span *ngIf="carregandoPrecos" class="loading-sm">Carregando...</span>
         </div>
 

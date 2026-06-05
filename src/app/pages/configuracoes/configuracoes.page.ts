@@ -6,6 +6,7 @@ import { IonContent, ToastController, AlertController } from '@ionic/angular/sta
 import { AuthService } from '../../services/auth.service';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { HistoricoService } from '../../services/historico.service';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
   selector: 'app-configuracoes',
@@ -16,23 +17,12 @@ import { HistoricoService } from '../../services/historico.service';
 })
 export class ConfiguracoesPage implements OnInit {
 
-  aparencia = { modoEscuro: false, altoContraste: false };
-
-  acessibilidade = {
-    tamanhoFonte: 'medio',
-    negrito: false,
-    reduzirAnimacoes: false,
-    leitorTela: false,
-    espacamentoLinhas: 'normal'
-  };
-
-  localizacao = { automatica: true, raio: 10 };
-
-  notificacoes = { alertasPreco: true, promocoes: true, email: false, push: true };
-
-  preferencias = { ordenacaoPadrao: 'preco', apenasAprovados: true };
-
-  privacidade = { salvarHistorico: true, dadosAnonimos: false };
+  get aparencia() { return this.configSvc.config.aparencia; }
+  get acessibilidade() { return this.configSvc.config.acessibilidade; }
+  get localizacao() { return this.configSvc.config.localizacao; }
+  get notificacoes() { return this.configSvc.config.notificacoes; }
+  get preferencias() { return this.configSvc.config.preferencias; }
+  get privacidade() { return this.configSvc.config.privacidade; }
 
   tamanhosFonte = [
     { value: 'pequeno', label: 'Pequeno', size: '13px' },
@@ -45,51 +35,16 @@ export class ConfiguracoesPage implements OnInit {
     public authService: AuthService,
     public carrinhoService: CarrinhoService,
     public historicoService: HistoricoService,
+    private configSvc: ConfigService,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController
   ) {}
 
-  ngOnInit() { this.carregarConfiguracoes(); }
-
-  carregarConfiguracoes() {
-    const salvo = localStorage.getItem('arca_config');
-    if (salvo) {
-      const config = JSON.parse(salvo);
-      this.aparencia = config.aparencia || this.aparencia;
-      this.acessibilidade = config.acessibilidade || this.acessibilidade;
-      this.localizacao = config.localizacao || this.localizacao;
-      this.notificacoes = config.notificacoes || this.notificacoes;
-      this.preferencias = config.preferencias || this.preferencias;
-      this.privacidade = config.privacidade || this.privacidade;
-    }
-    this.aplicarConfiguracoes();
-  }
-
-  salvarConfiguracoes() {
-    localStorage.setItem('arca_config', JSON.stringify({
-      aparencia: this.aparencia,
-      acessibilidade: this.acessibilidade,
-      localizacao: this.localizacao,
-      notificacoes: this.notificacoes,
-      preferencias: this.preferencias,
-      privacidade: this.privacidade
-    }));
-    this.aplicarConfiguracoes();
-  }
-
-  aplicarConfiguracoes() {
-    const body = document.body;
-    this.aparencia.modoEscuro ? body.classList.add('dark') : body.classList.remove('dark');
-    this.aparencia.altoContraste ? body.classList.add('alto-contraste') : body.classList.remove('alto-contraste');
-    this.acessibilidade.reduzirAnimacoes ? body.classList.add('sem-animacoes') : body.classList.remove('sem-animacoes');
-    const fonte = this.tamanhosFonte.find(f => f.value === this.acessibilidade.tamanhoFonte);
-    if (fonte) document.documentElement.style.setProperty('--font-size-base', fonte.size);
-    document.documentElement.style.setProperty('--font-weight-base', this.acessibilidade.negrito ? '700' : '400');
-    document.documentElement.style.setProperty('--line-height-base', this.acessibilidade.espacamentoLinhas === 'amplo' ? '2' : '1.5');
-  }
+  ngOnInit() { this.configSvc.init(); }
 
   async onToggle() {
-    this.salvarConfiguracoes();
+    this.configSvc.salvar();
+    this.configSvc.aplicar();
     await this.toast('Configuração salva!', 'success');
   }
 
@@ -130,14 +85,7 @@ export class ConfiguracoesPage implements OnInit {
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         { text: 'Resetar', role: 'destructive', handler: async () => {
-          localStorage.removeItem('arca_config');
-          this.aparencia = { modoEscuro: false, altoContraste: false };
-          this.acessibilidade = { tamanhoFonte: 'medio', negrito: false, reduzirAnimacoes: false, leitorTela: false, espacamentoLinhas: 'normal' };
-          this.localizacao = { automatica: true, raio: 10 };
-          this.notificacoes = { alertasPreco: true, promocoes: true, email: false, push: true };
-          this.preferencias = { ordenacaoPadrao: 'preco', apenasAprovados: true };
-          this.privacidade = { salvarHistorico: true, dadosAnonimos: false };
-          this.aplicarConfiguracoes();
+          this.configSvc.resetar();
           await this.toast('Configurações resetadas!', 'success');
         }}
       ]

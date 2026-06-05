@@ -1,5 +1,5 @@
 ion-content {
-  --background: #f5f5f5;
+  --background: var(--arca-bg);
 }
 
 .topo {
@@ -8,20 +8,20 @@ ion-content {
   left: 0;
   width: 100%;
   height: 80px;
-  background: #39e6c2;
+  background: var(--arca-primary);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px var(--arca-shadow-md);
 
   .btn-voltar {
     position: absolute;
     left: 16px;
     font-size: 24px;
-    color: white;
+    color: var(--arca-text-white);
     text-decoration: none;
     font-weight: bold;
   }
@@ -30,7 +30,7 @@ ion-content {
     width: 55px;
     height: 55px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px var(--arca-shadow-xl);
   }
 }
 
@@ -43,10 +43,10 @@ ion-content {
 .section-title {
   font-size: 16px;
   font-weight: bold;
-  color: #00BF9F;
+  color: var(--arca-secondary);
   margin: 24px 0 12px;
   padding-bottom: 6px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--arca-border);
 }
 
 .form-group {
@@ -57,23 +57,23 @@ ion-content {
   label {
     font-size: 13px;
     font-weight: 600;
-    color: #444;
+    color: var(--arca-text-input);
     margin-bottom: 6px;
 
-    .required { color: #ff6b6b; margin-left: 2px; }
+    .required { color: var(--arca-required); margin-left: 2px; }
   }
 
   input {
     padding: 13px 16px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--arca-border);
     border-radius: 12px;
     font-size: 15px;
-    background: white;
+    background: var(--arca-surface);
     outline: none;
     transition: border 0.2s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px var(--arca-shadow-xs);
 
-    &:focus { border-color: #00BF9F; }
+    &:focus { border-color: var(--arca-secondary); }
   }
 }
 
@@ -93,8 +93,8 @@ ion-content {
 
   .btn-cep {
     padding: 0 18px;
-    background: #00BF9F;
-    color: white;
+    background: var(--arca-secondary);
+    color: var(--arca-text-white);
     border: none;
     border-radius: 12px;
     font-weight: bold;
@@ -108,16 +108,16 @@ ion-content {
 
 .upload-area {
   display: block;
-  border: 2px dashed #00BF9F;
+  border: 2px dashed var(--arca-secondary);
   border-radius: 16px;
   padding: 30px;
   text-align: center;
   cursor: pointer;
-  background: white;
+  background: var(--arca-surface);
   transition: background 0.2s;
   margin-bottom: 8px;
 
-  &:hover { background: #f0fff9; }
+  &:hover { background: var(--arca-surface-hover); }
 
   .upload-placeholder {
     display: flex;
@@ -126,8 +126,8 @@ ion-content {
     gap: 6px;
 
     .upload-icon { font-size: 40px; }
-    span { font-size: 14px; color: #555; }
-    .upload-hint { font-size: 12px; color: #999; }
+    span { font-size: 14px; color: var(--arca-text-medium); }
+    .upload-hint { font-size: 12px; color: var(--arca-text-light); }
   }
 
   .img-preview {
@@ -135,18 +135,18 @@ ion-content {
     height: 120px;
     object-fit: cover;
     border-radius: 12px;
-    border: 3px solid #00BF9F;
+    border: 3px solid var(--arca-secondary);
   }
 }
 
 .aviso-aprovacao {
   margin: 20px 0;
   padding: 14px;
-  background: #fff8e1;
-  border-left: 4px solid #ffc107;
+  background: var(--arca-pending-bg);
+  border-left: 4px solid var(--arca-pending-border);
   border-radius: 8px;
   font-size: 13px;
-  color: #666;
+  color: var(--arca-text-secondary);
   line-height: 1.5;
 }
 
@@ -159,8 +159,8 @@ ion-content {
 
   .btn-limpar {
     padding: 15px;
-    background: #eee;
-    color: #333;
+    background: var(--arca-border-light);
+    color: var(--arca-text);
     border: none;
     border-radius: 25px;
     font-size: 15px;
@@ -170,14 +170,14 @@ ion-content {
 
   .btn-enviar {
     padding: 15px;
-    background: #00BF9F;
-    color: white;
+    background: var(--arca-secondary);
+    color: var(--arca-text-white);
     border: none;
     border-radius: 25px;
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,191,159,0.4);
+    box-shadow: 0 4px 10px var(--arca-shadow-button);
   }
 }
 

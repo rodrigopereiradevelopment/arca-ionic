@@ -14,29 +14,29 @@
         <legend>Dados Básicos (Obrigatório)</legend>
 
         <div class="input-container">
-          <span class="icon">👤</span>
+          <span class="icon"><span aria-hidden="true">👤</span></span>
           <ion-input class="input-field" type="text" placeholder="Nome Completo"
             [(ngModel)]="form.nome"></ion-input>
         </div>
 
         <div class="input-container">
-          <span class="icon">✉️</span>
+          <span class="icon"><span aria-hidden="true">✉️</span></span>
           <ion-input class="input-field" type="email" placeholder="Seu melhor e-mail"
             [(ngModel)]="form.email"></ion-input>
         </div>
 
         <div class="input-container">
-          <span class="icon">🔒</span>
+          <span class="icon"><span aria-hidden="true">🔒</span></span>
           <ion-input class="input-field" [type]="mostrarSenha ? 'text' : 'password'"
             placeholder="Senha (mínimo 8 caracteres)" [(ngModel)]="form.senha"></ion-input>
-          <button class="toggle-senha" (click)="toggleSenha()">👁</button>
+          <button class="toggle-senha" (click)="toggleSenha()" aria-label="Mostrar senha">👁</button>
         </div>
 
         <div class="input-container">
-          <span class="icon">🔒</span>
+          <span class="icon"><span aria-hidden="true">🔒</span></span>
           <ion-input class="input-field" [type]="mostrarConfirmSenha ? 'text' : 'password'"
             placeholder="Confirme a Senha" [(ngModel)]="form.confirmSenha"></ion-input>
-          <button class="toggle-senha" (click)="toggleConfirmSenha()">👁</button>
+          <button class="toggle-senha" (click)="toggleConfirmSenha()" aria-label="Mostrar senha">👁</button>
         </div>
       </fieldset>
 
@@ -45,19 +45,19 @@
         <legend>Informações Adicionais (Opcional)</legend>
 
         <div class="input-container">
-          <span class="icon">🪪</span>
+          <span class="icon"><span aria-hidden="true">🪪</span></span>
           <ion-input class="input-field" type="text" placeholder="CPF (opcional)"
             [(ngModel)]="form.cpf"></ion-input>
         </div>
 
         <div class="input-container">
-          <span class="icon">📞</span>
+          <span class="icon"><span aria-hidden="true">📞</span></span>
           <ion-input class="input-field" type="tel" placeholder="Telefone (opcional)"
             [(ngModel)]="form.telefone"></ion-input>
         </div>
 
         <div class="input-container">
-          <span class="icon">📍</span>
+          <span class="icon"><span aria-hidden="true">📍</span></span>
           <ion-input class="input-field" type="text" [value]="form.cidade" readonly></ion-input>
         </div>
         <small>Atualmente disponível apenas em Mogi Mirim</small>
@@ -69,17 +69,17 @@
 
         <div class="checkbox-group">
           <ion-checkbox [(ngModel)]="form.notifPush"></ion-checkbox>
-          <span>🔔 Receber notificações push</span>
+          <span><span aria-hidden="true">🔔</span> Receber notificações push</span>
         </div>
 
         <div class="checkbox-group">
           <ion-checkbox [(ngModel)]="form.notifEmail"></ion-checkbox>
-          <span>✉️ Receber ofertas por e-mail</span>
+          <span><span aria-hidden="true">✉️</span> Receber ofertas por e-mail</span>
         </div>
 
         <div class="checkbox-group">
           <ion-checkbox [(ngModel)]="form.notifPromocoes"></ion-checkbox>
-          <span>🏷️ Receber alertas de promoções</span>
+          <span><span aria-hidden="true">🏷️</span> Receber alertas de promoções</span>
         </div>
 
         <div class="range-group">
@@ -89,7 +89,7 @@
 
         <div class="checkbox-group">
           <ion-checkbox [(ngModel)]="form.modoEscuro"></ion-checkbox>
-          <span>🌙 Modo escuro</span>
+          <span><span aria-hidden="true">🌙</span> Modo escuro</span>
         </div>
       </fieldset>
 
@@ -98,7 +98,7 @@
         <legend>Permissões</legend>
         <div class="checkbox-group">
           <ion-checkbox [(ngModel)]="form.permitirLocalizacao"></ion-checkbox>
-          <span>📍 Permitir acesso à minha localização</span>
+          <span><span aria-hidden="true">📍</span> Permitir acesso à minha localização</span>
         </div>
         <small>Para encontrar os supermercados mais próximos</small>
       </fieldset>

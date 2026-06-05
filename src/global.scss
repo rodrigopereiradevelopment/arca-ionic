@@ -25,7 +25,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #fff;//radial-gradient(circle, #fff 0%, #22dbcf 100%);
+  background: var(--arca-surface);//radial-gradient(circle, #fff 0%, var(--arca-tertiary) 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,7 +41,7 @@
 
 /* Background padrão do app */
 ion-content {
-  --background: #ffffff;
+  --background: var(--arca-surface);
 }
 
 /* Swiper */
@@ -71,17 +71,17 @@ ion-footer {
   position: relative !important;
 }
 app-footer ion-footer {
-  --background: #39e6c2 !important;
+  --background: var(--arca-primary) !important;
 }
 
 /* Fix compatibilidade entre browsers */
 ion-app {
-  background: #ffffff;
+  background: var(--arca-surface);
 }
 
 app-footer ion-footer {
-  background: #39e6c2 !important;
-  --background: #39e6c2 !important;
+  background: var(--arca-primary) !important;
+  --background: var(--arca-primary) !important;
 }
 
 /* Remove faixa branca do topo */
@@ -93,20 +93,62 @@ ion-footer::before {
   display: none !important;
 }
 app-header ion-toolbar {
-  --background: #00BF9F;
-  --color: white;
+  --background: var(--arca-secondary);
+  --color: var(--arca-text-white);
 }
 
 app-header ion-menu-button {
-  color: white;
+  color: var(--arca-text-white);
 }
 
 app-header ion-searchbar {
-  --background: white;
+  --background: var(--arca-surface);
   --border-radius: 25px;
   --box-shadow: none;
-  --placeholder-color: #999;
-  --color: #333;
-  --icon-color: #4DD9D5;
+  --placeholder-color: var(--arca-text-light);
+  --color: var(--arca-text);
+  --icon-color: var(--arca-quaternary);
   padding: 4px 8px 4px 0;
+}
+
+/* 🔤 Acessibilidade — Tamanho de fonte base */
+html {
+  font-size: var(--font-size-base, 16px);
+}
+
+body {
+  font-weight: var(--font-weight-base, 400);
+  line-height: var(--line-height-base, 1.5);
+}
+
+body.texto-negrito {
+  --font-weight-base: 700;
+}
+
+body.texto-negrito * {
+  font-weight: 700 !important;
+}
+
+/* 🚫 Reduzir animações */
+body.reduzir-animacoes *,
+body.reduzir-animacoes *::before,
+body.reduzir-animacoes *::after {
+  animation-duration: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0s !important;
+}
+
+/* ♿ Leitor de tela — foco visível */
+body.leitor-tela *:focus-visible {
+  outline: 3px solid var(--arca-secondary) !important;
+  outline-offset: 2px !important;
+}
+
+body.leitor-tela .sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
 }

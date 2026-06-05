@@ -40,15 +40,15 @@
         class="mercado-card"
         *ngFor="let m of mercadosFiltrados"
         [class.selecionado]="mercadoSelecionado?.id === m.id"
-        (click)="centralizarMercado(m)">
+        (click)="centralizarMercado(m)" role="button" tabindex="0">
 
         <img [src]="m.logo" [alt]="m.nome" class="mercado-logo"
           onerror="this.src='assets/img/mercado.png'">
 
         <div class="mercado-info">
           <strong>{{ m.nome }}</strong>
-          <span>🕐 {{ m.horario }}</span>
-          <span>📞 {{ m.telefone }}</span>
+          <span><span aria-hidden="true">🕐</span> {{ m.horario }}</span>
+          <span><span aria-hidden="true">📞</span> {{ m.telefone }}</span>
         </div>
 
         <div class="mercado-direita">
@@ -56,8 +56,8 @@
             {{ m.distancia }} km
           </span>
           <div class="mercado-btns">
-            <a [routerLink]="['/mapa-rotas']" class="btn-rota">🗺️ Rota</a>
-            <a [routerLink]="['/comparar']" class="btn-precos">💰 Preços</a>
+            <a [routerLink]="['/mapa-rotas']" class="btn-rota"><span aria-hidden="true">🗺️</span> Rota</a>
+            <a [routerLink]="['/comparar']" class="btn-precos"><span aria-hidden="true">💰</span> Preços</a>
           </div>
         </div>
 

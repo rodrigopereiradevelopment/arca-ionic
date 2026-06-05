@@ -15,7 +15,7 @@
     <div class="mercado-card" *ngFor="let mercado of mercados; let i = index">
       
       <!-- CABEÇALHO DO CARD (CLICÁVEL) -->
-      <div class="mercado-header" (click)="toggleExpandir(mercado)">
+      <div class="mercado-header" (click)="toggleExpandir(mercado)" role="button" tabindex="0">
         <div class="mercado-info">
           <img [src]="mercado.posicao" [alt]="mercado.nome" class="img-posicao" *ngIf="mercado.posicao">
           <span class="posicao-numero" *ngIf="!mercado.posicao">{{ i + 1 }}º</span>

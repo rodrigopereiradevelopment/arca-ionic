@@ -19,11 +19,11 @@
 
       </div>
       <div class="quantidade">
-        <button (click)="decrementar(produto.id)">−</button>
+        <button (click)="decrementar(produto.id)" aria-label="Remover">−</button>
         <span>{{ produto.quantidade }}</span>
         <button (click)="incrementar(produto.id)">+</button>
       </div>
-      <button class="btn-remover" (click)="remover(produto.id)">🗑️</button>
+      <button class="btn-remover" (click)="remover(produto.id)" aria-label="Excluir">🗑️</button>
     </div>
 
     <div class="carrinho-item adicionar">

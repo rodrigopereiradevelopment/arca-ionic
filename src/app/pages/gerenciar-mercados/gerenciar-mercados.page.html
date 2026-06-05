@@ -7,7 +7,7 @@
 
   <div class="container">
 
-    <h1>🏢 Gerenciar Mercados</h1>
+    <h1><span aria-hidden="true">🏢</span> Gerenciar Mercados</h1>
     <p class="subtitulo">Aprovação, edição e controle dos estabelecimentos cadastrados.</p>
 
     <!-- FILTROS -->
@@ -41,9 +41,9 @@
       </div>
 
       <div class="card-info">
-        <span>👤 {{ m.admin_nome }}</span>
-        <span>📄 {{ m.cnpj }}</span>
-        <span>📞 {{ m.telefone }}</span>
+        <span><span aria-hidden="true">👤</span> {{ m.admin_nome }}</span>
+        <span><span aria-hidden="true">📄</span> {{ m.cnpj }}</span>
+        <span><span aria-hidden="true">📞</span> {{ m.telefone }}</span>
       </div>
 
       <div class="card-acoes">
@@ -52,7 +52,7 @@
           (click)="alterarStatus(m, 'aprovado')">✅ Aprovar</button>
         <button class="btn-desativar" *ngIf="m.status === 'aprovado'"
           (click)="alterarStatus(m, 'desativado')">🚫 Desativar</button>
-        <button class="btn-excluir" (click)="excluir(m)">🗑️</button>
+        <button class="btn-excluir" (click)="excluir(m)" aria-label="Excluir">🗑️</button>
       </div>
     </div>
 
@@ -63,27 +63,27 @@
   </div>
 
   <!-- MODAL -->
-  <div class="modal-overlay" *ngIf="modalAberto" (click)="modalAberto = false"></div>
+  <div class="modal-overlay" *ngIf="modalAberto" (click)="modalAberto = false" role="button" tabindex="0"></div>
 
   <div class="modal" *ngIf="modalAberto">
     <div class="modal-header">
       <h2>{{ modoEdicao ? '✏️ Editar Mercado' : '＋ Novo Mercado' }}</h2>
-      <button class="btn-fechar" (click)="modalAberto = false">✕</button>
+      <button class="btn-fechar" (click)="modalAberto = false" aria-label="Fechar">✕</button>
     </div>
 
     <div class="modal-body">
 
-      <h3 class="section-title">🏪 Dados do Mercado</h3>
+      <h3 class="section-title"><span aria-hidden="true">🏪</span> Dados do Mercado</h3>
 
       <div class="form-group">
         <label>Nome <span class="required">*</span></label>
-        <input type="text" [(ngModel)]="mercadoSelecionado.nome" placeholder="Nome do mercado">
+        <input type="text" [(ngModel)]="mercadoSelecionado.nome" placeholder="Nome do mercado" aria-required="true">
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>CNPJ <span class="required">*</span></label>
-          <input type="text" [(ngModel)]="mercadoSelecionado.cnpj" placeholder="00.000.000/0000-00">
+          <input type="text" [(ngModel)]="mercadoSelecionado.cnpj" placeholder="00.000.000/0000-00" aria-required="true">
         </div>
         <div class="form-group">
           <label>Status</label>
@@ -98,7 +98,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>Telefone <span class="required">*</span></label>
-          <input type="tel" [(ngModel)]="mercadoSelecionado.telefone" placeholder="(00) 00000-0000">
+          <input type="tel" [(ngModel)]="mercadoSelecionado.telefone" placeholder="(00) 00000-0000" aria-required="true">
         </div>
         <div class="form-group">
           <label>E-mail</label>
@@ -106,12 +106,12 @@
         </div>
       </div>
 
-      <h3 class="section-title">📍 Endereço</h3>
+      <h3 class="section-title"><span aria-hidden="true">📍</span> Endereço</h3>
 
       <div class="form-group">
         <label>CEP <span class="required">*</span></label>
         <div class="cep-row">
-          <input type="text" [(ngModel)]="mercadoSelecionado.cep" placeholder="00000-000" maxlength="9">
+          <input type="text" [(ngModel)]="mercadoSelecionado.cep" placeholder="00000-000" maxlength="9" aria-required="true">
           <button class="btn-cep" (click)="buscarCep()" [disabled]="buscandoCep">
             {{ buscandoCep ? '...' : 'Buscar' }}
           </button>
@@ -120,13 +120,13 @@
 
       <div class="form-group">
         <label>Rua <span class="required">*</span></label>
-        <input type="text" [(ngModel)]="mercadoSelecionado.rua" placeholder="Nome da rua">
+        <input type="text" [(ngModel)]="mercadoSelecionado.rua" placeholder="Nome da rua" aria-required="true">
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>Número <span class="required">*</span></label>
-          <input type="text" [(ngModel)]="mercadoSelecionado.numero" placeholder="123">
+          <input type="text" [(ngModel)]="mercadoSelecionado.numero" placeholder="123" aria-required="true">
         </div>
         <div class="form-group">
           <label>Complemento</label>
@@ -136,34 +136,34 @@
 
       <div class="form-group">
         <label>Bairro <span class="required">*</span></label>
-        <input type="text" [(ngModel)]="mercadoSelecionado.bairro" placeholder="Bairro">
+        <input type="text" [(ngModel)]="mercadoSelecionado.bairro" placeholder="Bairro" aria-required="true">
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>Cidade <span class="required">*</span></label>
-          <input type="text" [(ngModel)]="mercadoSelecionado.cidade" placeholder="Cidade">
+          <input type="text" [(ngModel)]="mercadoSelecionado.cidade" placeholder="Cidade" aria-required="true">
         </div>
         <div class="form-group small">
           <label>UF <span class="required">*</span></label>
-          <input type="text" [(ngModel)]="mercadoSelecionado.estado" placeholder="SP" maxlength="2">
+          <input type="text" [(ngModel)]="mercadoSelecionado.estado" placeholder="SP" maxlength="2" aria-required="true">
         </div>
       </div>
 
-      <h3 class="section-title">📷 Ícone</h3>
+      <h3 class="section-title"><span aria-hidden="true">📷</span> Ícone</h3>
       <label class="upload-area">
         <input type="file" accept="image/*" (change)="onImagemSelecionada($event)" hidden>
         <div *ngIf="!imagemPreview" class="upload-placeholder">
-          <span>📷 Toque para enviar imagem</span>
+          <span><span aria-hidden="true">📷</span> Toque para enviar imagem</span>
         </div>
         <img *ngIf="imagemPreview" [src]="imagemPreview" class="img-preview" alt="Preview">
       </label>
 
-      <h3 class="section-title">👤 Responsável</h3>
+      <h3 class="section-title"><span aria-hidden="true">👤</span> Responsável</h3>
 
       <div class="form-group">
         <label>Nome Completo <span class="required">*</span></label>
-        <input type="text" [(ngModel)]="mercadoSelecionado.admin_nome" placeholder="Nome completo">
+        <input type="text" [(ngModel)]="mercadoSelecionado.admin_nome" placeholder="Nome completo" aria-required="true">
       </div>
 
       <div class="form-row">
@@ -173,7 +173,7 @@
         </div>
         <div class="form-group">
           <label>Telefone</label>
-          <input type="tel" [(ngModel)]="mercadoSelecionado.admin_telefone" placeholder="(00) 00000-0000">
+          <input type="tel" [(ngModel)]="mercadoSelecionado.admin_telefone" placeholder="(00) 00000-0000" aria-required="true">
         </div>
       </div>
 

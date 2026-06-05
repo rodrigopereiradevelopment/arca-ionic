@@ -4,7 +4,7 @@
   <!-- TELA DA LISTA -->
   <div *ngIf="view === 'lista'">
     <div class="modal-header">
-      <h2 class="section-title">🛒 Minha Lista</h2>
+      <h2 class="section-title"><span aria-hidden="true">🛒</span> Minha Lista</h2>
       <ion-button fill="clear" (click)="fecharModal()">Fechar</ion-button>
     </div>
     
@@ -49,7 +49,7 @@
   <!-- TELA DE RESULTADO DA COMPARAÇÃO -->
   <div *ngIf="view === 'resultado'">
     <div class="modal-header">
-      <h2 class="section-title">🏆 Melhores Preços</h2>
+      <h2 class="section-title"><span aria-hidden="true">🏆</span> Melhores Preços</h2>
       <ion-button fill="clear" (click)="toggleComparacao()">Voltar</ion-button>
     </div>
 
