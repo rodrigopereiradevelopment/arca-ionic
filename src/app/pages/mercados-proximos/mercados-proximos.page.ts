@@ -6,6 +6,7 @@ import { IonContent } from '@ionic/angular/standalone';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import { MercadoService, Mercado } from '../../services/mercado.service';
+import { MERCADOS_MAP } from '../../constants/mercados';
 
 function calcDistancia(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 6371;
@@ -16,14 +17,7 @@ function calcDistancia(lat1: number, lon1: number, lat2: number, lon2: number): 
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-const LOGOS: Record<number, string> = {
-  1: 'assets/img/imperial.png',
-  2: 'assets/img/pontonovo.jpeg',
-  3: 'assets/img/goodbom.png',
-  4: 'assets/img/atacadao.png',
-  5: 'assets/img/paguemenos.png',
-  6: 'assets/img/saovicente.png'
-};
+
 
 @Component({
   selector: 'app-mercados-proximos',
@@ -72,7 +66,7 @@ export class MercadosProximosPage implements OnInit, AfterViewInit {
       ...m,
       distancia: 0,
       horario: '',
-      logo: LOGOS[m.id] || 'assets/img/mercado.png'
+      logo: MERCADOS_MAP[m.id]?.logo || 'assets/img/mercado.png'
     }));
     this.carregando = false;
   }

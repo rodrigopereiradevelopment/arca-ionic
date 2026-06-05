@@ -4,15 +4,15 @@ import { RouterModule } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
+import { MERCADOS_MAP, MERCADOS_COORDS } from '../../constants/mercados';
 
-const mercadosMaisBaratos = [
-  { id: 1, nome: "Imperial", lat: -22.4383822, lng: -46.9327464, preco: "R$ --" },
-  { id: 2, nome: "Ponto Novo", lat: -22.4313656, lng: -46.9527085, preco: "R$ --" },
-  { id: 3, nome: "GoodBom", lat: -22.4006202, lng: -46.9700459, preco: "R$ --" },
-  { id: 4, nome: "Atacadao", lat: -22.4022876, lng: -46.9727049, preco: "R$ --" },
-  { id: 5, nome: "Pague Menos", lat: -22.3522237, lng: -46.9464079, preco: "R$ --" },
-  { id: 6, nome: "Sao Vicente", lat: -22.4269813, lng: -46.9552736, preco: "R$ --" }
-];
+const mercadosMaisBaratos = Object.entries(MERCADOS_COORDS).map(([id, coords]) => ({
+  id: Number(id),
+  nome: MERCADOS_MAP[Number(id)]?.nome ?? 'Mercado',
+  lat: coords.lat,
+  lng: coords.lng,
+  preco: "R$ --"
+}));
 
 @Component({
   selector: 'app-mapa-rotas',

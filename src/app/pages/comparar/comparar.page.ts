@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { IonContent, IonSpinner, ToastController } from '@ionic/angular/standalone';
 import { ComparacaoService } from '../../services/comparacao.service';
 import { environment } from '../../../environments/environment';
+import { MERCADOS_MAP, MEDALHAS } from '../../constants/mercados';
 
 interface ProdutoDetalhe {
   id: number;
@@ -36,15 +37,6 @@ export class CompararPage {
   mercados: MercadoComPreco[] = [];
   loading = false;
   produtosSelecionados: any[] = [];
-
-  private readonly SUPERMERCADOS: Record<number, { nome: string; logo: string }> = {
-    1: { nome: 'GoodBom',     logo: 'assets/img/goodbom.png' },
-    2: { nome: 'PagueMenos',  logo: 'assets/img/paguemenos.png' },
-    3: { nome: 'Sao Vicente', logo: 'assets/img/saovicente.png' },
-    4: { nome: 'Atacadao',    logo: 'assets/img/atacadao.png' },
-    5: { nome: 'Imperial',    logo: 'assets/img/imperial.png' },
-    6: { nome: 'Ponto Novo',  logo: 'assets/img/pontonovo.jpeg' }
-  };
 
   constructor(private comparacaoService: ComparacaoService, private toastCtrl: ToastController) {}
 
@@ -88,7 +80,7 @@ export class CompararPage {
         // Mapeia a resposta para o formato da interface
         this.mercados = data.mercados.map((m: any, i: number) => {
           // Busca a logo pelo ID do mercado
-          const mercadoInfo = this.SUPERMERCADOS[m.id];
+          const mercadoInfo = MERCADOS_MAP[m.id];
           
           // Processa os produtos para o formato esperado
           const produtosDetalhe: ProdutoDetalhe[] = m.produtos.map((prod: any) => ({
@@ -106,9 +98,9 @@ export class CompararPage {
             preco: m.total,
             precoFormatado: m.total > 0 ? `R$ ${m.total.toFixed(2)}` : 'Sem dados',
             itens: m.itensEncontrados,
-            posicao: i === 0 && m.total > 0 ? 'assets/img/ouro.png'
-                   : i === 1 && m.total > 0 ? 'assets/img/prata.png'
-                   : i === 2 && m.total > 0 ? 'assets/img/bronze.png' : '',
+            posicao: i === 0 && m.total > 0 ? MEDALHAS[0]
+                   : i === 1 && m.total > 0 ? MEDALHAS[1]
+                   : i === 2 && m.total > 0 ? MEDALHAS[2] : '',
             expandido: false,
             produtos: produtosDetalhe
           };

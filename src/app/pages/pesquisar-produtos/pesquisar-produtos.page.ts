@@ -7,6 +7,7 @@ import { HistoricoService } from '../../services/historico.service';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { ComparacaoService } from '../../services/comparacao.service';
 import { environment } from '../../../environments/environment';
+import { MERCADOS_MAP, CATEGORIAS_MAP, MEDALHAS } from '../../constants/mercados';
 
 interface Preco {
   mercado: string;
@@ -25,25 +26,8 @@ interface Produto {
   mercadoMaisBarato: string;
   precos: Preco[];
   expandido: boolean;
-  quantidade: number;  // ✨ NOVO
+  quantidade: number;
 }
-
-const MERCADOS: Record<number, { nome: string; logo: string }> = {
-  1: { nome: 'GoodBom',    logo: 'assets/img/goodbom.png' },
-  2: { nome: 'PagueMenos', logo: 'assets/img/paguemenos.png' },
-  3: { nome: 'São Vicente', logo: 'assets/img/saovicente.png' },
-  4: { nome: 'Atacadão',   logo: 'assets/img/atacadao.png' },
-  5: { nome: 'Imperial',   logo: 'assets/img/imperial.png' },
-  6: { nome: 'Ponto Novo', logo: 'assets/img/pontonovo.png' },
-};
-
-const CATEGORIAS: Record<number, string> = {
-  1: 'Bebidas', 2: 'Mercearia', 3: 'Bebidas',
-  4: 'Laticínios', 5: 'Hortifruti', 6: 'Carnes',
-  7: 'Limpeza', 8: 'Higiene', 9: 'Outros'
-};
-
-const MEDALHAS = ['assets/img/ouro.png', 'assets/img/prata.png', 'assets/img/bronze.png'];
 
 @Component({
   selector: 'app-pesquisar-produtos',
@@ -101,13 +85,13 @@ export class PesquisarProdutosPage implements OnInit {
     const precosOrdenados = (p.precos ?? [])
       .sort((a: any, b: any) => a.preco - b.preco)
       .map((pr: any, i: number) => {
-        const m = MERCADOS[pr.supermercado_id] ?? { nome: 'Mercado', logo: '' };
+        const m = MERCADOS_MAP[pr.supermercado_id] ?? { nome: 'Mercado', logo: '' };
         return { mercado: m.nome, logo: m.logo, valor: pr.preco, posicao: MEDALHAS[i] ?? '' };
       });
     return {
       id: p.id, 
       nome: p.nome,
-      categoria: CATEGORIAS[p.categoria_id] ?? 'Outros',
+      categoria: CATEGORIAS_MAP[p.categoria_id] ?? 'Outros',
       ean: p.codigo_barras ?? '',
       img: p.imagem_url ?? 'assets/img/Produto1.png',
       menorPreco: precosOrdenados[0]?.valor ?? 0,
