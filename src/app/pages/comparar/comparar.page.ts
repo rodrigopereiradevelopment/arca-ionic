@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonContent, IonSpinner, ToastController } from '@ionic/angular/standalone';
 import { ComparacaoService } from '../../services/comparacao.service';
+import { HistoricoService } from '../../services/historico.service';
 import { environment } from '../../../environments/environment';
 import { MERCADOS_MAP, MEDALHAS } from '../../constants/mercados';
 
@@ -40,6 +41,8 @@ export class CompararPage {
   mercados: MercadoComPreco[] = [];
   loading = false;
   produtosSelecionados: any[] = [];
+
+  private historicoService = inject(HistoricoService);
 
   constructor(private comparacaoService: ComparacaoService, private toastCtrl: ToastController) {}
 
@@ -125,6 +128,17 @@ export class CompararPage {
         });
 
         this.salvarCache(hash, this.mercados);
+
+        const melhor = this.mercados.find(m => m.preco > 0);
+        if (melhor) {
+          this.historicoService.adicionar({
+            tipo: 'comparacao',
+            descricao: `Comparação de ${this.produtosSelecionados.length} produto(s)`,
+            detalhe: `Melhor: ${melhor.nome} ${melhor.precoFormatado}`,
+            icone: '💰',
+            rota: '/comparar',
+          });
+        }
       } else {
         this.mostrarToast('Erro ao comparar preços', 'danger');
       }

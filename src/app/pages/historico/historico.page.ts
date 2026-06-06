@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { IonContent, ToastController, AlertController } from '@ionic/angular/standalone';
+import { IonContent, IonSpinner, ToastController, AlertController } from '@ionic/angular/standalone';
 import { HistoricoService, ItemHistorico } from '../../services/historico.service';
 
 @Component({
@@ -9,25 +9,30 @@ import { HistoricoService, ItemHistorico } from '../../services/historico.servic
   templateUrl: './historico.page.html',
   styleUrls: ['./historico.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, IonContent]
+  imports: [CommonModule, RouterModule, IonContent, IonSpinner]
 })
-export class HistoricoPage implements OnInit {
+export class HistoricoPage {
+  private historicoService = inject(HistoricoService);
+  private router = inject(Router);
+  private toastCtrl = inject(ToastController);
+  private alertCtrl = inject(AlertController);
 
   filtroAtivo: 'todos' | 'pesquisa' | 'comparacao' | 'rota' = 'todos';
+  loading = true;
+  itens: ItemHistorico[] = [];
 
-  constructor(
-    public historicoService: HistoricoService,
-    private router: Router,
-    private toastCtrl: ToastController,
-    private alertCtrl: AlertController
-  ) {}
-
-  ngOnInit() {}
+  async ionViewWillEnter() {
+    this.loading = true;
+    this.historicoService.itens$.subscribe(lista => {
+      this.itens = lista;
+      this.loading = false;
+    });
+    await this.historicoService.recarregar();
+  }
 
   get itensFiltrados() {
-    const lista = this.historicoService.lista;
-    if (this.filtroAtivo === 'todos') return lista;
-    return lista.filter(i => i.tipo === this.filtroAtivo);
+    if (this.filtroAtivo === 'todos') return this.itens;
+    return this.itens.filter(i => i.tipo === this.filtroAtivo);
   }
 
   navegarPara(item: ItemHistorico) {
@@ -35,7 +40,7 @@ export class HistoricoPage implements OnInit {
   }
 
   async remover(item: ItemHistorico) {
-    this.historicoService.remover(item.id);
+    await this.historicoService.remover(item.id);
     const t = await this.toastCtrl.create({
       message: 'Item removido do histórico!',
       duration: 2000, color: 'warning', position: 'top'
@@ -52,7 +57,7 @@ export class HistoricoPage implements OnInit {
         {
           text: 'Limpar', role: 'destructive',
           handler: async () => {
-            this.historicoService.limpar();
+            await this.historicoService.limpar();
             const t = await this.toastCtrl.create({
               message: 'Histórico limpo!',
               duration: 2000, color: 'danger', position: 'top'

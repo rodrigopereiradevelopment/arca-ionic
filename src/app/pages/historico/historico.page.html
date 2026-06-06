@@ -23,33 +23,41 @@
         (click)="filtroAtivo = 'rota'">🗺️ Rotas</button>
     </div>
 
+    <!-- CARREGANDO -->
+    <div class="vazio" *ngIf="loading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Carregando histórico...</p>
+    </div>
+
     <!-- LISTA -->
-    <div class="historico-card"
-      *ngFor="let item of itensFiltrados"
-      (click)="navegarPara(item)" role="button" tabindex="0">
+    <ng-container *ngIf="!loading">
+      <div class="historico-card"
+        *ngFor="let item of itensFiltrados"
+        (click)="navegarPara(item)" role="button" tabindex="0">
 
-      <div class="icone" [style.background]="corTipo(item.tipo)">
-        {{ item.icone }}
+        <div class="icone" [style.background]="corTipo(item.tipo)">
+          {{ item.icone }}
+        </div>
+
+        <div class="info">
+          <strong>{{ item.descricao }}</strong>
+          <span class="detalhe">{{ item.detalhe }}</span>
+          <span class="tempo">{{ formatarData(item.data) }}</span>
+        </div>
+
+        <button class="btn-remover"
+          (click)="$event.stopPropagation(); remover(item)" aria-label="Fechar">✕</button>
+
       </div>
 
-      <div class="info">
-        <strong>{{ item.descricao }}</strong>
-        <span class="detalhe">{{ item.detalhe }}</span>
-        <span class="tempo">{{ formatarData(item.data) }}</span>
+      <div class="vazio" *ngIf="itensFiltrados.length === 0">
+        <span class="vazio-icone"><span aria-hidden="true">📋</span></span>
+        <p>Nenhum item no histórico ainda.</p>
+        <a routerLink="/pesquisar-produtos" class="btn-pesquisar">
+          🔍 Pesquisar Produtos
+        </a>
       </div>
-
-      <button class="btn-remover"
-        (click)="$event.stopPropagation(); remover(item)" aria-label="Fechar">✕</button>
-
-    </div>
-
-    <div class="vazio" *ngIf="itensFiltrados.length === 0">
-      <span class="vazio-icone"><span aria-hidden="true">📋</span></span>
-      <p>Nenhum item no histórico ainda.</p>
-      <a routerLink="/pesquisar-produtos" class="btn-pesquisar">
-        🔍 Pesquisar Produtos
-      </a>
-    </div>
+    </ng-container>
 
   </div>
 

@@ -6,6 +6,7 @@ import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import { MERCADOS_MAP, MERCADOS_COORDS } from '../../constants/mercados';
 import { CarrinhoService } from '../../services/carrinho.service';
+import { HistoricoService } from '../../services/historico.service';
 import { environment } from '../../../environments/environment';
 
 interface MercadoMapa {
@@ -26,6 +27,7 @@ interface MercadoMapa {
 })
 export class MapaRotasPage implements OnInit, AfterViewInit {
   private carrinhoService = inject(CarrinhoService);
+  private historicoService = inject(HistoricoService);
 
   map: any;
   routingControl: any = null;
@@ -172,6 +174,15 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
     }).addTo(this.map);
 
     this.listaVisivel = false;
+
+    const nomeMercado = this.mercados.find(m => m.lat === destino.lat && m.lng === destino.lng)?.nome || 'Mercado';
+    this.historicoService.adicionar({
+      tipo: 'rota',
+      descricao: `Rota para ${nomeMercado}`,
+      detalhe: `${origem.lat.toFixed(4)}, ${origem.lng.toFixed(4)} → ${destino.lat.toFixed(4)}, ${destino.lng.toFixed(4)}`,
+      icone: '🗺️',
+      rota: '/mapa-rotas',
+    });
   }
 
   toggleLista() {
