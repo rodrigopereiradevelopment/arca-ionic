@@ -139,7 +139,8 @@ export class PerfilPage {
     formData.append('token', this.authService.usuario?.token || '');
 
     try {
-      const res = await fetch(environment.apiUrl + '/api/upload/perfil', {
+      formData.append('folder', 'avatars');
+      const res = await fetch(environment.apiUrl + '/api/upload', {
         method: 'POST',
         body: formData,
       });
@@ -212,9 +213,23 @@ export class PerfilPage {
   }
 
   async definirPrincipal(e: Endereco) {
-    this.enderecos.forEach(end => end.principal = false);
-    e.principal = true;
-    await this.toast('Endereço principal atualizado!', 'success');
+    const tk = this.authService.usuario?.token;
+    if (!tk) return;
+    try {
+      await Promise.all(
+        this.enderecos.map(end =>
+          fetch(environment.apiUrl + '/api/auth/enderecos', {
+            method: 'PUT', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: tk, id: end.id, principal: end.id === e.id })
+          })
+        )
+      );
+      this.enderecos.forEach(end => end.principal = false);
+      e.principal = true;
+      await this.toast('Endereço principal atualizado!', 'success');
+    } catch {
+      await this.toast('Erro ao atualizar endereço principal.', 'danger');
+    }
   }
 
   async excluirEndereco(e: Endereco) {

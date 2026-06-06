@@ -10,6 +10,7 @@ import {
 } from '@ionic/angular/standalone';
 import { MercadoService, Mercado } from '../../services/mercado.service';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-gerenciar-mercados',
@@ -154,13 +155,37 @@ export class GerenciarMercadosPage implements OnInit {
     this.buscandoCep = false;
   }
 
-  onImagemSelecionada(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => this.imagemPreview = e.target.result;
-      reader.readAsDataURL(file);
-    }
+  async onImagemSelecionada(event: any) {
+    const file = event.target.files[0] as File;
+    if (!file) return;
+    this.imagemPreview = URL.createObjectURL(file);
+
+    const canvas = document.createElement('canvas');
+    const img = new Image();
+    img.onload = async () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob(async blob => {
+        if (!blob) return;
+        const formData = new FormData();
+        formData.append('file', blob, `${Date.now()}.webp`);
+        formData.append('token', this.auth.usuario?.token || '');
+        formData.append('folder', 'mercados');
+        try {
+          const res = await fetch(`${environment.apiUrl}/api/upload`, {
+            method: 'POST', body: formData,
+          });
+          const data = await res.json();
+          if (data.url) {
+            this.imagemPreview = data.url;
+            this.mercadoSelecionado.logo_url = data.url;
+          }
+        } catch {}
+      }, 'image/webp', 0.8);
+    };
+    img.src = this.imagemPreview;
   }
 
   async toast(msg: string, color: string) {
