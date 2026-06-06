@@ -108,7 +108,7 @@
         💾 Salvar Alterações
       </button>
 
-      <!-- PREFERÊNCIAS -->
+      <!-- PREFERÊNCIAS (via ConfigService) -->
       <h3 class="secao-titulo">Preferências</h3>
 
       <div class="preferencia-item">
@@ -117,7 +117,9 @@
           <span>Alertas de preço no celular</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="preferencias.notifPush">
+          <input type="checkbox"
+            [(ngModel)]="configService.config.notificacoes.push"
+            (ngModelChange)="configService.salvar()">
           <span class="slider"></span>
         </label>
       </div>
@@ -128,7 +130,9 @@
           <span>Resumo semanal de preços</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="preferencias.notifEmail">
+          <input type="checkbox"
+            [(ngModel)]="configService.config.notificacoes.email"
+            (ngModelChange)="configService.salvar()">
           <span class="slider"></span>
         </label>
       </div>
@@ -139,7 +143,9 @@
           <span>Receber ofertas especiais</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="preferencias.notifPromocoes">
+          <input type="checkbox"
+            [(ngModel)]="configService.config.notificacoes.promocoes"
+            (ngModelChange)="configService.salvar()">
           <span class="slider"></span>
         </label>
       </div>
@@ -216,19 +222,17 @@
         </a>
       </div>
 
+      <div class="vazio" *ngIf="loadingAlertas">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Carregando alertas...</p>
+      </div>
+
       <div class="alerta-card" *ngFor="let a of alertas"
         [class.inativo]="!a.ativo">
 
         <div class="alerta-info">
           <strong>{{ a.produto }}</strong>
-          <span>Preço alvo: <b>R$ {{ a.precoAlvo.toFixed(2) }}</b></span>
-          <span>Preço atual: R$ {{ a.precoAtual.toFixed(2) }}</span>
-          <span class="economia" *ngIf="a.precoAtual > a.precoAlvo">
-            Faltam R$ {{ (a.precoAtual - a.precoAlvo).toFixed(2) }} para atingir
-          </span>
-          <span class="atingido" *ngIf="a.precoAtual <= a.precoAlvo">
-            ✅ Preço alvo atingido!
-          </span>
+          <span>Preço alvo: <b>R$ {{ a.precoDesejado.toFixed(2) }}</b></span>
         </div>
 
         <div class="alerta-acoes">
@@ -243,7 +247,7 @@
 
       </div>
 
-      <p class="vazio-texto" *ngIf="alertas.length === 0">
+      <p class="vazio-texto" *ngIf="!loadingAlertas && alertas.length === 0">
         Nenhum alerta criado. Pesquise produtos para criar alertas!
       </p>
 

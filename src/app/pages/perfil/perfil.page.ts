@@ -1,12 +1,13 @@
 import { environment } from '../../../environments/environment.js';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { IonContent, ToastController, AlertController } from '@ionic/angular/standalone';
+import { IonContent, IonSpinner, ToastController, AlertController } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { HistoricoService } from '../../services/historico.service';
+import { ConfigService } from '../../services/config.service';
 
 interface Endereco {
   id: number;
@@ -24,9 +25,11 @@ interface Endereco {
 interface AlertaPreco {
   id: number;
   produto: string;
-  precoAlvo: number;
-  precoAtual: number;
+  produto_id: number;
+  precoDesejado: number;
   ativo: boolean;
+  imagem: string;
+  supermercado_id?: number;
 }
 
 @Component({
@@ -34,9 +37,15 @@ interface AlertaPreco {
   templateUrl: './perfil.page.html',
   styleUrls: ['./perfil.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, IonContent]
+  imports: [CommonModule, FormsModule, RouterModule, IonContent, IonSpinner]
 })
-export class PerfilPage implements OnInit {
+export class PerfilPage {
+  configService = inject(ConfigService);
+  authService = inject(AuthService);
+  carrinhoService = inject(CarrinhoService);
+  historicoService = inject(HistoricoService);
+  private toastCtrl = inject(ToastController);
+  private alertCtrl = inject(AlertController);
 
   abaAtiva: 'dados' | 'enderecos' | 'alertas' | 'seguranca' = 'dados';
   editandoDados = false;
@@ -44,6 +53,7 @@ export class PerfilPage implements OnInit {
   editandoEndereco = false;
   imagemPreview: string | null = null;
   buscandoCep = false;
+  loadingAlertas = true;
 
   dados = {
     nome: '',
@@ -56,38 +66,13 @@ export class PerfilPage implements OnInit {
   };
 
   senhas = {
-    atual: '',
-    nova: '',
-    confirmar: '',
-    mostrarAtual: false,
-    mostrarNova: false,
-    mostrarConfirmar: false
+    atual: '', nova: '', confirmar: '',
+    mostrarAtual: false, mostrarNova: false, mostrarConfirmar: false
   };
 
   enderecos: Endereco[] = [];
-
   enderecoForm: Endereco = this.novoEndereco();
-
-  alertas: AlertaPreco[] = [
-    { id: 1, produto: 'Café 3 Corações 500g', precoAlvo: 16.00, precoAtual: 18.90, ativo: true },
-    { id: 2, produto: 'Açúcar União 1kg', precoAlvo: 4.00, precoAtual: 4.99, ativo: true },
-    { id: 3, produto: 'Arroz Prato Fino 5kg', precoAlvo: 20.00, precoAtual: 22.50, ativo: false }
-  ];
-
-  preferencias = {
-    notifPush: true,
-    notifEmail: false,
-    notifPromocoes: true,
-    modoEscuro: false
-  };
-
-  constructor(
-    public authService: AuthService,
-    public carrinhoService: CarrinhoService,
-    public historicoService: HistoricoService,
-    private toastCtrl: ToastController,
-    private alertCtrl: AlertController
-  ) {}
+  alertas: AlertaPreco[] = [];
 
   ngOnInit() {
     const u = this.authService.usuario;
@@ -106,7 +91,10 @@ export class PerfilPage implements OnInit {
       if (data.telefone) this.dados.telefone = data.telefone;
       if (data.cidade) this.dados.cidade = data.cidade;
     } catch {}
-    await this.carregarEnderecos(token);
+    await Promise.all([
+      this.carregarEnderecos(token),
+      this.carregarAlertas(),
+    ]);
   }
 
   async carregarEnderecos(token: string) {
@@ -114,6 +102,30 @@ export class PerfilPage implements OnInit {
       const res = await fetch(environment.apiUrl + '/api/auth/enderecos?token=' + token);
       this.enderecos = await res.json();
     } catch {}
+  }
+
+  async carregarAlertas() {
+    this.loadingAlertas = true;
+    try {
+      const tk = this.authService.usuario?.token;
+      if (!tk) return;
+      const res = await fetch(environment.apiUrl + '/api/alertas', {
+        headers: { Authorization: `Bearer ${tk}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        this.alertas = (data ?? []).map((a: any) => ({
+          id: a.id,
+          produto: a.produto,
+          produto_id: a.produto_id,
+          precoDesejado: a.precoDesejado,
+          ativo: a.ativo,
+          imagem: a.imagem,
+          supermercado_id: a.supermercado_id,
+        }));
+      }
+    } catch {}
+    this.loadingAlertas = false;
   }
 
   onImagemSelecionada(event: any) {
@@ -135,10 +147,8 @@ export class PerfilPage implements OnInit {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          token: usuario.token,
-          nome: this.dados.nome,
-          telefone: this.dados.telefone,
-          cidade: this.dados.cidade
+          token: usuario.token, nome: this.dados.nome,
+          telefone: this.dados.telefone, cidade: this.dados.cidade
         })
       });
       const data = await res.json();
@@ -150,13 +160,8 @@ export class PerfilPage implements OnInit {
     }
   }
 
-  // ENDEREÇOS
   novoEndereco(): Endereco {
-    return {
-      id: 0, apelido: '', cep: '', rua: '',
-      numero: '', complemento: '', bairro: '',
-      cidade: '', estado: '', principal: false
-    };
+    return { id: 0, apelido: '', cep: '', rua: '', numero: '', complemento: '', bairro: '', cidade: '', estado: '', principal: false };
   }
 
   abrirNovoEndereco() {
@@ -212,13 +217,9 @@ export class PerfilPage implements OnInit {
     if (!token) { await this.toast('Sessão expirada.', 'danger'); return; }
     try {
       const method = this.editandoEndereco ? 'PUT' : 'POST';
-      const body = this.editandoEndereco
-        ? { token, ...this.enderecoForm }
-        : { token, ...this.enderecoForm };
       const res = await fetch(environment.apiUrl + '/api/auth/enderecos', {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        method, headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, ...this.enderecoForm })
       });
       const data = await res.json();
       if (data.erro) { await this.toast(data.erro, 'danger'); return; }
@@ -246,21 +247,36 @@ export class PerfilPage implements OnInit {
     this.buscandoCep = false;
   }
 
-  // ALERTAS
   async toggleAlerta(a: AlertaPreco) {
-    a.ativo = !a.ativo;
-    await this.toast(
-      a.ativo ? '🔔 Alerta ativado!' : '🔕 Alerta pausado!',
-      a.ativo ? 'success' : 'warning'
-    );
+    try {
+      const tk = this.authService.usuario?.token;
+      if (!tk) return;
+      const res = await fetch(environment.apiUrl + '/api/alertas', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: tk, id: a.id, ativo: !a.ativo })
+      });
+      if (res.ok) {
+        a.ativo = !a.ativo;
+        await this.toast(a.ativo ? '🔔 Alerta ativado!' : '🔕 Alerta pausado!', a.ativo ? 'success' : 'warning');
+      }
+    } catch {}
   }
 
   async excluirAlerta(a: AlertaPreco) {
-    this.alertas = this.alertas.filter(x => x.id !== a.id);
-    await this.toast('Alerta removido!', 'warning');
+    try {
+      const tk = this.authService.usuario?.token;
+      if (!tk) return;
+      const res = await fetch(environment.apiUrl + '/api/alertas', {
+        method: 'DELETE', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: tk, id: a.id })
+      });
+      if (res.ok) {
+        this.alertas = this.alertas.filter(x => x.id !== a.id);
+        await this.toast('Alerta removido!', 'warning');
+      }
+    } catch {}
   }
 
-  // SEGURANÇA
   async alterarSenha() {
     if (!this.senhas.atual || !this.senhas.nova || !this.senhas.confirmar) {
       await this.toast('Preencha todos os campos!', 'warning'); return;
@@ -277,14 +293,12 @@ export class PerfilPage implements OnInit {
     }
     try {
       const res = await fetch(environment.apiUrl + '/api/auth/alterar-senha', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: usuario.token, novaSenha: this.senhas.nova })
       });
       const data = await res.json();
       if (data.erro) { await this.toast(data.erro, 'danger'); return; }
-      this.senhas = { atual: '', nova: '', confirmar: '',
-        mostrarAtual: false, mostrarNova: false, mostrarConfirmar: false };
+      this.senhas = { atual: '', nova: '', confirmar: '', mostrarAtual: false, mostrarNova: false, mostrarConfirmar: false };
       await this.toast('Senha alterada com sucesso! ✅', 'success');
     } catch {
       await this.toast('Erro ao alterar senha.', 'danger');
@@ -297,19 +311,14 @@ export class PerfilPage implements OnInit {
       message: 'Esta ação é irreversível! Todos os seus dados serão removidos.',
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
-        {
-          text: 'Excluir', role: 'destructive',
-          handler: () => this.authService.logout()
-        }
+        { text: 'Excluir', role: 'destructive', handler: () => this.authService.logout() }
       ]
     });
     await alert.present();
   }
 
   async toast(msg: string, color: string) {
-    const t = await this.toastCtrl.create({
-      message: msg, duration: 3000, color, position: 'top'
-    });
+    const t = await this.toastCtrl.create({ message: msg, duration: 3000, color, position: 'top' });
     await t.present();
   }
 }
