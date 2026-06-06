@@ -1,9 +1,9 @@
 <ion-content [fullscreen]="true">
 
   <div class="topo">
-    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <a routerLink="/home" class="btn-voltar" aria-label="Voltar">&#8592;</a>
     <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
-    <button class="btn-limpar" (click)="confirmarLimpar()" aria-label="Excluir">🗑️</button>
+    <button class="btn-limpar" (click)="confirmarLimpar()" aria-label="Excluir todas">🗑️</button>
   </div>
 
   <div class="container">
@@ -25,14 +25,20 @@
     <div class="filtros">
       <button [class.ativo]="filtroAtivo === 'todas'"
         (click)="filtroAtivo = 'todas'">Todas</button>
-      <button [class.ativo]="filtroAtivo === 'preco'"
-        (click)="filtroAtivo = 'preco'">💰 Preços</button>
+      <button [class.ativo]="filtroAtivo === 'alerta_preco'"
+        (click)="filtroAtivo = 'alerta_preco'">💰 Preços</button>
       <button [class.ativo]="filtroAtivo === 'promocao'"
         (click)="filtroAtivo = 'promocao'">🏷️ Promoções</button>
-      <button [class.ativo]="filtroAtivo === 'alerta'"
-        (click)="filtroAtivo = 'alerta'">🛒 Alertas</button>
       <button [class.ativo]="filtroAtivo === 'sistema'"
         (click)="filtroAtivo = 'sistema'">📱 Sistema</button>
+      <button [class.ativo]="filtroAtivo === 'marketing'"
+        (click)="filtroAtivo = 'marketing'">📢 Marketing</button>
+    </div>
+
+    <!-- CARREGANDO -->
+    <div class="vazio" *ngIf="loading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Carregando notificações...</p>
     </div>
 
     <!-- NOTIFICAÇÕES -->
@@ -43,19 +49,15 @@
       (click)="marcarLida(n)" role="button" tabindex="0">
 
       <div class="notif-icone" [style.background]="corTipo(n.tipo)">
-        {{ n.icone }}
+        {{ iconeTipo(n.tipo) }}
       </div>
 
       <div class="notif-info">
         <div class="notif-topo">
           <strong>{{ n.titulo }}</strong>
-          <span class="tempo">{{ formatarData(n.data) }}</span>
+          <span class="tempo">{{ formatarData(n.created_at) }}</span>
         </div>
         <p class="mensagem">{{ n.mensagem }}</p>
-        <a *ngIf="n.rota" [routerLink]="n.rota" class="btn-ver"
-          (click)="$event.stopPropagation(); marcarLida(n)">
-          Ver detalhes →
-        </a>
       </div>
 
       <button class="btn-remover"
@@ -64,7 +66,7 @@
     </div>
 
     <!-- VAZIO -->
-    <div class="vazio" *ngIf="notificacoesFiltradas.length === 0">
+    <div class="vazio" *ngIf="!loading && notificacoesFiltradas.length === 0">
       <span class="vazio-icone"><span aria-hidden="true">🔔</span></span>
       <p>Nenhuma notificação por aqui!</p>
     </div>

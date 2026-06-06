@@ -1,96 +1,70 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { IonContent, AlertController, ToastController } from '@ionic/angular/standalone';
-
-interface Notificacao {
-  id: number;
-  tipo: 'preco' | 'promocao' | 'sistema' | 'alerta';
-  titulo: string;
-  mensagem: string;
-  data: Date;
-  lida: boolean;
-  icone: string;
-  rota?: string;
-}
+import { IonContent, IonSpinner, AlertController, ToastController } from '@ionic/angular/standalone';
+import { NotificacaoService, Notificacao } from '../../services/notificacao.service';
 
 @Component({
   selector: 'app-notificacoes',
   templateUrl: './notificacoes.page.html',
   styleUrls: ['./notificacoes.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, IonContent]
+  imports: [CommonModule, RouterModule, IonContent, IonSpinner]
 })
-export class NotificacoesPage implements OnInit {
+export class NotificacoesPage {
+  private notifService = inject(NotificacaoService);
+  private alertCtrl = inject(AlertController);
+  private toastCtrl = inject(ToastController);
 
-  filtroAtivo: 'todas' | 'preco' | 'promocao' | 'sistema' | 'alerta' = 'todas';
+  filtroAtivo: 'todas' | 'alerta_preco' | 'promocao' | 'sistema' | 'marketing' = 'todas';
 
-  notificacoes: Notificacao[] = [
-    {
-      id: 1, tipo: 'preco',
-      titulo: 'Alerta de Preço! 🎯',
-      mensagem: 'Café 3 Corações baixou para R$ 16,90 no Big Bom!',
-      data: new Date(), lida: false, icone: '💰',
-      rota: '/pesquisar-produtos'
-    },
-    {
-      id: 2, tipo: 'promocao',
-      titulo: 'Promoção Especial! 🏷️',
-      mensagem: 'Arroz Prato Fino com 20% de desconto no SMC só hoje!',
-      data: new Date(Date.now() - 3600000), lida: false, icone: '🏷️',
-      rota: '/pesquisar-produtos'
-    },
-    {
-      id: 3, tipo: 'alerta',
-      titulo: 'Sua lista está pronta! 🛒',
-      mensagem: 'Você tem 3 produtos na lista. Clique para comparar preços.',
-      data: new Date(Date.now() - 7200000), lida: true, icone: '🛒',
-      rota: '/comparar'
-    },
-    {
-      id: 4, tipo: 'sistema',
-      titulo: 'Bem-vindo ao ARCA! 👋',
-      mensagem: 'Comece pesquisando produtos e economize nas suas compras!',
-      data: new Date(Date.now() - 86400000), lida: true, icone: '📱',
-      rota: '/home'
-    },
-    {
-      id: 5, tipo: 'preco',
-      titulo: 'Menor preço encontrado! 📉',
-      mensagem: 'Açúcar União 1kg por R$ 4,49 no SPN — menor preço da semana!',
-      data: new Date(Date.now() - 172800000), lida: true, icone: '📉',
-      rota: '/pesquisar-produtos'
+  notificacoes: Notificacao[] = [];
+  naoLidas = 0;
+  loading = true;
+
+  async ionViewWillEnter() {
+    this.loading = true;
+    await this.carregar();
+    this.loading = false;
+  }
+
+  private async carregar() {
+    const res = await this.notifService.listar();
+    if (res) {
+      this.notificacoes = res.data;
+      this.naoLidas = res.naoLidas;
     }
-  ];
-
-  constructor(
-    private alertCtrl: AlertController,
-    private toastCtrl: ToastController
-  ) {}
-
-  ngOnInit() {}
+  }
 
   get notificacoesFiltradas() {
-    const lista = this.filtroAtivo === 'todas'
-      ? this.notificacoes
-      : this.notificacoes.filter(n => n.tipo === this.filtroAtivo);
-    return lista.sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
+    if (this.filtroAtivo === 'todas') return this.notificacoes;
+    return this.notificacoes.filter(n => n.tipo === this.filtroAtivo);
   }
 
-  get naoLidas() {
-    return this.notificacoes.filter(n => !n.lida).length;
+  async marcarLida(n: Notificacao) {
+    if (n.lida) return;
+    const ok = await this.notifService.marcarLida(n.id);
+    if (ok) {
+      n.lida = true;
+      n.data_leitura = new Date().toISOString();
+      this.naoLidas = Math.max(0, this.naoLidas - 1);
+    }
   }
 
-  marcarLida(n: Notificacao) {
-    n.lida = true;
+  async marcarTodasLidas() {
+    const ok = await this.notifService.marcarTodasLidas();
+    if (ok) {
+      this.notificacoes.forEach(n => { n.lida = true; n.data_leitura = new Date().toISOString(); });
+      this.naoLidas = 0;
+    }
   }
 
-  marcarTodasLidas() {
-    this.notificacoes.forEach(n => n.lida = true);
-  }
-
-  remover(n: Notificacao) {
-    this.notificacoes = this.notificacoes.filter(x => x.id !== n.id);
+  async remover(n: Notificacao) {
+    const ok = await this.notifService.remover(n.id);
+    if (ok) {
+      if (!n.lida) this.naoLidas = Math.max(0, this.naoLidas - 1);
+      this.notificacoes = this.notificacoes.filter(x => x.id !== n.id);
+    }
   }
 
   async confirmarLimpar() {
@@ -102,10 +76,14 @@ export class NotificacoesPage implements OnInit {
         {
           text: 'Limpar', role: 'destructive',
           handler: async () => {
-            this.notificacoes = [];
+            const ok = await this.notifService.limparTodas();
+            if (ok) {
+              this.notificacoes = [];
+              this.naoLidas = 0;
+            }
             const t = await this.toastCtrl.create({
-              message: 'Notificações limpas!',
-              duration: 2000, color: 'warning', position: 'top'
+              message: ok ? 'Notificações limpas!' : 'Erro ao limpar',
+              duration: 2000, color: ok ? 'warning' : 'danger', position: 'top'
             });
             await t.present();
           }
@@ -115,8 +93,9 @@ export class NotificacoesPage implements OnInit {
     await alert.present();
   }
 
-  formatarData(data: Date): string {
-    const diff = new Date().getTime() - new Date(data).getTime();
+  formatarData(dataStr: string): string {
+    const data = new Date(dataStr);
+    const diff = Date.now() - data.getTime();
     const min = Math.floor(diff / 60000);
     const h = Math.floor(diff / 3600000);
     const d = Math.floor(diff / 86400000);
@@ -128,9 +107,16 @@ export class NotificacoesPage implements OnInit {
   }
 
   corTipo(tipo: string) {
-    if (tipo === 'preco') return '#d4edda';
+    if (tipo === 'alerta_preco') return '#d4edda';
     if (tipo === 'promocao') return '#fff3cd';
-    if (tipo === 'alerta') return '#e3f2fd';
+    if (tipo === 'marketing') return '#e3f2fd';
     return '#f5f5f5';
+  }
+
+  iconeTipo(tipo: string) {
+    if (tipo === 'alerta_preco') return '💰';
+    if (tipo === 'promocao') return '🏷️';
+    if (tipo === 'marketing') return '📱';
+    return '🔔';
   }
 }
