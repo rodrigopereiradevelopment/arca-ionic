@@ -10,7 +10,7 @@
     <label class="avatar-wrapper">
       <input type="file" accept="image/*"
         (change)="onImagemSelecionada($event)" hidden>
-      <img [src]="imagemPreview || 'assets/img/usuario.png'"
+      <img [src]="imagemPreview || authService.usuario?.foto_perfil || 'assets/img/usuario.png'"
         class="avatar" alt="Avatar">
       <span class="avatar-edit"><span aria-hidden="true">📷</span></span>
     </label>

@@ -11,6 +11,7 @@ export interface Usuario {
   email: string;
   tipo: TipoUsuario;
   token: string;
+  foto_perfil?: string;
 }
 
 @Injectable({ providedIn: 'root' })

@@ -128,13 +128,48 @@ export class PerfilPage {
     this.loadingAlertas = false;
   }
 
-  onImagemSelecionada(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => this.imagemPreview = e.target.result;
-      reader.readAsDataURL(file);
-    }
+  async onImagemSelecionada(event: any) {
+    const file = event.target.files[0] as File;
+    if (!file) return;
+    this.imagemPreview = URL.createObjectURL(file);
+
+    const webpBlob = await this.converterParaWebp(file);
+    const formData = new FormData();
+    formData.append('file', webpBlob, `${Date.now()}.webp`);
+    formData.append('token', this.authService.usuario?.token || '');
+
+    try {
+      const res = await fetch(environment.apiUrl + '/api/upload/perfil', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.url) {
+        this.imagemPreview = data.url;
+        if (this.authService.usuario) {
+          this.authService.usuario.foto_perfil = data.url;
+        }
+      }
+    } catch {}
+  }
+
+  private converterParaWebp(file: File): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob(blob => {
+          if (blob) resolve(blob);
+          else reject(new Error('Falha ao converter'));
+        }, 'image/webp', 0.8);
+      };
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
   }
 
   async salvarDados() {
@@ -311,7 +346,20 @@ export class PerfilPage {
       message: 'Esta ação é irreversível! Todos os seus dados serão removidos.',
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
-        { text: 'Excluir', role: 'destructive', handler: () => this.authService.logout() }
+        {
+          text: 'Desativar', role: 'destructive',
+          handler: async () => {
+            try {
+              const tk = this.authService.usuario?.token;
+              if (!tk) return;
+              const res = await fetch(environment.apiUrl + '/api/auth/deletar-conta', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: tk })
+              });
+              if (res.ok) await this.authService.logout();
+            } catch {}
+          }
+        }
       ]
     });
     await alert.present();
