@@ -1,6 +1,5 @@
 <ion-content [fullscreen]="true">
 
-  <!-- TOPO -->
   <div class="topo">
     <a routerLink="/home" class="btn-voltar">&#8592;</a>
     <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
@@ -13,7 +12,6 @@
     <h1><span aria-hidden="true">🎫</span> Meus Tickets</h1>
     <p class="subtitulo">Acompanhe seus chamados de suporte.</p>
 
-    <!-- FILTROS -->
     <div class="filtros">
       <button [class.ativo]="filtroAtivo === 'todos'"
         (click)="filtroAtivo = 'todos'">Todos</button>
@@ -25,36 +23,41 @@
         (click)="filtroAtivo = 'resolvido'">🟢 Resolvidos</button>
     </div>
 
+    <!-- CARREGANDO -->
+    <div class="vazio" *ngIf="loading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Carregando tickets...</p>
+    </div>
+
     <!-- CARDS -->
-    <div class="ticket-card" *ngFor="let t of ticketsFiltrados"
-      (click)="abrirTicket(t)" role="button" tabindex="0">
+    <ng-container *ngIf="!loading">
+      <div class="ticket-card" *ngFor="let t of ticketsFiltrados"
+        (click)="abrirTicket(t)" role="button" tabindex="0">
 
-      <div class="ticket-topo">
-        <span class="tipo-label">{{ tipoLabel(t.tipo) }}</span>
-        <span class="badge" [class]="statusCor(t.status)">
-          {{ statusLabel(t.status) }}
-        </span>
+        <div class="ticket-topo">
+          <span class="tipo-label">{{ tipoLabel(t.tipo) }}</span>
+          <span class="badge" [class]="statusCor(t.status)">
+            {{ statusLabel(t.status) }}
+          </span>
+        </div>
+
+        <strong class="ticket-titulo">{{ t.titulo }}</strong>
+        <p class="ticket-desc">{{ t.descricao }}</p>
+
+        <div class="ticket-rodape">
+          <span class="ticket-data">{{ formatarData(t.created_at) }}</span>
+        </div>
+
       </div>
 
-      <strong class="ticket-titulo">{{ t.titulo }}</strong>
-      <p class="ticket-desc">{{ t.descricao }}</p>
-
-      <div class="ticket-rodape">
-        <span class="ticket-data">{{ formatarData(t.data) }}</span>
-        <span class="ticket-msgs">
-          💬 {{ t.mensagens.length }} mensagem(ns)
-        </span>
+      <div class="vazio" *ngIf="ticketsFiltrados.length === 0">
+        <span class="vazio-icone"><span aria-hidden="true">🎫</span></span>
+        <p>Nenhum ticket encontrado.</p>
+        <button class="btn-abrir" (click)="abrirNovoTicket()">
+          ＋ Abrir Novo Ticket
+        </button>
       </div>
-
-    </div>
-
-    <div class="vazio" *ngIf="ticketsFiltrados.length === 0">
-      <span class="vazio-icone"><span aria-hidden="true">🎫</span></span>
-      <p>Nenhum ticket encontrado.</p>
-      <button class="btn-abrir" (click)="abrirNovoTicket()">
-        ＋ Abrir Novo Ticket
-      </button>
-    </div>
+    </ng-container>
 
   </div>
 
@@ -79,7 +82,7 @@
     <div class="mensagens">
       <div
         class="mensagem"
-        *ngFor="let m of ticketAberto.mensagens"
+        *ngFor="let m of mensagens"
         [class.msg-usuario]="m.autor === 'usuario'"
         [class.msg-suporte]="m.autor === 'suporte'">
 
@@ -87,7 +90,7 @@
           {{ m.autor === 'usuario' ? '👤 Você' : '🛠️ Suporte ARCA' }}
         </div>
         <div class="msg-texto">{{ m.texto }}</div>
-        <div class="msg-data">{{ formatarData(m.data) }}</div>
+        <div class="msg-data">{{ formatarData(m.created_at) }}</div>
 
       </div>
     </div>
@@ -142,21 +145,6 @@
         <textarea [(ngModel)]="novoTicket.descricao"
           placeholder="Descreva detalhadamente..."
           rows="4" aria-required="true"></textarea>
-      </div>
-
-      <!-- FOTO (só para preço/mercado) -->
-      <div class="form-group" *ngIf="precisaFoto">
-        <label><span aria-hidden="true">📷</span> Foto como Evidência</label>
-        <label class="upload-area">
-          <input type="file" accept="image/*"
-            (change)="onImagemSelecionada($event)" hidden>
-          <div *ngIf="!imagemPreview" class="upload-placeholder">
-            <span><span aria-hidden="true">📷</span> Toque para anexar foto</span>
-            <span class="upload-hint">Foto da etiqueta ou prateleira</span>
-          </div>
-          <img *ngIf="imagemPreview" [src]="imagemPreview"
-            class="img-preview" alt="Preview">
-        </label>
       </div>
 
       <div class="modal-botoes">

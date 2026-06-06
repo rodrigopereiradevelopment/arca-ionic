@@ -1,46 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { IonContent, ToastController, AlertController } from '@ionic/angular/standalone';
-
-interface Mensagem {
-  autor: 'usuario' | 'suporte';
-  texto: string;
-  data: Date;
-}
-
-interface Ticket {
-  id: number;
-  tipo: 'preco' | 'mercado' | 'bug' | 'sugestao' | 'duvida';
-  titulo: string;
-  descricao: string;
-  status: 'aberto' | 'analise' | 'resolvido';
-  data: Date;
-  mensagens: Mensagem[];
-  imagemAnexo?: string;
-}
+import { IonContent, IonSpinner, ToastController, AlertController } from '@ionic/angular/standalone';
+import { TicketService, Ticket, TicketMensagem } from '../../services/ticket.service';
 
 @Component({
   selector: 'app-ticket',
   templateUrl: './ticket.page.html',
   styleUrls: ['./ticket.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, IonContent]
+  imports: [CommonModule, FormsModule, RouterModule, IonContent, IonSpinner]
 })
-export class TicketPage implements OnInit {
+export class TicketPage {
+  private ticketService = inject(TicketService);
+  private toastCtrl = inject(ToastController);
+  private alertCtrl = inject(AlertController);
 
   modalAberto = false;
+  loading = true;
+  tickets: Ticket[] = [];
   ticketAberto: Ticket | null = null;
+  mensagens: TicketMensagem[] = [];
   novaMensagem = '';
-  imagemPreview: string | null = null;
   filtroAtivo: 'todos' | 'aberto' | 'analise' | 'resolvido' = 'todos';
 
-  novoTicket = {
-    tipo: 'duvida' as Ticket['tipo'],
-    titulo: '',
-    descricao: ''
-  };
+  novoTicket = { tipo: 'duvida' as Ticket['tipo'], titulo: '', descricao: '' };
 
   tipos = [
     { value: 'preco', label: '🏷️ Preço Incorreto' },
@@ -50,116 +35,69 @@ export class TicketPage implements OnInit {
     { value: 'duvida', label: '❓ Dúvida Geral' }
   ];
 
-  tickets: Ticket[] = [
-    {
-      id: 1, tipo: 'preco',
-      titulo: 'Preço do Café errado no Big Bom',
-      descricao: 'O preço mostrado é R$ 18,90 mas na prateleira está R$ 21,50.',
-      status: 'analise',
-      data: new Date(Date.now() - 86400000),
-      mensagens: [
-        { autor: 'usuario', texto: 'O preço mostrado é R$ 18,90 mas na prateleira está R$ 21,50.', data: new Date(Date.now() - 86400000) },
-        { autor: 'suporte', texto: 'Obrigado por reportar! Estamos verificando com o mercado.', data: new Date(Date.now() - 3600000) }
-      ]
-    },
-    {
-      id: 2, tipo: 'sugestao',
-      titulo: 'Adicionar filtro por promoção',
-      descricao: 'Seria útil filtrar apenas produtos em promoção.',
-      status: 'aberto',
-      data: new Date(Date.now() - 172800000),
-      mensagens: [
-        { autor: 'usuario', texto: 'Seria útil filtrar apenas produtos em promoção.', data: new Date(Date.now() - 172800000) }
-      ]
-    },
-    {
-      id: 3, tipo: 'bug',
-      titulo: 'Mapa não carrega às vezes',
-      descricao: 'O mapa de rotas fica em branco quando abre pela segunda vez.',
-      status: 'resolvido',
-      data: new Date(Date.now() - 604800000),
-      mensagens: [
-        { autor: 'usuario', texto: 'O mapa fica em branco quando abre pela segunda vez.', data: new Date(Date.now() - 604800000) },
-        { autor: 'suporte', texto: 'Corrigido na versão 1.2! Obrigado pelo reporte.', data: new Date(Date.now() - 86400000) }
-      ]
-    }
-  ];
+  async ionViewWillEnter() {
+    this.loading = true;
+    await this.carregar();
+    this.loading = false;
+  }
+
+  private async carregar() {
+    const res = await this.ticketService.listar();
+    if (res) this.tickets = res.data;
+  }
 
   get ticketsFiltrados() {
     return this.tickets
       .filter(t => this.filtroAtivo === 'todos' || t.status === this.filtroAtivo)
-      .sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
   }
 
   get precisaFoto() {
     return this.novoTicket.tipo === 'preco' || this.novoTicket.tipo === 'mercado';
   }
 
-  constructor(
-    private toastCtrl: ToastController,
-    private alertCtrl: AlertController
-  ) {}
-
-  ngOnInit() {}
-
-  abrirTicket(t: Ticket) {
+  async abrirTicket(t: Ticket) {
     this.ticketAberto = t;
+    this.mensagens = [];
+    const msgs = await this.ticketService.listarMensagens(t.id);
+    if (msgs) this.mensagens = msgs;
   }
 
   fecharTicket() {
     this.ticketAberto = null;
+    this.mensagens = [];
     this.novaMensagem = '';
   }
 
   async enviarMensagem() {
     if (!this.novaMensagem.trim() || !this.ticketAberto) return;
-    this.ticketAberto.mensagens.push({
-      autor: 'usuario',
-      texto: this.novaMensagem.trim(),
-      data: new Date()
-    });
-    this.novaMensagem = '';
-    const t = await this.toastCtrl.create({
-      message: 'Mensagem enviada!', duration: 2000,
-      color: 'success', position: 'top'
-    });
-    await t.present();
+    const msg = await this.ticketService.enviarMensagem(this.ticketAberto.id, this.novaMensagem.trim());
+    if (msg) {
+      this.mensagens.push(msg);
+      this.novaMensagem = '';
+    } else {
+      this.mostrarToast('Erro ao enviar mensagem', 'danger');
+    }
   }
 
   async abrirNovoTicket() {
     this.novoTicket = { tipo: 'duvida', titulo: '', descricao: '' };
-    this.imagemPreview = null;
     this.modalAberto = true;
   }
 
   async enviarTicket() {
     if (!this.novoTicket.titulo || !this.novoTicket.descricao) {
-      await this.toastCtrl.create({
-        message: 'Preencha todos os campos!',
-        duration: 2000, color: 'warning', position: 'top'
-      }).then(t => t.present());
+      this.mostrarToast('Preencha todos os campos!', 'warning');
       return;
     }
-    const novo: Ticket = {
-      id: Date.now(),
-      tipo: this.novoTicket.tipo,
-      titulo: this.novoTicket.titulo,
-      descricao: this.novoTicket.descricao,
-      status: 'aberto',
-      data: new Date(),
-      mensagens: [{
-        autor: 'usuario',
-        texto: this.novoTicket.descricao,
-        data: new Date()
-      }],
-      imagemAnexo: this.imagemPreview || undefined
-    };
-    this.tickets.unshift(novo);
-    this.modalAberto = false;
-    await this.toastCtrl.create({
-      message: 'Ticket aberto com sucesso! ✅',
-      duration: 3000, color: 'success', position: 'top'
-    }).then(t => t.present());
+    const ticket = await this.ticketService.criar(this.novoTicket.tipo, this.novoTicket.titulo, this.novoTicket.descricao);
+    if (ticket) {
+      this.tickets.unshift(ticket);
+      this.modalAberto = false;
+      this.mostrarToast('Ticket aberto com sucesso! ✅', 'success');
+    } else {
+      this.mostrarToast('Erro ao criar ticket', 'danger');
+    }
   }
 
   async confirmarFechar(t: Ticket) {
@@ -170,27 +108,19 @@ export class TicketPage implements OnInit {
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Resolver', handler: async () => {
-            t.status = 'resolvido';
-            this.fecharTicket();
-            const toast = await this.toastCtrl.create({
-              message: 'Ticket marcado como resolvido!',
-              duration: 2000, color: 'success', position: 'top'
-            });
-            await toast.present();
+            const updated = await this.ticketService.atualizarStatus(t.id, 'resolvido');
+            if (updated) {
+              t.status = 'resolvido';
+              this.fecharTicket();
+              this.mostrarToast('Ticket marcado como resolvido!', 'success');
+            } else {
+              this.mostrarToast('Erro ao fechar ticket', 'danger');
+            }
           }
         }
       ]
     });
     await alert.present();
-  }
-
-  onImagemSelecionada(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => this.imagemPreview = e.target.result;
-      reader.readAsDataURL(file);
-    }
   }
 
   tipoLabel(tipo: string) {
@@ -209,8 +139,9 @@ export class TicketPage implements OnInit {
     return 'badge-resolvido';
   }
 
-  formatarData(data: Date): string {
-    const diff = new Date().getTime() - new Date(data).getTime();
+  formatarData(dataStr: string): string {
+    const data = new Date(dataStr);
+    const diff = Date.now() - data.getTime();
     const min = Math.floor(diff / 60000);
     const h = Math.floor(diff / 3600000);
     const d = Math.floor(diff / 86400000);
@@ -219,5 +150,10 @@ export class TicketPage implements OnInit {
     if (h < 24) return `${h}h atrás`;
     if (d === 1) return 'Ontem';
     return `${d} dias atrás`;
+  }
+
+  private async mostrarToast(msg: string, color: string) {
+    const t = await this.toastCtrl.create({ message: msg, duration: 3000, color, position: 'top' });
+    await t.present();
   }
 }
