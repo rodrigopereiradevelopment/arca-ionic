@@ -4,6 +4,7 @@ import { MenuComponent } from './components/menu/menu.component';
 import { AuthService } from './services/auth.service';
 import { ConfigService } from './services/config.service';
 import { CarrinhoService } from './services/carrinho.service';
+import { PushNotificationService } from './services/push-notification.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit {
   private authService = inject(AuthService);
   private configService = inject(ConfigService);
   private carrinhoService = inject(CarrinhoService);
+  private pushService = inject(PushNotificationService);
   private router = inject(Router);
 
 
@@ -57,10 +59,13 @@ export class AppComponent implements OnInit {
       setTimeout(() => this.router.navigate(['/onboarding']), 2200);
     }
 
-    this.authService.usuario$.subscribe(u => {
+    this.authService.usuario$.subscribe(async u => {
       if (u) {
         this.carrinhoService.carregarDoServidor();
-        this.configService.carregarDoServidor();
+        await this.configService.carregarDoServidor();
+        if (this.configService.config.notificacoes.push) {
+          this.pushService.registrar();
+        }
       }
     });
   }

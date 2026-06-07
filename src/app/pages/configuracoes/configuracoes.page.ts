@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { HistoricoService } from '../../services/historico.service';
 import { ConfigService } from '../../services/config.service';
+import { PushNotificationService } from '../../services/push-notification.service';
 
 @Component({
   selector: 'app-configuracoes',
@@ -22,6 +23,7 @@ export class ConfiguracoesPage implements OnInit {
   private configSvc = inject(ConfigService);
   private toastCtrl = inject(ToastController);
   private alertCtrl = inject(AlertController);
+  private pushSvc = inject(PushNotificationService);
 
 
   get aparencia() { return this.configSvc.config.aparencia; }
@@ -40,9 +42,16 @@ export class ConfiguracoesPage implements OnInit {
 
   ngOnInit() { this.configSvc.init(); }
 
-  async onToggle() {
+  async onToggle(tipo?: string) {
     this.configSvc.salvar();
     this.configSvc.aplicar();
+    if (tipo === 'push') {
+      if (this.notificacoes.push) {
+        this.pushSvc.registrar();
+      } else {
+        this.pushSvc.desativar();
+      }
+    }
     await this.toast('Configuração salva!', 'success');
   }
 
