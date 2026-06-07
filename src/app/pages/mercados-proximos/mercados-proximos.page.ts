@@ -2,10 +2,11 @@ import { Component, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { IonContent } from '@ionic/angular/standalone';
+import { IonContent, ModalController } from '@ionic/angular/standalone';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import { MercadoService, Mercado } from '../../services/mercado.service';
+import { AvaliacaoService, MediaAvaliacao } from '../../services/avaliacao.service';
 import { MERCADOS_MAP } from '../../constants/mercados';
 
 function calcDistancia(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -17,8 +18,6 @@ function calcDistancia(lat1: number, lon1: number, lat2: number, lon2: number): 
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-
-
 @Component({
   selector: 'app-mercados-proximos',
   templateUrl: './mercados-proximos.page.html',
@@ -28,23 +27,32 @@ function calcDistancia(lat1: number, lon1: number, lat2: number, lon2: number): 
 })
 export class MercadosProximosPage implements AfterViewInit {
   private mercadoSvc = inject(MercadoService);
-
+  avaliacaoSvc = inject(AvaliacaoService);
 
   map: any;
   listaVisivel = true;
   filtroDistancia = 10;
-  ordenacao: 'distancia' | 'nome' = 'distancia';
+  ordenacao: 'distancia' | 'nome' | 'nota' = 'distancia';
   mercadoSelecionado: any = null;
   origemUsuario: any = null;
-  mercados: (Mercado & { distancia: number; horario: string; logo: string })[] = [];
+  mercados: (Mercado & { distancia: number; horario: string; logo: string; media_geral?: number; total_avaliacoes?: number })[] = [];
   carregando = true;
+
+  // Modal avaliacao
+  modalAvaliacao = false;
+  avaliandoMercado: any = null;
+  formAvaliacao = { nota_geral: 5, nota_atendimento: 5, nota_qualidade: 5, nota_preco: 5, comentario: '' };
+  enviandoAvaliacao = false;
+  avaliacaoEnviada = false;
 
   get mercadosFiltrados() {
     return this.mercados
       .filter(m => m.distancia <= this.filtroDistancia)
-      .sort((a, b) => this.ordenacao === 'distancia'
-        ? a.distancia - b.distancia
-        : a.nome.localeCompare(b.nome));
+      .sort((a, b) => {
+        if (this.ordenacao === 'distancia') return a.distancia - b.distancia;
+        if (this.ordenacao === 'nota') return (b.media_geral || 0) - (a.media_geral || 0);
+        return a.nome.localeCompare(b.nome);
+      });
   }
 
   corDistancia(dist: number) {
@@ -60,13 +68,24 @@ export class MercadosProximosPage implements AfterViewInit {
 
   async carregarMercados() {
     this.carregando = true;
-    const lista = await this.mercadoSvc.listar('aprovado');
-    this.mercados = lista.map(m => ({
-      ...m,
-      distancia: 0,
-      horario: '',
-      logo: MERCADOS_MAP[m.id]?.logo || 'assets/img/mercado.png'
-    }));
+    const [lista, resumoNotas] = await Promise.all([
+      this.mercadoSvc.listar('aprovado'),
+      this.avaliacaoSvc.getResumo(),
+    ]);
+    const mapaNotas = new Map(
+      (resumoNotas as any[]).map((r: any) => [r.supermercado_id, r])
+    );
+    this.mercados = lista.map(m => {
+      const nota = mapaNotas.get(m.id);
+      return {
+        ...m,
+        distancia: 0,
+        horario: '',
+        logo: MERCADOS_MAP[m.id]?.logo || 'assets/img/mercado.png',
+        media_geral: nota?.media_geral || 0,
+        total_avaliacoes: nota?.total || 0,
+      };
+    });
     this.carregando = false;
   }
 
@@ -128,9 +147,10 @@ export class MercadosProximosPage implements AfterViewInit {
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
       });
+      const estrelas = mercado.media_geral ? this.avaliacaoSvc.estrelas(mercado.media_geral) : '';
       L.marker([mercado.latitude, mercado.longitude], { icon })
         .addTo(this.map)
-        .bindPopup(`<b>${mercado.nome}</b><br>📏 ${mercado.distancia} km`)
+        .bindPopup(`<b>${mercado.nome}</b><br>📏 ${mercado.distancia} km${estrelas ? '<br>' + estrelas : ''}`)
         .on('click', () => {
           this.mercadoSelecionado = mercado;
           this.listaVisivel = true;
@@ -145,5 +165,34 @@ export class MercadosProximosPage implements AfterViewInit {
 
   toggleLista() {
     this.listaVisivel = !this.listaVisivel;
+  }
+
+  abrirAvaliacao(mercado: any, event: Event) {
+    event.stopPropagation();
+    this.avaliandoMercado = mercado;
+    this.formAvaliacao = { nota_geral: 5, nota_atendimento: 5, nota_qualidade: 5, nota_preco: 5, comentario: '' };
+    this.avaliacaoEnviada = false;
+    this.modalAvaliacao = true;
+  }
+
+  definirNota(campo: string, nota: number) {
+    (this.formAvaliacao as any)[campo] = nota;
+  }
+
+  async enviarAvaliacao() {
+    this.enviandoAvaliacao = true;
+    const ok = await this.avaliacaoSvc.salvar({
+      supermercado_id: this.avaliandoMercado.id,
+      ...this.formAvaliacao,
+    });
+    this.enviandoAvaliacao = false;
+    if (ok) {
+      this.avaliacaoEnviada = true;
+      setTimeout(() => { this.modalAvaliacao = false; this.carregarMercados(); }, 1500);
+    }
+  }
+
+  fecharModalAvaliacao() {
+    this.modalAvaliacao = false;
   }
 }

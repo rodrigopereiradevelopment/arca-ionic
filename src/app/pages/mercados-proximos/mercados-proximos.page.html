@@ -20,6 +20,7 @@
     </select>
     <select [(ngModel)]="ordenacao" class="select-ord">
       <option value="distancia">+ Próximo</option>
+      <option value="nota">Melhor Nota</option>
       <option value="nome">Nome A-Z</option>
     </select>
   </div>
@@ -47,6 +48,8 @@
 
         <div class="mercado-info">
           <strong>{{ m.nome }}</strong>
+          <span *ngIf="m.media_geral" class="estrelas">{{ avaliacaoSvc.estrelas(m.media_geral) }} {{ m.media_geral }}</span>
+          <span *ngIf="!m.media_geral" class="sem-nota">Sem avaliações</span>
           <span><span aria-hidden="true">🕐</span> {{ m.horario }}</span>
           <span><span aria-hidden="true">📞</span> {{ m.telefone }}</span>
         </div>
@@ -56,8 +59,9 @@
             {{ m.distancia }} km
           </span>
           <div class="mercado-btns">
-            <a [routerLink]="['/mapa-rotas']" class="btn-rota"><span aria-hidden="true">🗺️</span> Rota</a>
-            <a [routerLink]="['/comparar']" class="btn-precos"><span aria-hidden="true">💰</span> Preços</a>
+            <button class="btn-avaliar" (click)="abrirAvaliacao(m, $event)" title="Avaliar">⭐</button>
+            <a [routerLink]="['/mapa-rotas']" class="btn-rota"><span aria-hidden="true">🗺️</span></a>
+            <a [routerLink]="['/comparar']" class="btn-precos"><span aria-hidden="true">💰</span></a>
           </div>
         </div>
 
@@ -67,6 +71,61 @@
         Nenhum mercado encontrado neste raio.
       </p>
 
+    </div>
+  </div>
+
+  <!-- MODAL AVALIAÇÃO -->
+  <div class="modal-overlay" *ngIf="modalAvaliacao" (click)="fecharModalAvaliacao()">
+    <div class="modal-conteudo" (click)="$event.stopPropagation()">
+      @if (!avaliacaoEnviada) {
+        <h3>Avaliar {{ avaliandoMercado?.nome }}</h3>
+
+        <div class="campo-nota">
+          <label>Nota Geral</label>
+          <div class="estrelas-input">
+            <span *ngFor="let n of [1,2,3,4,5]" class="estrela" [class.ativa]="n <= formAvaliacao.nota_geral"
+              (click)="definirNota('nota_geral', n)">★</span>
+          </div>
+        </div>
+
+        <div class="campo-nota">
+          <label>Atendimento</label>
+          <div class="estrelas-input">
+            <span *ngFor="let n of [1,2,3,4,5]" class="estrela" [class.ativa]="n <= formAvaliacao.nota_atendimento"
+              (click)="definirNota('nota_atendimento', n)">★</span>
+          </div>
+        </div>
+
+        <div class="campo-nota">
+          <label>Qualidade dos Produtos</label>
+          <div class="estrelas-input">
+            <span *ngFor="let n of [1,2,3,4,5]" class="estrela" [class.ativa]="n <= formAvaliacao.nota_qualidade"
+              (click)="definirNota('nota_qualidade', n)">★</span>
+          </div>
+        </div>
+
+        <div class="campo-nota">
+          <label>Preços</label>
+          <div class="estrelas-input">
+            <span *ngFor="let n of [1,2,3,4,5]" class="estrela" [class.ativa]="n <= formAvaliacao.nota_preco"
+              (click)="definirNota('nota_preco', n)">★</span>
+          </div>
+        </div>
+
+        <div class="campo-nota">
+          <label>Comentário (opcional)</label>
+          <textarea [(ngModel)]="formAvaliacao.comentario" placeholder="Conte sua experiência..." rows="3"></textarea>
+        </div>
+
+        <button class="btn-enviar" (click)="enviarAvaliacao()" [disabled]="enviandoAvaliacao">
+          {{ enviandoAvaliacao ? 'Enviando...' : 'Enviar Avaliação' }}
+        </button>
+      } @else {
+        <div class="avaliacao-sucesso">
+          <p>✅ Avaliação enviada!</p>
+          <p>Obrigado por contribuir! 🎉</p>
+        </div>
+      }
     </div>
   </div>
 

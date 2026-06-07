@@ -190,3 +190,42 @@ ion-content {
   font-size: 0.875rem;
   padding: 20px 0;
 }
+
+.estrelas { color: #f1c40f; font-size: 0.75rem; }
+.sem-nota { font-size: 0.7rem; color: var(--arca-text-lighter); font-style: italic; }
+
+.btn-avaliar {
+  background: none; border: none; font-size: 1rem; cursor: pointer; padding: 5px 8px;
+  border-radius: 8px; background: var(--arca-warning-bg, #fef3cd);
+  &:hover { transform: scale(1.15); }
+}
+
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-conteudo {
+  background: var(--arca-surface); border-radius: 16px; padding: 24px;
+  width: 90%; max-width: 400px; max-height: 85vh; overflow-y: auto;
+  h3 { font-size: 1.125rem; color: var(--arca-text); margin-bottom: 20px; text-align: center; }
+}
+.campo-nota {
+  margin-bottom: 16px;
+  label { display: block; font-size: 0.8125rem; color: var(--arca-text); margin-bottom: 4px; font-weight: 600; }
+  textarea { width: 100%; padding: 10px; border: 1px solid var(--arca-border); border-radius: 8px; font-size: 0.875rem; background: var(--arca-bg-subtle); color: var(--arca-text); resize: vertical; }
+}
+.estrelas-input {
+  display: flex; gap: 4px;
+  .estrela { font-size: 1.75rem; color: #ddd; cursor: pointer; transition: color 0.15s; }
+  .estrela.ativa { color: #f1c40f; }
+  .estrela:hover { color: #f1c40f; transform: scale(1.1); }
+}
+.btn-enviar {
+  width: 100%; padding: 14px; background: var(--arca-primary); color: #fff;
+  border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 8px;
+  &:disabled { opacity: 0.6; }
+}
+.avaliacao-sucesso { text-align: center; padding: 32px 0;
+  p { font-size: 1rem; color: var(--arca-text); margin: 8px 0; }
+}
