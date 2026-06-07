@@ -3,34 +3,38 @@
   <div class="topo">
     <a routerLink="/home" class="btn-voltar">&#8592;</a>
     <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
-    <button class="btn-limpar" (click)="confirmarLimpar()">🗑️ Limpar</button>
+    <button class="btn-limpar" (click)="confirmarLimpar()" *ngIf="filtroAtivo !== 'favoritos'">🗑️ Limpar</button>
   </div>
 
   <div class="container">
 
-    <h1><span aria-hidden="true">📋</span> Histórico</h1>
-    <p class="subtitulo">Suas pesquisas, comparações e rotas recentes.</p>
+    <h1><span aria-hidden="true">📋</span>
+      {{ filtroAtivo === 'favoritos' ? 'Favoritos' : 'Histórico' }}</h1>
+    <p class="subtitulo" *ngIf="filtroAtivo !== 'favoritos'">
+      Suas pesquisas, comparações e rotas recentes.</p>
 
     <!-- FILTROS -->
     <div class="filtros">
       <button [class.ativo]="filtroAtivo === 'todos'"
-        (click)="filtroAtivo = 'todos'">Todos</button>
+        (click)="setFiltro('todos')">Todos</button>
       <button [class.ativo]="filtroAtivo === 'pesquisa'"
-        (click)="filtroAtivo = 'pesquisa'">🔍 Pesquisas</button>
+        (click)="setFiltro('pesquisa')">🔍 Pesquisas</button>
       <button [class.ativo]="filtroAtivo === 'comparacao'"
-        (click)="filtroAtivo = 'comparacao'">💰 Comparações</button>
+        (click)="setFiltro('comparacao')">💰 Comparações</button>
       <button [class.ativo]="filtroAtivo === 'rota'"
-        (click)="filtroAtivo = 'rota'">🗺️ Rotas</button>
+        (click)="setFiltro('rota')">🗺️ Rotas</button>
+      <button [class.ativo]="filtroAtivo === 'favoritos'"
+        (click)="setFiltro('favoritos')">❤️ Favoritos</button>
     </div>
 
     <!-- CARREGANDO -->
     <div class="vazio" *ngIf="loading">
       <ion-spinner name="crescent"></ion-spinner>
-      <p>Carregando histórico...</p>
+      <p>Carregando...</p>
     </div>
 
-    <!-- LISTA -->
-    <ng-container *ngIf="!loading">
+    <!-- HISTÓRICO -->
+    <ng-container *ngIf="!loading && filtroAtivo !== 'favoritos'">
       <div class="historico-card"
         *ngFor="let item of itensFiltrados"
         (click)="navegarPara(item)" role="button" tabindex="0">
@@ -55,6 +59,32 @@
         <p>Nenhum item no histórico ainda.</p>
         <a routerLink="/pesquisar-produtos" class="btn-pesquisar">
           🔍 Pesquisar Produtos
+        </a>
+      </div>
+    </ng-container>
+
+    <!-- FAVORITOS -->
+    <ng-container *ngIf="!loading && filtroAtivo === 'favoritos'">
+      <div class="fav-card" *ngFor="let f of favoritos">
+        <img [src]="f.imagem_url || 'assets/img/Produto1.png'" class="fav-img"
+          onerror="this.src='assets/img/Produto1.png'" [alt]="f.nome">
+        <div class="fav-info">
+          <strong>{{ f.nome }}</strong>
+          <span class="fav-marca" *ngIf="f.marca">{{ f.marca }}</span>
+          <div class="fav-preco" *ngIf="f.menorPreco > 0">
+            <span class="fav-valor">R$ {{ f.menorPreco.toFixed(2) }}</span>
+            <span class="fav-mercado">no {{ f.mercadoMaisBarato }}</span>
+          </div>
+        </div>
+        <button class="btn-desfavoritar" (click)="desfavoritar(f)"
+          aria-label="Remover dos favoritos">❤️</button>
+      </div>
+
+      <div class="vazio" *ngIf="favoritos.length === 0">
+        <span class="vazio-icone">❤️</span>
+        <p>Nenhum favorito ainda.</p>
+        <a routerLink="/pesquisar-produtos" class="btn-pesquisar">
+          🔍 Favoritar Produtos
         </a>
       </div>
     </ng-container>

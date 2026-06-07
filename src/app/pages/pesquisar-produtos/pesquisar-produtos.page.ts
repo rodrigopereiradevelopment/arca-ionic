@@ -7,6 +7,7 @@ import { HistoricoService } from '../../services/historico.service';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { ComparacaoService } from '../../services/comparacao.service';
 import { CategoriaService } from '../../services/categoria.service';
+import { FavoritoService } from '../../services/favorito.service';
 import { environment } from '../../../environments/environment';
 import { CATEGORIAS_MAP, MEDALHAS } from '../../constants/mercados';
 
@@ -44,6 +45,7 @@ export class PesquisarProdutosPage implements OnInit {
   comparacaoService = inject(ComparacaoService);
   private route = inject(ActivatedRoute);
   private categoriaService = inject(CategoriaService);
+  favoritoService = inject(FavoritoService);
 
   Math = Math;
   busca = '';
@@ -148,6 +150,10 @@ export class PesquisarProdutosPage implements OnInit {
       mercadoMaisBarato: p.mercadoMaisBarato,
       quantidade: p.quantidade
     });
+  }
+
+  toggleFavorito(p: Produto) {
+    this.favoritoService.toggle(p.id);
   }
 
   abrirModal(p: Produto) {

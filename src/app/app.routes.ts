@@ -91,6 +91,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/privacidade/privacidade.page').then(m => m.PrivacidadePage)
   },
   {
+    path: 'favoritos',
+    loadComponent: () => import('./pages/historico/historico.page').then(m => m.HistoricoPage),
+    canActivate: [authGuard]
+  },
+  {
     path: 'cupons',
     loadComponent: () => import('./pages/cupons/cupons.page').then(m => m.CuponsPage),
     canActivate: [authGuard]

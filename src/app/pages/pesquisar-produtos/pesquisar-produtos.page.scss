@@ -216,6 +216,12 @@ ion-content {
         &.adicionado { background: var(--arca-success-bg); }
       }
 
+      .btn-favorito {
+        background: var(--arca-bg);
+        font-size: 1rem;
+        &.favoritado { background: #ffe0e0; }
+      }
+
       .btn-expandir {
         background: var(--arca-bg);
         color: var(--arca-text-muted);

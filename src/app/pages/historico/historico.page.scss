@@ -125,6 +125,46 @@ ion-content { --background: var(--arca-bg); }
   }
 }
 
+.fav-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--arca-surface);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px var(--arca-shadow-sm);
+
+  .fav-img {
+    width: 48px; height: 48px;
+    object-fit: contain;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .fav-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    strong { font-size: 0.875rem; color: var(--arca-text); }
+    .fav-marca { font-size: 0.75rem; color: var(--arca-text-muted); }
+    .fav-preco { margin-top: 2px; }
+    .fav-valor { font-size: 0.9375rem; font-weight: 700; color: var(--arca-primary); }
+    .fav-mercado { font-size: 0.6875rem; color: var(--arca-text-muted); margin-left: 4px; }
+  }
+
+  .btn-desfavoritar {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+  }
+}
+
 .vazio {
   display: flex;
   flex-direction: column;

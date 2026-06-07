@@ -26,6 +26,7 @@ export class MenuComponent {
     { label: 'Pesquisar Produtos', rota: '/pesquisar-produtos', img: 'assets/img/lupa1.png' },
     { label: 'Mercados Próximos', rota: '/mercados-proximos', img: 'assets/img/mercado.png' },
     { label: 'Lista Rápida', rota: '/lista-rapida', img: 'assets/img/lista.png' },
+    { label: 'Favoritos', rota: '/favoritos', img: 'assets/img/cupom.svg' },
     { label: 'Comparar Preços', rota: '/comparar', img: 'assets/img/comparar.png' },
     { label: 'Meu Carrinho', rota: '/carrinho', img: 'assets/img/car.png' },
     { label: 'Cupons de Desconto', rota: '/cupons', img: 'assets/img/cupom.svg' },

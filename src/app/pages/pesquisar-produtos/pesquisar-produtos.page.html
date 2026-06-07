@@ -60,6 +60,13 @@
 
         <div class="card-acoes">
           <button
+            class="btn-favorito"
+            [class.favoritado]="favoritoService.isFavorito(p.id)"
+            (click)="$event.stopPropagation(); toggleFavorito(p)"
+            aria-label="Favoritar">
+            {{ favoritoService.isFavorito(p.id) ? '❤️' : '🤍' }}
+          </button>
+          <button
             class="btn-lista"
             [class.adicionado]="naLista(p.id)"
             (click)="$event.stopPropagation(); adicionarLista(p)">

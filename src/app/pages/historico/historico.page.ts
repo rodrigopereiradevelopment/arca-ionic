@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { IonContent, IonSpinner, ToastController, AlertController } from '@ionic/angular/standalone';
 import { HistoricoService, ItemHistorico } from '../../services/historico.service';
+import { FavoritoService, Favorito } from '../../services/favorito.service';
 
 @Component({
   selector: 'app-historico',
@@ -16,18 +17,44 @@ export class HistoricoPage {
   private router = inject(Router);
   private toastCtrl = inject(ToastController);
   private alertCtrl = inject(AlertController);
+  favoritoService = inject(FavoritoService);
 
-  filtroAtivo: 'todos' | 'pesquisa' | 'comparacao' | 'rota' = 'todos';
+  filtroAtivo: 'todos' | 'pesquisa' | 'comparacao' | 'rota' | 'favoritos' = 'todos';
   loading = true;
   itens: ItemHistorico[] = [];
+  favoritos: Favorito[] = [];
 
   async ionViewWillEnter() {
+    if (this.router.url.startsWith('/favoritos')) {
+      this.filtroAtivo = 'favoritos';
+      await this.carregarFavoritos();
+    } else {
+      await this.carregarHistorico();
+    }
+  }
+
+  private async carregarHistorico() {
     this.loading = true;
     this.historicoService.itens$.subscribe(lista => {
       this.itens = lista;
       this.loading = false;
     });
     await this.historicoService.recarregar();
+  }
+
+  private async carregarFavoritos() {
+    this.loading = true;
+    this.favoritos = await this.favoritoService.listar();
+    this.loading = false;
+  }
+
+  setFiltro(f: typeof this.filtroAtivo) {
+    this.filtroAtivo = f;
+    if (f === 'favoritos') {
+      this.carregarFavoritos();
+    } else if (this.itens.length === 0) {
+      this.carregarHistorico();
+    }
   }
 
   get itensFiltrados() {
@@ -68,6 +95,16 @@ export class HistoricoPage {
       ]
     });
     await alert.present();
+  }
+
+  async desfavoritar(f: Favorito) {
+    await this.favoritoService.remover(f.produto_id);
+    this.favoritos = this.favoritos.filter(x => x.produto_id !== f.produto_id);
+    const t = await this.toastCtrl.create({
+      message: 'Removido dos favoritos!',
+      duration: 2000, color: 'warning', position: 'top'
+    });
+    await t.present();
   }
 
   formatarData(data: Date): string {
