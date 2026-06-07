@@ -1,0 +1,44 @@
+ion-content { --background: var(--arca-bg); }
+
+.topo {
+  background: var(--arca-primary); padding: 16px; display: flex; align-items: center; gap: 12px;
+  .btn-voltar { font-size: 1.5rem; color: var(--arca-text-white); text-decoration: none; font-weight: bold; }
+  .titulo-topo { font-size: 1.125rem; font-weight: bold; color: var(--arca-text-white); }
+}
+
+.container { padding: 20px 16px; }
+
+.loading { text-align: center; color: var(--arca-text-muted); padding: 48px 0; }
+
+.em-breve {
+  text-align: center; padding: 64px 24px;
+  .emoji { font-size: 4rem; margin-bottom: 16px; }
+  h2 { font-size: 1.5rem; color: var(--arca-text); margin-bottom: 12px; }
+  p { font-size: 0.9375rem; color: var(--arca-text-muted); line-height: 1.5; margin-bottom: 8px; }
+  .subtle { font-size: 0.8125rem; color: var(--arca-text-lighter); }
+}
+
+.intro { margin-bottom: 16px; p { font-size: 0.9375rem; color: var(--arca-text); } }
+
+.lista-cupons { display: flex; flex-direction: column; gap: 12px; }
+
+.cupom-card {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px; border-radius: 12px; background: var(--arca-surface);
+  border: 1px solid var(--arca-border); gap: 12px;
+}
+.cupom-esquerda { flex: 1; }
+.cupom-supermercado { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.cupom-logo { width: 28px; height: 28px; object-fit: contain; border-radius: 6px; }
+.cupom-supermercado span { font-size: 0.75rem; color: var(--arca-text-muted); }
+.cupom-desconto { font-size: 1.25rem; color: var(--arca-primary); display: block; margin-bottom: 4px; }
+.cupom-descricao { font-size: 0.8125rem; color: var(--arca-text); margin-bottom: 4px; }
+.cupom-codigo { font-size: 0.75rem; color: var(--arca-text-muted); }
+.cupom-validade { font-size: 0.6875rem; color: var(--arca-text-lighter); }
+.cupom-direita { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.btn-usar {
+  padding: 10px 20px; background: var(--arca-primary); color: #fff;
+  border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+  &:disabled { opacity: 0.6; }
+}
+.minimo { font-size: 0.6875rem; color: var(--arca-text-lighter); text-align: center; }

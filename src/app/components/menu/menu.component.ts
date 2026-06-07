@@ -28,6 +28,7 @@ export class MenuComponent {
     { label: 'Lista Rápida', rota: '/lista-rapida', img: 'assets/img/lista.png' },
     { label: 'Comparar Preços', rota: '/comparar', img: 'assets/img/comparar.png' },
     { label: 'Meu Carrinho', rota: '/carrinho', img: 'assets/img/car.png' },
+    { label: 'Cupons de Desconto', rota: '/cupons', img: 'assets/img/cupom.svg' },
     { label: 'Histórico', rota: '/historico', img: 'assets/img/historico.png' },
     { label: 'Configurações', rota: '/configuracoes', img: 'assets/img/configuracao.png' },
     { label: 'Cadastrar Mercado', rota: '/cadastrar-mercado', img: 'assets/img/cadastrarmercados.png' },

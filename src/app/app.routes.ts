@@ -91,6 +91,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/privacidade/privacidade.page').then(m => m.PrivacidadePage)
   },
   {
+    path: 'cupons',
+    loadComponent: () => import('./pages/cupons/cupons.page').then(m => m.CuponsPage),
+    canActivate: [authGuard]
+  },
+  {
     path: 'cadastrar-mercado',
     loadComponent: () => import('./pages/cadastrar-mercado/cadastrar-mercado.page').then(m => m.CadastrarMercadoPage),
     canActivate: [authGuard]

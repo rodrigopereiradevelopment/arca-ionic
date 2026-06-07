@@ -1,0 +1,49 @@
+<ion-content [fullscreen]="true">
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <span class="titulo-topo">Cupons de Desconto 🏷️</span>
+  </div>
+
+  <div class="container">
+    @if (carregando) {
+      <div class="loading">Carregando cupons...</div>
+    } @else if (cupons.length === 0) {
+      <div class="em-breve">
+        <div class="emoji">🚀</div>
+        <h2>Em breve!</h2>
+        <p>Estamos fechando parcerias com os supermercados para oferecer cupons de desconto exclusivos para você.</p>
+        <p class="subtle">Assim que as parcerias estiverem ativas, os cupons aparecerão aqui automaticamente.</p>
+      </div>
+    } @else {
+      <div class="intro">
+        <p>{{ cupons.length }} cupom(ns) disponível(is) para você! 🎉</p>
+      </div>
+
+      <div class="lista-cupons">
+        @for (c of cupons; track c.id) {
+          <div class="cupom-card">
+            <div class="cupom-esquerda">
+              <div class="cupom-supermercado">
+                <img [src]="c.supermercado?.logo_url || 'assets/img/mercado.png'"
+                  onerror="this.src='assets/img/mercado.png'" class="cupom-logo">
+                <span>{{ c.supermercado?.nome || 'Todos os mercados' }}</span>
+              </div>
+              <strong class="cupom-desconto">{{ desconto(c) }}</strong>
+              <p class="cupom-descricao">{{ c.descricao }}</p>
+              <p class="cupom-codigo">Código: <strong>{{ c.codigo }}</strong></p>
+              <p class="cupom-validade">Válido até {{ c.data_fim | date:'dd/MM/yyyy' }}</p>
+            </div>
+            <div class="cupom-direita">
+              <button class="btn-usar" (click)="usarCupom(c)" [disabled]="usando">
+                {{ usando ? '...' : 'Usar' }}
+              </button>
+              @if (c.valor_minimo > 0) {
+                <span class="minimo">Mín: R$ {{ c.valor_minimo.toFixed(2) }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</ion-content>
