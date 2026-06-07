@@ -1,5 +1,5 @@
 import { environment } from '../../../environments/environment.js';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -39,7 +39,7 @@ interface AlertaPreco {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, IonContent, IonSpinner]
 })
-export class PerfilPage {
+export class PerfilPage implements OnInit {
   configService = inject(ConfigService);
   authService = inject(AuthService);
   carrinhoService = inject(CarrinhoService);
@@ -58,10 +58,10 @@ export class PerfilPage {
   dados = {
     nome: '',
     email: '',
-    cpf: '000.000.000-00',
-    telefone: '(19) 99999-0000',
-    cidade: 'Mogi Mirim',
-    estado: 'SP',
+    cpf: '',
+    telefone: '',
+    cidade: '',
+    estado: '',
     raio: 10
   };
 

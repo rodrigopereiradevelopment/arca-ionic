@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {
@@ -30,8 +30,4 @@ import {
     IonCol
   ]
 })
-export class PrivacidadePage implements OnInit {
-  dataAtualizacao = '13 de março de 2026';
-  constructor() {}
-  ngOnInit() {}
-}
+export class PrivacidadePage {}

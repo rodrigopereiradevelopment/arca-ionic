@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -16,6 +16,13 @@ import { ConfigService } from '../../services/config.service';
   imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
 export class ConfiguracoesPage implements OnInit {
+  authService = inject(AuthService);
+  carrinhoService = inject(CarrinhoService);
+  historicoService = inject(HistoricoService);
+  private configSvc = inject(ConfigService);
+  private toastCtrl = inject(ToastController);
+  private alertCtrl = inject(AlertController);
+
 
   get aparencia() { return this.configSvc.config.aparencia; }
   get acessibilidade() { return this.configSvc.config.acessibilidade; }
@@ -30,15 +37,6 @@ export class ConfiguracoesPage implements OnInit {
     { value: 'grande', label: 'Grande', size: '20px' },
     { value: 'extra', label: 'Extra Grande', size: '24px' }
   ];
-
-  constructor(
-    public authService: AuthService,
-    public carrinhoService: CarrinhoService,
-    public historicoService: HistoricoService,
-    private configSvc: ConfigService,
-    private toastCtrl: ToastController,
-    private alertCtrl: AlertController
-  ) {}
 
   ngOnInit() { this.configSvc.init(); }
 

@@ -15,7 +15,7 @@ ion-content { --background: var(--arca-bg); }
 
   .btn-voltar {
     position: absolute; left: 16px;
-    font-size: 24px; color: var(--arca-text-white);
+    font-size: 1.5rem; color: var(--arca-text-white);
     text-decoration: none; font-weight: bold;
   }
   .logo {
@@ -25,7 +25,7 @@ ion-content { --background: var(--arca-bg); }
   }
   .titulo-topo {
     position: absolute; right: 16px;
-    font-size: 14px; font-weight: bold; color: var(--arca-text-white);
+    font-size: 0.875rem; font-weight: bold; color: var(--arca-text-white);
   }
 }
 
@@ -44,7 +44,7 @@ ion-content { --background: var(--arca-bg); }
 }
 
 .secao-titulo {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: bold;
   color: var(--arca-text);
   margin: 0 0 14px;
@@ -68,8 +68,8 @@ ion-content { --background: var(--arca-bg); }
     flex-direction: column;
     gap: 2px;
     flex: 1;
-    strong { font-size: 14px; color: var(--arca-text); }
-    span { font-size: 12px; color: var(--arca-text-muted); }
+    strong { font-size: 0.875rem; color: var(--arca-text); }
+    span { font-size: 0.75rem; color: var(--arca-text-muted); }
   }
 }
 
@@ -114,7 +114,7 @@ ion-content { --background: var(--arca-bg); }
     padding: 7px 12px;
     border: 2px solid var(--arca-border);
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--arca-text-muted);
     background: var(--arca-surface);
@@ -135,7 +135,7 @@ ion-content { --background: var(--arca-bg); }
     padding: 9px;
     border: 2px solid var(--arca-border);
     border-radius: 10px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: var(--arca-text-muted);
     background: var(--arca-surface);
@@ -154,7 +154,7 @@ ion-content { --background: var(--arca-bg); }
 .range-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--arca-text-lightest);
   margin-top: 2px;
   width: 100%;
@@ -169,14 +169,14 @@ ion-content { --background: var(--arca-bg); }
   background: var(--arca-pending-bg);
   border: 1px solid var(--arca-warning-border);
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--arca-warning-text);
   cursor: pointer;
   margin-top: 8px;
   font-weight: 500;
 
   span {
-    font-size: 12px;
+    font-size: 0.75rem;
     background: var(--arca-pending-border);
     color: var(--arca-text-white);
     padding: 2px 8px;
@@ -188,7 +188,7 @@ ion-content { --background: var(--arca-bg); }
 .link-config {
   display: block;
   padding: 13px 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--arca-text);
   text-decoration: none;
   border-bottom: 1px solid var(--arca-bg);
@@ -203,7 +203,7 @@ ion-content { --background: var(--arca-bg); }
   align-items: center;
   padding: 16px 0 4px;
   gap: 4px;
-  span { font-size: 12px; color: var(--arca-text-lightest); }
+  span { font-size: 0.75rem; color: var(--arca-text-lightest); }
 }
 
 .btn-resetar {
@@ -213,7 +213,7 @@ ion-content { --background: var(--arca-bg); }
   color: var(--arca-error);
   border: 2px solid var(--arca-danger-border);
   border-radius: 25px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: bold;
   cursor: pointer;
   margin-bottom: 20px;

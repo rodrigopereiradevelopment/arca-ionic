@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -15,6 +15,11 @@ import { AuthService } from '../../services/auth.service';
   imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
 export class GerenciarProdutosPage {
+  private toastCtrl = inject(ToastController);
+  private produtoSvc = inject(ProdutoService);
+  private categoriaSvc = inject(CategoriaService);
+  private auth = inject(AuthService);
+
 
   abaAtiva: 'produtos' | 'categorias' | 'precos' = 'produtos';
   modalAberto = false;
@@ -42,13 +47,6 @@ export class GerenciarProdutosPage {
   produtoSelecionado: any = {};
   imagemPreview: string | null = null;
   imagemFile: File | undefined;
-
-  constructor(
-    private toastCtrl: ToastController,
-    private produtoSvc: ProdutoService,
-    private categoriaSvc: CategoriaService,
-    private auth: AuthService
-  ) {}
 
   async ionViewWillEnter() {
     try {

@@ -7,15 +7,28 @@
 
   <div class="container">
 
-    <h1>-Termos de Uso — App ARCA</h1>
+    <h1>Termos de Uso — App ARCA</h1>
     <p class="subtitulo">
       Estes Termos regem o uso do aplicativo de comparação de preços ARCA.
       Seu uso implica na aceitação integral deste documento e da
       <a routerLink="/privacidade">Política de Privacidade</a>.
     </p>
-    <p class="data">Última atualização: {{ dataAtualizacao }}</p>
+    <p class="data">Última atualização: <strong>20 de junho de 2026</strong></p>
 
     <ion-accordion-group>
+
+      <ion-accordion value="controlador">
+        <ion-item slot="header">
+          <ion-label>Identificação do Controlador</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p><strong>App ARCA</strong> é um projeto de Trabalho de Conclusão de Curso (TCC)
+          desenvolvido por <strong>Rodrigo S. Almeida</strong>.</p>
+          <p><strong>Controlador:</strong> Rodrigo S. Almeida</p>
+          <p><strong>E-mail do Encarregado (DPO):</strong> <a href="mailto:privacidade@apparca.com.br">privacidade@apparca.com.br</a></p>
+          <p><strong>Responsável pela proteção de dados:</strong> O próprio Controlador, enquanto não houver estrutura jurídica formal.</p>
+        </div>
+      </ion-accordion>
 
       <ion-accordion value="objeto">
         <ion-item slot="header">
@@ -29,42 +42,48 @@
       </ion-accordion>
 
       <ion-accordion value="isencao">
-        <ion-item slot="header" color="primary">
+        <ion-item slot="header">
           <ion-label>2. Isenção de Garantias e Responsabilidade</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
           <p><strong>2.1. Natureza Informativa:</strong> O App ARCA é uma ferramenta
-          de referência e não uma loja virtual. Todas as informações de preços,
-          estoque e promoções são fornecidas por fontes terceiras e podem estar
+          de referência, não uma loja virtual. As informações de preços,
+          estoque e promoções vêm de fontes terceiras e podem estar
           desatualizadas.</p>
-          <p><strong>2.2. Sem Garantia de Preço Final:</strong> O App ARCA
-          <strong>NÃO GARANTE</strong> a exatidão, integralidade ou validade dos
+          <p><strong>2.2. Verificação no Estabelecimento:</strong> O App ARCA
+          <strong>não garante</strong> a exatidão, integralidade ou validade dos
           preços e estoque. O preço final é de exclusiva responsabilidade do
-          estabelecimento comercial. Sempre confira o preço na prateleira.</p>
-          <p><strong>2.3. Limitação de Dano:</strong> O App ARCA não se
-          responsabiliza por prejuízos decorrentes do uso ou impossibilidade de
-          uso das informações do aplicativo.</p>
+          estabelecimento comercial. <strong>Sempre confira o preço na prateleira</strong>
+          antes da compra.</p>
+          <p><strong>2.3. Limitação de Dano:</strong> O App ARCA empreende esforços
+          comercialmente razoáveis para manter as informações precisas, mas não se
+          responsabiliza por prejuízos decorrentes do uso ou impossibilidade de uso
+          das informações do aplicativo, ressalvadas as hipóteses de dolo ou culpa
+          grave, nos termos do Código de Defesa do Consumidor (Lei 8.078/1990).</p>
         </div>
       </ion-accordion>
 
       <ion-accordion value="responsabilidades">
-        <ion-item slot="header" color="primary">
+        <ion-item slot="header">
           <ion-label>3. Cadastro e Responsabilidades do Usuário</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
           <p>3.1. O usuário é responsável pela veracidade dos dados cadastrais fornecidos.</p>
           <p>3.2. A senha é pessoal e intransferível. O usuário é responsável por
           todas as atividades realizadas em sua conta.</p>
-          <p>3.3. <strong>Geolocalização:</strong> O usuário deve conceder permissão
-          de localização para que o serviço principal do App ARCA possa ser prestado.</p>
-          <p>3.4. <strong>Cancelamento de Conta:</strong> O usuário pode solicitar
-          o cancelamento de sua conta a qualquer momento através das configurações
-          do aplicativo. Os dados serão removidos conforme a LGPD (Lei 13.709/2018).</p>
+          <p>3.3. <strong>Geolocalização:</strong> Para usar as funcionalidades de
+          "Mercados Próximos" e "Rotas", o app solicitará permissão de localização.
+          A permissão é opcional — você pode usar o app sem concedê-la, embora
+          essas funções específicas fiquem indisponíveis. Você pode revogar a
+          permissão a qualquer momento nas configurações do dispositivo.</p>
+          <p>3.4. <strong>Cancelamento de Conta:</strong> Você pode solicitar a
+          desativação da sua conta a qualquer momento nas configurações do aplicativo.
+          Seus dados serão anonimizados ou eliminados conforme a LGPD.</p>
         </div>
       </ion-accordion>
 
       <ion-accordion value="avaliacoes">
-        <ion-item slot="header" color="primary">
+        <ion-item slot="header">
           <ion-label>4. Conteúdo do Usuário e Avaliações</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
@@ -75,7 +94,7 @@
       </ion-accordion>
 
       <ion-accordion value="propriedade">
-        <ion-item slot="header" color="primary">
+        <ion-item slot="header">
           <ion-label>5. Propriedade Intelectual</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
@@ -85,48 +104,86 @@
       </ion-accordion>
 
       <ion-accordion value="lgpd">
-        <ion-item slot="header" color="primary">
+        <ion-item slot="header">
           <ion-label>6. LGPD — Lei Geral de Proteção de Dados</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
-          <p>6.1. O App ARCA está em conformidade com a Lei 13.709/2018 (LGPD).</p>
-          <p>6.2. Os dados coletados são utilizados exclusivamente para a prestação
-          dos serviços do aplicativo.</p>
-          <p>6.3. O prazo de retenção dos dados é de até 5 anos após o cancelamento
-          da conta, salvo obrigação legal diversa.</p>
-          <p>6.4. Para exercer seus direitos de titular (acesso, correção, exclusão),
-          entre em contato através das configurações do aplicativo.</p>
+          <p>6.1. O App ARCA está em conformidade com a Lei 13.709/2018 (LGPD).
+          O Controlador é o responsável pelo tratamento dos dados, conforme
+          identificado no início destes Termos.</p>
+
+          <p><strong>6.2. Bases Legais:</strong> Tratamos seus dados com base em:
+          execução de contrato (para fornecer o serviço), consentimento (para CPF,
+          localização, foto, chat e comunicações promocionais) e interesse legítimo
+          (para melhoria do serviço com dados anonimizados).</p>
+
+          <p><strong>6.3. Retenção por Tipo de Dado:</strong></p>
+          <ul>
+            <li><strong>Dados cadastrais:</strong> até o cancelamento da conta + 90 dias para cumprimento de obrigações legais</li>
+            <li><strong>CPF:</strong> até o cancelamento da conta, exceto se houver obrigação legal que exija retenção maior</li>
+            <li><strong>Histórico de pesquisa:</strong> 12 meses após a última atividade</li>
+            <li><strong>Mensagens do chat:</strong> armazenadas apenas localmente no dispositivo; não persistem no servidor</li>
+            <li><strong>Estatísticas de uso:</strong> anonimizadas após 12 meses</li>
+          </ul>
+
+          <p><strong>6.4. Seus Direitos:</strong> Você pode solicitar a qualquer momento:
+            acesso, correção, portabilidade, eliminação e oposição ao tratamento
+            dos seus dados. Consulte a Seção VI da Política de Privacidade para
+            detalhes e o canal do DPO.</p>
+
+          <p><strong>6.5. Consentimento Específico:</strong> Algumas finalidades
+          exigem consentimento separado (localização, CPF, notificações promocionais).
+          Você pode conceder ou negar cada uma no momento do cadastro ou depois,
+          nas configurações do aplicativo.</p>
+
+          <p><strong>6.6. Transferência Internacional:</strong> Alguns dados podem
+          ser processados em servidores fora do Brasil (Estados Unidos), como
+          mensagens enviadas ao assistente Gemini (Google). Adotamos cláusulas
+          contratuais e boas práticas de segurança para garantir proteção
+          equivalente à LGPD.</p>
+
+          <p><strong>6.7. Violação de Dados:</strong> Em caso de incidente de
+          segurança que comprometa seus dados, o Controlador notificará a ANPD
+          e os titulares afetados em prazo razoável, conforme Art. 48 da LGPD,
+          informando a natureza do incidente, os dados envolvidos e as medidas
+          adotadas.</p>
         </div>
       </ion-accordion>
 
       <ion-accordion value="cookies">
-        <ion-item slot="header" color="primary">
-          <ion-label>7. Cookies e Localização</ion-label>
+        <ion-item slot="header">
+          <ion-label>7. Armazenamento Local</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
-          <p>7.1. O App ARCA utiliza dados de localização para encontrar mercados
-          próximos ao usuário.</p>
-          <p>7.2. O usuário pode revogar a permissão de localização nas configurações
-          do dispositivo a qualquer momento.</p>
-          <p>7.3. Dados de uso podem ser coletados de forma anônima para melhoria
-          do serviço.</p>
+          <p>O ARCA utiliza exclusivamente o armazenamento local do navegador
+          ou dispositivo (localStorage) para manter sua sessão, configurações,
+          histórico de pesquisa e carrinho de compras.</p>
+          <p><strong>Não utilizamos cookies HTTP</strong> para rastreamento,
+          autenticação ou qualquer outra finalidade — tanto no aplicativo móvel
+          quanto na versão web.</p>
+          <p><strong>Dados de localização:</strong> Utilizamos sua localização
+          apenas com seu consentimento, para encontrar mercados próximos e traçar
+          rotas. A permissão pode ser revogada a qualquer momento.</p>
+          <p><strong>Dados de uso:</strong> Podem ser coletados de forma anônima
+          para melhoria do serviço.</p>
         </div>
       </ion-accordion>
 
       <ion-accordion value="disposicoes">
-        <ion-item slot="header" color="primary">
+        <ion-item slot="header">
           <ion-label>8. Disposições Finais</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
-          Estes Termos de Uso são regidos pelas leis da República Federativa do Brasil.
-          Fica eleito o Foro da Comarca de <strong>Mogi Mirim, São Paulo</strong>,
-          para dirimir quaisquer dúvidas ou litígios decorrentes destes Termos.
+          <p>Estes Termos de Uso são regidos pelas leis da República Federativa do Brasil.</p>
+          <p>Fica eleito o Foro da Comarca de <strong>Mogi Mirim, São Paulo</strong>
+          para dirimir litígios decorrentes destes Termos, sem prejuízo da
+          faculdade do consumidor de demandar no foro de seu domicílio, conforme
+          Art. 101, I do Código de Defesa do Consumidor.</p>
         </div>
       </ion-accordion>
 
     </ion-accordion-group>
 
-    <!-- Link para Política de Privacidade -->
     <a routerLink="/privacidade" class="btn-privacidade">
       📄 Acessar Política de Privacidade completa
     </a>
@@ -134,7 +191,7 @@
   </div>
 
   <div class="footer">
-    <p>&copy; 2025 ARCA - Compare preços e economize em Mogi Mirim</p>
+    <p>&copy; 2026 ARCA — Compare preços e economize em Mogi Mirim</p>
   </div>
 
 </ion-content>

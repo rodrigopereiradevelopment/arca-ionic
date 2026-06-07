@@ -25,8 +25,8 @@ ion-footer {
     flex-direction: column;
     gap: 2px;
 
-    strong { font-size: 15px; color: var(--arca-text); }
-    .email { font-size: 11px; color: var(--arca-text-medium); }
+    strong { font-size: 0.9375rem; color: var(--arca-text); }
+    .email { font-size: 0.6875rem; color: var(--arca-text-medium); }
   }
 }
 
@@ -34,7 +34,7 @@ ion-footer {
   display: inline-block;
   padding: 2px 8px;
   border-radius: 10px;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: bold;
   width: fit-content;
 
@@ -66,14 +66,14 @@ ion-footer {
       margin-right: 12px;
     }
 
-    span { font-size: 15px; }
+    span { font-size: 0.9375rem; }
   }
 }
 
 .separador {
   padding: 12px 12px 4px;
   span {
-    font-size: 10px;
+    font-size: 0.625rem;
     font-weight: bold;
     color: var(--arca-text-medium);
     text-transform: uppercase;
@@ -98,7 +98,7 @@ ion-footer {
     border-radius: 8px;
 
     img { width: 24px; height: 24px; }
-    span { font-size: 15px; color: var(--arca-text); font-weight: 500; }
+    span { font-size: 0.9375rem; color: var(--arca-text); font-weight: 500; }
 
     &:hover { background: var(--arca-shadow-xs); }
   }

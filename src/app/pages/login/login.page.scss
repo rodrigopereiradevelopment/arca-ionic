@@ -21,8 +21,8 @@ ion-content { --background: var(--arca-bg); }
   max-width: 500px;
   margin: 0 auto;
 
-  h1 { font-size: 24px; color: var(--arca-text); margin-bottom: 4px; }
-  .subtitulo { font-size: 14px; color: var(--arca-text-muted); margin-bottom: 28px; }
+  h1 { font-size: 1.5rem; color: var(--arca-text); margin-bottom: 4px; }
+  .subtitulo { font-size: 0.875rem; color: var(--arca-text-muted); margin-bottom: 28px; }
 }
 
 .form-group {
@@ -31,7 +31,7 @@ ion-content { --background: var(--arca-bg); }
   margin-bottom: 16px;
 
   label {
-    font-size: 13px; font-weight: 600;
+    font-size: 0.8125rem; font-weight: 600;
     color: var(--arca-text-medium); margin-bottom: 6px;
   }
 
@@ -39,7 +39,7 @@ ion-content { --background: var(--arca-bg); }
     padding: 14px 16px;
     border: 1px solid var(--arca-border);
     border-radius: 12px;
-    font-size: 15px;
+    font-size: 0.9375rem;
     background: var(--arca-surface);
     outline: none;
     &:focus { border-color: var(--arca-secondary); }
@@ -55,7 +55,7 @@ ion-content { --background: var(--arca-bg); }
     background: var(--arca-surface);
     border: 1px solid var(--arca-border);
     border-radius: 12px;
-    font-size: 18px;
+    font-size: 1.125rem;
     cursor: pointer;
   }
 }
@@ -67,7 +67,7 @@ ion-content { --background: var(--arca-bg); }
   color: var(--arca-text-white);
   border: none;
   border-radius: 25px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   margin-top: 8px;
@@ -79,7 +79,7 @@ ion-content { --background: var(--arca-bg); }
   display: block;
   text-align: center;
   margin-top: 16px;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--arca-text-muted);
   text-decoration: none;
   strong { color: var(--arca-secondary); }
@@ -99,7 +99,7 @@ ion-content { --background: var(--arca-bg); }
   }
 
   span {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--arca-text-lighter);
     white-space: nowrap;
   }
@@ -117,7 +117,7 @@ ion-content { --background: var(--arca-bg); }
   border: 1.5px solid var(--arca-border);
   border-radius: 25px;
   background: var(--arca-surface);
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;

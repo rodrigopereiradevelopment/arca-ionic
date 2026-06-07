@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
   IonContent,
-  IonModal,
-  IonButton,
   ToastController
 } from '@ionic/angular/standalone';
 import { MercadoService, Mercado } from '../../services/mercado.service';
@@ -17,9 +15,13 @@ import { environment } from '../../../environments/environment';
   templateUrl: './gerenciar-mercados.page.html',
   styleUrls: ['./gerenciar-mercados.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, IonContent, IonModal, IonButton]
+  imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
 export class GerenciarMercadosPage implements OnInit {
+  private toastCtrl = inject(ToastController);
+  private mercadoSvc = inject(MercadoService);
+  private auth = inject(AuthService);
+
 
   modalAberto = false;
   modoEdicao = false;
@@ -41,12 +43,6 @@ export class GerenciarMercadosPage implements OnInit {
       return nomeOk && statusOk;
     });
   }
-
-  constructor(
-    private toastCtrl: ToastController,
-    private mercadoSvc: MercadoService,
-    private auth: AuthService
-  ) {}
 
   async ngOnInit() {
     await this.carregarMercados();

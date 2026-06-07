@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {
@@ -24,8 +24,4 @@ import {
     IonLabel
   ]
 })
-export class TermosPage implements OnInit {
-  dataAtualizacao = '13 de março de 2026';
-  constructor() {}
-  ngOnInit() {}
-}
+export class TermosPage {}

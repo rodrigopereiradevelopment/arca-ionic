@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {
-  IonMenu, IonHeader, IonToolbar, IonTitle,
-  IonContent, IonList, IonItem, IonLabel,
-  IonFooter, MenuController
+  IonMenu, IonContent, IonFooter, MenuController
 } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
 
@@ -15,11 +13,13 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [
     CommonModule, RouterModule,
-    IonMenu, IonHeader, IonToolbar, IonTitle,
-    IonContent, IonList, IonItem, IonLabel, IonFooter
+    IonMenu, IonContent, IonFooter
   ]
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
+  authService = inject(AuthService);
+  private menuCtrl = inject(MenuController);
+
 
   itensUsuario = [
     { label: 'Início', rota: '/home', img: 'assets/img/inicio.png' },
@@ -43,13 +43,6 @@ export class MenuComponent implements OnInit {
     { label: 'Gerenciar Usuários', rota: '/gerenciar-usuarios', img: 'assets/img/admin.png' },
     { label: 'Gerenciar Produtos', rota: '/gerenciar-produtos', img: 'assets/img/admin.png' }
   ];
-
-  constructor(
-    public authService: AuthService,
-    private menuCtrl: MenuController
-  ) {}
-
-  ngOnInit() {}
 
   fecharMenu() { this.menuCtrl.close(); }
 

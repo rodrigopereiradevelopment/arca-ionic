@@ -13,9 +13,8 @@
       compartilha suas informações. Ao utilizar o aplicativo, você concorda
       com os termos desta Política.
     </p>
-    <p class="data">Última atualização: {{ dataAtualizacao }}</p>
+    <p class="data">Última atualização: <strong>20 de junho de 2026</strong></p>
 
-    <!-- Link rápido para Termos -->
     <a routerLink="/termos" class="btn-termos">
       📋 Ver Termos de Uso
     </a>
@@ -28,11 +27,15 @@
           <ion-label>Introdução e Definições</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
-          Esta Política de Privacidade descreve como o App ARCA, uma plataforma
+          <p>Esta Política de Privacidade descreve como o App ARCA, uma plataforma
           de comparação de preços em mercados e supermercados de Mogi Mirim,
-          coleta, usa, armazena e compartilha as suas informações. Ao utilizar
-          o aplicativo, você concorda com os termos desta Política e com nossa
-          <a routerLink="/termos" class="link">Política de Termos de Uso</a>.
+          coleta, usa, armazena e compartilha as suas informações.</p>
+
+          <p><strong>Controlador:</strong> Rodrigo S. Almeida</p>
+          <p><strong>Encarregado (DPO):</strong> <a href="mailto:privacidade@apparca.com.br">privacidade@apparca.com.br</a></p>
+
+          <p>Ao utilizar o aplicativo, você concorda com os termos desta Política
+          e com nossa <a routerLink="/termos" class="link">Política de Termos de Uso</a>.</p>
         </div>
       </ion-accordion>
 
@@ -47,7 +50,7 @@
 
           <ion-grid class="tabela">
             <ion-row class="cabecalho">
-              <ion-col size="4"><strong>Tipo de Dado</strong></ion-col>
+              <ion-col size="4"><strong>Dado</strong></ion-col>
               <ion-col size="5"><strong>Finalidade</strong></ion-col>
               <ion-col size="3"><strong>Base Legal</strong></ion-col>
             </ion-row>
@@ -62,80 +65,170 @@
               <ion-col size="3">Consentimento</ion-col>
             </ion-row>
             <ion-row>
-              <ion-col size="4">Geolocalização</ion-col>
-              <ion-col size="5">Exibir preços e mercados mais próximos</ion-col>
+              <ion-col size="4">Telefone (opcional)</ion-col>
+              <ion-col size="5">Comunicação de serviço e recuperação de conta</ion-col>
               <ion-col size="3">Consentimento</ion-col>
             </ion-row>
             <ion-row>
-              <ion-col size="4">Histórico de Pesquisa</ion-col>
-              <ion-col size="5">Personalização da experiência</ion-col>
+              <ion-col size="4">Foto de Perfil (opcional)</ion-col>
+              <ion-col size="5">Personalização da conta</ion-col>
+              <ion-col size="3">Consentimento</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Geolocalização</ion-col>
+              <ion-col size="5">Exibir mercados próximos e traçar rotas</ion-col>
+              <ion-col size="3">Consentimento</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Endereços (CEP, rua, número)</ion-col>
+              <ion-col size="5">Localizar mercados próximos</ion-col>
+              <ion-col size="3">Execução de Contrato</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Histórico de pesquisa e listas</ion-col>
+              <ion-col size="5">Personalização e melhoria da experiência</ion-col>
               <ion-col size="3">Interesse Legítimo</ion-col>
             </ion-row>
             <ion-row>
-              <ion-col size="4">Dados de Nota Fiscal (opcional)</ion-col>
-              <ion-col size="5">Atualização da base de preços</ion-col>
+              <ion-col size="4">Alertas de Preço</ion-col>
+              <ion-col size="5">Notificar quando preço atingir valor desejado</ion-col>
+              <ion-col size="3">Consentimento</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Mensagens do Chat (Gemini)</ion-col>
+              <ion-col size="5">Atendimento via assistente virtual</ion-col>
+              <ion-col size="3">Consentimento</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Tickets de Suporte</ion-col>
+              <ion-col size="5">Resolução de problemas e dúvidas</ion-col>
+              <ion-col size="3">Execução de Contrato</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Avaliações de Mercado</ion-col>
+              <ion-col size="5">Compartilhar feedback com a comunidade</ion-col>
+              <ion-col size="3">Consentimento</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Notas Fiscais (opcional)</ion-col>
+              <ion-col size="5">Atualização colaborativa da base de preços</ion-col>
               <ion-col size="3">Consentimento Específico</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Estatísticas de Uso</ion-col>
+              <ion-col size="5">Análise de funcionamento e melhorias</ion-col>
+              <ion-col size="3">Interesse Legítimo</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Preferências (tema, notificações, raio)</ion-col>
+              <ion-col size="5">Customização da experiência do app</ion-col>
+              <ion-col size="3">Consentimento</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Dados de Admin de Mercado (CNPJ, admin_cpf, admin_email)</ion-col>
+              <ion-col size="5">Cadastro e gestão de supermercados</ion-col>
+              <ion-col size="3">Execução de Contrato</ion-col>
             </ion-row>
           </ion-grid>
 
-          <p class="mt">Para segurança dos seus dados, utilizamos criptografia
-          e o protocolo HTTPS em todas as comunicações.</p>
+          <p class="mt">Utilizamos criptografia e protocolo HTTPS em todas as comunicações
+          para proteção dos seus dados.</p>
         </div>
       </ion-accordion>
 
-      <!-- Cookies -->
+      <!-- Armazenamento Local -->
       <ion-accordion value="cookies">
         <ion-item slot="header">
-          <ion-label>II. Cookies e Tecnologias de Rastreamento</ion-label>
+          <ion-label>II. Armazenamento Local</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
-          Utilizamos cookies e tecnologias similares para rastrear a atividade
-          no App ARCA, incluindo dados de uso para fins de análise e melhoria
-          de performance. Você pode gerenciar as preferências de cookies
-          diretamente nas configurações do seu dispositivo.
+          <p>O ARCA utiliza <strong>exclusivamente</strong> o armazenamento local
+          do navegador ou dispositivo (localStorage) para manter dados no cliente:</p>
+          <ul>
+            <li>Sessão do usuário (token de autenticação)</li>
+            <li>Configurações de aparência e notificações</li>
+            <li>Histórico de pesquisa (para exibição rápida)</li>
+            <li>Carrinho de compras e comparações</li>
+            <li>Histórico do chat com o assistente</li>
+          </ul>
+          <p><strong>Não utilizamos cookies HTTP</strong> para rastreamento,
+          autenticação ou qualquer outra finalidade — nem no aplicativo móvel,
+          nem na versão web (Vercel), pois ambas rodam o mesmo código Ionic SPA.</p>
+          <p>Você pode limpar esses dados a qualquer momento nas configurações
+          do aplicativo ou do navegador.</p>
+          <p><strong>Dados de localização:</strong> A permissão de GPS é solicitada
+          apenas quando necessário (mercados próximos e rotas) e pode ser revogada
+          a qualquer momento nas configurações do dispositivo.</p>
         </div>
       </ion-accordion>
 
       <!-- Notificações -->
       <ion-accordion value="emails">
         <ion-item slot="header">
-          <ion-label>III. Notificações e E-mails</ion-label>
+          <ion-label>III. Notificações e Comunicações</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
-          O usuário concorda em receber comunicações essenciais sobre o serviço
-          (mudanças nos Termos, recuperação de senha). O envio de alertas de
-          preço e e-mails promocionais pode ser desativado nas configurações
-          do aplicativo.
+          <p><strong>Comunicações essenciais:</strong> O usuário receberá notificações
+          sobre alterações nos Termos, recuperação de senha e confirmações de serviço,
+          independentemente das preferências.</p>
+          <p><strong>Alertas de preço e notificações promocionais:</strong> Podem ser
+          ativados ou desativados a qualquer momento nas configurações do aplicativo
+          (aba "Notificações").</p>
+          <p><strong>Base legal:</strong> Comunicações essenciais baseiam-se na
+          execução de contrato; notificações promocionais baseiam-se no consentimento,
+          que pode ser revogado a qualquer momento.</p>
         </div>
       </ion-accordion>
 
-      <!-- Aceitação -->
-      <ion-accordion value="aceitacao">
+      <!-- Consentimento -->
+      <ion-accordion value="consentimento">
         <ion-item slot="header">
-          <ion-label>IV. Aceitação da Política de Privacidade</ion-label>
+          <ion-label>IV. Consentimento e sua Revogação</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
-          O <strong>Cadastro</strong>, o <strong>Login</strong> ou o
-          <strong>Uso Contínuo</strong> do App ARCA implica na sua aceitação
-          desta Política de Privacidade e dos Termos de Uso. Caso não concorde,
-          você deve descontinuar o uso do aplicativo e solicitar a exclusão
-          de sua conta.
+          <p><strong>Consentimento específico por finalidade:</strong> Alguns dados
+          exigem autorização explícita separada:</p>
+          <ul>
+            <li><strong>Localização:</strong> autorização via pop-up do sistema</li>
+            <li><strong>CPF:</strong> campo opcional no cadastro/perfil</li>
+            <li><strong>Notificações promocionais:</strong> toggle em Configurações &gt; Notificações</li>
+            <li><strong>Chat com assistente:</strong> o uso da função implica consentimento</li>
+            <li><strong>Foto de perfil:</strong> envio voluntário de imagem</li>
+          </ul>
+          <p><strong>Revogação:</strong> Você pode revogar seu consentimento para
+          cada finalidade a qualquer momento:</p>
+          <ul>
+            <li>Localização: configurações do dispositivo</li>
+            <li>CPF, Telefone, Notificações: Configurações do app > Perfil</li>
+            <li>Exclusão total da conta: Configurações > Perfil > Desativar Conta</li>
+          </ul>
+          <p>A revogação não afeta a legalidade do tratamento realizado antes dela.</p>
         </div>
       </ion-accordion>
 
       <!-- Retenção -->
       <ion-accordion value="retencao">
         <ion-item slot="header">
-          <ion-label>V. Retenção e Exclusão de Dados</ion-label>
+          <ion-label>V. Retenção e Exclusão por Tipo de Dado</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
-          <p>Seus dados serão retidos pelo tempo necessário para cumprir as
-          finalidades desta política. O usuário pode solicitar a exclusão de
-          sua conta a qualquer momento nas configurações do aplicativo.</p>
-          <p>Após a solicitação, os dados pessoais serão eliminados no prazo
-          de <strong>15 dias</strong>, exceto aqueles que precisem ser mantidos
-          por obrigações legais. O histórico de pesquisa é mantido enquanto
-          a conta estiver ativa.</p>
+          <p>Mantemos seus dados apenas pelo tempo necessário para cada finalidade:</p>
+          <ul>
+            <li><strong>Dados cadastrais (nome, e-mail):</strong> até a desativação da conta + 90 dias para cumprir obrigações legais</li>
+            <li><strong>CPF:</strong> até a desativação da conta, ou pelo tempo exigido por lei (ex. obrigações fiscais)</li>
+            <li><strong>Senha (hash):</strong> até a desativação da conta</li>
+            <li><strong>Endereços:</strong> até a desativação da conta ou até serem removidos pelo usuário</li>
+            <li><strong>Foto de perfil:</strong> até o usuário removê-la ou desativar a conta</li>
+            <li><strong>Histórico de pesquisa:</strong> 12 meses após a última atividade</li>
+            <li><strong>Alertas de preço:</strong> até o usuário removê-los ou desativar a conta</li>
+            <li><strong>Tickets de suporte:</strong> 2 anos após o encerramento do ticket</li>
+            <li><strong>Avaliações de mercado:</strong> mantidas enquanto a conta estiver ativa (são de exibição pública com nome)</li>
+            <li><strong>Estatísticas de uso:</strong> anonimizadas após 12 meses</li>
+            <li><strong>Mensagens do chat (Gemini):</strong> armazenadas apenas localmente no dispositivo</li>
+            <li><strong>Registros de login (logs):</strong> 6 meses</li>
+          </ul>
+          <p>Ao desativar a conta, seus dados pessoais são anonimizados ou excluídos,
+          exceto quando a lei exigir retenção (ex. obrigações fiscais).</p>
         </div>
       </ion-accordion>
 
@@ -149,9 +242,11 @@
           momento:</p>
           <p><span aria-hidden="true">✅</span> <strong>Acesso</strong> aos seus dados pessoais</p>
           <p><span aria-hidden="true">✅</span> <strong>Correção</strong> de dados incompletos ou incorretos</p>
-          <p><span aria-hidden="true">✅</span> <strong>Portabilidade</strong> dos seus dados</p>
-          <p><span aria-hidden="true">✅</span> <strong>Anonimização</strong> ou <strong>Exclusão</strong> dos dados</p>
+          <p><span aria-hidden="true">✅</span> <strong>Portabilidade</strong> dos seus dados a outro fornecedor</p>
+          <p><span aria-hidden="true">✅</span> <strong>Anonimização</strong> ou <strong>Exclusão</strong> dos dados desnecessários</p>
           <p><span aria-hidden="true">✅</span> <strong>Oposição</strong> ao tratamento de dados</p>
+          <p><span aria-hidden="true">✅</span> <strong>Revogação do consentimento</strong> a qualquer momento</p>
+          <p><span aria-hidden="true">✅</span> <strong>Informação</strong> sobre entidades com quem compartilhamos seus dados</p>
           <p>Para exercer esses direitos, entre em contato com nosso
           Encarregado de Dados (DPO) pelo e-mail:
           <strong>privacidade@apparca.com.br</strong>. As solicitações serão
@@ -159,10 +254,175 @@
         </div>
       </ion-accordion>
 
+      <!-- Transferência Internacional -->
+      <ion-accordion value="transferencia">
+        <ion-item slot="header">
+          <ion-label>VII. Transferência Internacional de Dados</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>Alguns serviços que utilizamos estão sediados em outros países,
+          o que pode envolver a transferência internacional dos seus dados:</p>
+          <ul>
+            <li><strong>Google Gemini API (EUA):</strong> mensagens enviadas ao
+            assistente virtual são processadas nos servidores do Google nos
+            Estados Unidos</li>
+            <li><strong>Google OAuth / Facebook OAuth (EUA):</strong> dados do
+            perfil (nome, e-mail, avatar) são compartilhados com o provedor
+            escolhido no momento do login social</li>
+            <li><strong>Vercel (EUA):</strong> os servidores que hospedam a API
+            do ARCA estão nos Estados Unidos</li>
+            <li><strong>Supabase (EUA):</strong> o banco de dados e autenticação
+            estão hospedados em servidores nos Estados Unidos</li>
+          </ul>
+          <p>Adotamos as seguintes salvaguardas para garantir proteção equivalente
+          à LGPD: cláusulas contratuais com os provedores, criptografia em trânsito
+          (HTTPS/TLS) e em repouso, e adoção dos padrões de segurança do mercado
+          (SOC 2, ISO 27001 nos provedores).</p>
+        </div>
+      </ion-accordion>
+
+      <!-- Decisões Automatizadas -->
+      <ion-accordion value="automatizadas">
+        <ion-item slot="header">
+          <ion-label>VIII. Decisões Automatizadas e Perfilamento</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>O ARCA utiliza algoritmos simples de ordenação para:</p>
+          <ul>
+            <li>Ordenar mercados por <strong>preço total</strong> da sua lista de compras</li>
+            <li>Ordenar mercados por <strong>distância</strong> da sua localização</li>
+            <li>Sugerir <strong>produtos similares</strong> com base em preço e categoria</li>
+          </ul>
+          <p>Essas decisões não produzem efeitos jurídicos significativos — são
+          meramente informativas. Você sempre pode consultar os preços diretamente
+          no estabelecimento. Não realizamos perfilamento para oferta de crédito,
+          seguros ou avaliação de comportamento.</p>
+          <p>Caso discorde de alguma ordenação automática, você pode solicitar
+          revisão humana pelo e-mail do DPO.</p>
+        </div>
+      </ion-accordion>
+
+      <!-- Violação de Dados -->
+      <ion-accordion value="violacao">
+        <ion-item slot="header">
+          <ion-label>IX. Violação de Dados (Incidente de Segurança)</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>Em caso de incidente de segurança que comprometa dados pessoais,
+          adotaremos as seguintes medidas:</p>
+          <ol>
+            <li>Contenção imediata do incidente e isolamento dos sistemas afetados</li>
+            <li>Investigação interna para determinar a causa, o alcance e os dados envolvidos</li>
+            <li>Notificação à Autoridade Nacional de Proteção de Dados (ANPD)
+            em prazo razoável, conforme Art. 48 da LGPD, descrevendo a natureza
+            do incidente, os dados envolvidos, as medidas de contenção e as
+            recomendações aos titulares</li>
+            <li>Comunicação direta aos titulares afetados por e-mail ou notificação
+            no aplicativo, com orientações sobre como se proteger</li>
+            <li>Registro do incidente para aprimoramento contínuo da segurança</li>
+          </ol>
+          <p>Mantemos registros de todos os incidentes para fins de prestação de
+          contas à ANPD e aos titulares.</p>
+        </div>
+      </ion-accordion>
+
+      <!-- Compartilhamento -->
+      <ion-accordion value="compartilhamento">
+        <ion-item slot="header">
+          <ion-label>X. Compartilhamento com Terceiros</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>Não vendemos ou alugamos seus dados pessoais. Compartilhamos apenas
+          com parceiros estritamente necessários para a operação do serviço:</p>
+
+          <ion-grid class="tabela">
+            <ion-row class="cabecalho">
+              <ion-col size="4"><strong>Parceiro</strong></ion-col>
+              <ion-col size="5"><strong>Dados Compartilhados</strong></ion-col>
+              <ion-col size="3"><strong>Finalidade</strong></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Supabase</ion-col>
+              <ion-col size="5">Nome, e-mail, configurações, histórico</ion-col>
+              <ion-col size="3">Banco de dados e autenticação</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Vercel</ion-col>
+              <ion-col size="5">Logs de API (anônimos)</ion-col>
+              <ion-col size="3">Hospedagem da API</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Google Gemini</ion-col>
+              <ion-col size="5">Mensagens do chat</ion-col>
+              <ion-col size="3">Assistente virtual</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">ViaCEP (Correios)</ion-col>
+              <ion-col size="5">CEP digitado</ion-col>
+              <ion-col size="3">Auto-preenchimento de endereço</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Nominatim (OpenStreetMap)</ion-col>
+              <ion-col size="5">Endereço do mercado</ion-col>
+              <ion-col size="3">Geocoding (latitude/longitude)</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Google OAuth</ion-col>
+              <ion-col size="5">Nome, e-mail, avatar</ion-col>
+              <ion-col size="3">Login social (se escolhido)</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="4">Facebook OAuth</ion-col>
+              <ion-col size="5">Nome, e-mail, avatar</ion-col>
+              <ion-col size="3">Login social (se escolhido)</ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <p class="mt"><strong>Dados Anonimizados:</strong> Dados de consumo
+          poderão ser compartilhados com terceiros <strong>apenas de forma
+          anonimizada</strong>, sem possibilidade de identificação do usuário,
+          para fins de análise estatística de mercado.</p>
+        </div>
+      </ion-accordion>
+
+      <!-- Segurança -->
+      <ion-accordion value="seguranca">
+        <ion-item slot="header">
+          <ion-label>XI. Segurança dos Dados</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          <p>O App ARCA adota as seguintes medidas técnicas e administrativas:</p>
+          <ul>
+            <li>Criptografia em trânsito (HTTPS/TLS) em todas as comunicações</li>
+            <li>Criptografia em repouso no banco de dados (Supabase)</li>
+            <li>Tokens de autenticação com expiração</li>
+            <li>Controle de acesso baseado em função (RBAC) via RLS do Supabase</li>
+            <li>Monitoramento contínuo de logs de API</li>
+            <li>Política de senhas com requisitos mínimos de complexidade</li>
+          </ul>
+          <p>Recomendamos que o usuário mantenha seu dispositivo seguro e atualizado,
+          use senhas fortes e não compartilhe sua conta.</p>
+        </div>
+      </ion-accordion>
+
+      <!-- Aceitação -->
+      <ion-accordion value="aceitacao">
+        <ion-item slot="header">
+          <ion-label>XII. Aceitação da Política de Privacidade</ion-label>
+        </ion-item>
+        <div slot="content" class="acordeao-conteudo">
+          O <strong>Cadastro</strong>, o <strong>Login</strong> ou o
+          <strong>Uso Contínuo</strong> do App ARCA implica na sua aceitação
+          desta Política de Privacidade e dos Termos de Uso. Caso não concorde,
+          você deve descontinuar o uso do aplicativo e solicitar a exclusão
+          de sua conta.
+        </div>
+      </ion-accordion>
+
       <!-- Alterações -->
       <ion-accordion value="alteracoes">
         <ion-item slot="header">
-          <ion-label>VII. Alterações nesta Política</ion-label>
+          <ion-label>XIII. Alterações nesta Política</ion-label>
         </ion-item>
         <div slot="content" class="acordeao-conteudo">
           Reservamo-nos o direito de modificar esta Política. Sempre que houver
@@ -172,40 +432,8 @@
         </div>
       </ion-accordion>
 
-      <!-- Segurança -->
-      <ion-accordion value="seguranca">
-        <ion-item slot="header">
-          <ion-label>VIII. Segurança dos Dados</ion-label>
-        </ion-item>
-        <div slot="content" class="acordeao-conteudo">
-          O App ARCA utiliza todas as medidas técnicas e administrativas
-          possíveis para proteger os seus dados pessoais, incluindo criptografia,
-          controle de acesso e monitoramento contínuo. Recomendamos que o
-          usuário mantenha seu dispositivo seguro e atualizado.
-        </div>
-      </ion-accordion>
-
-      <!-- Compartilhamento -->
-      <ion-accordion value="compartilhamento">
-        <ion-item slot="header">
-          <ion-label>IX. Compartilhamento de Informações</ion-label>
-        </ion-item>
-        <div slot="content" class="acordeao-conteudo">
-          <p>Não vendemos ou alugamos seus dados pessoais. Podemos
-          compartilhá-los apenas com:</p>
-          <p><strong>1. Prestadores de Serviço:</strong> Empresas que nos
-          auxiliam na operação, como servidores de hospedagem, provedores
-          de mapa e serviços de análise de uso.</p>
-          <p><strong>2. Dados Anonimizados:</strong> Dados de consumo poderão
-          ser compartilhados com terceiros <strong>apenas de forma
-          anonimizada</strong>, sem identificação do usuário, para fins de
-          análise estatística de mercado.</p>
-        </div>
-      </ion-accordion>
-
     </ion-accordion-group>
 
-    <!-- Link para Termos -->
     <a routerLink="/termos" class="btn-termos-bottom">
       📋 Acessar Termos de Uso completos
     </a>
@@ -213,7 +441,7 @@
   </div>
 
   <div class="footer">
-    <p>&copy; 2025 ARCA - Compare preços e economize em Mogi Mirim</p>
+    <p>&copy; 2026 ARCA — Compare preços e economize em Mogi Mirim</p>
   </div>
 
 </ion-content>

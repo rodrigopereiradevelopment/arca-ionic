@@ -12,7 +12,7 @@ ng lint                   # ESLint
 - **Ciclo de vida**: usar `ionViewWillEnter` em vez de `ngOnInit` (evita cache do Ionic)
 - `environment.ts` aponta para `http://192.168.1.3:3000` (IP fixo, não localhost)
 - **IDs de mercados** (hardcoded): `1=GoodBom`, `2=PagueMenos`, `3=SaoVicente`, `4=Atacadao`, `5=Imperial`, `6=PontoNovo`
-- **Páginas de mercado usam dados mockados** — `/gerenciar-mercados`, `/cadastrar-mercado`, `/mercados-proximos` não têm API; dados fictícios em memória
+- **Páginas de mercado usam API real** — `/gerenciar-mercados`, `/cadastrar-mercado`, `/mercados-proximos` conectam via `MercadoService` a `GET/POST/PUT/DELETE /api/mercados`. Mapa-rotas busca coordenadas da API com fallback para constantes hardcoded. Logos e nomes vêm do campo `logo_url` da API, com fallback para `MERCADOS_MAP`
 - **Auth**: Supabase OAuth (Google/Facebook) + API customizada. Token em `localStorage` chave `arca_usuario`
 - **Rotas duplicadas**: `configuracoes`, `ajuda`, `perfil` aparecem 2x em `app.routes.ts` — a 2ª sem `canActivate`, tornando-as públicas
 - Sem `@supabase/supabase-js` instalado — Supabase usado só para redirect OAuth

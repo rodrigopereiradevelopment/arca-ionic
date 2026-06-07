@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -22,6 +22,9 @@ interface Usuario {
   imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
 export class GerenciarUsuariosPage {
+  private authService = inject(AuthService);
+  private toastCtrl = inject(ToastController);
+
   modalAberto = false;
   filtroNome = '';
   filtroPerfil = 'todos';
@@ -36,11 +39,6 @@ export class GerenciarUsuariosPage {
       return nomeOk && perfilOk;
     });
   }
-
-  constructor(
-    private authService: AuthService,
-    private toastCtrl: ToastController
-  ) {}
 
   async ionViewWillEnter() {
     await this.carregarUsuarios();

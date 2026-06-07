@@ -14,7 +14,7 @@
 
   .section-title {
     margin: 0;
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: bold;
   }
 }
@@ -33,15 +33,15 @@
   background: var(--arca-surface-hover);
   border-radius: 10px;
   margin: 12px 0;
-  font-size: 15px;
+  font-size: 0.9375rem;
 
-  strong { color: var(--arca-secondary); font-size: 17px; }
+  strong { color: var(--arca-secondary); font-size: 1.0625rem; }
 }
 
 .lista-vazia {
   text-align: center;
   color: var(--arca-text-lighter);
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 20px 0;
 }
 

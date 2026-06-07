@@ -18,7 +18,7 @@ ion-content {
   gap: 4px;
   span {
     color: var(--arca-text-secondary);
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-style: italic;
     line-height: 1.4;
   }
@@ -180,7 +180,7 @@ ion-content {
   border: 1px dashed var(--arca-tertiary);
   background: var(--arca-fav-bg);
   border-radius: 10px;
-  span { font-size: 13px; line-height: 1.4; color: var(--arca-text-secondary); }
+  span { font-size: 0.8125rem; line-height: 1.4; color: var(--arca-text-secondary); }
 }
 
 .botoes-fixos {
@@ -202,7 +202,7 @@ ion-content {
     padding: 12px;
     border-radius: 25px;
     border: none;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: bold;
     text-align: center;
     text-decoration: none;

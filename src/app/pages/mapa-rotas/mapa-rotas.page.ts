@@ -1,10 +1,10 @@
-import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
-import { MERCADOS_MAP, MERCADOS_COORDS } from '../../constants/mercados';
+import { MERCADOS_COORDS } from '../../constants/mercados';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { HistoricoService } from '../../services/historico.service';
 import { environment } from '../../../environments/environment';
@@ -25,7 +25,7 @@ interface MercadoMapa {
   standalone: true,
   imports: [CommonModule, RouterModule, IonContent]
 })
-export class MapaRotasPage implements OnInit, AfterViewInit {
+export class MapaRotasPage implements OnInit {
   private carrinhoService = inject(CarrinhoService);
   private historicoService = inject(HistoricoService);
 
@@ -37,24 +37,41 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
   private markers: L.Marker[] = [];
   private aguardandoLocalizacao = true;
 
-  mercados: MercadoMapa[];
+  mercados: MercadoMapa[] = [];
 
-  constructor() {
+  constructor() {}
+
+  async ngOnInit() {
+    await this.carregarMercados();
+    this.carregarPrecos();
+    setTimeout(() => this.iniciarMapa(), 300);
+  }
+
+  private async carregarMercados() {
+    try {
+      const res = await fetch(`${environment.apiUrl}/api/mercados?status=aprovado`);
+      if (res.ok) {
+        const data = await res.json();
+        this.mercados = data.map((m: any) => ({
+          id: m.id,
+          nome: m.nome,
+          lat: m.latitude ?? 0,
+          lng: m.longitude ?? 0,
+          preco: 'R$ --',
+          precoNum: 0,
+        }));
+        return;
+      }
+    } catch {}
+
     this.mercados = Object.entries(MERCADOS_COORDS).map(([id, coords]) => ({
       id: Number(id),
-      nome: MERCADOS_MAP[Number(id)]?.nome ?? 'Mercado',
+      nome: '',
       lat: coords.lat,
       lng: coords.lng,
       preco: 'R$ --',
       precoNum: 0,
     }));
-  }
-
-  ngOnInit() {}
-
-  ngAfterViewInit() {
-    this.carregarPrecos();
-    setTimeout(() => this.iniciarMapa(), 300);
   }
 
   private async carregarPrecos() {
@@ -71,7 +88,11 @@ export class MapaRotasPage implements OnInit, AfterViewInit {
       const data = await res.json();
       if (data.sucesso && data.mercados) {
         const precoPorId: Record<number, number> = {};
-        data.mercados.forEach((m: any) => { precoPorId[m.id] = m.total; });
+        data.mercados.forEach((m: any) => {
+          precoPorId[m.id] = m.total;
+          const mercado = this.mercados.find(mk => mk.id === m.id);
+          if (mercado && !mercado.nome) mercado.nome = m.nome;
+        });
 
         this.mercados.forEach(m => {
           const total = precoPorId[m.id];

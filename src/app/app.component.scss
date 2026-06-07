@@ -70,7 +70,7 @@ ion-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 14px;
+      font-size: 0.875rem;
 
       .btn-rota {
         padding: 6px 10px;
@@ -79,7 +79,7 @@ ion-content {
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 12px;
+        font-size: 0.75rem;
       }
     }
   }
@@ -107,7 +107,7 @@ ion-content {
   z-index: 1000;
 
   p {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--arca-text);
     margin: 0;
     text-align: center;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -11,8 +11,6 @@ import {
   IonLabel,
   IonCheckbox,
   IonRange,
-  IonSelect,
-  IonSelectOption
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -30,11 +28,13 @@ import {
     IonLabel,
     IonCheckbox,
     IonRange,
-    IonSelect,
-    IonSelectOption
   ]
 })
-export class CadastroPage implements OnInit {
+export class CadastroPage {
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  private toastCtrl = inject(ToastController);
+
 
   form = {
     nome: '',
@@ -55,10 +55,6 @@ export class CadastroPage implements OnInit {
 
   mostrarSenha = false;
   mostrarConfirmSenha = false;
-
-  constructor(private router: Router, private authService: AuthService, private toastCtrl: ToastController) {}
-
-  ngOnInit() {}
 
   toggleSenha() {
     this.mostrarSenha = !this.mostrarSenha;

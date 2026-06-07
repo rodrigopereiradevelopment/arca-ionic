@@ -19,7 +19,7 @@ ion-content {
   .btn-voltar {
     position: absolute;
     left: 16px;
-    font-size: 24px;
+    font-size: 1.5rem;
     color: var(--arca-text-white);
     text-decoration: none;
     font-weight: bold;
@@ -39,7 +39,7 @@ ion-content {
   margin: 0 auto;
 
   h1 {
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: bold;
     color: var(--arca-text);
     margin-bottom: 8px;
@@ -48,7 +48,7 @@ ion-content {
   }
 
   .subtitulo {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--arca-text-secondary);
     margin-bottom: 4px;
 
@@ -59,7 +59,7 @@ ion-content {
   }
 
   .data {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--arca-text-light);
     margin-bottom: 20px;
   }
@@ -76,7 +76,7 @@ ion-accordion-group {
 
   .acordeao-conteudo {
     padding: 16px;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--arca-text-input);
     line-height: 1.6;
     background: var(--arca-bg-subtle);
@@ -88,6 +88,21 @@ ion-accordion-group {
       &:last-child {
         margin-bottom: 0;
       }
+    }
+
+    ul, ol {
+      margin: 8px 0;
+      padding-left: 20px;
+
+      li {
+        margin-bottom: 6px;
+        font-size: 0.8125rem;
+        line-height: 1.5;
+      }
+    }
+
+    strong {
+      color: var(--arca-text);
     }
   }
 }
@@ -102,7 +117,7 @@ ion-accordion-group {
   border-radius: 10px;
   text-decoration: none;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .footer {
@@ -118,7 +133,7 @@ ion-accordion-group {
   z-index: 1000;
 
   p {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--arca-text);
     margin: 0;
     text-align: center;

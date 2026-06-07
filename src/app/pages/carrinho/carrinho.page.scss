@@ -28,7 +28,7 @@ ion-content {
   }
 
   span {
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 500;
     color: var(--arca-text);
     flex: 1;
@@ -43,7 +43,7 @@ ion-content {
     .link-adicionar {
       color: var(--arca-tertiary);
       font-weight: bold;
-      font-size: 16px;
+      font-size: 1rem;
       text-decoration: none;
     }
   }
@@ -56,8 +56,8 @@ ion-content {
   border-radius: 10px;
   box-shadow: 0 4px 8px var(--arca-shadow-lg);
 
-  small { display: block; color: var(--arca-text-secondary); font-size: 13px; margin-bottom: 4px; }
-  strong { font-size: 22px; color: var(--arca-tertiary); }
+  small { display: block; color: var(--arca-text-secondary); font-size: 0.8125rem; margin-bottom: 4px; }
+  strong { font-size: 1.375rem; color: var(--arca-tertiary); }
 }
 
 .historico-section {
@@ -71,7 +71,7 @@ ion-content {
   border-radius: 10px;
   background: var(--arca-surface);
   color: var(--arca-text);
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
@@ -79,7 +79,7 @@ ion-content {
   justify-content: space-between;
   box-shadow: 0 2px 6px var(--arca-shadow-md);
 
-  .seta { font-size: 12px; margin-left: 8px; }
+  .seta { font-size: 0.75rem; margin-left: 8px; }
 }
 
 .historico-body {
@@ -105,8 +105,8 @@ ion-content {
     flex-direction: column;
     gap: 2px;
 
-    strong { font-size: 14px; color: var(--arca-text); }
-    small { font-size: 12px; color: var(--arca-text-secondary); }
+    strong { font-size: 0.875rem; color: var(--arca-text); }
+    small { font-size: 0.75rem; color: var(--arca-text-secondary); }
   }
 
   .historico-acoes {
@@ -120,7 +120,7 @@ ion-content {
       border-radius: 20px;
       background: var(--arca-tertiary);
       color: var(--arca-text-white);
-      font-size: 13px;
+      font-size: 0.8125rem;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
@@ -131,7 +131,7 @@ ion-content {
       border: none;
       border-radius: 20px;
       background: transparent;
-      font-size: 16px;
+      font-size: 1rem;
       cursor: pointer;
     }
   }
@@ -156,7 +156,7 @@ ion-content {
     padding: 14px;
     border-radius: 25px;
     border: none;
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: bold;
     text-align: center;
     text-decoration: none;

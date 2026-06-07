@@ -1,15 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
   IonContent,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonButton,
-  IonSelect,
-  IonSelectOption,
   ToastController
 } from '@ionic/angular/standalone';
 import { MercadoService } from '../../services/mercado.service';
@@ -25,15 +19,13 @@ import { AuthService } from '../../services/auth.service';
     FormsModule,
     RouterModule,
     IonContent,
-    IonInput,
-    IonItem,
-    IonLabel,
-    IonButton,
-    IonSelect,
-    IonSelectOption
   ]
 })
-export class CadastrarMercadoPage implements OnInit {
+export class CadastrarMercadoPage {
+  private toastCtrl = inject(ToastController);
+  private mercadoSvc = inject(MercadoService);
+  private auth = inject(AuthService);
+
 
   form = {
     nome: '',
@@ -57,13 +49,6 @@ export class CadastrarMercadoPage implements OnInit {
   imagemPreview: string | null = null;
   buscandoCep = false;
   enviando = false;
-
-  constructor(
-    private toastCtrl: ToastController,
-    private mercadoSvc: MercadoService,
-    private auth: AuthService
-  ) {}
-  ngOnInit() {}
 
   async buscarCep() {
     const cep = this.form.cep.replace(/\D/g, '');

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -14,15 +14,13 @@ import { environment } from '../../../environments/environment';
   imports: [CommonModule, FormsModule, IonContent, IonSpinner, IonButton, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton]
 })
 export class ListaRapidaPage {
+  private comparacaoService = inject(ComparacaoService);
+  private router = inject(Router);
+  private toastCtrl = inject(ToastController);
+
   textoLista = '';
   buscando = false;
   erros: string[] = [];
-
-  constructor(
-    private comparacaoService: ComparacaoService,
-    private router: Router,
-    private toastCtrl: ToastController
-  ) {}
 
   async buscarEComparar() {
     const linhas = this.textoLista.split('\n').map(l => l.trim()).filter(l => l.length > 1);

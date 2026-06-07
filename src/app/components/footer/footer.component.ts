@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonFooter, ModalController } from '@ionic/angular/standalone';
@@ -12,14 +12,9 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule, IonFooter]
 })
-export class FooterComponent implements OnInit {
-
-  constructor(
-    private modalCtrl: ModalController,
-    public authService: AuthService
-  ) {}
-
-  ngOnInit() {}
+export class FooterComponent {
+  private modalCtrl = inject(ModalController);
+  authService = inject(AuthService);
 
   async abrirCarrinho() {
     const modal = await this.modalCtrl.create({

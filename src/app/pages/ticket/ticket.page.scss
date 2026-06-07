@@ -16,7 +16,7 @@ ion-content { --background: var(--arca-bg); }
 
   .btn-voltar {
     position: absolute; left: 16px;
-    font-size: 24px; color: var(--arca-text-white);
+    font-size: 1.5rem; color: var(--arca-text-white);
     text-decoration: none; font-weight: bold;
   }
   .logo {
@@ -28,7 +28,7 @@ ion-content { --background: var(--arca-bg); }
     position: absolute; right: 16px;
     background: rgba(255,255,255,0.25);
     border: none; border-radius: 8px;
-    color: var(--arca-text-white); font-size: 13px;
+    color: var(--arca-text-white); font-size: 0.8125rem;
     font-weight: bold; padding: 6px 12px;
     cursor: pointer;
   }
@@ -40,8 +40,8 @@ ion-content { --background: var(--arca-bg); }
   max-width: 600px;
   margin: 0 auto;
 
-  h1 { font-size: 20px; color: var(--arca-text); margin-bottom: 4px; }
-  .subtitulo { font-size: 13px; color: var(--arca-text-muted); margin-bottom: 16px; }
+  h1 { font-size: 1.25rem; color: var(--arca-text); margin-bottom: 4px; }
+  .subtitulo { font-size: 0.8125rem; color: var(--arca-text-muted); margin-bottom: 16px; }
 }
 
 // FILTROS
@@ -58,7 +58,7 @@ ion-content { --background: var(--arca-bg); }
     padding: 7px 14px;
     border: 2px solid var(--arca-border);
     border-radius: 20px;
-    font-size: 12px; font-weight: 600;
+    font-size: 0.75rem; font-weight: 600;
     color: var(--arca-text-muted); background: var(--arca-surface);
     cursor: pointer; white-space: nowrap;
     flex-shrink: 0; transition: all 0.2s;
@@ -85,16 +85,16 @@ ion-content { --background: var(--arca-bg); }
     align-items: center;
     margin-bottom: 8px;
 
-    .tipo-label { font-size: 12px; color: var(--arca-text-muted); }
+    .tipo-label { font-size: 0.75rem; color: var(--arca-text-muted); }
   }
 
   .ticket-titulo {
-    font-size: 15px; color: var(--arca-text);
+    font-size: 0.9375rem; color: var(--arca-text);
     display: block; margin-bottom: 4px;
   }
 
   .ticket-desc {
-    font-size: 13px; color: var(--arca-text-muted);
+    font-size: 0.8125rem; color: var(--arca-text-muted);
     margin: 0 0 10px;
     line-height: 1.4;
     white-space: nowrap;
@@ -105,7 +105,7 @@ ion-content { --background: var(--arca-bg); }
   .ticket-rodape {
     display: flex;
     justify-content: space-between;
-    font-size: 11px; color: var(--arca-text-lightest);
+    font-size: 0.6875rem; color: var(--arca-text-lightest);
   }
 }
 
@@ -113,7 +113,7 @@ ion-content { --background: var(--arca-bg); }
 .badge {
   padding: 3px 10px;
   border-radius: 20px;
-  font-size: 11px; font-weight: bold;
+  font-size: 0.6875rem; font-weight: bold;
   white-space: nowrap;
 
   &.badge-aberto { background: var(--arca-danger-bg); color: var(--arca-danger-text); }
@@ -128,14 +128,14 @@ ion-content { --background: var(--arca-bg); }
   align-items: center;
   padding: 60px 0; gap: 12px;
 
-  .vazio-icone { font-size: 56px; opacity: 0.3; }
-  p { font-size: 15px; color: var(--arca-text-lighter); margin: 0; }
+  .vazio-icone { font-size: 3.5rem; opacity: 0.3; }
+  p { font-size: 0.9375rem; color: var(--arca-text-lighter); margin: 0; }
 
   .btn-abrir {
     padding: 12px 24px;
     background: var(--arca-secondary); color: var(--arca-text-white);
     border: none; border-radius: 25px;
-    font-weight: bold; font-size: 14px;
+    font-weight: bold; font-size: 0.875rem;
     cursor: pointer; margin-top: 8px;
   }
 }
@@ -163,7 +163,7 @@ ion-content { --background: var(--arca-bg); }
 
     .btn-voltar-conv {
       background: none; border: none;
-      color: var(--arca-text-white); font-size: 24px;
+      color: var(--arca-text-white); font-size: 1.5rem;
       font-weight: bold; cursor: pointer;
       flex-shrink: 0;
     }
@@ -173,13 +173,13 @@ ion-content { --background: var(--arca-bg); }
       display: flex;
       flex-direction: column;
       gap: 3px;
-      strong { font-size: 14px; color: var(--arca-text-white); line-height: 1.2; }
+      strong { font-size: 0.875rem; color: var(--arca-text-white); line-height: 1.2; }
     }
 
     .btn-resolver {
       background: rgba(255,255,255,0.25);
       border: none; border-radius: 8px;
-      font-size: 18px; padding: 6px;
+      font-size: 1.125rem; padding: 6px;
       cursor: pointer; flex-shrink: 0;
     }
   }
@@ -203,9 +203,9 @@ ion-content { --background: var(--arca-bg); }
   flex-direction: column;
   gap: 4px;
 
-  .msg-autor { font-size: 11px; font-weight: bold; color: var(--arca-text-muted); }
-  .msg-texto { font-size: 14px; line-height: 1.4; }
-  .msg-data { font-size: 10px; color: var(--arca-text-lightest); align-self: flex-end; }
+  .msg-autor { font-size: 0.6875rem; font-weight: bold; color: var(--arca-text-muted); }
+  .msg-texto { font-size: 0.875rem; line-height: 1.4; }
+  .msg-data { font-size: 0.625rem; color: var(--arca-text-lightest); align-self: flex-end; }
 
   &.msg-usuario {
     align-self: flex-end;
@@ -241,7 +241,7 @@ ion-content { --background: var(--arca-bg); }
     padding: 12px 16px;
     border: 1px solid var(--arca-border);
     border-radius: 25px;
-    font-size: 14px;
+    font-size: 0.875rem;
     outline: none;
     &:focus { border-color: var(--arca-secondary); }
   }
@@ -251,7 +251,7 @@ ion-content { --background: var(--arca-bg); }
     background: var(--arca-secondary);
     color: var(--arca-text-white); border: none;
     border-radius: 50%;
-    font-size: 18px; cursor: pointer;
+    font-size: 1.125rem; cursor: pointer;
     display: flex; align-items: center;
     justify-content: center;
     box-shadow: 0 4px 10px var(--arca-shadow-button);
@@ -266,7 +266,7 @@ ion-content { --background: var(--arca-bg); }
   margin: 16px;
   border-radius: 12px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 // MODAL
@@ -295,12 +295,12 @@ ion-content { --background: var(--arca-bg); }
     background: var(--arca-surface);
     border-bottom: 1px solid var(--arca-border-light);
 
-    h2 { font-size: 18px; color: var(--arca-text); margin: 0; }
+    h2 { font-size: 1.125rem; color: var(--arca-text); margin: 0; }
     .btn-fechar {
       background: var(--arca-border-light); border: none;
       border-radius: 50%;
       width: 32px; height: 32px;
-      font-size: 16px; cursor: pointer;
+      font-size: 1rem; cursor: pointer;
     }
   }
 
@@ -313,7 +313,7 @@ ion-content { --background: var(--arca-bg); }
   margin-bottom: 14px;
 
   label {
-    font-size: 12px; font-weight: 600;
+    font-size: 0.75rem; font-weight: 600;
     color: var(--arca-text-medium); margin-bottom: 5px;
     .required { color: var(--arca-required); }
   }
@@ -322,7 +322,7 @@ ion-content { --background: var(--arca-bg); }
     padding: 12px 14px;
     border: 1px solid var(--arca-border);
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 0.875rem;
     background: var(--arca-surface);
     outline: none;
     font-family: inherit;
@@ -343,8 +343,8 @@ ion-content { --background: var(--arca-bg); }
   .upload-placeholder {
     display: flex; flex-direction: column;
     align-items: center; gap: 4px;
-    span { font-size: 14px; color: var(--arca-text-medium); }
-    .upload-hint { font-size: 12px; color: var(--arca-text-lightest); }
+    span { font-size: 0.875rem; color: var(--arca-text-medium); }
+    .upload-hint { font-size: 0.75rem; color: var(--arca-text-lightest); }
   }
 
   .img-preview {

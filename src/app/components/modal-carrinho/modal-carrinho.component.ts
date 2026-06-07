@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import {
@@ -26,27 +26,13 @@ interface MercadoComparacao {
     IonLabel, IonCard, IonCardContent
   ]
 })
-export class ModalCarrinhoComponent implements OnInit {
+export class ModalCarrinhoComponent {
+  private modalCtrl = inject(ModalController);
+  private router = inject(Router);
+  carrinhoService = inject(CarrinhoService);
 
   view: string = 'lista';
   comparacaoMercados: MercadoComparacao[] = [];
-
-  private readonly SUPERMERCADOS: Record<number, string> = {
-    1: 'GoodBom',
-    2: 'PagueMenos',
-    3: 'São Vicente',
-    4: 'Atacadão',
-    5: 'Imperial',
-    6: 'Ponto Novo'
-  };
-
-  constructor(
-    private modalCtrl: ModalController,
-    private router: Router,
-    public carrinhoService: CarrinhoService
-  ) {}
-
-  ngOnInit() {}
 
   fecharModal() { 
     this.modalCtrl.dismiss(); 

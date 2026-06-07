@@ -38,13 +38,14 @@ const CACHE_TTL = 30 * 60 * 1000; // 30 minutos
   imports: [CommonModule, RouterModule, IonContent, IonSpinner]
 })
 export class CompararPage {
+  private comparacaoService = inject(ComparacaoService);
+  private toastCtrl = inject(ToastController);
+
   mercados: MercadoComPreco[] = [];
   loading = false;
   produtosSelecionados: any[] = [];
 
   private historicoService = inject(HistoricoService);
-
-  constructor(private comparacaoService: ComparacaoService, private toastCtrl: ToastController) {}
 
   async ionViewWillEnter() {
     this.produtosSelecionados = this.comparacaoService.getProdutos();

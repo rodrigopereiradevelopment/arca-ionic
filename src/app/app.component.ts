@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { MenuComponent } from './components/menu/menu.component';
 import { AuthService } from './services/auth.service';
@@ -16,13 +16,11 @@ import { Router } from '@angular/router';
   ],
 })
 export class AppComponent implements OnInit {
+  private authService = inject(AuthService);
+  private configService = inject(ConfigService);
+  private carrinhoService = inject(CarrinhoService);
+  private router = inject(Router);
 
-  constructor(
-    private authService: AuthService,
-    private configService: ConfigService,
-    private carrinhoService: CarrinhoService,
-    private router: Router
-  ) {}
 
   async ngOnInit() {
     this.configService.init();

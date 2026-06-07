@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule} from '@angular/common'; 
 import { IonicModule } from '@ionic/angular';
 
@@ -9,14 +9,10 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [CommonModule, IonicModule],
 })
-export class HeaderComponent  implements OnInit {
+export class HeaderComponent {
   
   // ADICIONE ESTAS DUAS LINHAS:
   sugestoes: any[] = []; 
-
-  constructor() { }
-
-  ngOnInit() {}
 
   buscar(event: any) {
     const query = event.target.value;

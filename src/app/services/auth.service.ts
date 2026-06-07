@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment.js';
@@ -16,10 +16,12 @@ export interface Usuario {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private router = inject(Router);
+
   private usuarioAtual = new BehaviorSubject<Usuario | null>(null);
   usuario$ = this.usuarioAtual.asObservable();
 
-  constructor(private router: Router) {
+  constructor() {
     const salvo = localStorage.getItem('arca_usuario');
     if (salvo) this.usuarioAtual.next(JSON.parse(salvo));
   }

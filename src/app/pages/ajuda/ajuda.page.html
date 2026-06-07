@@ -43,6 +43,7 @@
         </div>
       </div>
 
+      <div #ultimaMsg></div>
     </div>
 
     <div class="chat-input">
@@ -52,9 +53,7 @@
         placeholder="Digite sua dúvida..."
         (keyup.enter)="enviarMensagem()"
         [disabled]="carregando">
-      <button (click)="enviarMensagem()" [disabled]="carregando">
-        ➤
-      </button>
+      <button (click)="enviarMensagem()" [disabled]="carregando">➤</button>
     </div>
 
   </div>
@@ -62,8 +61,14 @@
   <!-- ABA FAQ -->
   <div class="container" *ngIf="abaAtiva === 'faq'">
     <h2 class="secao-titulo">Perguntas Frequentes</h2>
-    <ion-accordion-group>
-      <ion-accordion *ngFor="let f of faqs" [value]="f.pergunta">
+
+    <div class="faq-busca">
+      <input type="text" [(ngModel)]="buscaFaq"
+        placeholder="Buscar perguntas..." class="faq-input">
+    </div>
+
+    <ion-accordion-group *ngIf="faqsFiltrados.length > 0">
+      <ion-accordion *ngFor="let f of faqsFiltrados" [value]="f.pergunta">
         <ion-item slot="header">
           <ion-label>{{ f.pergunta }}</ion-label>
         </ion-item>
@@ -72,6 +77,10 @@
         </div>
       </ion-accordion>
     </ion-accordion-group>
+
+    <p class="vazio-texto" *ngIf="faqsFiltrados.length === 0">
+      Nenhuma pergunta encontrada para "{{ buscaFaq }}"
+    </p>
 
     <div class="ticket-sugestao">
       <p>Não encontrou sua resposta?</p>

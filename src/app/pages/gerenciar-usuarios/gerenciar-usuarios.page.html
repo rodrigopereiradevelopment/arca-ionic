@@ -30,7 +30,7 @@
     <div class="usuario-card" *ngFor="let u of usuariosFiltrados">
 
       <div class="card-topo">
-        <div class="avatar">{{ u.nome?.charAt(0) || '?' }}</div>
+        <div class="avatar">{{ (u.nome || '?').charAt(0) }}</div>
         <div class="info">
           <strong>{{ u.nome }}</strong>
           <span class="email">{{ u.email }}</span>

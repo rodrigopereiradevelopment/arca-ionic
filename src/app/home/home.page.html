@@ -5,7 +5,8 @@
     </ion-buttons>
     <ion-searchbar
       placeholder="Categoria / Produto"
-      showCancelButton="never">
+      showCancelButton="never"
+      (keyup.enter)="buscar($event)">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>

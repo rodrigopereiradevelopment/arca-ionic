@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -26,7 +26,9 @@ function calcDistancia(lat1: number, lon1: number, lat2: number, lon2: number): 
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
-export class MercadosProximosPage implements OnInit, AfterViewInit {
+export class MercadosProximosPage implements AfterViewInit {
+  private mercadoSvc = inject(MercadoService);
+
 
   map: any;
   listaVisivel = true;
@@ -50,9 +52,6 @@ export class MercadosProximosPage implements OnInit, AfterViewInit {
     if (dist <= 2) return '#ffc107';
     return '#e74c3c';
   }
-
-  constructor(private mercadoSvc: MercadoService) {}
-  ngOnInit() {}
 
   async ngAfterViewInit() {
     await this.carregarMercados();

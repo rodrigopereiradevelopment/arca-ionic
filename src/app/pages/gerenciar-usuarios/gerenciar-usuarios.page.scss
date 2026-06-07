@@ -15,7 +15,7 @@ ion-content { --background: var(--arca-bg); }
 
   .btn-voltar {
     position: absolute; left: 16px;
-    font-size: 24px; color: var(--arca-text-white);
+    font-size: 1.5rem; color: var(--arca-text-white);
     text-decoration: none; font-weight: bold;
   }
   .logo {
@@ -30,9 +30,9 @@ ion-content { --background: var(--arca-bg); }
   max-width: 700px;
   margin: 0 auto;
 
-  h1 { font-size: 20px; color: var(--arca-text); margin-bottom: 4px; }
-  .subtitulo { font-size: 13px; color: var(--arca-text-muted); margin-bottom: 16px; }
-  .contagem { font-size: 12px; color: var(--arca-text-lighter); margin-bottom: 12px; }
+  h1 { font-size: 1.25rem; color: var(--arca-text); margin-bottom: 4px; }
+  .subtitulo { font-size: 0.8125rem; color: var(--arca-text-muted); margin-bottom: 16px; }
+  .contagem { font-size: 0.75rem; color: var(--arca-text-lighter); margin-bottom: 12px; }
 }
 
 .painel-filtros {
@@ -46,7 +46,7 @@ ion-content { --background: var(--arca-bg); }
     padding: 11px 14px;
     border: 1px solid var(--arca-border);
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 0.875rem;
     background: var(--arca-surface);
     outline: none;
   }
@@ -55,7 +55,7 @@ ion-content { --background: var(--arca-bg); }
     padding: 11px 14px;
     border: 1px solid var(--arca-border);
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 0.875rem;
     background: var(--arca-surface);
     outline: none;
   }
@@ -67,7 +67,7 @@ ion-content { --background: var(--arca-bg); }
     border: none;
     border-radius: 10px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 0.875rem;
     cursor: pointer;
   }
 }
@@ -90,7 +90,7 @@ ion-content { --background: var(--arca-bg); }
       border-radius: 50%;
       background: var(--arca-primary);
       color: var(--arca-text-white);
-      font-size: 20px;
+      font-size: 1.25rem;
       font-weight: bold;
       display: flex;
       align-items: center;
@@ -104,9 +104,9 @@ ion-content { --background: var(--arca-bg); }
       flex-direction: column;
       gap: 2px;
 
-      strong { font-size: 15px; color: var(--arca-text); }
-      .email { font-size: 12px; color: var(--arca-text-muted); }
-      .data { font-size: 11px; color: var(--arca-text-lightest); }
+      strong { font-size: 0.9375rem; color: var(--arca-text); }
+      .email { font-size: 0.75rem; color: var(--arca-text-muted); }
+      .data { font-size: 0.6875rem; color: var(--arca-text-lightest); }
     }
 
     .badges {
@@ -120,7 +120,7 @@ ion-content { --background: var(--arca-bg); }
   .badge {
     padding: 3px 8px;
     border-radius: 10px;
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: bold;
     white-space: nowrap;
 
@@ -136,7 +136,7 @@ ion-content { --background: var(--arca-bg); }
     padding-top: 12px;
 
     .label-acoes {
-      font-size: 11px;
+      font-size: 0.6875rem;
       color: var(--arca-text-lighter);
       font-weight: 600;
       display: block;
@@ -153,7 +153,7 @@ ion-content { --background: var(--arca-bg); }
         padding: 8px;
         border: 2px solid var(--arca-border);
         border-radius: 8px;
-        font-size: 12px;
+        font-size: 0.75rem;
         font-weight: bold;
         color: var(--arca-text-muted);
         background: var(--arca-surface);
@@ -177,7 +177,7 @@ ion-content { --background: var(--arca-bg); }
         padding: 9px;
         border: none;
         border-radius: 8px;
-        font-size: 13px;
+        font-size: 0.8125rem;
         font-weight: bold;
         cursor: pointer;
       }
@@ -191,7 +191,7 @@ ion-content { --background: var(--arca-bg); }
 .sem-resultados {
   text-align: center;
   color: var(--arca-text-light);
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 40px 0;
 }
 
@@ -217,13 +217,13 @@ ion-content { --background: var(--arca-bg); }
     padding: 20px 20px 10px;
     border-bottom: 1px solid var(--arca-border-light);
 
-    h2 { font-size: 18px; color: var(--arca-text); margin: 0; }
+    h2 { font-size: 1.125rem; color: var(--arca-text); margin: 0; }
     .btn-fechar {
       background: var(--arca-border-light);
       border: none;
       border-radius: 50%;
       width: 32px; height: 32px;
-      font-size: 16px;
+      font-size: 1rem;
       cursor: pointer;
     }
   }
@@ -237,7 +237,7 @@ ion-content { --background: var(--arca-bg); }
   margin-bottom: 14px;
 
   label {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--arca-text-medium);
     margin-bottom: 5px;
@@ -248,7 +248,7 @@ ion-content { --background: var(--arca-bg); }
     padding: 12px 14px;
     border: 1px solid var(--arca-border);
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 0.875rem;
     background: var(--arca-surface);
     outline: none;
     &:focus { border-color: var(--arca-secondary); }
@@ -260,7 +260,7 @@ ion-content { --background: var(--arca-bg); }
   background: var(--arca-info-card-bg);
   border-left: 4px solid var(--arca-secondary);
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--arca-text-medium);
   margin-bottom: 20px;
 }

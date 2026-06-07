@@ -15,11 +15,11 @@ ion-content { --background: var(--arca-bg); }
 
   .btn-voltar {
     position: absolute; left: 16px;
-    font-size: 24px; color: var(--arca-text-white);
+    font-size: 1.5rem; color: var(--arca-text-white);
     text-decoration: none; font-weight: bold;
   }
   .titulo-topo {
-    font-size: 17px; font-weight: bold; color: var(--arca-text-white);
+    font-size: 1.0625rem; font-weight: bold; color: var(--arca-text-white);
   }
 }
 
@@ -52,12 +52,12 @@ ion-content { --background: var(--arca-bg); }
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 0.875rem;
       box-shadow: 0 2px 6px var(--arca-shadow-xl);
     }
   }
 
-  h2 { font-size: 20px; color: var(--arca-text); margin: 4px 0 0; }
+  h2 { font-size: 1.25rem; color: var(--arca-text); margin: 4px 0 0; }
 
   .stats {
     display: flex;
@@ -74,8 +74,8 @@ ion-content { --background: var(--arca-bg); }
       align-items: center;
       gap: 2px;
 
-      strong { font-size: 20px; color: var(--arca-secondary); font-weight: bold; }
-      span { font-size: 11px; color: var(--arca-text-muted); }
+      strong { font-size: 1.25rem; color: var(--arca-secondary); font-weight: bold; }
+      span { font-size: 0.6875rem; color: var(--arca-text-muted); }
     }
   }
 }
@@ -83,7 +83,7 @@ ion-content { --background: var(--arca-bg); }
 .badge-tipo {
   padding: 3px 12px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: bold;
 
   &.tipo-usuario { background: var(--arca-info-bg); color: var(--arca-info-text); }
@@ -107,7 +107,7 @@ ion-content { --background: var(--arca-bg); }
     border: none;
     border-bottom: 3px solid transparent;
     background: transparent;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--arca-text-lighter);
     cursor: pointer;
@@ -133,7 +133,7 @@ ion-content { --background: var(--arca-bg); }
   align-items: center;
   margin-bottom: 16px;
 
-  h3 { font-size: 16px; color: var(--arca-text); margin: 0; }
+  h3 { font-size: 1rem; color: var(--arca-text); margin: 0; }
 
   .btn-editar-dados {
     padding: 7px 14px;
@@ -141,7 +141,7 @@ ion-content { --background: var(--arca-bg); }
     color: var(--arca-secondary);
     border: 2px solid var(--arca-secondary);
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
@@ -149,7 +149,7 @@ ion-content { --background: var(--arca-bg); }
 }
 
 .secao-titulo {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--arca-text);
   margin: 24px 0 12px;
   padding-bottom: 6px;
@@ -164,7 +164,7 @@ ion-content { --background: var(--arca-bg); }
   margin-bottom: 12px;
 
   label {
-    font-size: 12px; font-weight: 600;
+    font-size: 0.75rem; font-weight: 600;
     color: var(--arca-text-medium); margin-bottom: 5px;
     .required { color: var(--arca-required); }
   }
@@ -173,7 +173,7 @@ ion-content { --background: var(--arca-bg); }
     padding: 12px 14px;
     border: 1px solid var(--arca-border);
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 0.875rem;
     background: var(--arca-surface);
     outline: none;
     transition: border 0.2s;
@@ -204,7 +204,7 @@ ion-content { --background: var(--arca-bg); }
     background: var(--arca-surface);
     border: 1px solid var(--arca-border);
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
   }
 }
@@ -216,7 +216,7 @@ ion-content { --background: var(--arca-bg); }
   color: var(--arca-text-white);
   border: none;
   border-radius: 25px;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: bold;
   cursor: pointer;
   margin-top: 8px;
@@ -275,8 +275,8 @@ ion-content { --background: var(--arca-bg); }
     display: flex;
     flex-direction: column;
     gap: 2px;
-    strong { font-size: 14px; color: var(--arca-text); }
-    span { font-size: 12px; color: var(--arca-text-muted); }
+    strong { font-size: 0.875rem; color: var(--arca-text); }
+    span { font-size: 0.75rem; color: var(--arca-text-muted); }
   }
 }
 
@@ -292,7 +292,7 @@ ion-content { --background: var(--arca-bg); }
     border-radius: 12px;
     text-decoration: none;
     color: var(--arca-text);
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
     box-shadow: 0 2px 6px var(--arca-shadow-xs);
     transition: background 0.2s;
@@ -325,13 +325,13 @@ ion-content { --background: var(--arca-bg); }
       display: flex;
       align-items: center;
       gap: 8px;
-      strong { font-size: 15px; color: var(--arca-text); }
+      strong { font-size: 0.9375rem; color: var(--arca-text); }
     }
 
-    span { font-size: 12px; color: var(--arca-text-muted); }
+    span { font-size: 0.75rem; color: var(--arca-text-muted); }
 
     .badge-principal {
-      font-size: 11px;
+      font-size: 0.6875rem;
       background: var(--arca-success-bg);
       color: var(--arca-success-text);
       padding: 2px 8px;
@@ -351,7 +351,7 @@ ion-content { --background: var(--arca-bg); }
       border-radius: 8px;
       background: var(--arca-bg);
       cursor: pointer;
-      font-size: 14px;
+      font-size: 0.875rem;
     }
   }
 }
@@ -376,8 +376,8 @@ ion-content { --background: var(--arca-bg); }
     flex-direction: column;
     gap: 3px;
 
-    strong { font-size: 14px; color: var(--arca-text); }
-    span { font-size: 12px; color: var(--arca-text-muted); }
+    strong { font-size: 0.875rem; color: var(--arca-text); }
+    span { font-size: 0.75rem; color: var(--arca-text-muted); }
     b { color: var(--arca-secondary); }
     .economia { color: var(--arca-error); font-weight: 600; }
     .atingido { color: var(--arca-success-text); font-weight: 600; }
@@ -391,7 +391,7 @@ ion-content { --background: var(--arca-bg); }
 
     .btn-excluir-alerta {
       background: none; border: none;
-      font-size: 16px; cursor: pointer;
+      font-size: 1rem; cursor: pointer;
       color: var(--arca-border-input);
       &:hover { color: var(--arca-error); }
     }
@@ -406,14 +406,14 @@ ion-content { --background: var(--arca-bg); }
   color: var(--arca-danger-text);
   border: 2px solid var(--arca-danger-border);
   border-radius: 25px;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: bold;
   cursor: pointer;
   margin-top: 8px;
 }
 
 .aviso-exclusao {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--arca-text-muted);
   text-align: center;
   margin-top: 12px;
@@ -423,7 +423,7 @@ ion-content { --background: var(--arca-bg); }
 .vazio-texto {
   text-align: center;
   color: var(--arca-text-lighter);
-  font-size: 14px;
+  font-size: 0.875rem;
   padding: 30px 0;
 }
 
@@ -453,12 +453,12 @@ ion-content { --background: var(--arca-bg); }
     background: var(--arca-surface);
     border-bottom: 1px solid var(--arca-border-light);
 
-    h2 { font-size: 18px; color: var(--arca-text); margin: 0; }
+    h2 { font-size: 1.125rem; color: var(--arca-text); margin: 0; }
     .btn-fechar {
       background: var(--arca-border-light); border: none;
       border-radius: 50%;
       width: 32px; height: 32px;
-      font-size: 16px; cursor: pointer;
+      font-size: 1rem; cursor: pointer;
     }
   }
 
