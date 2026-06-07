@@ -1,0 +1,92 @@
+<ion-content [fullscreen]="true">
+  <div class="onboarding-wrapper">
+
+    <!-- PULAR -->
+    <button class="btn-pular" (click)="pular()" *ngIf="!ultimoSlide">Pular</button>
+
+    <!-- SWIPER -->
+    <swiper-container class="swiper-onboarding" slides-per-view="1" pagination="true"
+      (slidechange)="onSlideChange($event)" allow-slide-prev="false" allow-touch-move="true">
+
+      <!-- SLIDE 1: BOAS-VINDAS -->
+      <swiper-slide class="slide">
+        <div class="slide-content welcome">
+          <img src="assets/img/logo.png" alt="ARCA" class="logo-welcome">
+          <h1>Bem-vindo ao ARCA!</h1>
+          <p>Compare preços dos supermercados de <strong>Mogi Mirim</strong> e economize em todas as compras.</p>
+          <div class="features-preview">
+            <span>💰 Menores preços</span>
+            <span>📍 Mercados próximos</span>
+            <span>📊 Comparação em tempo real</span>
+          </div>
+        </div>
+      </swiper-slide>
+
+      <!-- SLIDE 2: LOCALIZAÇÃO -->
+      <swiper-slide class="slide">
+        <div class="slide-content">
+          <div class="icone-slide">📍</div>
+          <h2>Sua localização</h2>
+          <p>Permita o acesso à sua localização para encontrar os supermercados mais próximos de você e traçar a melhor rota.</p>
+          <button class="btn-permitir" (click)="pedirLocalizacao()" *ngIf="!localizacaoPermitida">
+            Permitir Localização
+          </button>
+          <span class="permitido" *ngIf="localizacaoPermitida">✅ Localização permitida</span>
+          <button class="btn-pular-permissao" (click)="avancar()">Agora não</button>
+        </div>
+      </swiper-slide>
+
+      <!-- SLIDE 3: CÂMERA -->
+      <swiper-slide class="slide">
+        <div class="slide-content">
+          <div class="icone-slide">📷</div>
+          <h2>Câmera</h2>
+          <p>Use a câmera para personalizar sua foto de perfil. Futuramente você também poderá escanear códigos de barras.</p>
+          <button class="btn-permitir" (click)="pedirCamera()" *ngIf="!cameraPermitida">
+            Permitir Câmera
+          </button>
+          <span class="permitido" *ngIf="cameraPermitida">✅ Câmera permitida</span>
+          <button class="btn-pular-permissao" (click)="avancar()">Agora não</button>
+        </div>
+      </swiper-slide>
+
+      <!-- SLIDE 4: TERMOS -->
+      <swiper-slide class="slide">
+        <div class="slide-content">
+          <div class="icone-slide">📋</div>
+          <h2>Termos e Políticas</h2>
+          <p>Antes de começar, leia e aceite nossos documentos legais:</p>
+
+          <div class="termos-links">
+            <a routerLink="/termos" target="_blank" class="link-termo">📄 Termos de Uso</a>
+            <a routerLink="/privacidade" target="_blank" class="link-termo">🔒 Política de Privacidade</a>
+          </div>
+
+          <label class="checkbox-termos">
+            <input type="checkbox" [(ngModel)]="termosAceitos">
+            <span>Li e concordo com os Termos de Uso e Política de Privacidade</span>
+          </label>
+        </div>
+      </swiper-slide>
+
+      <!-- SLIDE 5: FINAL -->
+      <swiper-slide class="slide">
+        <div class="slide-content final">
+          <div class="icone-slide grande">🎉</div>
+          <h2>Tudo pronto!</h2>
+          <p>Agora você pode comparar preços, criar listas de compras e economizar nos mercados de Mogi Mirim.</p>
+          <button class="btn-concluir" (click)="concluir()" [disabled]="!termosAceitos">
+            {{ termosAceitos ? 'Vamos começar!' : 'Aceite os termos para continuar' }}
+          </button>
+        </div>
+      </swiper-slide>
+
+    </swiper-container>
+
+    <!-- INDICADOR DE SLIDE -->
+    <div class="dots">
+      <span *ngFor="let _ of [0,1,2,3,4]; let i = index" [class.active]="slideAtual === i"></span>
+    </div>
+
+  </div>
+</ion-content>

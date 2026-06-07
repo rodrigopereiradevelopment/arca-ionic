@@ -52,6 +52,11 @@ export class AppComponent implements OnInit {
       this.carrinhoService.carregarDoServidor();
     }
 
+    const onboardingOk = localStorage.getItem('onboarding_completo');
+    if (!onboardingOk && !window.location.hash.includes('access_token')) {
+      setTimeout(() => this.router.navigate(['/onboarding']), 2200);
+    }
+
     this.authService.usuario$.subscribe(u => {
       if (u) {
         this.carrinhoService.carregarDoServidor();
