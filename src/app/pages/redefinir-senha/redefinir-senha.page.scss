@@ -1,0 +1,23 @@
+.topo {
+  display: flex; justify-content: center; padding: 48px 16px 24px;
+}
+.logo { width: 120px; }
+.container { padding: 0 24px 32px; }
+h1 { font-size: 1.5rem; color: var(--arca-text); margin-bottom: 4px; }
+.subtitulo { font-size: 0.875rem; color: var(--arca-text-muted); margin-bottom: 24px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 0.875rem; color: var(--arca-text); margin-bottom: 4px; font-weight: 600; }
+.form-group input {
+  width: 100%; padding: 12px; border: 1px solid var(--ion-color-light); border-radius: 8px;
+  font-size: 1rem; background: var(--ion-background-color); color: var(--arca-text);
+}
+.senha-row { display: flex; gap: 8px; align-items: center; }
+.senha-row input { flex: 1; }
+.btn-olho { background: none; border: none; font-size: 1.25rem; cursor: pointer; padding: 8px; }
+.btn-entrar {
+  width: 100%; padding: 14px; background: var(--arca-primary); color: #fff;
+  border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 8px;
+}
+.btn-entrar:disabled { opacity: 0.6; }
+.sucesso { text-align: center; padding: 48px 0; }
+.sucesso p { font-size: 1rem; color: var(--arca-text); margin: 8px 0; }

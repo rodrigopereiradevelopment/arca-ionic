@@ -85,6 +85,16 @@ ion-content { --background: var(--arca-bg); }
   strong { color: var(--arca-secondary); }
 }
 
+.link-esqueci {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 0.8125rem;
+  color: var(--arca-text-lighter);
+  text-decoration: none;
+  &:hover { color: var(--arca-secondary); }
+}
+
 .divisor {
   display: flex;
   align-items: center;

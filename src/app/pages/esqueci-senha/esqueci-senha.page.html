@@ -1,0 +1,28 @@
+<ion-content [fullscreen]="true">
+  <div class="topo">
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+  </div>
+  <div class="container">
+    <h1>Recuperar Senha 🔐</h1>
+
+    @if (!enviado) {
+      <p class="subtitulo">Digite seu e-mail e enviaremos um link para redefinir sua senha.</p>
+
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" [(ngModel)]="email" placeholder="seu@email.com">
+      </div>
+
+      <button class="btn-entrar" (click)="enviar()" [disabled]="carregando">
+        {{ carregando ? 'Enviando...' : 'Enviar Link' }}
+      </button>
+    } @else {
+      <div class="sucesso">
+        <p>✅ Link enviado!</p>
+        <p>Verifique seu e-mail e clique no link para redefinir sua senha.</p>
+      </div>
+    }
+
+    <a routerLink="/login" class="link-cadastro">Voltar ao login</a>
+  </div>
+</ion-content>

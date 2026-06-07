@@ -1,0 +1,37 @@
+<ion-content [fullscreen]="true">
+  <div class="topo">
+    <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
+  </div>
+  <div class="container">
+    @if (!concluido) {
+      <h1>Redefinir Senha 🔑</h1>
+      <p class="subtitulo">Digite sua nova senha.</p>
+
+      <div class="form-group">
+        <label>Nova Senha</label>
+        <div class="senha-row">
+          <input [type]="mostrarSenha ? 'text' : 'password'"
+            [(ngModel)]="novaSenha" placeholder="Mínimo 6 caracteres">
+          <button class="btn-olho" (click)="mostrarSenha = !mostrarSenha">
+            {{ mostrarSenha ? '🙈' : '👁️' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Confirmar Senha</label>
+        <input [type]="mostrarSenha ? 'text' : 'password'"
+          [(ngModel)]="confirmarSenha" placeholder="Repita a senha">
+      </div>
+
+      <button class="btn-entrar" (click)="redefinir()" [disabled]="carregando">
+        {{ carregando ? 'Redefinindo...' : 'Redefinir Senha' }}
+      </button>
+    } @else {
+      <div class="sucesso">
+        <p>✅ Senha redefinida!</p>
+        <p>Redirecionando para o login...</p>
+      </div>
+    }
+  </div>
+</ion-content>
