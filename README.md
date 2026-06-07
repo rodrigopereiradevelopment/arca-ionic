@@ -268,9 +268,9 @@ arca-ionic/
 | Nome | Papel |
 |------|-------|
 | Rodrigo Pereira | Desenvolvedor Full Stack |
-| Bruno Henrique Oliveira Capra | Colaborador |
-| Miguel da Silva Bernades | Colaborador |
-| Felix Renato Marques Junior | Colaborador |
+| Bruno Henrique Oliveira Capra | Desenvolvedor |
+| Miguel da Silva Bernades | Desenvolvedor |
+| Felix Renato Marques Junior | Desenvolvedor |
 
 **Orientador:** Prof. Maurício Aparecido das Neves
 **Coordenadora:** Prof.ª Simone Andreia de Campos Camargo
