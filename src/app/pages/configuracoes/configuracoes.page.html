@@ -184,6 +184,16 @@
           <span class="slider"></span>
         </label>
       </div>
+      <div class="config-item">
+        <div class="config-info">
+          <strong>Efeitos Sonoros</strong>
+          <span>Sons ao adicionar, buscar e confirmar ações</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="preferencias.som" (change)="onToggle()">
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
 
     <div class="secao">

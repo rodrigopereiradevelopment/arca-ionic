@@ -7,6 +7,7 @@ import { ComparacaoService } from '../../services/comparacao.service';
 import { AuthService } from '../../services/auth.service';
 import { HistoricoListasService, HistoricoLista } from '../../services/historico-listas.service';
 import { FavoritoService } from '../../services/favorito.service';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
   selector: 'app-carrinho',
@@ -22,6 +23,7 @@ export class CarrinhoPage {
   protected carrinhoService = inject(CarrinhoService);
   private historicoSvc = inject(HistoricoListasService);
   protected favoritoService = inject(FavoritoService);
+  private audio = inject(AudioService);
 
   produtos: ItemLista[] = [];
   historico: HistoricoLista[] = [];
@@ -43,6 +45,7 @@ export class CarrinhoPage {
   }
 
   remover(id: number) {
+    this.audio.play('error');
     this.carrinhoService.remover(id);
     this.comparacaoService.remover(id);
     this.produtos = this.carrinhoService.lista;
@@ -66,9 +69,11 @@ export class CarrinhoPage {
   async salvarLista() {
     const salva = await this.historicoSvc.salvar('Lista salva', this.produtos);
     if (salva) {
+      this.audio.play('success');
       this.historico.unshift(salva);
       this.mostrarToast('Lista salva! 💾', 'success');
     } else {
+      this.audio.play('error');
       this.mostrarToast('Erro ao salvar lista', 'danger');
     }
   }

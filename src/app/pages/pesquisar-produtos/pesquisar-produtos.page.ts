@@ -9,6 +9,7 @@ import { ComparacaoService } from '../../services/comparacao.service';
 import { CategoriaService } from '../../services/categoria.service';
 import { FavoritoService } from '../../services/favorito.service';
 import { DenunciaService } from '../../services/denuncia.service';
+import { AudioService } from '../../services/audio.service';
 import { environment } from '../../../environments/environment';
 import { CATEGORIAS_MAP, MEDALHAS } from '../../constants/mercados';
 
@@ -48,6 +49,7 @@ export class PesquisarProdutosPage implements OnInit {
   private categoriaService = inject(CategoriaService);
   favoritoService = inject(FavoritoService);
   denunciaSvc = inject(DenunciaService);
+  private audio = inject(AudioService);
 
   Math = Math;
   busca = '';
@@ -108,8 +110,10 @@ export class PesquisarProdutosPage implements OnInit {
       if (!res.ok) throw new Error('Erro na busca');
       const raw: any[] = await res.json();
       this.produtos = raw.map(p => this.mapearProduto(p));
+      this.audio.play('scan');
     } catch (err) {
       console.error(err);
+      this.audio.play('error');
       this.mostrarToast('Erro ao buscar produtos ❌', 'danger');
     } finally {
       this.loading = false;
@@ -180,6 +184,7 @@ export class PesquisarProdutosPage implements OnInit {
       quantidade: p.quantidade
     });
     
+    this.audio.play('coin');
     if (p.quantidade > 1) {
       this.mostrarToast(`${p.nome} (${p.quantidade}x) adicionado! ✅`, 'success');
     } else {
@@ -218,6 +223,7 @@ export class PesquisarProdutosPage implements OnInit {
     if (erro) {
       await this.mostrarToast(erro, 'danger');
     } else {
+      this.audio.play('success');
       this.modalDenuncia = false;
       await this.mostrarToast('Denuncia enviada!', 'success');
     }
