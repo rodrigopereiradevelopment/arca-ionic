@@ -17,19 +17,25 @@ export class AudioService {
   private pool = new Map<string, HTMLAudioElement>();
 
   play(nome: Som) {
-    if (!this.configSvc.config.preferencias.som) return;
-    const src = CAMINHOS[nome];
-    let audio = this.pool.get(nome);
-    if (!audio) {
-      try {
-        audio = new Audio(src);
-        audio.preload = 'auto';
-        this.pool.set(nome, audio);
-      } catch {
-        return;
+    const cfg = this.configSvc.config.preferencias;
+    if (!cfg.som && !cfg.vibrar) return;
+    if (cfg.som) {
+      const src = CAMINHOS[nome];
+      let audio = this.pool.get(nome);
+      if (!audio) {
+        try {
+          audio = new Audio(src);
+          audio.preload = 'auto';
+          this.pool.set(nome, audio);
+        } catch {
+          return;
+        }
       }
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
     }
-    audio.currentTime = 0;
-    audio.play().catch(() => {});
+    if (cfg.vibrar && navigator.vibrate) {
+      navigator.vibrate(nome === 'error' ? 30 : 10);
+    }
   }
 }

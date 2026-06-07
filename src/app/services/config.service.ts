@@ -20,7 +20,7 @@ export interface ConfigApp {
   acessibilidade: ConfigAcessibilidade;
   localizacao: { automatica: boolean; raio: number };
   notificacoes: { alertasPreco: boolean; promocoes: boolean; email: boolean; push: boolean };
-  preferencias: { ordenacaoPadrao: string; apenasAprovados: boolean; som: boolean };
+  preferencias: { ordenacaoPadrao: string; apenasAprovados: boolean; som: boolean; vibrar: boolean };
   privacidade: { salvarHistorico: boolean; dadosAnonimos: boolean };
 }
 
@@ -29,7 +29,7 @@ const DEFAULT_CONFIG: ConfigApp = {
   acessibilidade: { tamanhoFonte: 'medio', negrito: false, reduzirAnimacoes: false, leitorTela: false, espacamentoLinhas: 'normal' },
   localizacao: { automatica: true, raio: 10 },
   notificacoes: { alertasPreco: true, promocoes: true, email: false, push: true },
-  preferencias: { ordenacaoPadrao: 'preco', apenasAprovados: true, som: true },
+  preferencias: { ordenacaoPadrao: 'preco', apenasAprovados: true, som: true, vibrar: true },
   privacidade: { salvarHistorico: true, dadosAnonimos: false },
 };
 
