@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "411950105480",
+    "project_id": "arca-2070f",
+    "storage_bucket": "arca-2070f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411950105480:android:4f1fbfd2ea71f619d6b03d",
+        "android_client_info": {
+          "package_name": "com.arca.ionic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSy[FILTERED]"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
