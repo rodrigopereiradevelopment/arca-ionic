@@ -137,6 +137,34 @@
       </div>
     </div>
 
+    <!-- INFO NUTRICIONAL -->
+    <ng-container *ngIf="infoNutricional">
+      <h3 class="modal-titulo-nutricao"> Informações Nutricionais</h3>
+      <div class="modal-nutricao">
+        <div class="nutri-score" *ngIf="infoNutricional.nutri_score"
+          [style.background]="NUTRI_SCORE_CORES[infoNutricional.nutri_score] || '#888'">
+          {{ infoNutricional.nutri_score | uppercase }}
+        </div>
+        <div class="nutri-ingredientes" *ngIf="infoNutricional.ingredientes">
+          <strong>Ingredientes:</strong>
+          <p>{{ infoNutricional.ingredientes }}</p>
+        </div>
+        <div class="nutri-alergenos" *ngIf="infoNutricional.alergenos.length > 0">
+          <strong>Alérgenos:</strong>
+          <span class="alergeno-tag" *ngFor="let a of infoNutricional.alergenos">{{ a }}</span>
+        </div>
+        <table class="nutri-tabela" *ngIf="temNutricao(infoNutricional)">
+          <tr><td>Energia</td><td>{{ infoNutricional.nutricao.energia }} kcal</td></tr>
+          <tr><td>Gorduras</td><td>{{ infoNutricional.nutricao.gorduras }} g</td></tr>
+          <tr><td>Carboidratos</td><td>{{ infoNutricional.nutricao.carboidratos }} g</td></tr>
+          <tr><td>Proteínas</td><td>{{ infoNutricional.nutricao.proteinas }} g</td></tr>
+          <tr><td>Fibras</td><td>{{ infoNutricional.nutricao.fibras }} g</td></tr>
+          <tr><td>Sal</td><td>{{ infoNutricional.nutricao.sal }} g</td></tr>
+        </table>
+      </div>
+    </ng-container>
+    <div class="nutri-loading" *ngIf="carregandoInfo">Carregando info nutricional...</div>
+
     <!-- ✨ SEÇÃO DE QUANTIDADE (AGORA DENTRO DO MODAL!) -->
     <h3 class="modal-titulo-quantidade"><span aria-hidden="true">📦</span> Quantidade</h3>
 

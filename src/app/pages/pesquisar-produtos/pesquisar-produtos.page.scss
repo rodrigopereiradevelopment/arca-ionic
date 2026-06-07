@@ -422,6 +422,49 @@ ion-content {
     }
   }
 
+  .modal-titulo-nutricao {
+    font-size: 0.9375rem; color: var(--arca-text); margin: 16px 0 8px;
+  }
+
+  .modal-nutricao {
+    background: var(--arca-bg-subtle, #f9fafb); border-radius: 10px; padding: 12px; margin-bottom: 4px;
+
+    .nutri-score {
+      display: inline-block; padding: 4px 14px; border-radius: 6px; color: #fff;
+      font-weight: 800; font-size: 1.125rem; letter-spacing: 1px; margin-bottom: 10px;
+    }
+
+    .nutri-ingredientes {
+      margin-bottom: 10px;
+      strong { font-size: 0.75rem; color: var(--arca-text-muted); display: block; margin-bottom: 4px; }
+      p { font-size: 0.8125rem; color: var(--arca-text); line-height: 1.4; margin: 0; }
+    }
+
+    .nutri-alergenos {
+      margin-bottom: 10px;
+      strong { font-size: 0.75rem; color: var(--arca-text-muted); display: block; margin-bottom: 4px; }
+      .alergeno-tag {
+        display: inline-block; padding: 2px 8px; margin: 2px 4px 2px 0;
+        background: #fff3cd; color: #856404; border-radius: 10px;
+        font-size: 0.6875rem; font-weight: 600;
+      }
+    }
+
+    .nutri-tabela {
+      width: 100%; border-collapse: collapse;
+      tr {
+        border-bottom: 1px solid var(--arca-border-lighter);
+        td { padding: 5px 0; font-size: 0.8125rem; }
+        td:first-child { color: var(--arca-text-muted); }
+        td:last-child { text-align: right; font-weight: 600; color: var(--arca-text); }
+      }
+    }
+  }
+
+  .nutri-loading {
+    font-size: 0.75rem; color: var(--arca-text-lighter); text-align: center; padding: 8px 0;
+  }
+
   .modal-fav-denuncia {
     display: flex; gap: 8px; margin-bottom: 10px;
 

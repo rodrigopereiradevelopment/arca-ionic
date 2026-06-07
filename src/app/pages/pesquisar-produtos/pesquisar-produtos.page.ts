@@ -10,6 +10,7 @@ import { CategoriaService } from '../../services/categoria.service';
 import { FavoritoService } from '../../services/favorito.service';
 import { DenunciaService } from '../../services/denuncia.service';
 import { AudioService } from '../../services/audio.service';
+import { InfoNutricionalService, InfoNutricional, NUTRI_SCORE_CORES } from '../../services/info-nutricional.service';
 import { environment } from '../../../environments/environment';
 import { CATEGORIAS_MAP, MEDALHAS } from '../../constants/mercados';
 
@@ -50,6 +51,10 @@ export class PesquisarProdutosPage implements OnInit {
   favoritoService = inject(FavoritoService);
   denunciaSvc = inject(DenunciaService);
   private audio = inject(AudioService);
+  private infoNutricionalSvc = inject(InfoNutricionalService);
+  readonly NUTRI_SCORE_CORES = NUTRI_SCORE_CORES;
+  infoNutricional: InfoNutricional | null = null;
+  carregandoInfo = false;
 
   Math = Math;
   busca = '';
@@ -167,6 +172,8 @@ export class PesquisarProdutosPage implements OnInit {
 
   abrirModal(p: Produto) {
     this.modalProduto = p;
+    this.infoNutricional = null;
+    if (p.ean) this.carregarInfoNutricional(p.ean);
     this.historicoService.adicionar({
       tipo: 'pesquisa', descricao: p.nome,
       detalhe: 'Menor preço: R$ ' + p.menorPreco.toFixed(2) + ' no ' + p.mercadoMaisBarato,
@@ -238,6 +245,16 @@ export class PesquisarProdutosPage implements OnInit {
 
   naLista(id: number) { 
     return this.carrinhoService.contem(id); 
+  }
+
+  temNutricao(info: InfoNutricional): boolean {
+    return info.nutricao.energia !== null || info.nutricao.gorduras !== null;
+  }
+
+  private async carregarInfoNutricional(barcode: string) {
+    this.carregandoInfo = true;
+    this.infoNutricional = await this.infoNutricionalSvc.buscar(barcode);
+    this.carregandoInfo = false;
   }
 
   private async mostrarToast(message: string, color: string) {
