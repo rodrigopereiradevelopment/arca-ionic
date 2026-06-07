@@ -1,0 +1,39 @@
+ion-content { --background: var(--arca-bg); }
+
+.topo {
+  background: var(--arca-primary); padding: 16px; display: flex; align-items: center; gap: 12px;
+  .btn-voltar { font-size: 1.5rem; color: var(--arca-text-white); text-decoration: none; font-weight: bold; }
+  .titulo-topo { font-size: 1.125rem; font-weight: bold; color: var(--arca-text-white); }
+}
+
+.container { padding: 20px 16px; }
+
+.loading { text-align: center; color: var(--arca-text-muted); padding: 48px 0; }
+
+h2 { font-size: 1rem; color: var(--arca-text); margin: 20px 0 12px; }
+.resolvidas-title { margin-top: 32px; }
+
+.denuncia-card {
+  background: var(--arca-surface); border-radius: 12px; padding: 14px; margin-bottom: 10px;
+  border: 1px solid var(--arca-border); box-shadow: 0 2px 8px var(--arca-shadow-sm);
+
+  &.resolvida { opacity: 0.7; }
+
+  .denuncia-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .motivo { font-size: 0.875rem; font-weight: 600; color: var(--arca-text); }
+  .status { font-size: 0.6875rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; }
+  .pendente { background: #fff3cd; color: #856404; }
+  .resolvido { background: #d4edda; color: #155724; }
+
+  .descricao { font-size: 0.8125rem; color: var(--arca-text-muted); margin-bottom: 6px; }
+  .denuncia-refs { font-size: 0.75rem; color: var(--arca-text-muted); margin-bottom: 4px; }
+  .data { font-size: 0.6875rem; color: var(--arca-text-lighter); display: block; margin-bottom: 8px; }
+
+  .btn-resolver {
+    padding: 8px 20px; background: var(--arca-primary); color: #fff;
+    border: none; border-radius: 8px; font-size: 0.8125rem; font-weight: 700; cursor: pointer;
+    &:disabled { opacity: 0.6; }
+  }
+}
+
+.vazio { text-align: center; padding: 32px 0; p { color: var(--arca-text-muted); } }

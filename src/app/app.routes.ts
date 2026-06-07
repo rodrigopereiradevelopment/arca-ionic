@@ -118,6 +118,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { roles: ['admin'] }
   },
+  {
+    path: 'gerenciar-denuncias',
+    loadComponent: () => import('./pages/gerenciar-denuncias/gerenciar-denuncias.page').then(m => m.GerenciarDenunciasPage),
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'moderador'] }
+  },
   // ROTAS MODERADOR
   {
     path: 'gerenciar-produtos',

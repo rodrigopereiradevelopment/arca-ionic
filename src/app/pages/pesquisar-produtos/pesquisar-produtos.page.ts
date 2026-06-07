@@ -8,6 +8,7 @@ import { CarrinhoService } from '../../services/carrinho.service';
 import { ComparacaoService } from '../../services/comparacao.service';
 import { CategoriaService } from '../../services/categoria.service';
 import { FavoritoService } from '../../services/favorito.service';
+import { DenunciaService } from '../../services/denuncia.service';
 import { environment } from '../../../environments/environment';
 import { CATEGORIAS_MAP, MEDALHAS } from '../../constants/mercados';
 
@@ -46,12 +47,16 @@ export class PesquisarProdutosPage implements OnInit {
   private route = inject(ActivatedRoute);
   private categoriaService = inject(CategoriaService);
   favoritoService = inject(FavoritoService);
+  denunciaSvc = inject(DenunciaService);
 
   Math = Math;
   busca = '';
   categoriaAtiva = 'Todas';
   ordenacao: 'preco' | 'nome' = 'preco';
   modalProduto: Produto | null = null;
+  modalDenuncia = false;
+  denunciaMotivo = '';
+  denunciaDescricao = '';
   loading = false;
   categorias: string[] = ['Todas'];
   produtos: Produto[] = [];
@@ -192,6 +197,37 @@ export class PesquisarProdutosPage implements OnInit {
 
   async criarAlerta(p: Produto) { 
     this.mostrarToast(`Alerta criado para ${p.nome}! 🔔`, 'primary'); 
+  }
+
+  abrirDenuncia(p: Produto) {
+    this.modalProduto = p;
+    this.modalDenuncia = true;
+    this.denunciaMotivo = '';
+    this.denunciaDescricao = '';
+  }
+
+  async enviarDenuncia() {
+    if (!this.denunciaMotivo || !this.modalProduto) return;
+    const p = this.modalProduto;
+    const erro = await this.denunciaSvc.criar({
+      motivo: this.denunciaMotivo,
+      descricao: this.denunciaDescricao,
+      produto_id: p.id,
+      supermercado_id: p.precos[0] ? this.buscarMercadoId(p.precos[0].mercado) : undefined,
+    });
+    if (erro) {
+      await this.mostrarToast(erro, 'danger');
+    } else {
+      this.modalDenuncia = false;
+      await this.mostrarToast('Denuncia enviada!', 'success');
+    }
+  }
+
+  private buscarMercadoId(nome: string): number | undefined {
+    for (const [id, m] of Object.entries(this.mapaMercados)) {
+      if (m.nome === nome) return Number(id);
+    }
+    return undefined;
   }
 
   naLista(id: number) { 

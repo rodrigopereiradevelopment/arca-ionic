@@ -188,9 +188,46 @@ ion-content {
         .mercado-barato {
           font-size: 0.6875rem;
           color: var(--arca-text-lighter);
-        }
-      }
     }
+  }
+}
+
+.modal-denuncia {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 10001;
+  background: var(--arca-surface); border-radius: 20px 20px 0 0;
+  padding: 24px 20px 32px; box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  display: flex; flex-direction: column; gap: 12px;
+
+  .modal-handle {
+    width: 40px; height: 4px; background: var(--arca-border-light); border-radius: 2px;
+    align-self: center; margin-bottom: 4px;
+  }
+  .btn-fechar-modal {
+    position: absolute; top: 12px; right: 12px; background: none; border: none;
+    font-size: 1.25rem; color: var(--arca-text-muted); cursor: pointer;
+  }
+  h3 { font-size: 1.125rem; color: var(--arca-text); margin: 0; }
+  .denuncia-produto { font-size: 0.8125rem; color: var(--arca-text-muted); margin: 0; }
+
+  .denuncia-select {
+    padding: 12px; border: 2px solid var(--arca-border); border-radius: 10px;
+    font-size: 0.875rem; background: var(--arca-bg); color: var(--arca-text);
+    &:focus { border-color: var(--arca-primary); outline: none; }
+  }
+
+  .denuncia-textarea {
+    padding: 12px; border: 2px solid var(--arca-border); border-radius: 10px;
+    font-size: 0.875rem; background: var(--arca-bg); color: var(--arca-text);
+    resize: none; font-family: inherit;
+    &:focus { border-color: var(--arca-primary); outline: none; }
+  }
+
+  .btn-enviar-denuncia {
+    padding: 14px; background: var(--arca-primary); color: #fff;
+    border: none; border-radius: 25px; font-size: 0.9375rem; font-weight: bold; cursor: pointer;
+    &:disabled { opacity: 0.5; }
+  }
+}
 
     .card-acoes {
       display: flex;
@@ -383,6 +420,19 @@ ion-content {
       .nome-mercado { flex: 1; font-size: 0.875rem; color: var(--arca-text-medium); }
       .valor-preco { font-size: 1rem; font-weight: bold; color: var(--arca-secondary); }
     }
+  }
+
+  .modal-fav-denuncia {
+    display: flex; gap: 8px; margin-bottom: 10px;
+
+    button {
+      flex: 1; padding: 10px; border: 2px solid var(--arca-border); border-radius: 12px;
+      font-size: 0.8125rem; font-weight: 600; cursor: pointer; background: var(--arca-surface);
+    }
+    .btn-fav-modal { color: var(--arca-text);
+      &.favoritado { border-color: #ff6b6b; background: #fff0f0; color: #c0392b; }
+    }
+    .btn-denuncia-modal { color: var(--arca-text-muted); }
   }
 
   .modal-botoes {

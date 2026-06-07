@@ -1,0 +1,47 @@
+<ion-content [fullscreen]="true">
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <span class="titulo-topo">Gerenciar Denuncias</span>
+  </div>
+
+  <div class="container">
+    <div *ngIf="carregando" class="loading">Carregando denuncias...</div>
+
+    <ng-container *ngIf="!carregando">
+      <h2>Pendentes ({{ pendentes.length }})</h2>
+
+      <div class="denuncia-card" *ngFor="let d of pendentes">
+        <div class="denuncia-header">
+          <span class="motivo">{{ d.motivo }}</span>
+          <span class="status pendente">pendente</span>
+        </div>
+        <p class="descricao" *ngIf="d.descricao">{{ d.descricao }}</p>
+        <div class="denuncia-refs" *ngIf="d.produtos?.nome">
+          <span>Produto: <strong>{{ d.produtos?.nome }}</strong></span>
+        </div>
+        <div class="denuncia-refs" *ngIf="d.supermercados?.nome">
+          <span>Mercado: <strong>{{ d.supermercados?.nome }}</strong></span>
+        </div>
+        <small class="data">{{ d.created_at | date:'dd/MM/yyyy HH:mm' }}</small>
+        <button class="btn-resolver" (click)="resolver(d)" [disabled]="resolvendo.has(d.id)">
+          {{ resolvendo.has(d.id) ? '...' : 'Resolver' }}
+        </button>
+      </div>
+
+      <div class="vazio" *ngIf="pendentes.length === 0">
+        <p>Nenhuma denuncia pendente.</p>
+      </div>
+
+      <h2 *ngIf="resolvidas.length > 0" class="resolvidas-title">Resolvidas ({{ resolvidas.length }})</h2>
+
+      <div class="denuncia-card resolvida" *ngFor="let d of resolvidas">
+        <div class="denuncia-header">
+          <span class="motivo">{{ d.motivo }}</span>
+          <span class="status resolvido">resolvido</span>
+        </div>
+        <p class="descricao" *ngIf="d.descricao">{{ d.descricao }}</p>
+        <small class="data">{{ d.created_at | date:'dd/MM/yyyy HH:mm' }}</small>
+      </div>
+    </ng-container>
+  </div>
+</ion-content>

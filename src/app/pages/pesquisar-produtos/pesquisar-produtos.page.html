@@ -178,6 +178,18 @@
       </div>
     </div>
 
+    <div class="modal-fav-denuncia">
+      <button
+        class="btn-fav-modal"
+        [class.favoritado]="favoritoService.isFavorito(modalProduto.id)"
+        (click)="toggleFavorito(modalProduto!)">
+        {{ favoritoService.isFavorito(modalProduto.id) ? '❤️ Favoritado' : '🤍 Favoritar' }}
+      </button>
+      <button class="btn-denuncia-modal" (click)="abrirDenuncia(modalProduto!)">
+        🚩 Denunciar
+      </button>
+    </div>
+
     <div class="modal-botoes">
       <button
         class="btn-add-lista"
@@ -192,4 +204,29 @@
 
   </div>
 
+  <!-- MODAL DENUNCIA -->
+  <div class="modal-overlay" *ngIf="modalDenuncia" (click)="modalDenuncia = false" role="button" tabindex="0"></div>
+  <div class="modal-denuncia" *ngIf="modalDenuncia">
+    <div class="modal-handle"></div>
+    <button class="btn-fechar-modal" (click)="modalDenuncia = false" aria-label="Fechar">✕</button>
+
+    <h3>🚩 Denunciar Problema</h3>
+    <p class="denuncia-produto" *ngIf="modalProduto">{{ modalProduto.nome }}</p>
+
+    <select [(ngModel)]="denunciaMotivo" class="denuncia-select">
+      <option value="">Selecione o motivo</option>
+      <option *ngFor="let m of denunciaSvc.MOTIVOS" [value]="m.value">{{ m.label }}</option>
+    </select>
+
+    <textarea
+      [(ngModel)]="denunciaDescricao"
+      placeholder="Descreva o problema (opcional)..."
+      class="denuncia-textarea" rows="3"></textarea>
+
+    <button class="btn-enviar-denuncia" (click)="enviarDenuncia()" [disabled]="!denunciaMotivo">
+      Enviar Denuncia
+    </button>
+  </div>
+
+  <!-- MODAL FIM -->
 </ion-content>

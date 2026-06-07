@@ -20,6 +20,10 @@
         <span>{{ produto.quantidade }}</span>
         <button (click)="incrementar(produto.id)" aria-label="Adicionar">+</button>
       </div>
+      <button class="btn-fav-carrinho" (click)="$event.stopPropagation(); favoritoService.toggle(produto.id)"
+        [class.favoritado]="favoritoService.isFavorito(produto.id)" aria-label="Favoritar">
+        {{ favoritoService.isFavorito(produto.id) ? '❤️' : '🤍' }}
+      </button>
       <button class="btn-remover" (click)="remover(produto.id)" aria-label="Excluir">🗑️</button>
     </div>
 

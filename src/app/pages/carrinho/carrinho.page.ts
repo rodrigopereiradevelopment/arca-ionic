@@ -6,6 +6,7 @@ import { CarrinhoService, ItemLista } from '../../services/carrinho.service';
 import { ComparacaoService } from '../../services/comparacao.service';
 import { AuthService } from '../../services/auth.service';
 import { HistoricoListasService, HistoricoLista } from '../../services/historico-listas.service';
+import { FavoritoService } from '../../services/favorito.service';
 
 @Component({
   selector: 'app-carrinho',
@@ -20,6 +21,7 @@ export class CarrinhoPage {
   protected auth = inject(AuthService);
   protected carrinhoService = inject(CarrinhoService);
   private historicoSvc = inject(HistoricoListasService);
+  protected favoritoService = inject(FavoritoService);
 
   produtos: ItemLista[] = [];
   historico: HistoricoLista[] = [];
