@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![App](https://img.shields.io/badge/App-Vercel-black?logo=vercel)](https://arca-ionic.vercel.app)
 [![API](https://img.shields.io/badge/API-Vercel-black?logo=vercel)](https://arca-next.vercel.app)
-![Version](https://img.shields.io/badge/version-1.0.5-green)
+![Version](https://img.shields.io/badge/version-1.0.8-green)
 [![Lint](https://img.shields.io/badge/lint-passing-brightgreen)]()
 [![Releases](https://img.shields.io/github/v/release/rodrigopereiradevelopment/arca-ionic)](https://github.com/rodrigopereiradevelopment/arca-ionic/releases)
 
@@ -78,13 +78,24 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
 | ♿ **Acessibilidade** | ARIA labels, `font-size` em `rem`, leitor de tela | ✅ |
 | ⚙️ **Configurações** | Painel centralizado com persistência localStorage | ✅ |
 | 🔔 **Notificações** | Reais via API — push/email/promoções, contagem não lidas | ✅ |
+| 🔔 **Push Notifications** | FCM via Capacitor + Firebase, toggle nas Configurações | ✅ |
 | 📜 **Histórico** | Híbrido (localStorage + API), auto-save em ações | ✅ |
 | 🎫 **Tickets de Suporte** | Conversa ao vivo, marcar como resolvido | ✅ |
 | 📸 **Upload de Imagem** | Webp via canvas, bucket `avatars`/`mercados` | ✅ |
+| 📸 **Foto Perfil** | Upload com preview + WebP + sync servidor | ✅ |
 | 🗑️ **Soft Delete** | Anonimização LGPD — dados preservados, conta desativada | ✅ |
 | 📝 **Termos LGPD** | Controlador, consentimento granular, violação dados, foro CDC | ✅ |
 | 🔒 **Privacidade LGPD** | Tabela 15+ dados, transferência internacional, 3os | ✅ |
 | 💬 **FAQ + Chat** | Busca por termo, chat persistente em localStorage | ✅ |
+| 🎫 **Cupons de Desconto** | API `GET/POST /api/cupons` + fallback "Em breve 🚀" | ✅ |
+| ❤️ **Favoritos** | API `GET/POST/DELETE /api/favoritos`, ♥ nos cards e carrinho | ✅ |
+| 🚩 **Denúncias** | Denunciar produto/preço/mercado, flag p/ admin/moderador | ✅ |
+| 🥗 **Info Nutricional** | Cache Supabase + Open Food Facts, Nutri-Score A🟢–E🔴 | ✅ |
+| 🔊 **Efeitos Sonoros** | `HTMLAudioElement` nativo, 5 sons, toggle nas Configurações | ✅ |
+| 📳 **Vibração** | `navigator.vibrate()`, toggle independente do som | ✅ |
+| 🏪 **Avaliação Mercados** | 4 critérios + comentário, estrelas nos cards | ✅ |
+| 📱 **Onboarding** | 5 slides com swipe, permissões (localização/câmera) e termos | ✅ |
+| 🔐 **Recuperação Senha** | `esqueci-senha` + `redefinir-senha` via Resend | ✅ |
 
 ---
 

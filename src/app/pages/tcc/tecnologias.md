@@ -52,6 +52,7 @@ Além dos *frameworks* principais, o ARCA utiliza as seguintes bibliotecas espec
 - **Google Gemini API** — utilizada no assistente virtual integrado ao aplicativo, permitindo que o usuário tire dúvidas sobre produtos, promoções e funcionalidades por meio de um chat com inteligência artificial.
 - **Nominatim (OpenStreetMap)** — serviço de geocoding que converte endereços de mercados em coordenadas geográficas automaticamente no momento do cadastro.
 - **ViaCEP** — serviço gratuito de busca de endereços por CEP, integrado aos formulários de cadastro de usuário e de mercados.
+- **Firebase Cloud Messaging (FCM)** — serviço de notificações push da Google, integrado via Capacitor e firebase-admin, permitindo envio de notificações em tempo real para dispositivos Android.
 
 O aplicativo é publicado na plataforma **Vercel**, que oferece hospedagem com deploy automático integrado ao GitHub, garantindo que as atualizações cheguem aos usuários de forma rápida e confiável.
 
@@ -68,7 +69,7 @@ A tela inicial do ARCA apresenta um carousel de banners promocionais com informa
 A tela de cadastro permite que novos usuários criem uma conta no ARCA. O formulário está dividido em duas seções: Dados Básicos (obrigatório), contendo campos para nome completo, e-mail, senha e confirmação de senha; e Informações Adicionais (opcional), com campos para CPF, telefone e cidade.
 
 **Figura 3 — Menu de Navegação**
-O menu lateral de navegação do ARCA organiza todas as funcionalidades do aplicativo em três níveis de acesso. Para usuários comuns, estão disponíveis as opções: Início, Pesquisar Produtos, Mercados Próximos, Comparar Preços, Meu Carrinho, Histórico, Configurações, Cadastrar Mercado e Ajuda e Suporte. Para moderadores, há acesso ao painel de Gerenciar Produtos. Para administradores, são liberadas as opções de Gerenciar Mercados, Gerenciar Usuários e Gerenciar Produtos.
+O menu lateral de navegação do ARCA organiza todas as funcionalidades do aplicativo em três níveis de acesso. Para usuários comuns, estão disponíveis as opções: Início, Pesquisar Produtos, Mercados Próximos, Comparar Preços, Meu Carrinho, Cupons de Desconto, Favoritos, Histórico, Configurações, Cadastrar Mercado e Ajuda e Suporte. Para moderadores, há acesso ao painel de Gerenciar Produtos e Gerenciar Denúncias. Para administradores, são liberadas as opções de Gerenciar Mercados, Gerenciar Usuários, Gerenciar Produtos e Gerenciar Denúncias.
 
 **Figura 4 — Tela de Mapa e Rota até o Mercado**
 A tela de mapa exibe a localização do usuário e os mercados próximos, com a rota calculada até o estabelecimento selecionado. A funcionalidade utiliza a biblioteca Leaflet para renderização do mapa interativo, exibindo a distância, o tempo estimado de deslocamento e as instruções de navegação passo a passo.
@@ -120,6 +121,38 @@ O usuário final acessa o aplicativo ARCA por meio de um navegador web ou dispos
 3. O Next.js expõe os dados do PostgreSQL por meio de uma API REST consumida pelo front-end.
 4. O Ionic com Angular apresenta os dados ao usuário de forma visual, permitindo buscas, comparações e gerenciamento da lista de compras.
 5. O usuário acessa o aplicativo pelo navegador ou dispositivo móvel e interage com as funcionalidades disponíveis.
+
+---
+
+## Lista de Funcionalidades Implementadas
+
+### v1.0.8
+- Onboarding interativo com 5 slides swipeable
+- Push notifications via Firebase Cloud Messaging (FCM)
+- Plugin de câmera (Capacitor)
+- Upload de foto de perfil com conversão WebP
+- Info nutricional com cache Supabase + Open Food Facts
+- Avaliação de supermercados (4 critérios + comentário)
+- Efeitos sonoros nativos (HTMLAudioElement)
+- Vibração tátil (navigator.vibrate)
+- Recuperação de senha via Resend
+
+### v1.0.7
+- Cupons de desconto
+- Favoritos
+- Denúncias de produtos/preços/mercados
+
+### v1.0.6
+- Mapa e rotas (Leaflet + Nominatim)
+- Comparação de cache
+- Sincronização de configurações com servidor
+
+### v1.0.5
+- Chat com IA (Gemini)
+- Alertas de preço
+- Gestão de catálogo completa
+- Tickets de suporte
+- Acessibilidade (fonte, contraste, leitor de tela)
 
 ---
 
