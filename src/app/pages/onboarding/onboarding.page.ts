@@ -1,6 +1,7 @@
 import { Component, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule, registerLocaleData } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular/standalone';
 
 const ONBOARDING_KEY = 'onboarding_completo';
@@ -12,7 +13,7 @@ const TERMOS_VERSAO = '1.0';
   templateUrl: './onboarding.page.html',
   styleUrls: ['./onboarding.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, IonContent],
+  imports: [CommonModule, RouterModule, FormsModule, IonContent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class OnboardingPage {
