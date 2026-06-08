@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { Capacitor } from '@capacitor/core';
-import type { PushNotificationSchema } from '@capacitor/push-notifications';
 
 export interface PushNotificacao {
   titulo: string;
@@ -32,17 +31,16 @@ export class PushNotificationService {
 
     try {
       const { PushNotifications } = await import('@capacitor/push-notifications');
-      const { PushNotifications: PN } = await import('@capacitor/push-notifications');
 
-      let permStatus = await PN.checkPermissions();
+      let permStatus = await PushNotifications.checkPermissions();
       if (permStatus.receive === 'prompt') {
-        permStatus = await PN.requestPermissions();
+        permStatus = await PushNotifications.requestPermissions();
       }
       if (permStatus.receive !== 'granted') return false;
 
-      await PN.register();
+      await PushNotifications.register();
 
-      PN.addListener('registration', (event: { value: string }) => {
+      PushNotifications.addListener('registration', (event: { value: string }) => {
         this.ngZone.run(async () => {
           this._token = event.value;
           this._plataforma = Capacitor.getPlatform();
@@ -51,11 +49,11 @@ export class PushNotificationService {
         });
       });
 
-      PN.addListener('registrationError', (event: any) => {
+      PushNotifications.addListener('registrationError', (event: any) => {
         console.warn('[push] registration error:', event.error);
       });
 
-      PN.addListener('pushNotificationReceived', (notificacao: PushNotificationSchema) => {
+      PushNotifications.addListener('pushNotificationReceived', (notificacao: any) => {
         this.ngZone.run(() => {
           this.notificacaoRecebida$.next({
             titulo: notificacao.title ?? '',
