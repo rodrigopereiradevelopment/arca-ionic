@@ -90,6 +90,10 @@ export class PerfilPage implements OnInit {
       if (data.nome) this.dados.nome = data.nome;
       if (data.telefone) this.dados.telefone = data.telefone;
       if (data.cidade) this.dados.cidade = data.cidade;
+      if (data.foto_perfil && this.authService.usuario) {
+        this.authService.usuario.foto_perfil = data.foto_perfil;
+        this.imagemPreview = null;
+      }
     } catch {}
     await Promise.all([
       this.carregarEnderecos(token),
