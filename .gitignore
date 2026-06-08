@@ -70,3 +70,6 @@ testem.log
 Thumbs.db
 .gitnexus
 .gitnexus/
+
+# Firebase
+google-services.json
