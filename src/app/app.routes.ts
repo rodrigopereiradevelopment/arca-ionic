@@ -33,8 +33,8 @@ export const routes: Routes = [
   },
   {
     path: 'mapa-rotas',
-    loadComponent: () => import('./pages/mapa-rotas/mapa-rotas.page').then(m => m.MapaRotasPage),
-    canActivate: [authGuard]
+    redirectTo: 'mercados-proximos',
+    pathMatch: 'full'
   },
   {
     path: 'pesquisar-produtos',

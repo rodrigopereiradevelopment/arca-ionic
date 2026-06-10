@@ -84,6 +84,25 @@ ion-content {
   white-space: nowrap;
 }
 
+// BOTÃO LIMPAR ROTA
+.btn-limpar-rota {
+  position: fixed;
+  bottom: 270px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 8px 16px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--arca-shadow-xl);
+  white-space: nowrap;
+}
+
 // BOTTOM SHEET
 .bottom-sheet {
   position: fixed;
@@ -169,13 +188,16 @@ ion-content {
       display: flex;
       gap: 4px;
 
-      a {
+      a, button {
         padding: 5px 8px;
         border-radius: 8px;
         font-size: 0.6875rem;
         font-weight: bold;
         text-decoration: none;
         white-space: nowrap;
+        border: none;
+        cursor: pointer;
+        line-height: 1;
 
         &.btn-rota { background: var(--arca-info-bg); color: var(--arca-info-text); }
         &.btn-precos { background: var(--arca-success-bg); color: var(--arca-success-text); }

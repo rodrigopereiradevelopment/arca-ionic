@@ -2,11 +2,12 @@ import { Component, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { IonContent, ModalController } from '@ionic/angular/standalone';
+import { IonContent } from '@ionic/angular/standalone';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import { MercadoService, Mercado } from '../../services/mercado.service';
-import { AvaliacaoService, MediaAvaliacao } from '../../services/avaliacao.service';
+import { AvaliacaoService } from '../../services/avaliacao.service';
+import { HistoricoService } from '../../services/historico.service';
 import { MERCADOS_MAP } from '../../constants/mercados';
 
 function calcDistancia(lat1: number, lon1: number, lat2: number, lon2: number): number {
@@ -28,8 +29,10 @@ function calcDistancia(lat1: number, lon1: number, lat2: number, lon2: number): 
 export class MercadosProximosPage implements AfterViewInit {
   private mercadoSvc = inject(MercadoService);
   avaliacaoSvc = inject(AvaliacaoService);
+  private historicoService = inject(HistoricoService);
 
   map: any;
+  routingControl: any = null;
   listaVisivel = true;
   filtroDistancia = 10;
   ordenacao: 'distancia' | 'nome' | 'nota' = 'distancia';
@@ -37,8 +40,9 @@ export class MercadosProximosPage implements AfterViewInit {
   origemUsuario: any = null;
   mercados: (Mercado & { distancia: number; horario: string; logo: string; media_geral?: number; total_avaliacoes?: number })[] = [];
   carregando = true;
+  rotaAtiva = false;
+  destinoRota: any = null;
 
-  // Modal avaliacao
   modalAvaliacao = false;
   avaliandoMercado: any = null;
   formAvaliacao = { nota_geral: 5, nota_atendimento: 5, nota_qualidade: 5, nota_preco: 5, comentario: '' };
@@ -165,6 +169,70 @@ export class MercadosProximosPage implements AfterViewInit {
 
   toggleLista() {
     this.listaVisivel = !this.listaVisivel;
+  }
+
+  tracarRota(mercado: any, event: Event) {
+    event.stopPropagation();
+    const destino = L.latLng(mercado.latitude, mercado.longitude);
+    this.destinoRota = destino;
+
+    if (!this.origemUsuario) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const origem = L.latLng(pos.coords.latitude, pos.coords.longitude);
+          this.origemUsuario = origem;
+          this.executarRota(origem, destino, mercado);
+        },
+        () => {
+          const padrao = L.latLng(-22.4400, -46.9650);
+          this.executarRota(padrao, destino, mercado);
+        },
+        { enableHighAccuracy: true }
+      );
+      return;
+    }
+
+    this.executarRota(this.origemUsuario, destino, mercado);
+  }
+
+  private executarRota(origem: any, destino: any, mercado: any) {
+    if (this.routingControl) {
+      this.map.removeControl(this.routingControl);
+    }
+
+    this.routingControl = (L as any).Routing.control({
+      waypoints: [origem, destino],
+      routeWhileDragging: false,
+      showAlternatives: false,
+      collapsed: false,
+    }).addTo(this.map);
+
+    this.rotaAtiva = true;
+    this.listaVisivel = false;
+
+    this.routingControl.on('routesfound', (e: any) => {
+      const bounds = e.routes[0].coordinates.reduce((b: any, c: any) => {
+        return b.extend(c);
+      }, L.latLngBounds(origem, destino));
+      this.map.fitBounds(bounds, { padding: [50, 50] });
+    });
+
+    this.historicoService.adicionar({
+      tipo: 'rota',
+      descricao: `Rota para ${mercado.nome}`,
+      detalhe: `${origem.lat.toFixed(4)}, ${origem.lng.toFixed(4)} → ${destino.lat.toFixed(4)}, ${destino.lng.toFixed(4)}`,
+      icone: '🗺️',
+      rota: '/mercados-proximos',
+    });
+  }
+
+  limparRota() {
+    if (this.routingControl) {
+      this.map.removeControl(this.routingControl);
+      this.routingControl = null;
+    }
+    this.rotaAtiva = false;
+    this.destinoRota = null;
   }
 
   abrirAvaliacao(mercado: any, event: Event) {

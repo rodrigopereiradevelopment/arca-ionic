@@ -10,7 +10,7 @@ interface Usuario {
   id: string;
   nome: string;
   email: string;
-  role: 'admin' | 'moderador' | 'user';
+  role: 'admin' | 'moderator' | 'user';
   dataCadastro: string;
 }
 
@@ -32,6 +32,7 @@ export class GerenciarUsuariosPage {
   carregando = false;
 
   get usuariosFiltrados() {
+    if (!Array.isArray(this.usuarios)) return [];
     return this.usuarios.filter(u => {
       const nomeOk = u.nome?.toLowerCase().includes(this.filtroNome.toLowerCase()) ||
                      u.email?.toLowerCase().includes(this.filtroNome.toLowerCase());
@@ -50,12 +51,14 @@ export class GerenciarUsuariosPage {
     this.carregando = true;
     try {
       const res = await fetch(`${environment.apiUrl}/api/auth/usuarios?token=${token}`);
-      this.usuarios = await res.json();
-    } catch { await this.toast('Erro ao carregar usuários.', 'danger'); }
+      const data = await res.json();
+      if (data.erro) { await this.toast(data.erro, 'danger'); this.usuarios = []; }
+      else this.usuarios = data;
+    } catch { await this.toast('Erro ao carregar usuários.', 'danger'); this.usuarios = []; }
     this.carregando = false;
   }
 
-  async alterarRole(u: Usuario, role: 'admin' | 'moderador' | 'user') {
+  async alterarRole(u: Usuario, role: 'admin' | 'moderator' | 'user') {
     const token = this.authService.usuario?.token;
     if (!token) return;
     try {
@@ -89,13 +92,13 @@ export class GerenciarUsuariosPage {
 
   roleLabel(r: string) {
     if (r === 'admin') return 'Administrador';
-    if (r === 'moderador') return 'Moderador';
+    if (r === 'moderator') return 'Moderador';
     return 'Usuário';
   }
 
   roleCor(r: string) {
     if (r === 'admin') return 'badge-admin';
-    if (r === 'moderador') return 'badge-mod';
+    if (r === 'moderator') return 'badge-mod';
     return 'badge-user';
   }
 

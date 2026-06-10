@@ -75,7 +75,8 @@
         <div class="form-group">
           <label>CPF</label>
           <input type="text" [(ngModel)]="dados.cpf"
-            [readonly]="!editandoDados">
+            [readonly]="!editandoDados" maxlength="14"
+            (input)="onCpfInput()">
         </div>
         <div class="form-group">
           <label>Telefone</label>

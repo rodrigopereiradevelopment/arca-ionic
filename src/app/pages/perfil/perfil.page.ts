@@ -1,5 +1,5 @@
 import { environment } from '../../../environments/environment.js';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -39,7 +39,7 @@ interface AlertaPreco {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, IonContent, IonSpinner]
 })
-export class PerfilPage implements OnInit {
+export class PerfilPage {
   configService = inject(ConfigService);
   authService = inject(AuthService);
   carrinhoService = inject(CarrinhoService);
@@ -74,7 +74,7 @@ export class PerfilPage implements OnInit {
   enderecoForm: Endereco = this.novoEndereco();
   alertas: AlertaPreco[] = [];
 
-  ngOnInit() {
+  ionViewWillEnter() {
     const u = this.authService.usuario;
     if (u) {
       this.dados.nome = u.nome;
@@ -90,6 +90,9 @@ export class PerfilPage implements OnInit {
       if (data.nome) this.dados.nome = data.nome;
       if (data.telefone) this.dados.telefone = data.telefone;
       if (data.cidade) this.dados.cidade = data.cidade;
+      if (data.cpf) this.dados.cpf = this.formatCpf(data.cpf);
+      if (data.estado) this.dados.estado = data.estado;
+      if (data.raio_busca) this.dados.raio = data.raio_busca;
       if (data.foto_perfil && this.authService.usuario) {
         this.authService.usuario.foto_perfil = data.foto_perfil;
         this.imagemPreview = null;
@@ -188,7 +191,9 @@ export class PerfilPage implements OnInit {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           token: usuario.token, nome: this.dados.nome,
-          telefone: this.dados.telefone, cidade: this.dados.cidade
+          telefone: this.dados.telefone, cidade: this.dados.cidade,
+          cpf: this.dados.cpf.replace(/\D/g, ''),
+          estado: this.dados.estado, raio_busca: this.dados.raio
         })
       });
       const data = await res.json();
@@ -387,5 +392,17 @@ export class PerfilPage implements OnInit {
   async toast(msg: string, color: string) {
     const t = await this.toastCtrl.create({ message: msg, duration: 3000, color, position: 'top' });
     await t.present();
+  }
+
+  formatCpf(cpf: string): string {
+    const nums = cpf.replace(/\D/g, '');
+    if (nums.length <= 3) return nums;
+    if (nums.length <= 6) return `${nums.slice(0,3)}.${nums.slice(3)}`;
+    if (nums.length <= 9) return `${nums.slice(0,3)}.${nums.slice(3,6)}.${nums.slice(6)}`;
+    return `${nums.slice(0,3)}.${nums.slice(3,6)}.${nums.slice(6,9)}-${nums.slice(9,11)}`;
+  }
+
+  onCpfInput() {
+    this.dados.cpf = this.formatCpf(this.dados.cpf);
   }
 }

@@ -1,16 +1,13 @@
 <ion-content [fullscreen]="true">
 
-  <!-- TOPO -->
   <div class="topo">
     <a routerLink="/home" class="btn-voltar">&#8592;</a>
     <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
     <span class="titulo-topo">Mercados Próximos</span>
   </div>
 
-  <!-- MAPA -->
   <div id="mapa-proximos"></div>
 
-  <!-- FILTROS FLUTUANTES -->
   <div class="filtros-flutuantes">
     <select [(ngModel)]="filtroDistancia" class="select-dist">
       <option [value]="1">até 1 km</option>
@@ -25,12 +22,14 @@
     </select>
   </div>
 
-  <!-- BOTÃO TOGGLE LISTA -->
   <button class="btn-toggle-lista" (click)="toggleLista()">
     {{ listaVisivel ? '▼ Ocultar Lista' : '▲ Ver Mercados (' + mercadosFiltrados.length + ')' }}
   </button>
 
-  <!-- BOTTOM SHEET -->
+  <button class="btn-limpar-rota" *ngIf="rotaAtiva" (click)="limparRota()">
+    ✕ Limpar Rota
+  </button>
+
   <div class="bottom-sheet" [class.visivel]="listaVisivel">
 
     <div class="drag-handle"></div>
@@ -60,8 +59,8 @@
           </span>
           <div class="mercado-btns">
             <button class="btn-avaliar" (click)="abrirAvaliacao(m, $event)" title="Avaliar">⭐</button>
-            <a [routerLink]="['/mapa-rotas']" class="btn-rota"><span aria-hidden="true">🗺️</span></a>
-            <a [routerLink]="['/comparar']" class="btn-precos"><span aria-hidden="true">💰</span></a>
+            <button class="btn-rota" (click)="tracarRota(m, $event)" title="Traçar Rota">🗺️</button>
+            <a [routerLink]="['/comparar']" class="btn-precos" title="Comparar Preços">💰</a>
           </div>
         </div>
 
@@ -74,7 +73,6 @@
     </div>
   </div>
 
-  <!-- MODAL AVALIAÇÃO -->
   <div class="modal-overlay" *ngIf="modalAvaliacao" (click)="fecharModalAvaliacao()">
     <div class="modal-conteudo" (click)="$event.stopPropagation()">
       @if (!avaliacaoEnviada) {

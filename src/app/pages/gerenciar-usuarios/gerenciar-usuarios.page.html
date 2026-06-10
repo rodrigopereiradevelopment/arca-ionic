@@ -16,7 +16,7 @@
       <select [(ngModel)]="filtroPerfil" class="select-perfil">
         <option value="todos">Todos os perfis</option>
         <option value="admin">Administrador</option>
-        <option value="moderador">Moderador</option>
+        <option value="moderator">Moderador</option>
         <option value="user">Usuário</option>
       </select>
     </div>
@@ -46,8 +46,8 @@
         <div class="perfil-btns">
           <button [class.ativo]="u.role === 'user'"
             (click)="alterarRole(u, 'user')">Usuário</button>
-          <button [class.ativo]="u.role === 'moderador'"
-            (click)="alterarRole(u, 'moderador')">Moderador</button>
+          <button [class.ativo]="u.role === 'moderator'"
+            (click)="alterarRole(u, 'moderator')">Moderador</button>
           <button [class.ativo]="u.role === 'admin'"
             (click)="alterarRole(u, 'admin')">Admin</button>
         </div>
