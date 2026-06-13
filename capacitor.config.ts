@@ -2,11 +2,16 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.arca.ionic',
-  appName: 'arca-ionic',
+  appName: 'ARCA',
   webDir: 'www',
   plugins: {
     PushNotifications: {
       presentationOptions: ['badge', 'sound', 'alert'],
+    },
+    StatusBar: {
+      overlaysWebView: false,
+      style: 'DARK',
+      backgroundColor: '#39e6c2',
     },
   },
 };

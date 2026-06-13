@@ -6,6 +6,8 @@ import { ConfigService } from './services/config.service';
 import { CarrinhoService } from './services/carrinho.service';
 import { PushNotificationService } from './services/push-notification.service';
 import { Router } from '@angular/router';
+import { StatusBar } from '@capacitor/status-bar';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +27,11 @@ export class AppComponent implements OnInit {
 
 
   async ngOnInit() {
+    if (Capacitor.isNativePlatform()) {
+      StatusBar.setOverlaysWebView({ overlay: false });
+      StatusBar.setStyle({ style: 'DARK' });
+    }
+
     this.configService.init();
 
     // Intro overlay
