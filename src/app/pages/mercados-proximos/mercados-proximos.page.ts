@@ -196,11 +196,17 @@ export class MercadosProximosPage implements AfterViewInit {
   }
 
   private executarRota(origem: any, destino: any, mercado: any) {
+    const Routing = (L as any).Routing;
+    if (!Routing?.control) {
+      this.mostrarToast('Rota indisponível offline.', 'warning');
+      return;
+    }
+
     if (this.routingControl) {
       this.map.removeControl(this.routingControl);
     }
 
-    this.routingControl = (L as any).Routing.control({
+    this.routingControl = Routing.control({
       waypoints: [origem, destino],
       routeWhileDragging: false,
       showAlternatives: false,

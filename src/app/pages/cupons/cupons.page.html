@@ -25,7 +25,7 @@
             <div class="cupom-esquerda">
               <div class="cupom-supermercado">
                 <img [src]="c.supermercado?.logo_url || 'assets/img/mercado.png'"
-                  onerror="this.src='assets/img/mercado.png'" class="cupom-logo">
+                  onerror="this.onerror=null;this.src='assets/img/mercado.png'" class="cupom-logo">
                 <span>{{ c.supermercado?.nome || 'Todos os mercados' }}</span>
               </div>
               <strong class="cupom-desconto">{{ desconto(c) }}</strong>

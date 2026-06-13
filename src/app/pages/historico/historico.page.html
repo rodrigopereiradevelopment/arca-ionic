@@ -67,7 +67,7 @@
     <ng-container *ngIf="!loading && filtroAtivo === 'favoritos'">
       <div class="fav-card" *ngFor="let f of favoritos">
         <img [src]="f.imagem_url || 'assets/img/Produto1.png'" class="fav-img"
-          onerror="this.src='assets/img/Produto1.png'" [alt]="f.nome">
+          onerror="this.onerror=null;this.src='assets/img/Produto1.png'" [alt]="f.nome">
         <div class="fav-info">
           <strong>{{ f.nome }}</strong>
           <span class="fav-marca" *ngIf="f.marca">{{ f.marca }}</span>

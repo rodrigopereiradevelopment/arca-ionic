@@ -43,7 +43,7 @@
         (click)="centralizarMercado(m)" role="button" tabindex="0">
 
         <img [src]="m.logo" [alt]="m.nome" class="mercado-logo"
-          onerror="this.src='assets/img/mercado.png'">
+          onerror="this.onerror=null;this.src='assets/img/mercado.png'">
 
         <div class="mercado-info">
           <strong>{{ m.nome }}</strong>
