@@ -161,7 +161,7 @@ export class ProdutoService {
   ): Promise<string | null> {
     try {
       const formData = new FormData();
-      formData.append('arquivo', file);
+      formData.append('file', file);
       formData.append('token', token);
 
       const res = await fetch(environment.apiUrl + '/api/upload', {

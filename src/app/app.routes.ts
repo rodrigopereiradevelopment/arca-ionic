@@ -136,23 +136,8 @@ export const routes: Routes = [
     data: { roles: ['admin', 'moderador'] }
   },
   {
-    path: 'configuracoes',
-    loadComponent: () => import('./pages/configuracoes/configuracoes.page').then( m => m.ConfiguracoesPage)
-  },
-  {
-    path: 'ajuda',
-    loadComponent: () => import('./pages/ajuda/ajuda.page').then( m => m.AjudaPage)
-  },
-  {
     path: 'perfil',
-    loadComponent: () => import('./pages/perfil/perfil.page').then( m => m.PerfilPage)
-  },
-  {
-    path: 'ajuda',
-    loadComponent: () => import('./pages/ajuda/ajuda.page').then( m => m.AjudaPage)
-  },
-  {
-    path: 'configuracoes',
-    loadComponent: () => import('./pages/configuracoes/configuracoes.page').then( m => m.ConfiguracoesPage)
+    loadComponent: () => import('./pages/perfil/perfil.page').then( m => m.PerfilPage),
+    canActivate: [authGuard]
   }
 ];

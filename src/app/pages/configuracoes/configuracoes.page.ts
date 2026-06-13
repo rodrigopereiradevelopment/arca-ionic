@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -16,7 +16,7 @@ import { PushNotificationService } from '../../services/push-notification.servic
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
-export class ConfiguracoesPage implements OnInit {
+export class ConfiguracoesPage {
   authService = inject(AuthService);
   carrinhoService = inject(CarrinhoService);
   historicoService = inject(HistoricoService);
@@ -40,7 +40,7 @@ export class ConfiguracoesPage implements OnInit {
     { value: 'extra', label: 'Extra Grande', size: '24px' }
   ];
 
-  ngOnInit() { this.configSvc.init(); }
+  ionViewWillEnter() { this.configSvc.init(); }
 
   async onToggle(tipo?: string) {
     this.configSvc.salvar();

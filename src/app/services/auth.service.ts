@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment.js';
+import { environment } from '../../environments/environment';
 
 export type TipoUsuario = 'usuario' | 'moderador' | 'admin' | null;
 

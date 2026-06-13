@@ -83,6 +83,12 @@ export class PesquisarProdutosPage implements OnInit {
     });
   }
 
+  ionViewWillEnter() {
+    if (this.busca.length >= 2) {
+      this.handleSearch({ detail: { value: this.busca } });
+    }
+  }
+
   private async carregarCategorias() {
     const cats = await this.categoriaService.listar();
     if (cats.length > 0) {

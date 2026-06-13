@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -17,7 +17,7 @@ import { environment } from '../../../environments/environment';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
-export class GerenciarMercadosPage implements OnInit {
+export class GerenciarMercadosPage {
   private toastCtrl = inject(ToastController);
   private mercadoSvc = inject(MercadoService);
   private auth = inject(AuthService);
@@ -44,7 +44,7 @@ export class GerenciarMercadosPage implements OnInit {
     });
   }
 
-  async ngOnInit() {
+  async ionViewWillEnter() {
     await this.carregarMercados();
   }
 
