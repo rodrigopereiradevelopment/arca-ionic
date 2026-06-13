@@ -2,7 +2,7 @@ import { Component, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { IonContent } from '@ionic/angular/standalone';
+import { IonContent, ToastController } from '@ionic/angular/standalone';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import { MercadoService, Mercado } from '../../services/mercado.service';
@@ -30,6 +30,7 @@ export class MercadosProximosPage implements AfterViewInit {
   private mercadoSvc = inject(MercadoService);
   avaliacaoSvc = inject(AvaliacaoService);
   private historicoService = inject(HistoricoService);
+  private toastCtrl = inject(ToastController);
 
   map: any;
   routingControl: any = null;
@@ -268,5 +269,10 @@ export class MercadosProximosPage implements AfterViewInit {
 
   fecharModalAvaliacao() {
     this.modalAvaliacao = false;
+  }
+
+  private async mostrarToast(message: string, color: string) {
+    const t = await this.toastCtrl.create({ message, duration: 2000, color, position: 'top' });
+    await t.present();
   }
 }
