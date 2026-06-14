@@ -22,6 +22,7 @@ export interface ProdutoLista {
   total: number;
   page: number;
   limit: number;
+  temMais?: boolean;
 }
 
 export interface Preco {

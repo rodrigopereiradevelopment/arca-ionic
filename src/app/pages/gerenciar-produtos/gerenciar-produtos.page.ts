@@ -82,7 +82,7 @@ export class GerenciarProdutosPage {
       } else {
         this.produtos = result.data;
       }
-      this.temMais = this.produtos.length < result.total;
+      this.temMais = result.temMais ?? (this.produtos.length < result.total);
     } catch {
       this.erro = 'Erro ao carregar dados.';
     } finally {
