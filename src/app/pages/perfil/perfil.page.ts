@@ -347,8 +347,8 @@ export class PerfilPage {
     if (this.senhas.nova !== this.senhas.confirmar) {
       await this.toast('As senhas não coincidem!', 'danger'); return;
     }
-    if (this.senhas.nova.length < 6) {
-      await this.toast('Senha deve ter mínimo 6 caracteres!', 'warning'); return;
+    if (this.senhas.nova.length < 8) {
+      await this.toast('Senha deve ter no mínimo 8 caracteres!', 'warning'); return;
     }
     const usuario = this.authService.usuario;
     if (!usuario?.token) {

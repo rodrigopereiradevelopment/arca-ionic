@@ -77,6 +77,10 @@ export class CadastroPage {
       await this.toast('Preencha nome, e-mail e senha.', 'warning');
       return;
     }
+    if (this.form.senha.length < 8) {
+      await this.toast('A senha deve ter no mínimo 8 caracteres.', 'warning');
+      return;
+    }
     const result = await this.authService.cadastrar(this.form.nome, this.form.email, this.form.senha);
     if (!result.ok) {
       await this.toast(result.erro || 'Erro ao cadastrar.', 'danger');

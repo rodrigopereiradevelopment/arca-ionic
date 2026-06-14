@@ -35,8 +35,8 @@ export class RedefinirSenhaPage {
       await this.toast('Token inválido ou ausente.', 'danger');
       return;
     }
-    if (!this.novaSenha || this.novaSenha.length < 6) {
-      await this.toast('Senha deve ter no mínimo 6 caracteres.', 'warning');
+    if (!this.novaSenha || this.novaSenha.length < 8) {
+      await this.toast('Senha deve ter no mínimo 8 caracteres.', 'warning');
       return;
     }
     if (this.novaSenha !== this.confirmarSenha) {
