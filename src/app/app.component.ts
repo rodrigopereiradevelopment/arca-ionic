@@ -79,23 +79,27 @@ export class AppComponent implements OnInit {
       }
     });
 
-    setTimeout(async () => {
-      const update = await this.updateService.verificar();
-      if (update) {
-        const alert = await this.alertCtrl.create({
-          header: 'Nova versão disponível',
-          subHeader: `ARCA v${update.versao}`,
-          message: update.mensagem,
-          buttons: [
-            { text: 'Depois', role: 'cancel' },
-            {
-              text: 'Atualizar agora',
-              handler: () => { window.open(update.url, '_system'); },
-            },
-          ],
-        });
-        await alert.present();
-      }
-    }, 5000);
+    setTimeout(() => this.verificarAtualizacao(), 5000);
+  }
+
+  private async verificarAtualizacao(tentativa = 1) {
+    const { update, erro } = await this.updateService.verificar();
+    if (update) {
+      const alert = await this.alertCtrl.create({
+        header: 'Nova versão disponível',
+        subHeader: `ARCA v${update.versao}`,
+        message: update.mensagem,
+        buttons: [
+          { text: 'Depois', role: 'cancel' },
+          {
+            text: 'Atualizar agora',
+            handler: () => { window.open(update.url, '_system'); },
+          },
+        ],
+      });
+      await alert.present();
+    } else if (erro && tentativa < 3) {
+      setTimeout(() => this.verificarAtualizacao(tentativa + 1), 30000);
+    }
   }
 }
