@@ -83,7 +83,7 @@ app-footer ion-footer {
 
 /* Safe-area para headers customizados */
 .topo {
-  padding-top: var(--ion-safe-area-top, env(safe-area-inset-top, 0px));
+  padding-top: var(--ion-safe-area-top, env(safe-area-inset-top, 0px)) !important;
 }
 
 /* Remove faixa branca do topo */
