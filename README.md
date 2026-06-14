@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![App](https://img.shields.io/badge/App-Vercel-black?logo=vercel)](https://arca-ionic.vercel.app)
 [![API](https://img.shields.io/badge/API-Vercel-black?logo=vercel)](https://arca-next.vercel.app)
-![Version](https://img.shields.io/badge/version-1.0.8-green)
+![Version](https://img.shields.io/badge/version-1.1.1-green)
 [![Lint](https://img.shields.io/badge/lint-passing-brightgreen)]()
 [![Releases](https://img.shields.io/github/v/release/rodrigopereiradevelopment/arca-ionic)](https://github.com/rodrigopereiradevelopment/arca-ionic/releases)
 
@@ -39,19 +39,27 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
          ↓
 🚀  arca-next (Vercel — API)
      ├── /api/produtos
-     ├── /api/produtos/precos
-     ├── /api/produtos/search
-     ├── /api/categorias
-     ├── /api/mercados
-     ├── /api/comparar (dinâmico — query Supabase)
-     ├── /api/auth/*
-     ├── /api/notificacoes
-     ├── /api/historico
-     ├── /api/tickets [+ mensagens]
-     ├── /api/alertas
-     ├── /api/upload
-     ├── /api/configuracoes
-     └── /api/chat (com contexto)
+      ├── /api/produtos
+      ├── /api/produtos/precos
+      ├── /api/produtos/search
+      ├── /api/produtos/info-nutricional
+      ├── /api/categorias
+      ├── /api/mercados
+      ├── /api/comparar (dinâmico — query Supabase)
+      ├── /api/auth/*
+      ├── /api/notificacoes
+      ├── /api/notificacoes/registrar-token
+      ├── /api/historico
+      ├── /api/tickets [+ mensagens]
+      ├── /api/alertas
+      ├── /api/favoritos
+      ├── /api/cupons
+      ├── /api/denuncias
+      ├── /api/avaliacoes
+      ├── /api/versao
+      ├── /api/upload
+      ├── /api/configuracoes
+      └── /api/chat (com contexto)
          ↓
 📱  ESTE APP (Ionic + Angular)
 ```
@@ -94,8 +102,14 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
 | 🔊 **Efeitos Sonoros** | `HTMLAudioElement` nativo, 5 sons, toggle nas Configurações | ✅ |
 | 📳 **Vibração** | `navigator.vibrate()`, toggle independente do som | ✅ |
 | 🏪 **Avaliação Mercados** | 4 critérios + comentário, estrelas nos cards | ✅ |
-| 📱 **Onboarding** | 5 slides com swipe, permissões (localização/câmera) e termos | ✅ |
+| 📱 **Onboarding** | 5 slides com swipe, permissões (localização/câmera) e termos (Swiper.js) | ✅ |
 | 🔐 **Recuperação Senha** | `esqueci-senha` + `redefinir-senha` via Resend | ✅ |
+| 📋 **Categoria Browse** | Navegação por categoria com paginação 15 em 15 | ✅ |
+| 🚀 **In-app Update** | Verifica `GET /api/versao`, AlertController com link, retry 3x | ✅ |
+| 📄 **Fetch one extra** | Paginação sem `count(*)` — evita timeout no Supabase | ✅ |
+| ⚡ **Promise.all** | Paralelização em gerenciar-produtos, perfil e app.component | ✅ |
+| 🛡️ **Safe-area + Imersivo** | Padding notch, footer acima nav buttons, `MainActivity.java` | ✅ |
+| 📊 **Índices Performance** | Migration SQL: índices em `produtos`, `precos` | ✅ |
 
 ---
 
@@ -194,40 +208,54 @@ export const environment = {
 arca-ionic/
 ├── src/app/
 │   ├── pages/
-│   │   ├── pesquisar-produtos/     # Busca fuzzy + categorias dinâmicas
+│   │   ├── pesquisar-produtos/     # Busca fuzzy + categorias dinâmicas + paginação
 │   │   ├── comparar/               # Ranking com medalhas + cache
 │   │   ├── lista-rapida/           # Comparação por texto livre
 │   │   ├── mapa-rotas/             # Leaflet — coordenadas da API
 │   │   ├── mercados-proximos/      # Mapa dos 6 mercados
 │   │   ├── login/                  # Autenticação
 │   │   ├── cadastro/               # Registro de usuário
+│   │   ├── onboarding/             # 5 slides swipeable (Swiper.js)
+│   │   ├── esqueci-senha/          # Recuperação de senha
+│   │   ├── redefinir-senha/        # Redefinição com token
 │   │   ├── gerenciar-produtos/     # CRUD produtos/categorias/preços
 │   │   ├── gerenciar-mercados/     # CRUD mercados com status + upload
 │   │   ├── gerenciar-usuarios/     # Admin — listar/editar usuários
+│   │   ├── gerenciar-denuncias/    # Admin — moderar denúncias
 │   │   ├── configuracoes/         # Configurações + acessibilidade
 │   │   ├── perfil/                 # Perfil + endereços + alertas + foto
 │   │   ├── historico/              # Histórico híbrido (local + API)
 │   │   ├── notificacoes/           # Central de notificações reais
+│   │   ├── cupons/                 # Cupons de desconto
 │   │   ├── tickets/                # Suporte com conversa ao vivo
 │   │   ├── ajuda/                  # FAQ + chat Gemini com contexto
 │   │   ├── privacidade/            # Política de privacidade (LGPD)
 │   │   └── termos/                 # Termos de uso (LGPD)
 │   ├── services/
-│   │   ├── carrinho.service.ts     # Carrinho + localStorage
-│   │   ├── comparacao.service.ts   # Seleção + localStorage
-│   │   ├── auth.service.ts         # Auth via arca-next
-│   │   ├── mercado.service.ts      # CRUD mercados
-│   │   ├── produto.service.ts      # CRUD produtos + preços
-│   │   ├── categoria.service.ts    # CRUD categorias
-│   │   ├── config.service.ts       # Config centralizada + API sync
-│   │   ├── notificacao.service.ts  # Notificações reais via API
-│   │   ├── historico.service.ts    # Híbrido localStorage + API
-│   │   └── ticket.service.ts       # Tickets + mensagens
+│   │   ├── carrinho.service.ts         # Carrinho + localStorage
+│   │   ├── comparacao.service.ts       # Seleção + localStorage
+│   │   ├── auth.service.ts             # Auth via arca-next
+│   │   ├── mercado.service.ts          # CRUD mercados
+│   │   ├── produto.service.ts          # CRUD produtos + preços
+│   │   ├── categoria.service.ts        # CRUD categorias
+│   │   ├── config.service.ts           # Config centralizada + API sync
+│   │   ├── notificacao.service.ts      # Notificações reais via API
+│   │   ├── historico.service.ts        # Híbrido localStorage + API
+│   │   ├── ticket.service.ts           # Tickets + mensagens
+│   │   ├── cupom.service.ts            # Cupons de desconto
+│   │   ├── favorito.service.ts         # Favoritos
+│   │   ├── denuncia.service.ts         # Denúncias
+│   │   ├── info-nutricional.service.ts # Info nutricional + Open Food Facts
+│   │   ├── audio.service.ts            # HTMLAudioElement (5 sons)
+│   │   ├── avaliacao.service.ts        # Avaliação de mercados
+│   │   ├── push-notification.service.ts# FCM push notifications
+│   │   └── update.service.ts           # In-app update check
 │   └── components/
-│       ├── modal-carrinho/         # Modal com +/- por produto
-│       ├── menu/                   # Menu lateral
-│       ├── header/                 # Cabeçalho fixo
-│       └── footer/                 # Rodapé fixo
+│       ├── modal-carrinho/             # Modal com +/- por produto
+│       ├── modal-produto/              # Modal detalhes + info nutricional
+│       ├── menu/                       # Menu lateral
+│       ├── header/                     # Cabeçalho fixo
+│       └── footer/                     # Rodapé fixo
 ├── src/theme/
 │   └── variables.scss              # CSS vars, dark-theme, alto-contraste
 └── src/environments/
@@ -244,10 +272,22 @@ arca-ionic/
 | Ionic | 8 | Framework mobile (Standalone components) |
 | Angular | 20 | Framework frontend (Lazy loading) |
 | TypeScript | 5 | Linguagem |
+| Capacitor | 8 | Ponte nativa (APK Android) |
+| @capacitor/camera | 8 | Captura de foto perfil |
+| @capacitor/push-notifications | 8 | Push FCM |
+| @capacitor/status-bar | 8 | Status bar escura (Style.Dark) |
+| @capacitor/haptics | 8 | Feedback tátil |
+| @capacitor/keyboard | 8 | Keyboard overlay imersivo |
 | Leaflet | 1.9 | Mapas + rotas |
 | Leaflet Routing Machine | 3.2 | Rotas entre mercados |
+| Swiper.js | 12 | Onboarding swipeable |
 | Supabase JS | 2 | Auth client |
 | Google Gemini | — | Assistente IA (chat com contexto) |
+| Firebase Cloud Messaging | — | Push notifications |
+| Resend | — | E-mail recuperação senha |
+| Open Food Facts | — | Info nutricional (Nutri-Score) |
+| Nominatim | — | Geocoding mercados |
+| ViaCEP | — | Busca CEP automática |
 | Karma + Jasmine | — | Testes unitários |
 
 ---
@@ -271,6 +311,16 @@ arca-ionic/
 - **Gemini com contexto** — últimas 10 mensagens enviadas como `parts`
 - **Cache comparar** — hash dos produtos + TTL 30min em localStorage
 - **Docs legais sem CMS** — Termos + Privacidade como páginas Ionic standalone
+- **Categoria browse** — navegação por categoria com paginação 15 em 15 via search endpoint
+- **Fetch one extra** — `limit+1` em vez de `count: "exact"` para evitar timeout
+- **Parallelização Promise.all** — 40–60% mais rápido em gerenciar-produtos, perfil, app.component
+- **Safe-area headers/footer** — `padding-top: var(--ion-safe-area-top)`, `env(safe-area-inset-bottom)`
+- **Modo imersivo** — `MainActivity.java` com `SYSTEM_UI_FLAG_IMMERSIVE_STICKY`
+- **In-app update** — UpdateService + AlertController com retry 3x
+- **CORS corsOk/corsErr** — helpers em todas as respostas da API
+- **`onerror` anti-loop** — `this.onerror=null;this.src='...'` em imagens
+- **Firebase Admin SDK** — `sendEachForMulticast` com auto-desativação de tokens
+- **google-services.json não versionado** — segurança das chaves Firebase
 
 ---
 
