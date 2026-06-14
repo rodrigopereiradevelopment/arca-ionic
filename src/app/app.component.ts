@@ -6,8 +6,9 @@ import { ConfigService } from './services/config.service';
 import { CarrinhoService } from './services/carrinho.service';
 import { PushNotificationService } from './services/push-notification.service';
 import { Router } from '@angular/router';
-import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
+import { UpdateService } from './services/update.service';
 
 @Component({
   selector: 'app-root',
@@ -24,12 +25,13 @@ export class AppComponent implements OnInit {
   private carrinhoService = inject(CarrinhoService);
   private pushService = inject(PushNotificationService);
   private router = inject(Router);
+  private updateService = inject(UpdateService);
 
 
   async ngOnInit() {
     if (Capacitor.isNativePlatform()) {
       StatusBar.setOverlaysWebView({ overlay: false });
-      StatusBar.setStyle({ style: 'DARK' });
+      StatusBar.setStyle({ style: Style.Dark });
     }
 
     this.configService.init();
@@ -75,5 +77,29 @@ export class AppComponent implements OnInit {
         }
       }
     });
+
+    setTimeout(async () => {
+      const update = await this.updateService.verificar();
+      if (update) {
+        const alert = document.createElement('ion-alert');
+        alert.header = 'Nova versão disponível';
+        alert.subHeader = `ARCA v${update.versao}`;
+        alert.message = update.mensagem;
+        alert.buttons = [
+          {
+            text: 'Depois',
+            role: 'cancel',
+          },
+          {
+            text: 'Atualizar agora',
+            handler: () => {
+              window.open(update.url, '_system');
+            },
+          },
+        ];
+        document.body.appendChild(alert);
+        alert.present();
+      }
+    }, 5000);
   }
 }
