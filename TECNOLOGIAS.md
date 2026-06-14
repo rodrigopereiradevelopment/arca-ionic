@@ -58,7 +58,14 @@ O banco de dados Gold é composto por 24 tabelas e conta com políticas de RLS a
 
 A Experiência do Usuário, conhecida pela sigla UX (do inglês *User Experience*), é uma área do design que estuda e projeta a interação entre o usuário e o produto digital, com foco em tornar essa experiência intuitiva, agradável e eficiente.
 
-No desenvolvimento do ARCA, os princípios de UX foram aplicados em diversas decisões de design:
+No desenvolvimento do ARCA, foram aplicadas técnicas de UX específicas para dispositivos móveis Android:
+
+- **Modo imersivo**: a `MainActivity.java` oculta as barras de sistema (status e navegação) com `SYSTEM_UI_FLAG_IMMERSIVE_STICKY`, `SYSTEM_UI_FLAG_HIDE_NAVIGATION` e `SYSTEM_UI_FLAG_FULLSCREEN`. Um listener `OnSystemUiVisibilityChangeListener` reaplica a ocultação sempre que o usuário desliza para revelar as barras, e o `onResume()` garante que o modo imersivo seja restaurado após o aplicativo voltar de segundo plano.
+- **Safe-area para notch e botões de navegação**: o header `.topo` recebe `padding-top: var(--ion-safe-area-top) !important` para respeitar o notch, e o footer usa `bottom: env(safe-area-inset-bottom)` para flutuar acima dos botões de navegação do Android. O menu lateral também aplica `padding-bottom: max(env(safe-area-inset-bottom), 10px)` no `.menu-footer` para que o botão "Sair" não fique encoberto.
+- **Atualização in-app**: um `UpdateService` verifica a versão atual contra `GET /api/versao` 5 segundos após a inicialização. Se houver uma versão mais recente, exibe um `AlertController` com link para download. Em caso de erro de rede, realiza até 3 tentativas com intervalo de 30 segundos, com cooldown mínimo de 60 segundos entre verificações. A verificação só ocorre em plataforma nativa (`Capacitor.isNativePlatform()`).
+- **Fallback de imagens**: produtos sem foto exibem uma imagem padrão local (`assets/img/Produto1.png`) por meio de `onerror` com guard `this.onerror=null` para evitar loop infinito de requisições.
+
+Além disso, os princípios gerais de UX foram aplicados em diversas decisões de design:
 
 - **Onboarding interativo**: na primeira abertura do aplicativo, o usuário é guiado por 5 slides deslizáveis que apresentam as funcionalidades principais e solicitam permissões necessárias (localização e câmera) de forma contextualizada.
 - **Paleta de cores consistente**: identidade visual baseada no verde-teal (#00BF9F), aplicada de forma uniforme em todas as telas.
@@ -81,19 +88,29 @@ O objetivo foi garantir que qualquer usuário, independentemente de seu nível d
 
 Um framework é um conjunto de ferramentas, bibliotecas e convenções que facilita o desenvolvimento de software, fornecendo uma estrutura base que o desenvolvedor pode utilizar e personalizar. O uso de um framework reduz o tempo de desenvolvimento, promove boas práticas de programação e facilita a manutenção do código.
 
-O ARCA foi desenvolvido utilizando o Ionic Framework em conjunto com o Angular. O Ionic é um framework open-source voltado para o desenvolvimento de aplicações móveis híbridas — aplicações que podem ser executadas tanto em dispositivos Android e iOS quanto em navegadores web, a partir de um único código-fonte. Ele fornece componentes de interface prontos, como barras de navegação, botões, listas e modais, que seguem os padrões visuais das plataformas móveis. O Angular, por sua vez, é um framework JavaScript desenvolvido pelo Google que fornece uma arquitetura organizada baseada em componentes, serviços e injeção de dependências. No ARCA, o Angular é utilizado com **Standalone Components** (sem NgModules) e **Lazy Loading** em todas as rotas, configurações modernas que reduzem o tamanho do bundle inicial e aceleram o carregamento do aplicativo.
+O ARCA foi desenvolvido utilizando o Ionic Framework em conjunto com o Angular. O Ionic é um framework open-source voltado para o desenvolvimento de aplicações móveis híbridas — aplicações que podem ser executadas tanto em dispositivos Android e iOS quanto em navegadores web, a partir de um único código-fonte. Ele fornece componentes de interface prontos, como barras de navegação, botões, listas e modais, que seguem os padrões visuais das plataformas móveis. O Angular, por sua vez, é um framework JavaScript desenvolvido pelo Google que fornece uma arquitetura organizada baseada em componentes, serviços e injeção de dependências. No ARCA, o Angular é utilizado com **Standalone Components** (sem NgModules) e **Lazy Loading** em todas as rotas, configurações modernas que reduzem o tamanho do bundle inicial e aceleram o carregamento do aplicativo. O roteamento utiliza **HashLocationStrategy** (URLs com `#`), necessário para compatibilidade com o empacotamento via Capacitor. O estado da aplicação é gerenciado por meio de `BehaviorSubject` + `localStorage`, sem dependência de bibliotecas externas como NgRx. O ciclo de vida `ionViewWillEnter` é utilizado em vez de `ngOnInit` para evitar problemas de cache de navegação do Ionic ao retornar a uma página já instanciada.
 
-O empacotamento do aplicativo como aplicativo nativo (APK Android) é realizado pelo **Capacitor**, da Ionic, que serve como ponte entre o código web e as APIs nativas do dispositivo, como câmera, vibração e notificações push.
+O empacotamento do aplicativo como aplicativo nativo (APK Android) é realizado pelo **Capacitor**, da Ionic, que serve como ponte entre o código web e as APIs nativas do dispositivo. Os seguintes plugins Capacitor são utilizados:
+
+- **@capacitor/camera** — captura de fotos da câmera e seleção da galeria para foto de perfil, com conversão para WebP via canvas (80% de compressão)
+- **@capacitor/push-notifications** — registro e recebimento de notificações push via Firebase Cloud Messaging
+- **@capacitor/status-bar** — controle da barra de status, configurada com estilo escuro (`Style.Dark`)
+- **@capacitor/haptics** — feedback tátil leve em interações
+- **@capacitor/keyboard** — gerenciamento do teclado virtual, com `overlaysWebView: true` para layout imersivo
+- **@capacitor/app** — controle do ciclo de vida do aplicativo nativo
 
 Além dos frameworks principais, o ARCA utiliza as seguintes bibliotecas e serviços especializados:
 
-- **Leaflet** — biblioteca JavaScript para mapas interativos, utilizada na tela de mercados próximos para exibir a localização dos supermercados e traçar rotas até o estabelecimento selecionado, por meio da extensão Leaflet Routing Machine.
+- **Leaflet** — biblioteca JavaScript para mapas interativos, utilizada na tela de mercados próximos para exibir a localização dos supermercados.
+- **Leaflet Routing Machine** — extensão do Leaflet que calcula rotas entre o usuário e o supermercado selecionado, exibindo distância, tempo estimado e instruções passo a passo.
+- **Swiper.js** — biblioteca de navegação por toque utilizada no onboarding interativo de 5 slides na primeira abertura do aplicativo.
 - **Google Gemini API** — utilizada no assistente virtual integrado ao aplicativo, permitindo que o usuário tire dúvidas sobre produtos, promoções e funcionalidades por meio de um chat com inteligência artificial. As últimas 10 mensagens da conversa são enviadas como contexto a cada requisição.
 - **Nominatim (OpenStreetMap)** — serviço de geocoding que converte endereços de mercados em coordenadas geográficas automaticamente no momento do cadastro.
 - **ViaCEP** — serviço gratuito de busca de endereços por CEP, integrado aos formulários de cadastro de usuário e de mercados.
 - **Firebase Cloud Messaging (FCM)** — serviço de notificações push da Google, integrado via Capacitor e `firebase-admin`, permitindo o envio de notificações em tempo real para dispositivos Android.
+- **Firebase Admin SDK** (`firebase-admin`) — SDK server-side utilizado no Next.js para envio de notificações push via `sendEachForMulticast`, com auto-desativação de tokens inválidos. Configurado via variável de ambiente `FIREBASE_SERVICE_ACCOUNT_JSON` (string JSON) ou arquivo local `FIREBASE_ACCOUNT_PATH`.
 - **Resend** — serviço de e-mail transacional utilizado no fluxo de recuperação de senha, responsável pelo disparo dos e-mails com link de redefinição.
-- **Open Food Facts** — API pública utilizada para buscar informações nutricionais de produtos a partir do código de barras (EAN), com resultados armazenados em cache na tabela `info_nutricional_cache` do Supabase para evitar requisições repetidas.
+- **Open Food Facts** — API pública utilizada para buscar informações nutricionais de produtos a partir do código de barras (EAN/GTIN), com resultados armazenados em cache na tabela `info_nutricional_cache` do Supabase por 7 dias para evitar requisições repetidas. Os resultados são exibidos no modal do produto com classificação Nutri-Score (A 🟢 a E 🔴).
 
 O aplicativo é publicado na plataforma Vercel, que oferece hospedagem com deploy automático integrado ao GitHub, garantindo que as atualizações cheguem aos usuários de forma rápida e confiável.
 
@@ -149,7 +166,7 @@ A primeira camada da arquitetura é responsável pela coleta automática de pre�
 
 A normalização dos nomes de produtos é centralizada na classe `BaseScraper`, classe mãe herdada por todos os scrapers, garantindo padronização consistente entre as fontes. O histórico de preços é armazenado diretamente no documento do produto no MongoDB (embedded), eliminando a necessidade de uma coleção separada.
 
-A execução é automatizada via **GitHub Actions** com agendamento para segundas e quintas-feiras à meia-noite (horário de Brasília). Utiliza **matrix strategy** com 6 jobs paralelos — um por supermercado — e **ThreadPoolExecutor** internamente em cada scraper. Essa arquitetura reduziu o tempo total do pipeline de aproximadamente 272 minutos (execução sequencial) para cerca de 71 minutos.
+A execução é automatizada via **GitHub Actions** com agendamento para segundas e quintas-feiras à meia-noite (horário de Brasília, fuso `America/Sao_Paulo`). Utiliza **matrix strategy** com 6 jobs paralelos — um por supermercado — e **ThreadPoolExecutor** internamente em cada scraper. Essa arquitetura reduziu o tempo total do pipeline de aproximadamente 272 minutos (execução sequencial) para cerca de 71 minutos. Além da coleta, o workflow também executa o script de ETL (`migrate_to_supabase.py`) e envia notificação ao Discord em caso de falha, via webhook configurado como segredo do repositório.
 
 ### 3.1.3.3. Camada 2 — Armazenamento Bruto (MongoDB)
 
@@ -171,7 +188,16 @@ Essa camada é responsável por receber as requisições do aplicativo Ionic, co
 
 O front-end do ARCA foi desenvolvido com o Ionic Framework em conjunto com o Angular, formando a camada de apresentação do sistema. É nessa camada que o usuário interage com o aplicativo, realizando buscas de produtos, comparando preços entre supermercados, gerenciando sua lista de compras e configurando alertas de preço.
 
-O front-end consome os dados disponibilizados pela API Next.js por meio de requisições HTTP gerenciadas por serviços Angular. A interface foi construída com Standalone Components e Lazy Loading em todas as rotas, garantindo carregamento eficiente. O roteamento utiliza `HashLocationStrategy` (URLs com `#`), necessário para compatibilidade com o empacotamento via Capacitor. O ciclo de vida `ionViewWillEnter` é utilizado em vez de `ngOnInit` para evitar problemas de cache de navegação do Ionic ao retornar a uma página já instanciada. O estado da aplicação é gerenciado por meio de `BehaviorSubject` sem dependência de bibliotecas externas como NgRx. O aplicativo é compatível com navegadores web, dispositivos Android e iOS, e está publicado na plataforma Vercel.
+O front-end consome os dados disponibilizados pela API Next.js por meio de requisições HTTP gerenciadas por serviços Angular. A interface foi construída com Standalone Components e Lazy Loading em todas as rotas, garantindo carregamento eficiente. O roteamento utiliza `HashLocationStrategy` (URLs com `#`), necessário para compatibilidade com o empacotamento via Capacitor. O ciclo de vida `ionViewWillEnter` é utilizado em vez de `ngOnInit` para evitar problemas de cache de navegação do Ionic ao retornar a uma página já instanciada. O estado da aplicação é gerenciado por meio de `BehaviorSubject` + `localStorage`, sem dependência de bibliotecas externas como NgRx.
+
+**Otimizações de performance:**
+
+- **Parallelização com `Promise.all`**: requisições independentes são executadas em paralelo — por exemplo, em `gerenciar-produtos.page.ts` (categorias + produtos), `perfil.page.ts` (perfil + endereços + alertas) e `app.component.ts` (config + carrinho), reduzindo em 40–60% o tempo de carregamento dessas páginas.
+- **Técnica "fetch one extra"**: em listagens paginadas (produtos, histórico), em vez de usar `count: "exact"` do Supabase — que causa timeout em tabelas grandes — o sistema busca `limit + 1` registros. Se vierem `limit + 1`, existe página seguinte (`temMais = true`); caso contrário, não. Isso elimina o custo do `COUNT(*)` em tabelas com milhares de registros.
+- **Índices de performance**: a migration `20260614000000_indexes_performance.sql` cria índices estratégicos — `produtos (ativo, created_at DESC)` para busca de produtos ativos ordenados por data, `precos (produto_id)` para joins rápidos e `precos (supermercado_id)` para filtro por mercado.
+- **Requisições com `fetch()` nativo**: em vez do `HttpClient` do Angular, todas as requisições HTTP utilizam a API `fetch()` nativa do JavaScript com suporte a `AbortController`, eliminando a dependência do módulo `HttpClientModule` e reduzindo o bundle.
+
+O aplicativo é compatível com navegadores web, dispositivos Android e iOS, e está publicado na plataforma Vercel.
 
 ### 3.1.3.7. Camada 6 — Usuário Final
 
@@ -189,33 +215,64 @@ O usuário final acessa o aplicativo ARCA por meio de um navegador web ou dispos
 
 ## Lista de Funcionalidades Implementadas
 
+### v1.1.1
+- Correção: menu footer com padding safe-area para não ficar atrás dos botões Android
+- Bump de versão (versionCode 11)
+
+### v1.1.0
+- Categoria browse no Search: navegação por categoria sem texto de busca, com paginação 15 em 15
+- Parallelização com `Promise.all` em gerenciar-produtos, perfil e app.component (40–60% mais rápido)
+- Perfil resiliente: `maybeSingle()` + `upsert()` no lugar de `single()` + `update()`
+- Favoritos CORS: `corsOk()`/`corsErr()` em todas as respostas — resolve bloqueio WebView Android
+- Fetch one extra: técnica que substitui `count: "exact"` para evitar timeout em listagens
+- Índices de performance: migration com índices em `produtos`, `precos`
+- Safe-area headers/footer e modo imersivo (MainActivity.java)
+- In-app update notification (UpdateService + AlertController)
+- Fix: `Style.Dark` enum em vez de string `'DARK'` (resolve TS2322 na Vercel)
+- Fix: `import L from 'leaflet'` (default import) para mapa offline
+- Fix: rota de editar produtos resolvendo `categoria` de `categoria_id`
+- Remoção de splash duplicada no `styles.xml`
+
+### v1.0.9
+- Versão intermediária com correções de deployment e CORS
+
 ### v1.0.8
-- Onboarding interativo com 5 slides deslizáveis
+- Onboarding interativo com 5 slides swipeable (Swiper.js)
 - Push notifications via Firebase Cloud Messaging (FCM) + Capacitor
-- Plugin de câmera (Capacitor)
-- Upload de foto de perfil com conversão WebP via canvas
-- Informações nutricionais com cache Supabase + Open Food Facts (Nutri-Score A–E)
-- Avaliação de supermercados (4 critérios + comentário)
-- Efeitos sonoros nativos (HTMLAudioElement)
-- Vibração tátil (navigator.vibrate)
-- Recuperação de senha via Resend
+- Plugin de câmera (Capacitor Camera) com permissões Android
+- Upload de foto de perfil com conversão WebP via canvas (80%)
+- Informações nutricionais com cache Supabase (7 dias) + Open Food Facts (Nutri-Score A🟢–E🔴)
+- Avaliação de supermercados (4 critérios + comentário + estrelas nos cards)
+- Efeitos sonoros nativos (HTMLAudioElement, pool de 5 sons)
+- Vibração tátil (navigator.vibrate, 10ms ação / 30ms erro)
+- Recuperação de senha via Resend (com migration `recovery_tokens`)
+- Firebase Admin SDK (`firebase-admin`, `sendEachForMulticast`)
+- Disparo push automático ao criar notificação no banco
+- Migration `device_tokens` com RLS e trigger `updated_at`
+- Correção: upload imagem (arquivo → file), esqueci senha (profiles.email), moderador (moderator → moderador)
+- Correção: CORS em 11 rotas de auth, PGRST116 (maybeSingle), lifecycle (ionViewWillEnter)
+- Correção: rotas duplicadas (configuracoes, ajuda, perfil), imports .js, CORS favoritos 204
+- Correção: `onerror` com guard anti-loop em imagens de produto
+- Ícone do app gerado a partir de `assets/img/logo.png` (adaptive icon `#00BF9F`)
+- `google-services.json` removido do tracking git
 
 ### v1.0.7
-- Cupons de desconto
-- Favoritos
-- Denúncias de produtos, preços e mercados
+- Cupons de desconto (migration `cupons_desconto` + `uso_cupons`, API, CupomService)
+- Favoritos (API GET/POST/DELETE, FavoritoService, ♥ nos cards, aba no Histórico)
+- Denúncias de produtos, preços e mercados (migration + RLS, API, DenunciaService, 🚩 nos cards)
 
 ### v1.0.6
-- Mapa e rotas (Leaflet + Nominatim)
+- Mapa e rotas (Leaflet + Nominatim + Leaflet Routing Machine)
 - Cache de comparação (hash dos produtos + TTL 30 min em localStorage)
-- Sincronização de configurações com servidor
+- Sincronização de configurações com servidor (ConfigService)
 
 ### v1.0.5
 - Chat com IA (Gemini com contexto das últimas 10 mensagens)
-- Alertas de preço
+- Alertas de preço com notificação push
 - Gestão de catálogo completa (CRUD de produtos, categorias, mercados)
 - Tickets de suporte com conversa ao vivo
-- Acessibilidade (fonte, contraste, leitor de tela, redução de animações)
+- Acessibilidade (fonte 4 níveis em `rem`, contraste WCAG AA, leitor de tela, redução de animações)
+- Modo escuro (`body.dark-theme`) e alto contraste (`body.alto-contraste`)
 
 ---
 
@@ -227,13 +284,25 @@ BEAUTIFUL SOUP. *Beautiful Soup Documentation*. Crummy, 2024. Disponível em: ht
 
 CAPACITOR. *Capacitor Documentation*. Ionic, 2024. Disponível em: https://capacitorjs.com/docs. Acesso em: 24 mar. 2026.
 
+CAPACITOR. *Capacitor Camera Plugin*. Ionic, 2024. Disponível em: https://capacitorjs.com/docs/apis/camera. Acesso em: 14 jun. 2026.
+
+CAPACITOR. *Capacitor Push Notifications Plugin*. Ionic, 2024. Disponível em: https://capacitorjs.com/docs/apis/push-notifications. Acesso em: 14 jun. 2026.
+
+CAPACITOR. *Capacitor Status Bar Plugin*. Ionic, 2024. Disponível em: https://capacitorjs.com/docs/apis/status-bar. Acesso em: 14 jun. 2026.
+
+FIREBASE. *Firebase Admin SDK Documentation*. Google, 2024. Disponível em: https://firebase.google.com/docs/admin/setup. Acesso em: 14 jun. 2026.
+
 FIREBASE. *Firebase Cloud Messaging Documentation*. Google, 2024. Disponível em: https://firebase.google.com/docs/cloud-messaging. Acesso em: 24 mar. 2026.
+
+GITHUB. *GitHub Actions Documentation*. GitHub, 2024. Disponível em: https://docs.github.com/en/actions. Acesso em: 14 jun. 2026.
 
 GOOGLE. *Gemini API Documentation*. Google, 2024. Disponível em: https://ai.google.dev/docs. Acesso em: 24 mar. 2026.
 
 IONIC. *Ionic Framework Documentation*. Ionic, 2024. Disponível em: https://ionicframework.com/docs. Acesso em: 24 mar. 2026.
 
 LEAFLET. *Leaflet — an open-source JavaScript library for mobile-friendly interactive maps*. Leaflet, 2024. Disponível em: https://leafletjs.com. Acesso em: 24 mar. 2026.
+
+LEAFLET. *Leaflet Routing Machine*. GitHub, 2024. Disponível em: https://www.liedman.net/leaflet-routing-machine/. Acesso em: 14 jun. 2026.
 
 MICROSOFT. *TypeScript Documentation*. Microsoft, 2024. Disponível em: https://www.typescriptlang.org/docs/. Acesso em: 24 mar. 2026.
 
@@ -251,11 +320,15 @@ POSTGRESQL. *PostgreSQL Documentation*. The PostgreSQL Global Development Group,
 
 PYTHON SOFTWARE FOUNDATION. *Python Documentation*. Python Software Foundation, 2024. Disponível em: https://docs.python.org/3/. Acesso em: 24 mar. 2026.
 
+REQUESTS. *Requests: HTTP for Humans*. Python Software Foundation, 2024. Disponível em: https://requests.readthedocs.io. Acesso em: 14 jun. 2026.
+
 RESEND. *Resend Documentation*. Resend, 2024. Disponível em: https://resend.com/docs. Acesso em: 24 mar. 2026.
 
 SASS. *Sass: Syntactically Awesome Style Sheets*. Sass, 2024. Disponível em: https://sass-lang.com/documentation/. Acesso em: 24 mar. 2026.
 
 SUPABASE. *Supabase Documentation*. Supabase, Inc., 2024. Disponível em: https://supabase.com/docs. Acesso em: 24 mar. 2026.
+
+SWIPER. *Swiper.js Documentation*. 2024. Disponível em: https://swiperjs.com. Acesso em: 14 jun. 2026.
 
 VERCEL. *Next.js Documentation*. Vercel, 2024. Disponível em: https://nextjs.org/docs. Acesso em: 24 mar. 2026.
 
