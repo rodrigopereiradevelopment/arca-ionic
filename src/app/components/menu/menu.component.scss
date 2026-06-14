@@ -82,7 +82,7 @@ ion-footer {
 }
 
 .menu-footer {
-  padding: 10px 16px;
+  padding: 10px 16px max(env(safe-area-inset-bottom, 0px), 10px);
   border-top: 1px solid var(--arca-shadow-md);
 
   .btn-sair {
