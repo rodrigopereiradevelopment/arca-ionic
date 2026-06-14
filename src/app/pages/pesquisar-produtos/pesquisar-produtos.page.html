@@ -22,7 +22,7 @@
         *ngFor="let cat of categorias"
         class="cat-btn"
         [class.ativa]="categoriaAtiva === cat"
-        (click)="categoriaAtiva = cat">
+        (click)="selecionarCategoria(cat)">
         {{ cat }}
       </button>
     </div>
@@ -102,7 +102,13 @@
 
     </div>
 
-    <p class="sem-resultados" *ngIf="produtosFiltrados.length === 0">
+    <div class="load-more-wrapper" *ngIf="!modoBusca && temMais && produtosFiltrados.length > 0">
+      <button class="btn-load-more" (click)="carregarMais()" [disabled]="carregandoMais">
+        {{ carregandoMais ? 'Carregando...' : 'Carregar mais (15)' }}
+      </button>
+    </div>
+
+    <p class="sem-resultados" *ngIf="produtosFiltrados.length === 0 && !loading">
       Nenhum produto encontrado. Tente outra busca!
     </p>
 

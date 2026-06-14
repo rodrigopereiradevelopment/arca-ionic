@@ -67,7 +67,12 @@ export class PesquisarProdutosPage implements OnInit {
   denunciaMotivo = '';
   denunciaDescricao = '';
   loading = false;
+  pagina = 1;
+  carregandoMais = false;
+  temMais = false;
+  modoBusca = false;
   categorias: string[] = ['Todas'];
+  private categoriaMap: Record<string, number> = {};
   produtos: Produto[] = [];
 
   private mapaMercados: Record<number, { nome: string; logo: string }> = {};
@@ -98,6 +103,9 @@ export class PesquisarProdutosPage implements OnInit {
     const cats = await this.categoriaService.listar();
     if (cats.length > 0) {
       this.categorias = ['Todas', ...cats.map(c => c.nome)];
+      for (const c of cats) {
+        this.categoriaMap[c.nome] = c.id;
+      }
     }
   }
 
@@ -120,11 +128,15 @@ export class PesquisarProdutosPage implements OnInit {
     const query = (event.detail?.value ?? this.busca).trim();
     this.busca = query;
     if (query.length < 2) { this.produtos = []; return; }
+    this.modoBusca = true;
+    this.pagina = 1;
+    this.temMais = false;
     this.loading = true;
     try {
       const res = await fetch(`${environment.apiUrl}/api/produtos/search?q=${encodeURIComponent(query)}`);
       if (!res.ok) throw new Error('Erro na busca');
-      const raw: any[] = await res.json();
+      const result: any = await res.json();
+      const raw: any[] = result.data ?? [];
       this.produtos = raw.map(p => this.mapearProduto(p));
       this.audio.play('scan');
     } catch (err) {
@@ -155,6 +167,43 @@ export class PesquisarProdutosPage implements OnInit {
       expandido: false,
       quantidade: 1
     };
+  }
+
+  async selecionarCategoria(cat: string) {
+    this.categoriaAtiva = cat;
+    if (this.busca.length >= 2) return;
+    if (cat === 'Todas') { this.produtos = []; return; }
+    this.modoBusca = false;
+    this.pagina = 1;
+    await this.carregarPorCategoria();
+  }
+
+  async carregarPorCategoria(append = false) {
+    if (!append) { this.loading = true; this.produtos = []; }
+    else { this.carregandoMais = true; }
+    try {
+      const catId = this.categoriaMap[this.categoriaAtiva];
+      if (!catId) return;
+      const url = `${environment.apiUrl}/api/produtos/search?categoria_id=${catId}&page=${this.pagina}`;
+      const res = await fetch(url);
+      const result: any = await res.json();
+      const raw: any[] = result.data ?? [];
+      this.temMais = result.temMais ?? false;
+      const mapped = raw.map(p => this.mapearProduto(p));
+      if (append) this.produtos.push(...mapped);
+      else this.produtos = mapped;
+    } catch (err) {
+      console.error(err);
+      this.mostrarToast('Erro ao carregar produtos', 'danger');
+    } finally {
+      this.loading = false;
+      this.carregandoMais = false;
+    }
+  }
+
+  carregarMais() {
+    this.pagina++;
+    this.carregarPorCategoria(true);
   }
 
   get produtosFiltrados() {

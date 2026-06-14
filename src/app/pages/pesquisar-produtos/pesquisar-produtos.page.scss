@@ -310,6 +310,26 @@ ion-content {
   }
 }
 
+.load-more-wrapper {
+  text-align: center;
+  padding: 16px 0;
+
+  .btn-load-more {
+    padding: 12px 32px;
+    background: var(--arca-surface);
+    border: 2px solid var(--arca-secondary);
+    border-radius: 25px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    color: var(--arca-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover { background: var(--arca-secondary); color: var(--arca-text-white); }
+    &:disabled { opacity: 0.5; cursor: default; &:hover { background: var(--arca-surface); color: var(--arca-secondary); } }
+  }
+}
+
 .sem-resultados {
   text-align: center;
   color: var(--arca-text-lighter);
