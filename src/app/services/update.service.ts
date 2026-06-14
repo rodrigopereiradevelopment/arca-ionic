@@ -12,7 +12,7 @@ export interface VersaoInfo {
 
 @Injectable({ providedIn: 'root' })
 export class UpdateService {
-  private readonly VERSION_CODE = 8;
+  private readonly VERSION_CODE = 9;
   private ultimaVerificacao = 0;
 
   async verificar(): Promise<VersaoInfo | null> {
