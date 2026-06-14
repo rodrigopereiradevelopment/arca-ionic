@@ -227,7 +227,11 @@ export class PesquisarProdutosPage implements OnInit {
   }
 
   async toggleFavorito(p: Produto) {
-    await this.favoritoService.toggle(p.id);
+    const ativo = this.favoritoService.isFavorito(p.id);
+    const ok = await this.favoritoService.toggle(p.id);
+    if (!ok && !this.authService.logado) {
+      this.mostrarToast('Faça login para favoritar', 'warning');
+    }
   }
 
   abrirModal(p: Produto) {
