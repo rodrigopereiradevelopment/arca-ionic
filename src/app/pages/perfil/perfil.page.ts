@@ -104,6 +104,7 @@ export class PerfilPage {
       if (data.email) this.dados.email = data.email;
     } catch (err) {
       console.error('Erro ao carregar perfil:', err);
+      this.toast('Erro ao carregar perfil', 'danger');
     }
   }
 
