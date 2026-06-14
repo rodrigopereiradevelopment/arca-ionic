@@ -46,8 +46,14 @@
     </ion-button>
   </div>
 
+  <!-- CARREGANDO COMPARAÇÃO -->
+  <div *ngIf="view === 'resultado' && carregandoComparacao" class="loading-comparacao">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Comparando preços...</p>
+  </div>
+
   <!-- TELA DE RESULTADO DA COMPARAÇÃO -->
-  <div *ngIf="view === 'resultado'">
+  <div *ngIf="view === 'resultado' && !carregandoComparacao">
     <div class="modal-header">
       <h2 class="section-title"><span aria-hidden="true">🏆</span> Melhores Preços</h2>
       <ion-button fill="clear" (click)="toggleComparacao()">Voltar</ion-button>

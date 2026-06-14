@@ -131,6 +131,10 @@ export class GerenciarProdutosPage {
   async editar(p: Produto) {
     this.modoEdicao = true;
     this.produtoSelecionado = { ...p };
+    if (!p.categoria && (p as any).categoria_id) {
+      const cat = this.categorias.find(c => c.id === (p as any).categoria_id);
+      if (cat) this.produtoSelecionado.categoria = cat.nome;
+    }
     this.imagemPreview = p.imagem_url || null;
     this.imagemFile = undefined;
     this.precosProduto = [];

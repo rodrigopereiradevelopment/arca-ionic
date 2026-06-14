@@ -24,6 +24,10 @@ export class FavoritoService {
     return this.favoritosCache;
   }
 
+  get carregado(): boolean {
+    return this.idsCache.size > 0 || this.favoritosCache.length > 0;
+  }
+
   isFavorito(produtoId: number): boolean {
     return this.idsCache.has(produtoId);
   }

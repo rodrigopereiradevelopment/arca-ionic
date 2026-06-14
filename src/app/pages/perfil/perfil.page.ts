@@ -97,7 +97,10 @@ export class PerfilPage {
         this.authService.usuario.foto_perfil = data.foto_perfil;
         this.imagemPreview = null;
       }
-    } catch {}
+      if (data.email) this.dados.email = data.email;
+    } catch (err) {
+      console.error('Erro ao carregar perfil:', err);
+    }
     await Promise.all([
       this.carregarEnderecos(token),
       this.carregarAlertas(),

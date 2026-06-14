@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import {
   IonButton, IonContent, IonList, IonItem,
-  IonLabel, IonCard, IonCardContent, ModalController
+  IonLabel, IonCard, IonCardContent, IonSpinner, ModalController
 } from '@ionic/angular/standalone';
 import { CarrinhoService } from '../../services/carrinho.service';
 import { environment } from '../../../environments/environment';
@@ -23,7 +23,7 @@ interface MercadoComparacao {
   imports: [
     CommonModule, RouterModule,
     IonButton, IonContent, IonList, IonItem,
-    IonLabel, IonCard, IonCardContent
+    IonLabel, IonCard, IonCardContent, IonSpinner
   ]
 })
 export class ModalCarrinhoComponent {
@@ -33,6 +33,7 @@ export class ModalCarrinhoComponent {
 
   view: string = 'lista';
   comparacaoMercados: MercadoComparacao[] = [];
+  carregandoComparacao = false;
 
   fecharModal() { 
     this.modalCtrl.dismiss(); 
@@ -56,6 +57,7 @@ export class ModalCarrinhoComponent {
   }
 
   async carregarComparacao() {
+  this.carregandoComparacao = true;
   const itens = this.carrinhoService.lista;
   if (itens.length === 0) return;
 
@@ -86,13 +88,19 @@ export class ModalCarrinhoComponent {
     }
   } catch (err) {
     console.error('Erro na comparação:', err);
+  } finally {
+    this.carregandoComparacao = false;
   }
 }
 
 async toggleComparacao() {
   if (this.view === 'lista') {
     await this.carregarComparacao();
+    if (this.comparacaoMercados.length > 0) {
+      this.view = 'resultado';
+    }
+  } else {
+    this.view = 'lista';
   }
-  this.view = this.view === 'lista' ? 'resultado' : 'lista';
 }
 }

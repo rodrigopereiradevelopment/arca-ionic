@@ -10,6 +10,7 @@ import { CategoriaService } from '../../services/categoria.service';
 import { FavoritoService } from '../../services/favorito.service';
 import { DenunciaService } from '../../services/denuncia.service';
 import { AudioService } from '../../services/audio.service';
+import { AuthService } from '../../services/auth.service';
 import { InfoNutricionalService, InfoNutricional, NUTRI_SCORE_CORES } from '../../services/info-nutricional.service';
 import { environment } from '../../../environments/environment';
 import { CATEGORIAS_MAP, MEDALHAS } from '../../constants/mercados';
@@ -47,6 +48,7 @@ export class PesquisarProdutosPage implements OnInit {
   private historicoService = inject(HistoricoService);
   comparacaoService = inject(ComparacaoService);
   private route = inject(ActivatedRoute);
+  private authService = inject(AuthService);
   private categoriaService = inject(CategoriaService);
   favoritoService = inject(FavoritoService);
   denunciaSvc = inject(DenunciaService);
@@ -84,6 +86,9 @@ export class PesquisarProdutosPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    if (this.authService.logado && !this.favoritoService.carregado) {
+      this.favoritoService.listar();
+    }
     if (this.busca.length >= 2) {
       this.handleSearch({ detail: { value: this.busca } });
     }
@@ -172,8 +177,8 @@ export class PesquisarProdutosPage implements OnInit {
     });
   }
 
-  toggleFavorito(p: Produto) {
-    this.favoritoService.toggle(p.id);
+  async toggleFavorito(p: Produto) {
+    await this.favoritoService.toggle(p.id);
   }
 
   abrirModal(p: Produto) {

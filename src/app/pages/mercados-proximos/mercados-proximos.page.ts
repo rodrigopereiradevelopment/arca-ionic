@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonContent, ToastController } from '@ionic/angular/standalone';
-import * as L from 'leaflet';
+import L from 'leaflet';
 import 'leaflet-routing-machine';
 import { MercadoService, Mercado } from '../../services/mercado.service';
 import { AvaliacaoService } from '../../services/avaliacao.service';
