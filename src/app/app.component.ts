@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet, AlertController } from '@ionic/angular/standalone';
 import { MenuComponent } from './components/menu/menu.component';
 import { AuthService } from './services/auth.service';
 import { ConfigService } from './services/config.service';
@@ -26,11 +26,12 @@ export class AppComponent implements OnInit {
   private pushService = inject(PushNotificationService);
   private router = inject(Router);
   private updateService = inject(UpdateService);
+  private alertCtrl = inject(AlertController);
 
 
   async ngOnInit() {
     if (Capacitor.isNativePlatform()) {
-      StatusBar.setOverlaysWebView({ overlay: false });
+      StatusBar.setOverlaysWebView({ overlay: true });
       StatusBar.setStyle({ style: Style.Dark });
     }
 
@@ -81,24 +82,19 @@ export class AppComponent implements OnInit {
     setTimeout(async () => {
       const update = await this.updateService.verificar();
       if (update) {
-        const alert = document.createElement('ion-alert');
-        alert.header = 'Nova versão disponível';
-        alert.subHeader = `ARCA v${update.versao}`;
-        alert.message = update.mensagem;
-        alert.buttons = [
-          {
-            text: 'Depois',
-            role: 'cancel',
-          },
-          {
-            text: 'Atualizar agora',
-            handler: () => {
-              window.open(update.url, '_system');
+        const alert = await this.alertCtrl.create({
+          header: 'Nova versão disponível',
+          subHeader: `ARCA v${update.versao}`,
+          message: update.mensagem,
+          buttons: [
+            { text: 'Depois', role: 'cancel' },
+            {
+              text: 'Atualizar agora',
+              handler: () => { window.open(update.url, '_system'); },
             },
-          },
-        ];
-        document.body.appendChild(alert);
-        alert.present();
+          ],
+        });
+        await alert.present();
       }
     }, 5000);
   }
