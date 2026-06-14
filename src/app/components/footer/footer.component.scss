@@ -1,6 +1,6 @@
 .footer-wrapper {
   position: fixed;
-  bottom: 0;
+  bottom: env(safe-area-inset-bottom, 0px);
   left: 0;
   width: 100%;
   z-index: 999;
