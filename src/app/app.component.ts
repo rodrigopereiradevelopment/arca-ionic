@@ -71,11 +71,14 @@ export class AppComponent implements OnInit {
 
     this.authService.usuario$.subscribe(async u => {
       if (u) {
-        this.carrinhoService.carregarDoServidor();
-        await this.configService.carregarDoServidor();
-        if (this.configService.config.notificacoes.push) {
-          this.pushService.registrar();
-        }
+        await Promise.all([
+          this.carrinhoService.carregarDoServidor(),
+          this.configService.carregarDoServidor().then(() => {
+            if (this.configService.config.notificacoes.push) {
+              this.pushService.registrar();
+            }
+          }),
+        ]);
       }
     });
 

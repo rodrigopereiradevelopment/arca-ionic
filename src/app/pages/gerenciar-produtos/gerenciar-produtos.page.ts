@@ -49,10 +49,11 @@ export class GerenciarProdutosPage {
   imagemFile: File | undefined;
 
   async ionViewWillEnter() {
-    try {
-      this.categorias = await this.categoriaSvc.listar();
-    } catch {}
-    await this.carregarProdutos();
+    const [categorias] = await Promise.all([
+      this.categoriaSvc.listar().catch(() => [] as Categoria[]),
+      this.carregarProdutos(),
+    ]);
+    this.categorias = categorias;
   }
 
   private async carregarProdutos(append = false) {

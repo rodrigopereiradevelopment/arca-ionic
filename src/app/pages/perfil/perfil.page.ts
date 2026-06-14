@@ -85,8 +85,12 @@ export class PerfilPage {
 
   async carregarPerfil(token: string) {
     try {
-      const res = await fetch(environment.apiUrl + '/api/auth/perfil?token=' + token);
-      const data = await res.json();
+      const [perfilRes] = await Promise.all([
+        fetch(environment.apiUrl + '/api/auth/perfil?token=' + token),
+        this.carregarEnderecos(token),
+        this.carregarAlertas(),
+      ]);
+      const data = await perfilRes.json();
       if (data.nome) this.dados.nome = data.nome;
       if (data.telefone) this.dados.telefone = data.telefone;
       if (data.cidade) this.dados.cidade = data.cidade;
@@ -101,10 +105,6 @@ export class PerfilPage {
     } catch (err) {
       console.error('Erro ao carregar perfil:', err);
     }
-    await Promise.all([
-      this.carregarEnderecos(token),
-      this.carregarAlertas(),
-    ]);
   }
 
   async carregarEnderecos(token: string) {
