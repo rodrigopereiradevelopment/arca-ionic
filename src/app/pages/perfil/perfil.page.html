@@ -1,8 +1,8 @@
 <ion-content [fullscreen]="true">
 
   <div class="topo">
-    <a routerLink="/home" class="btn-voltar">&#8592;</a>
-    <span class="titulo-topo">Meu Perfil</span>
+    <a routerLink="/home" class="btn-voltar" aria-label="Voltar">&#8592;</a>
+    <h1 class="titulo-topo">Meu Perfil</h1>
   </div>
 
   <!-- CABEÇALHO DO PERFIL -->
@@ -120,7 +120,8 @@
         <label class="toggle">
           <input type="checkbox"
             [(ngModel)]="configService.config.notificacoes.push"
-            (ngModelChange)="configService.salvar()">
+            (ngModelChange)="configService.salvar()"
+            role="switch" [attr.aria-checked]="configService.config.notificacoes.push" aria-label="Notificações Push">
           <span class="slider"></span>
         </label>
       </div>
@@ -133,7 +134,8 @@
         <label class="toggle">
           <input type="checkbox"
             [(ngModel)]="configService.config.notificacoes.email"
-            (ngModelChange)="configService.salvar()">
+            (ngModelChange)="configService.salvar()"
+            role="switch" [attr.aria-checked]="configService.config.notificacoes.email" aria-label="Notificações por E-mail">
           <span class="slider"></span>
         </label>
       </div>
@@ -146,7 +148,8 @@
         <label class="toggle">
           <input type="checkbox"
             [(ngModel)]="configService.config.notificacoes.promocoes"
-            (ngModelChange)="configService.salvar()">
+            (ngModelChange)="configService.salvar()"
+            role="switch" [attr.aria-checked]="configService.config.notificacoes.promocoes" aria-label="Promoções">
           <span class="slider"></span>
         </label>
       </div>
@@ -239,7 +242,8 @@
         <div class="alerta-acoes">
           <label class="toggle small">
             <input type="checkbox" [checked]="a.ativo"
-              (change)="toggleAlerta(a)">
+              (change)="toggleAlerta(a)"
+              role="switch" [attr.aria-checked]="a.ativo" [attr.aria-label]="'Alerta: ' + a.produto">
             <span class="slider"></span>
           </label>
           <button class="btn-excluir-alerta"

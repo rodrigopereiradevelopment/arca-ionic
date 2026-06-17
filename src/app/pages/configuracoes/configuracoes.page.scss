@@ -43,7 +43,7 @@ ion-content { --background: var(--arca-bg); }
   box-shadow: 0 2px 8px var(--arca-shadow-sm);
 }
 
-.secao-titulo {
+h2.secao-titulo {
   font-size: 0.9375rem;
   font-weight: bold;
   color: var(--arca-text);
@@ -78,8 +78,6 @@ ion-content { --background: var(--arca-bg); }
   display: inline-block;
   width: 46px; height: 26px;
   flex-shrink: 0;
-
-  input { display: none; }
 
   .slider {
     position: absolute; inset: 0;

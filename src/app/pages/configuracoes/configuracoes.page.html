@@ -1,22 +1,23 @@
 <ion-content [fullscreen]="true">
 
   <div class="topo">
-    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <a routerLink="/home" class="btn-voltar" aria-label="Voltar">&#8592;</a>
     <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
-    <span class="titulo-topo">Configurações</span>
+    <h1 class="titulo-topo">Configurações</h1>
   </div>
 
   <div class="container">
 
     <div class="secao">
-      <h3 class="secao-titulo"><span aria-hidden="true">🎨</span> Aparência</h3>
+      <h2 class="secao-titulo"><span aria-hidden="true">🎨</span> Aparência</h2>
       <div class="config-item">
         <div class="config-info">
           <strong>Modo Escuro</strong>
           <span>Interface com fundo escuro</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="aparencia.modoEscuro" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="aparencia.modoEscuro" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="aparencia.modoEscuro" aria-label="Modo Escuro">
           <span class="slider"></span>
         </label>
       </div>
@@ -26,14 +27,15 @@
           <span>Aumenta o contraste das cores</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="aparencia.altoContraste" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="aparencia.altoContraste" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="aparencia.altoContraste" aria-label="Alto Contraste">
           <span class="slider"></span>
         </label>
       </div>
     </div>
 
     <div class="secao">
-      <h3 class="secao-titulo"><span aria-hidden="true">♿</span> Acessibilidade</h3>
+      <h2 class="secao-titulo"><span aria-hidden="true">♿</span> Acessibilidade</h2>
       <div class="config-item coluna">
         <div class="config-info">
           <strong>Tamanho da Fonte</strong>
@@ -53,7 +55,8 @@
           <span>Deixa todos os textos em negrito</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="acessibilidade.negrito" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="acessibilidade.negrito" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="acessibilidade.negrito" aria-label="Texto em Negrito">
           <span class="slider"></span>
         </label>
       </div>
@@ -75,7 +78,8 @@
           <span>Remove efeitos de transição</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="acessibilidade.reduzirAnimacoes" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="acessibilidade.reduzirAnimacoes" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="acessibilidade.reduzirAnimacoes" aria-label="Reduzir Animações">
           <span class="slider"></span>
         </label>
       </div>
@@ -85,21 +89,23 @@
           <span>Ativa atributos de acessibilidade ARIA</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="acessibilidade.leitorTela" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="acessibilidade.leitorTela" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="acessibilidade.leitorTela" aria-label="Suporte a Leitor de Tela">
           <span class="slider"></span>
         </label>
       </div>
     </div>
 
     <div class="secao">
-      <h3 class="secao-titulo"><span aria-hidden="true">📍</span> Localização</h3>
+      <h2 class="secao-titulo"><span aria-hidden="true">📍</span> Localização</h2>
       <div class="config-item">
         <div class="config-info">
           <strong>Localização Automática</strong>
           <span>Usa o GPS do dispositivo</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="localizacao.automatica" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="localizacao.automatica" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="localizacao.automatica" aria-label="Localização Automática">
           <span class="slider"></span>
         </label>
       </div>
@@ -117,14 +123,15 @@
     </div>
 
     <div class="secao">
-      <h3 class="secao-titulo"><span aria-hidden="true">🔔</span> Notificações</h3>
+      <h2 class="secao-titulo"><span aria-hidden="true">🔔</span> Notificações</h2>
       <div class="config-item">
         <div class="config-info">
           <strong>Notificações Push</strong>
           <span>Alertas no celular</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="notificacoes.push" (change)="onToggle('push')">
+          <input type="checkbox" [(ngModel)]="notificacoes.push" (change)="onToggle('push')"
+            role="switch" [attr.aria-checked]="notificacoes.push" aria-label="Notificações Push">
           <span class="slider"></span>
         </label>
       </div>
@@ -134,7 +141,8 @@
           <span>Avisa quando o preço cai</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="notificacoes.alertasPreco" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="notificacoes.alertasPreco" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="notificacoes.alertasPreco" aria-label="Alertas de Preço">
           <span class="slider"></span>
         </label>
       </div>
@@ -144,7 +152,8 @@
           <span>Ofertas especiais dos mercados</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="notificacoes.promocoes" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="notificacoes.promocoes" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="notificacoes.promocoes" aria-label="Promoções">
           <span class="slider"></span>
         </label>
       </div>
@@ -154,14 +163,15 @@
           <span>Resumo semanal de preços</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="notificacoes.email" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="notificacoes.email" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="notificacoes.email" aria-label="Notificações por E-mail">
           <span class="slider"></span>
         </label>
       </div>
     </div>
 
     <div class="secao">
-      <h3 class="secao-titulo"><span aria-hidden="true">🛒</span> Preferências de Compra</h3>
+      <h2 class="secao-titulo"><span aria-hidden="true">🛒</span> Preferências de Compra</h2>
       <div class="config-item coluna">
         <div class="config-info">
           <strong>Ordenação Padrão</strong>
@@ -180,7 +190,8 @@
           <span>Oculta mercados pendentes</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="preferencias.apenasAprovados" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="preferencias.apenasAprovados" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="preferencias.apenasAprovados" aria-label="Apenas Mercados Aprovados">
           <span class="slider"></span>
         </label>
       </div>
@@ -190,7 +201,8 @@
           <span>Sons ao adicionar, buscar e confirmar ações</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="preferencias.som" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="preferencias.som" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="preferencias.som" aria-label="Efeitos Sonoros">
           <span class="slider"></span>
         </label>
       </div>
@@ -200,21 +212,23 @@
           <span>Resposta tátil ao interagir (Android)</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="preferencias.vibrar" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="preferencias.vibrar" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="preferencias.vibrar" aria-label="Vibração">
           <span class="slider"></span>
         </label>
       </div>
     </div>
 
     <div class="secao">
-      <h3 class="secao-titulo"><span aria-hidden="true">🔒</span> Privacidade e Dados</h3>
+      <h2 class="secao-titulo"><span aria-hidden="true">🔒</span> Privacidade e Dados</h2>
       <div class="config-item">
         <div class="config-info">
           <strong>Salvar Histórico</strong>
           <span>Guarda suas pesquisas recentes</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="privacidade.salvarHistorico" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="privacidade.salvarHistorico" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="privacidade.salvarHistorico" aria-label="Salvar Histórico">
           <span class="slider"></span>
         </label>
       </div>
@@ -224,7 +238,8 @@
           <span>Ajuda a melhorar o app</span>
         </div>
         <label class="toggle">
-          <input type="checkbox" [(ngModel)]="privacidade.dadosAnonimos" (change)="onToggle()">
+          <input type="checkbox" [(ngModel)]="privacidade.dadosAnonimos" (change)="onToggle()"
+            role="switch" [attr.aria-checked]="privacidade.dadosAnonimos" aria-label="Dados Anônimos">
           <span class="slider"></span>
         </label>
       </div>
@@ -239,7 +254,7 @@
     </div>
 
     <div class="secao">
-      <h3 class="secao-titulo"><span aria-hidden="true">📱</span> Sobre o App</h3>
+      <h2 class="secao-titulo"><span aria-hidden="true">📱</span> Sobre o App</h2>
       <a routerLink="/ajuda" class="link-config"><span aria-hidden="true">❓</span> Ajuda e Suporte</a>
       <a routerLink="/termos" class="link-config"><span aria-hidden="true">📄</span> Termos de Uso</a>
       <a routerLink="/privacidade" class="link-config"><span aria-hidden="true">🔒</span> Política de Privacidade</a>

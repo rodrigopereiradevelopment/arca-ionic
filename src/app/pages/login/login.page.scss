@@ -41,7 +41,9 @@ ion-content { --background: var(--arca-bg); }
     border-radius: 12px;
     font-size: 0.9375rem;
     background: var(--arca-surface);
+    color: var(--arca-text-input);
     outline: none;
+    &::placeholder { color: var(--arca-text-light); }
     &:focus { border-color: var(--arca-secondary); }
   }
 }

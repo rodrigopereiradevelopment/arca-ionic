@@ -140,17 +140,31 @@ body.reduzir-animacoes *::after {
   transition-duration: 0s !important;
 }
 
-/* ♿ Leitor de tela — foco visível */
+/* ♿ Acessibilidade — foco visível */
 body.leitor-tela *:focus-visible {
   outline: 3px solid var(--arca-secondary) !important;
   outline-offset: 2px !important;
 }
 
-body.leitor-tela .sr-only {
+/* Elemento visualmente escondido mas acessível a leitores de tela */
+.sr-only, .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;
+  padding: 0; margin: -1px;
   overflow: hidden;
   clip: rect(0,0,0,0);
   white-space: nowrap;
   border: 0;
+}
+
+/* Toggle switch acessível — input invisível mas focalizável */
+.toggle input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggle input[type="checkbox"]:focus-visible + .slider {
+  outline: 3px solid var(--arca-secondary);
+  outline-offset: 2px;
 }

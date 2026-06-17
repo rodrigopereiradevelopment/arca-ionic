@@ -1,8 +1,9 @@
 <ion-content [fullscreen]="true">
 
   <!-- TOPO -->
+  <h1 class="sr-only">Buscar Produtos</h1>
   <div class="topo">
-    <a routerLink="/home" class="btn-voltar">&#8592;</a>
+    <a routerLink="/home" class="btn-voltar" aria-label="Voltar">&#8592;</a>
     <div class="search-bar">
       <span class="search-icon"><span aria-hidden="true">🔍</span></span>
       <input
@@ -29,7 +30,7 @@
 
     <!-- ORDENAÇÃO E CONTAGEM -->
     <div class="barra-opcoes">
-      <span class="contagem">{{ produtosFiltrados.length }} produto(s)</span>
+      <span class="contagem" aria-live="polite" aria-atomic="true">{{ produtosFiltrados.length }} produto(s)</span>
       <div class="ordenacao">
         <span>Ordenar:</span>
         <button [class.ativo]="ordenacao === 'preco'" (click)="ordenacao = 'preco'">
@@ -69,33 +70,37 @@
           <button
             class="btn-lista"
             [class.adicionado]="naLista(p.id)"
-            (click)="$event.stopPropagation(); adicionarLista(p)">
+            (click)="$event.stopPropagation(); adicionarLista(p)"
+            aria-label="Adicionar à lista de compras">
             {{ naLista(p.id) ? '✅' : '＋' }}
           </button>
           <button
             class="btn-comparar"
             [class.selecionado]="comparacaoService.contem(p.id)"
-            (click)="$event.stopPropagation(); toggleComparar(p)">
+            (click)="$event.stopPropagation(); toggleComparar(p)"
+            aria-label="Comparar preços">
             {{ comparacaoService.contem(p.id) ? '📊✅' : '📊' }}
           </button>
           <button
             class="btn-expandir"
-            (click)="$event.stopPropagation(); toggleExpanir(p)">
+            (click)="$event.stopPropagation(); toggleExpanir(p)"
+            [attr.aria-expanded]="p.expandido"
+            [attr.aria-label]="(p.expandido ? 'Ocultar' : 'Ver') + ' preços em outros mercados'">
             {{ p.expandido ? '▲' : '▼' }}
           </button>
         </div>
       </div>
 
       <!-- PREÇOS EXPANDIDOS -->
-      <div class="precos-expandidos" *ngIf="p.expandido">
-        <div class="preco-row" *ngFor="let pr of p.precos">
-          <img [src]="pr.posicao" class="img-posicao" alt="posição">
+<div class="precos-expandidos" *ngIf="p.expandido">
+        <div class="preco-row" *ngFor="let pr of p.precos; let i = index">
+          <img [src]="pr.posicao" class="img-posicao" [alt]="'Posição ' + (i + 1)">
           <img [src]="pr.logo" class="img-logo" [alt]="pr.mercado"
             onerror="this.onerror=null;this.src='assets/img/mercado.png'">
           <span class="nome-mercado">{{ pr.mercado }}</span>
           <span class="valor-preco">R$ {{ pr.valor.toFixed(2) }}</span>
         </div>
-        <button class="btn-alerta" (click)="criarAlerta(p)">
+        <button class="btn-alerta" (click)="criarAlerta(p)" aria-label="Criar Alerta de Preço">
           🔔 Criar Alerta de Preço
         </button>
       </div>
@@ -108,7 +113,7 @@
       </button>
     </div>
 
-    <p class="sem-resultados" *ngIf="produtosFiltrados.length === 0 && !loading">
+    <p class="sem-resultados" *ngIf="produtosFiltrados.length === 0 && !loading" role="status" aria-live="polite">
       Nenhum produto encontrado. Tente outra busca!
     </p>
 
@@ -134,8 +139,8 @@
     <h3 class="modal-titulo-precos"><span aria-hidden="true">💰</span> Comparativo de Preços</h3>
 
     <div class="modal-precos">
-      <div class="preco-row" *ngFor="let pr of modalProduto.precos">
-        <img [src]="pr.posicao" class="img-posicao" alt="posição">
+      <div class="preco-row" *ngFor="let pr of modalProduto.precos; let i = index">
+        <img [src]="pr.posicao" class="img-posicao" [alt]="'Posição ' + (i + 1)">
         <img [src]="pr.logo" class="img-logo" [alt]="pr.mercado"
           onerror="this.onerror=null;this.src='assets/img/mercado.png'">
         <span class="nome-mercado">{{ pr.mercado }}</span>
@@ -179,7 +184,8 @@
         <button 
           class="btn-quantidade"
           (click)="diminuirQuantidade(modalProduto!)"
-          [disabled]="modalProduto!.quantidade <= 1">
+          [disabled]="modalProduto!.quantidade <= 1"
+          aria-label="Diminuir quantidade">
           ➖
         </button>
         
@@ -195,7 +201,8 @@
         
         <button 
           class="btn-quantidade"
-          (click)="aumentarQuantidade(modalProduto!)">
+          (click)="aumentarQuantidade(modalProduto!)"
+          aria-label="Aumentar quantidade">
           ➕
         </button>
       </div>
@@ -231,7 +238,7 @@
         (click)="adicionarLista(modalProduto!)">
         {{ naLista(modalProduto.id) ? '✅ Na Lista' : '＋ Adicionar à Lista' }}
       </button>
-      <button class="btn-alerta-modal" (click)="criarAlerta(modalProduto!)">
+      <button class="btn-alerta-modal" (click)="criarAlerta(modalProduto!)" aria-label="Criar Alerta de Preço">
         🔔 Criar Alerta
       </button>
     </div>
