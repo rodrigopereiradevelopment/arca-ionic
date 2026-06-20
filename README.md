@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![App](https://img.shields.io/badge/App-Vercel-black?logo=vercel)](https://arca-ionic.vercel.app)
 [![API](https://img.shields.io/badge/API-Vercel-black?logo=vercel)](https://arca-next.vercel.app)
-![Version](https://img.shields.io/badge/version-1.1.2-green)
+![Version](https://img.shields.io/badge/version-1.1.3-green)
 [![Lint](https://img.shields.io/badge/lint-passing-brightgreen)]()
 [![Releases](https://img.shields.io/github/v/release/rodrigopereiradevelopment/arca-ionic)](https://github.com/rodrigopereiradevelopment/arca-ionic/releases)
 
@@ -29,6 +29,7 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
          ↓ ETL
 🏺  Supabase PostgreSQL (Gold)
      ├── pg_trgm (busca fuzzy)
+     ├── pgvector (embeddings 384d — busca semântica)
      ├── 6 mercados com coordenadas reais
      ├── histórico de preços
      ├── gestão de produtos, categorias e mercados
@@ -104,6 +105,8 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
 | 🏪 **Avaliação Mercados** | 4 critérios + comentário, estrelas nos cards | ✅ |
 | 📱 **Onboarding** | 5 slides com swipe, permissões (localização/câmera) e termos (Swiper.js) | ✅ |
 | 🔐 **Recuperação Senha** | `esqueci-senha` + `redefinir-senha` via Resend | ✅ |
+| 🔍 **Busca por Similares** | Fallback automático quando produto não encontrado — busca por trigram + categoria + peso + preço | ✅ |
+| 🧠 **Embeddings (Fase 2)** | Busca semântica via cosine distance com fallback para trigram — 53.809 produtos indexados | ✅ |
 | 📋 **Categoria Browse** | Navegação por categoria com paginação 15 em 15 | ✅ |
 | 🚀 **In-app Update** | Verifica `GET /api/versao`, AlertController com link, retry 3x | ✅ |
 | 📄 **Fetch one extra** | Paginação sem `count(*)` — evita timeout no Supabase | ✅ |
@@ -321,6 +324,9 @@ arca-ionic/
 - **`onerror` anti-loop** — `this.onerror=null;this.src='...'` em imagens
 - **Firebase Admin SDK** — `sendEachForMulticast` com auto-desativação de tokens
 - **google-services.json não versionado** — segurança das chaves Firebase
+- **Busca por similares** — fallback automático com trigram + categoria + peso + preço
+- **Embeddings 384d** — cosine distance via pgvector com fallback para trigram (53.809 produtos)
+- **RPC `buscar_produtos_embedding`** — busca semântica isolada, não substitui Fase 1 em produção
 
 ---
 
