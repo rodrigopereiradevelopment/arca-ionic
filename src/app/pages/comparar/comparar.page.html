@@ -48,6 +48,7 @@
           <div class="item-info">
             <span class="item-nome">{{ item.nome }}</span>
             <span class="item-quantidade">{{ item.quantidade }}x</span>
+            <span class="similar-badge" *ngIf="item.similarInfo">Similar</span>
           </div>
           <div class="item-preco">
             <span *ngIf="item.precoEncontrado > 0" class="preco-ok">
@@ -56,6 +57,12 @@
             <span *ngIf="item.precoEncontrado === 0" class="preco-faltante">
               ⚠️ Não encontrado
             </span>
+          </div>
+          <div class="similar-info" *ngIf="item.similarInfo">
+            <small>
+              → {{ item.similarInfo.nomeOriginal }}
+              ({{ item.similarInfo.motivo }})
+            </small>
           </div>
         </div>
       </div>

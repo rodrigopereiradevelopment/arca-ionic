@@ -17,6 +17,11 @@ interface ProdutoDetalhe {
   quantidade: number;
   precoEncontrado: number;
   naoEncontrado?: boolean;
+  similarInfo?: {
+    nomeOriginal: string;
+    motivo: string;
+    score: number;
+  };
 }
 
 interface MercadoComPreco {
@@ -139,7 +144,8 @@ export class CompararPage {
             nome: prod.nome,
             quantidade: prod.quantidade,
             precoEncontrado: prod.precoUnitario || 0,
-            naoEncontrado: prod.naoEncontrado || false
+            naoEncontrado: prod.naoEncontrado || false,
+            similarInfo: prod.similarInfo || undefined
           }));
 
           return {

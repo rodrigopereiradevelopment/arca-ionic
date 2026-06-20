@@ -125,8 +125,10 @@ ion-content {
   
   .item-info {
     display: flex;
-    gap: 16px;
+    gap: 8px;
     flex: 2;
+    align-items: center;
+    flex-wrap: wrap;
     
     .item-nome {
       font-size: 0.85rem;
@@ -137,6 +139,17 @@ ion-content {
       font-size: 0.75rem;
       color: var(--arca-text-muted);
       min-width: 40px;
+    }
+    
+    .similar-badge {
+      background: var(--ion-color-warning, #ffc409);
+      color: #000;
+      font-size: 0.6rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
     }
   }
   
