@@ -96,7 +96,26 @@ export class AppComponent implements OnInit {
           { text: 'Depois', role: 'cancel' },
           {
             text: 'Atualizar agora',
-            handler: () => { window.open(update.url, '_system'); },
+            handler: async () => {
+              const loading = await this.alertCtrl.create({
+                header: 'Baixando atualização...',
+                message: 'Aguarde, o download está em andamento.',
+                backdropDismiss: false,
+              });
+              await loading.present();
+
+              const resultado = await this.updateService.baixarEInstalar(update.url);
+              await loading.dismiss();
+
+              if (!resultado.ok) {
+                const erroAlert = await this.alertCtrl.create({
+                  header: 'Erro no download',
+                  message: resultado.erro || 'Não foi possível baixar a atualização.',
+                  buttons: ['OK'],
+                });
+                await erroAlert.present();
+              }
+            },
           },
         ],
       });
