@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="" icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Minhas Listas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="criarLista()">
+        <ion-icon name="add-circle" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="carregar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="!loading && listas.length === 0" class="ion-text-center ion-padding">
+    <ion-icon name="list" class="empty-icon"></ion-icon>
+    <p>Nenhuma lista salva</p>
+    <p class="empty-desc">
+      Crie listas pra comparar preços de produtos diferentes
+    </p>
+    <ion-button (click)="criarLista()" style="margin-top: 16px;">
+      <ion-icon name="add" slot="start"></ion-icon>
+      Criar primeira lista
+    </ion-button>
+  </div>
+
+  <ion-list *ngIf="!loading && listas.length > 0">
+    <ion-item-sliding *ngFor="let lista of listas">
+      <ion-item button (click)="abrirLista(lista)" detail>
+        <ion-icon name="list" slot="start" color="primary"></ion-icon>
+        <ion-label>
+          <h2>{{ lista.nome }}</h2>
+          <p>{{ lista.itens.length }} itens · {{ lista.created_at | date:'dd/MM/yyyy' }}</p>
+        </ion-label>
+        <ion-button fill="outline" size="small" slot="end" (click)="compararLista(lista); $event.stopPropagation()">
+          Comparar
+        </ion-button>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="editarNome(lista)">
+          <ion-icon name="create" slot="icon-only"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="secondary" (click)="duplicar(lista)">
+          <ion-icon name="copy" slot="icon-only"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="excluir(lista)">
+          <ion-icon name="trash" slot="icon-only"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

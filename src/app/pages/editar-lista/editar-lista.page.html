@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/gerenciar-listas" text="" icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ nomeLista }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="salvar()" [disabled]="!alterado">
+        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="!loading">
+    <!-- Barra de busca -->
+    <ion-searchbar
+      [(ngModel)]="busca"
+      placeholder="Buscar produto pra adicionar..."
+      (ionInput)="buscarProdutos()"
+      debounce="300"
+      mode="ios"
+    ></ion-searchbar>
+
+    <!-- Resultados da busca -->
+    <ion-list *ngIf="resultadosBusca.length > 0">
+      <ion-list-header>
+        <ion-label color="medium"><h2>Resultados da busca</h2></ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let p of resultadosBusca" button (click)="adicionarProduto(p)">
+        <ion-icon name="add-circle" slot="start" color="success"></ion-icon>
+        <ion-label>
+          <h2>{{ p.nome }}</h2>
+          <p>{{ p.mercado || '' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <!-- Itens da lista -->
+    <ion-list *ngIf="itens.length > 0" style="margin-top: 16px;">
+      <ion-list-header>
+        <ion-label><h2><strong>{{ itens.length }} itens na lista</strong></h2></ion-label>
+      </ion-list-header>
+      <ion-item-sliding *ngFor="let item of itens; let i = index">
+        <ion-item>
+          <ion-icon name="list" slot="start" color="primary"></ion-icon>
+          <ion-label>
+            <h2>{{ item.nome }}</h2>
+          </ion-label>
+          <div slot="end" class="qty-controls">
+            <ion-button fill="clear" size="small" (click)="diminuirQtd(i)">
+              <ion-icon name="remove-circle" slot="icon-only"></ion-icon>
+            </ion-button>
+            <span class="qty">{{ item.quantidade }}</span>
+            <ion-button fill="clear" size="small" (click)="aumentarQtd(i)">
+              <ion-icon name="add-circle" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="removerItem(i)">
+            <ion-icon name="trash" slot="icon-only"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <div *ngIf="itens.length === 0 && !busca" class="ion-text-center ion-padding">
+      <ion-icon name="list" class="empty-icon"></ion-icon>
+      <p>Lista vazia</p>
+      <p class="empty-desc">
+        Use a busca acima pra adicionar produtos
+      </p>
+    </div>
+  </div>
+</ion-content>

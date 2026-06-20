@@ -18,8 +18,8 @@
   cursor: pointer;
 
   .cart-btn {
-    width: 60px;
-    height: 60px;
+    width: 3.75rem;
+    height: 3.75rem;
     background: var(--arca-surface);
     border-radius: 50%;
     display: flex;
@@ -29,8 +29,8 @@
     border: 3px solid var(--arca-primary);
 
     img {
-      width: 28px;
-      height: 28px;
+      width: var(--icon-size-base);
+      height: var(--icon-size-base);
       object-fit: contain;
     }
   }
@@ -49,7 +49,7 @@ ion-footer {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 60px;
+  height: 3.75rem;
   padding: 0 8px;
   background: var(--arca-primary);
 
@@ -57,15 +57,15 @@ ion-footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
+    width: 2.75rem;
+    height: 2.75rem;
     text-decoration: none;
 
-    &.espaco { width: 60px; }
+    &.espaco { width: 3.75rem; }
 
     img {
-      width: 26px;
-      height: 26px;
+      width: var(--icon-size-base);
+      height: var(--icon-size-base);
       object-fit: contain;
       filter: brightness(0) invert(1);
     }

@@ -44,7 +44,7 @@ ion-content { --background: var(--arca-bg); }
     color: var(--arca-text-input);
     outline: none;
     &::placeholder { color: var(--arca-text-light); }
-    &:focus { border-color: var(--arca-secondary); }
+    &:focus-visible { border-color: var(--arca-secondary); outline: 2px solid var(--arca-primary); outline-offset: 2px; }
   }
 }
 

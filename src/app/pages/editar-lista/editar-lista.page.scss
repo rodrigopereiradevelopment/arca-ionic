@@ -1,0 +1,21 @@
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.qty {
+  font-weight: 600;
+  min-width: 24px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  color: var(--ion-color-medium);
+}
+
+.empty-desc {
+  font-size: 0.875rem;
+  color: var(--ion-color-medium);
+}

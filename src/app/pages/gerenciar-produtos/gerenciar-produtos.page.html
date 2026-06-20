@@ -32,7 +32,7 @@
       <div class="painel-filtros">
         <input type="text" [value]="filtroNome" (input)="onBuscaChange($any($event).target.value)"
           placeholder="Buscar por nome ou EAN..." class="input-busca">
-        <select [(ngModel)]="filtroCategoria" (ngModelChange)="onCategoriaChange()">
+        <select [(ngModel)]="filtroCategoria" (ngModelChange)="onCategoriaChange()" aria-label="Filtrar por categoria">
           <option value="todas">Todas as categorias</option>
           <option *ngFor="let c of categorias" [value]="c.nome">{{ c.nome }}</option>
         </select>

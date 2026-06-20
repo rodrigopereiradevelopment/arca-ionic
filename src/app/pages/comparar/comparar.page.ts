@@ -1,9 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { IonContent, IonSpinner, ToastController } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import { IonContent, IonSpinner, IonSegment, IonSegmentButton, IonLabel, IonButton, IonIcon, ToastController } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { list } from 'ionicons/icons';
 import { ComparacaoService } from '../../services/comparacao.service';
 import { HistoricoService } from '../../services/historico.service';
+import { ListaService, ListaComparacao } from '../../services/lista.service';
 import { environment } from '../../../environments/environment';
 import { MERCADOS_MAP, MEDALHAS } from '../../constants/mercados';
 
@@ -35,20 +39,45 @@ const CACHE_TTL = 30 * 60 * 1000; // 30 minutos
   templateUrl: './comparar.page.html',
   styleUrls: ['./comparar.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, IonContent, IonSpinner]
+  imports: [CommonModule, RouterModule, FormsModule, IonContent, IonSpinner, IonSegment, IonSegmentButton, IonLabel, IonButton, IonIcon]
 })
 export class CompararPage {
   private comparacaoService = inject(ComparacaoService);
+  private listaService = inject(ListaService);
   private toastCtrl = inject(ToastController);
 
   mercados: MercadoComPreco[] = [];
   loading = false;
   produtosSelecionados: any[] = [];
+  listas: ListaComparacao[] = [];
+  listaSelecionada = 'atual';
 
   private historicoService = inject(HistoricoService);
 
+  constructor() { addIcons({ list }); }
+
   async ionViewWillEnter() {
-    this.produtosSelecionados = this.comparacaoService.getProdutos();
+    this.listas = await this.listaService.listar();
+    await this.carregarProdutos();
+  }
+
+  async trocarLista(event: any) {
+    this.listaSelecionada = event.detail.value;
+    await this.carregarProdutos();
+  }
+
+  private async carregarProdutos() {
+    if (this.listaSelecionada === 'atual') {
+      this.produtosSelecionados = this.comparacaoService.getProdutos();
+    } else {
+      const lista = this.listas.find(l => String(l.id) === this.listaSelecionada);
+      if (lista) {
+        this.produtosSelecionados = lista.itens.map(i => ({
+          id: i.id, nome: i.nome, quantidade: i.quantidade || 1
+        }));
+      }
+    }
+
     if (this.produtosSelecionados.length === 0) {
       this.mostrarToast('Nenhum produto selecionado', 'warning');
       return;
@@ -149,6 +178,8 @@ export class CompararPage {
       this.loading = false;
     }
   }
+
+  toStr(v: any): string { return String(v); }
 
   limparSelecao() {
     this.comparacaoService.limpar();

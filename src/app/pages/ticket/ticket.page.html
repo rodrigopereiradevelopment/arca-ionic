@@ -3,7 +3,7 @@
   <div class="topo">
     <a routerLink="/home" class="btn-voltar" aria-label="Voltar">&#8592;</a>
     <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
-    <button class="btn-novo-topo" (click)="abrirNovoTicket()">＋ Novo</button>
+    <button class="btn-novo-topo" (click)="abrirNovoTicket()" aria-label="Abrir novo ticket">＋ Novo</button>
   </div>
 
   <!-- LISTA DE TICKETS -->
@@ -74,7 +74,8 @@
       </div>
       <button class="btn-resolver"
         *ngIf="ticketAberto.status !== 'resolvido'"
-        (click)="confirmarFechar(ticketAberto)">
+        (click)="confirmarFechar(ticketAberto)"
+        aria-label="Marcar ticket como resolvido">
         ✅
       </button>
     </div>
@@ -101,7 +102,8 @@
         type="text"
         [(ngModel)]="novaMensagem"
         placeholder="Digite sua mensagem..."
-        (keyup.enter)="enviarMensagem()">
+        (keyup.enter)="enviarMensagem()"
+        aria-label="Mensagem do ticket">
       <button (click)="enviarMensagem()" aria-label="Enviar">➤</button>
     </div>
 

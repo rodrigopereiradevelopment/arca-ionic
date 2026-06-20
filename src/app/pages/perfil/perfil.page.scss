@@ -178,7 +178,7 @@ ion-content { --background: var(--arca-bg); }
     outline: none;
     transition: border 0.2s;
 
-    &:focus { border-color: var(--arca-secondary); }
+    &:focus-visible { border-color: var(--arca-secondary); outline: 2px solid var(--arca-primary); outline-offset: 2px; }
     &[readonly] { background: var(--arca-bg-subtle); color: var(--arca-text-muted); }
   }
 

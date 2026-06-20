@@ -10,7 +10,8 @@
         type="text"
         [(ngModel)]="busca"
         (input)="handleSearch($event)"
-        placeholder="Buscar produto ou código de barras...">
+        placeholder="Buscar produto ou código de barras..."
+        aria-label="Buscar produto">
       <button *ngIf="busca" class="btn-limpar-busca" (click)="busca = ''" aria-label="Fechar">✕</button>
     </div>
   </div>
@@ -108,7 +109,7 @@
     </div>
 
     <div class="load-more-wrapper" *ngIf="!modoBusca && temMais && produtosFiltrados.length > 0">
-      <button class="btn-load-more" (click)="carregarMais()" [disabled]="carregandoMais">
+      <button class="btn-load-more" (click)="carregarMais()" [disabled]="carregandoMais" aria-label="Carregar mais produtos">
         {{ carregandoMais ? 'Carregando...' : 'Carregar mais (15)' }}
       </button>
     </div>
@@ -190,12 +191,13 @@
         </button>
         
         <div class="quantidade-display">
-          <input 
-            type="number" 
+          <input
+            type="number"
             [(ngModel)]="modalProduto!.quantidade"
             (change)="modalProduto!.quantidade = Math.max(1, modalProduto!.quantidade)"
             min="1"
-            class="input-quantidade">
+            class="input-quantidade"
+            aria-label="Quantidade">
           <span class="texto-quantidade">{{ modalProduto!.quantidade }}x</span>
         </div>
         
@@ -223,10 +225,11 @@
       <button
         class="btn-fav-modal"
         [class.favoritado]="favoritoService.isFavorito(modalProduto.id)"
-        (click)="toggleFavorito(modalProduto!)">
+        (click)="toggleFavorito(modalProduto!)"
+        aria-label="Favoritar produto">
         {{ favoritoService.isFavorito(modalProduto.id) ? '❤️ Favoritado' : '🤍 Favoritar' }}
       </button>
-      <button class="btn-denuncia-modal" (click)="abrirDenuncia(modalProduto!)">
+      <button class="btn-denuncia-modal" (click)="abrirDenuncia(modalProduto!)" aria-label="Denunciar produto">
         🚩 Denunciar
       </button>
     </div>
@@ -235,7 +238,8 @@
       <button
         class="btn-add-lista"
         [class.adicionado]="naLista(modalProduto.id)"
-        (click)="adicionarLista(modalProduto!)">
+        (click)="adicionarLista(modalProduto!)"
+        aria-label="Adicionar a lista de compras">
         {{ naLista(modalProduto.id) ? '✅ Na Lista' : '＋ Adicionar à Lista' }}
       </button>
       <button class="btn-alerta-modal" (click)="criarAlerta(modalProduto!)" aria-label="Criar Alerta de Preço">
@@ -254,7 +258,7 @@
     <h3>🚩 Denunciar Problema</h3>
     <p class="denuncia-produto" *ngIf="modalProduto">{{ modalProduto.nome }}</p>
 
-    <select [(ngModel)]="denunciaMotivo" class="denuncia-select">
+    <select [(ngModel)]="denunciaMotivo" class="denuncia-select" aria-label="Motivo da denuncia">
       <option value="">Selecione o motivo</option>
       <option *ngFor="let m of denunciaSvc.MOTIVOS" [value]="m.value">{{ m.label }}</option>
     </select>
@@ -262,9 +266,10 @@
     <textarea
       [(ngModel)]="denunciaDescricao"
       placeholder="Descreva o problema (opcional)..."
-      class="denuncia-textarea" rows="3"></textarea>
+      class="denuncia-textarea" rows="3"
+      aria-label="Descricao da denuncia"></textarea>
 
-    <button class="btn-enviar-denuncia" (click)="enviarDenuncia()" [disabled]="!denunciaMotivo">
+    <button class="btn-enviar-denuncia" (click)="enviarDenuncia()" [disabled]="!denunciaMotivo" aria-label="Enviar denuncia">
       Enviar Denuncia
     </button>
   </div>

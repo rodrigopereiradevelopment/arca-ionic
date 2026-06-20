@@ -89,10 +89,17 @@ export class ConfigService {
     }
 
     const tamanhos: Record<string, string> = {
-      pequeno: '13px', medio: '16px', grande: '20px', extra: '24px',
+      pequeno: '14px', medio: '16px', grande: '22px', extra: '28px',
     };
     document.documentElement.style.setProperty(
       '--font-size-base', tamanhos[acessibilidade.tamanhoFonte] || '16px'
+    );
+    // Escala de ícones proporcional à fonte
+    const escalaIcone: Record<string, string> = {
+      pequeno: '1.25rem', medio: '1.5rem', grande: '1.75rem', extra: '2.25rem',
+    };
+    document.documentElement.style.setProperty(
+      '--icon-size-base', escalaIcone[acessibilidade.tamanhoFonte] || '1.5rem'
     );
     document.documentElement.style.setProperty(
       '--font-weight-base', acessibilidade.negrito ? '700' : '400'

@@ -9,24 +9,25 @@
   <div id="mapa-proximos"></div>
 
   <div class="filtros-flutuantes">
-    <select [(ngModel)]="filtroDistancia" class="select-dist">
+    <select [(ngModel)]="filtroDistancia" class="select-dist" aria-label="Filtrar por distancia">
       <option [value]="1">até 1 km</option>
       <option [value]="3">até 3 km</option>
       <option [value]="5">até 5 km</option>
       <option [value]="10">até 10 km</option>
     </select>
-    <select [(ngModel)]="ordenacao" class="select-ord">
+    <select [(ngModel)]="ordenacao" class="select-ord" aria-label="Ordenar por">
       <option value="distancia">+ Próximo</option>
       <option value="nota">Melhor Nota</option>
       <option value="nome">Nome A-Z</option>
     </select>
   </div>
 
-  <button class="btn-toggle-lista" (click)="toggleLista()">
+  <button class="btn-toggle-lista" (click)="toggleLista()"
+    [attr.aria-label]="listaVisivel ? 'Ocultar lista de mercados' : 'Mostrar lista de mercados'">
     {{ listaVisivel ? '▼ Ocultar Lista' : '▲ Ver Mercados (' + mercadosFiltrados.length + ')' }}
   </button>
 
-  <button class="btn-limpar-rota" *ngIf="rotaAtiva" (click)="limparRota()">
+  <button class="btn-limpar-rota" *ngIf="rotaAtiva" (click)="limparRota()" aria-label="Limpar rota">
     ✕ Limpar Rota
   </button>
 
@@ -112,7 +113,7 @@
 
         <div class="campo-nota">
           <label>Comentário (opcional)</label>
-          <textarea [(ngModel)]="formAvaliacao.comentario" placeholder="Conte sua experiência..." rows="3"></textarea>
+          <textarea [(ngModel)]="formAvaliacao.comentario" placeholder="Conte sua experiência..." rows="3" aria-label="Comentario sobre o mercado"></textarea>
         </div>
 
         <button class="btn-enviar" (click)="enviarAvaliacao()" [disabled]="enviandoAvaliacao">

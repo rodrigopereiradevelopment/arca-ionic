@@ -20,7 +20,7 @@ ng lint                   # ESLint
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **arca-ionic** (1210 symbols, 2772 relationships, 37 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **meu-app-ionic** (6199 symbols, 13608 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > Index stale? Run `node .gitnexus/run.cjs analyze` from the project root — it auto-selects an available runner. No `.gitnexus/run.cjs` yet? `npx gitnexus analyze` (npm 11 crash → `npm i -g gitnexus`; #1939).
 
@@ -43,10 +43,10 @@ This project is indexed by GitNexus as **arca-ionic** (1210 symbols, 2772 relati
 
 | Resource | Use for |
 |----------|---------|
-| `gitnexus://repo/arca-ionic/context` | Codebase overview, check index freshness |
-| `gitnexus://repo/arca-ionic/clusters` | All functional areas |
-| `gitnexus://repo/arca-ionic/processes` | All execution flows |
-| `gitnexus://repo/arca-ionic/process/{name}` | Step-by-step execution trace |
+| `gitnexus://repo/meu-app-ionic/context` | Codebase overview, check index freshness |
+| `gitnexus://repo/meu-app-ionic/clusters` | All functional areas |
+| `gitnexus://repo/meu-app-ionic/processes` | All execution flows |
+| `gitnexus://repo/meu-app-ionic/process/{name}` | Step-by-step execution trace |
 
 ## CLI
 

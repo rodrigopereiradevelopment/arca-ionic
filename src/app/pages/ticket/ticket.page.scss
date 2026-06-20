@@ -243,7 +243,7 @@ ion-content { --background: var(--arca-bg); }
     border-radius: 25px;
     font-size: 0.875rem;
     outline: none;
-    &:focus { border-color: var(--arca-secondary); }
+    &:focus-visible { border-color: var(--arca-secondary); outline: 2px solid var(--arca-primary); outline-offset: 2px; }
   }
 
   button {
@@ -326,7 +326,7 @@ ion-content { --background: var(--arca-bg); }
     background: var(--arca-surface);
     outline: none;
     font-family: inherit;
-    &:focus { border-color: var(--arca-secondary); }
+    &:focus-visible { border-color: var(--arca-secondary); outline: 2px solid var(--arca-primary); outline-offset: 2px; }
   }
 
   textarea { resize: none; line-height: 1.5; }

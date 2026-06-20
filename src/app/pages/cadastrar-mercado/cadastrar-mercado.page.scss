@@ -73,7 +73,7 @@ ion-content {
     transition: border 0.2s;
     box-shadow: 0 2px 4px var(--arca-shadow-xs);
 
-    &:focus { border-color: var(--arca-secondary); }
+    &:focus-visible { border-color: var(--arca-secondary); outline: 2px solid var(--arca-primary); outline-offset: 2px; }
   }
 }
 

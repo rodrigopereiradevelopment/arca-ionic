@@ -2,7 +2,7 @@
   <ion-content>
 
     <div class="perfil">
-      <img src="assets/img/usuario.png" alt="Avatar" class="avatar">
+      <img [src]="authService.usuario?.foto_perfil || 'assets/img/usuario.png'" alt="Avatar" class="avatar">
       <div class="perfil-info">
         <strong>{{ authService.usuario?.nome || 'Visitante' }}</strong>
         <span class="email">{{ authService.usuario?.email || '' }}</span>

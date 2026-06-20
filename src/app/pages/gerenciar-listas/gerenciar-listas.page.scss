@@ -1,0 +1,17 @@
+ion-item-sliding ion-item {
+  --min-height: 64px;
+}
+
+ion-icon[list] {
+  font-size: var(--icon-size-base);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: var(--ion-color-medium);
+}
+
+.empty-desc {
+  font-size: 0.875rem;
+  color: var(--ion-color-medium);
+}

@@ -116,6 +116,7 @@ app-header ion-searchbar {
 /* 🔤 Acessibilidade — Tamanho de fonte base */
 html {
   font-size: var(--font-size-base, 16px);
+  --icon-size-base: 1.5rem;
 }
 
 body {
@@ -140,7 +141,13 @@ body.reduzir-animacoes *::after {
   transition-duration: 0s !important;
 }
 
-/* ♿ Acessibilidade — foco visível */
+/* ♿ Acessibilidade — foco visível (sempre ativo) */
+*:focus-visible {
+  outline: 3px solid var(--arca-secondary) !important;
+  outline-offset: 2px !important;
+}
+
+/* Foco visível específico quando leitor de tela está ativado */
 body.leitor-tela *:focus-visible {
   outline: 3px solid var(--arca-secondary) !important;
   outline-offset: 2px !important;

@@ -214,7 +214,7 @@ ion-content {
     font-size: 0.875rem;
     background: var(--arca-surface);
     outline: none;
-    &:focus { border-color: var(--arca-secondary); }
+    &:focus-visible { border-color: var(--arca-secondary); outline: 2px solid var(--arca-primary); outline-offset: 2px; }
   }
 }
 

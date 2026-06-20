@@ -139,5 +139,15 @@ export const routes: Routes = [
     path: 'perfil',
     loadComponent: () => import('./pages/perfil/perfil.page').then( m => m.PerfilPage),
     canActivate: [authGuard]
+  },
+  {
+    path: 'gerenciar-listas',
+    loadComponent: () => import('./pages/gerenciar-listas/gerenciar-listas.page').then( m => m.GerenciarListasPage),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'editar-lista/:id',
+    loadComponent: () => import('./pages/editar-lista/editar-lista.page').then( m => m.EditarListaPage),
+    canActivate: [authGuard]
   }
 ];

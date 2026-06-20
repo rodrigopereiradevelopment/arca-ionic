@@ -1,6 +1,18 @@
 <ion-content [fullscreen]="true">
   <div class="container" *ngIf="!loading; else loadingTemplate">
 
+    <!-- SELETOR DE LISTA -->
+    <div class="seletor-lista" *ngIf="listas.length > 0">
+      <ion-segment [value]="listaSelecionada" (ionChange)="trocarLista($event)" mode="ios">
+        <ion-segment-button value="atual">
+          <ion-label>Lista Atual</ion-label>
+        </ion-segment-button>
+        <ion-segment-button *ngFor="let l of listas" [value]="toStr(l.id)">
+          <ion-label>{{ l.nome }}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
     <div class="intro-texto">
       <span>Esses são os melhores preços da sua lista de compras</span>
       <span>Comparada entre os mercados cadastrados</span>
@@ -69,7 +81,7 @@
   <div class="botoes-fixos">
     <a routerLink="/home" class="btn-voltar">← Home</a>
     <a routerLink="/pesquisar-produtos" class="btn-voltar">Adicionar Mais</a>
-    <button class="btn-imprimir" (click)="limparSelecao()">Limpar</button>
+    <button class="btn-imprimir" (click)="limparSelecao()" aria-label="Limpar comparacao">Limpar</button>
     <a routerLink="/mapa-rotas" class="btn-rota">Ver Rotas</a>
   </div>
 

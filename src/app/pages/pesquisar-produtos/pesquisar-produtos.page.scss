@@ -212,14 +212,14 @@ ion-content {
   .denuncia-select {
     padding: 12px; border: 2px solid var(--arca-border); border-radius: 10px;
     font-size: 0.875rem; background: var(--arca-bg); color: var(--arca-text);
-    &:focus { border-color: var(--arca-primary); outline: none; }
+    &:focus-visible { border-color: var(--arca-primary); outline: 2px solid var(--arca-primary); outline-offset: 2px; }
   }
 
   .denuncia-textarea {
     padding: 12px; border: 2px solid var(--arca-border); border-radius: 10px;
     font-size: 0.875rem; background: var(--arca-bg); color: var(--arca-text);
     resize: none; font-family: inherit;
-    &:focus { border-color: var(--arca-primary); outline: none; }
+    &:focus-visible { border-color: var(--arca-primary); outline: 2px solid var(--arca-primary); outline-offset: 2px; }
   }
 
   .btn-enviar-denuncia {

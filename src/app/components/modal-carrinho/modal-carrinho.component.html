@@ -5,7 +5,7 @@
   <div *ngIf="view === 'lista'">
     <div class="modal-header">
       <h2 class="section-title"><span aria-hidden="true">🛒</span> Minha Lista</h2>
-      <ion-button fill="clear" (click)="fecharModal()">Fechar</ion-button>
+      <ion-button fill="clear" (click)="fecharModal()" aria-label="Fechar carrinho">Fechar</ion-button>
     </div>
     
     <ion-list>
@@ -17,10 +17,10 @@
           <p>R$ {{ item.menorPreco.toFixed(2) }} — {{ item.mercadoMaisBarato }}</p>
         </ion-label>
         <div slot="end" class="qty-controls">
-          <ion-button fill="clear" color="danger" (click)="decrementar(item.id)">−</ion-button>
+          <ion-button fill="clear" color="danger" (click)="decrementar(item.id)" aria-label="Diminuir quantidade">−</ion-button>
           <span class="qty">{{ item.quantidade }}</span>
-          <ion-button fill="clear" color="primary" (click)="incrementar(item.id)">+</ion-button>
-          <ion-button fill="clear" color="medium" (click)="remover(item.id)">🗑️</ion-button>
+          <ion-button fill="clear" color="primary" (click)="incrementar(item.id)" aria-label="Aumentar quantidade">+</ion-button>
+          <ion-button fill="clear" color="medium" (click)="remover(item.id)" aria-label="Remover item">🗑️</ion-button>
         </div>
       </ion-item>
     </ion-list>
@@ -41,7 +41,8 @@
     
     <ion-button expand="block" color="primary"
       (click)="toggleComparacao()"
-      [disabled]="!(carrinhoService.itens$ | async)?.length">
+      [disabled]="!(carrinhoService.itens$ | async)?.length"
+      aria-label="Comparar precos deste produto">
       Comparar Preços
     </ion-button>
   </div>

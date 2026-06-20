@@ -60,7 +60,8 @@ ion-footer {
     &:hover { background: var(--arca-shadow-sm); }
 
     img {
-      width: 28px; height: 28px;
+      width: var(--icon-size-base);
+      height: var(--icon-size-base);
       object-fit: cover;
       border-radius: 10%;
       margin-right: 12px;
@@ -97,7 +98,7 @@ ion-footer {
     width: 100%;
     border-radius: 8px;
 
-    img { width: 24px; height: 24px; }
+    img { width: var(--icon-size-base); height: var(--icon-size-base); }
     span { font-size: 0.9375rem; color: var(--arca-text); font-weight: 500; }
 
     &:hover { background: var(--arca-shadow-xs); }

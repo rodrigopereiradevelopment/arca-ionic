@@ -13,7 +13,7 @@
     <div class="painel-filtros">
       <input type="text" [(ngModel)]="filtroNome"
         placeholder="Buscar por nome ou e-mail..." class="input-busca">
-      <select [(ngModel)]="filtroPerfil" class="select-perfil">
+      <select [(ngModel)]="filtroPerfil" class="select-perfil" aria-label="Filtrar por perfil">
         <option value="todos">Todos os perfis</option>
         <option value="admin">Administrador</option>
         <option value="moderator">Moderador</option>

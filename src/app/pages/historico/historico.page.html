@@ -3,7 +3,7 @@
   <div class="topo">
     <a routerLink="/home" class="btn-voltar" aria-label="Voltar">&#8592;</a>
     <img src="assets/img/logo.png" class="logo" alt="ARCA Logo">
-    <button class="btn-limpar" (click)="confirmarLimpar()" *ngIf="filtroAtivo !== 'favoritos'">🗑️ Limpar</button>
+    <button class="btn-limpar" (click)="confirmarLimpar()" *ngIf="filtroAtivo !== 'favoritos'" aria-label="Limpar historico">🗑️ Limpar</button>
   </div>
 
   <div class="container">
@@ -50,7 +50,7 @@
         </div>
 
         <button class="btn-remover"
-          (click)="$event.stopPropagation(); remover(item)" aria-label="Fechar">✕</button>
+          (click)="$event.stopPropagation(); remover(item)" aria-label="Remover item do historico">✕</button>
 
       </div>
 

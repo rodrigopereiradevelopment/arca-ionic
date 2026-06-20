@@ -160,9 +160,31 @@ export class PerfilPage {
         this.imagemPreview = data.url;
         if (this.authService.usuario) {
           this.authService.usuario.foto_perfil = data.url;
+          this.authService.salvarNoStorage();
         }
+        // Salvar URL no banco de dados
+        const token = this.authService.usuario?.token;
+        if (token) {
+          await fetch(environment.apiUrl + '/api/auth/perfil', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              token,
+              nome: this.dados.nome,
+              telefone: this.dados.telefone,
+              cidade: this.dados.cidade,
+              cpf: this.dados.cpf.replace(/\D/g, ''),
+              estado: this.dados.estado,
+              raio_busca: this.dados.raio,
+              foto_perfil: data.url
+            })
+          });
+        }
+        await this.toast('Foto atualizada!', 'success');
       }
-    } catch {}
+    } catch {
+      await this.toast('Erro ao enviar foto.', 'danger');
+    }
   }
 
   private converterParaWebp(file: File): Promise<Blob> {

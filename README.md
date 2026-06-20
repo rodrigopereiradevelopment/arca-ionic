@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![App](https://img.shields.io/badge/App-Vercel-black?logo=vercel)](https://arca-ionic.vercel.app)
 [![API](https://img.shields.io/badge/API-Vercel-black?logo=vercel)](https://arca-next.vercel.app)
-![Version](https://img.shields.io/badge/version-1.1.1-green)
+![Version](https://img.shields.io/badge/version-1.1.2-green)
 [![Lint](https://img.shields.io/badge/lint-passing-brightgreen)]()
 [![Releases](https://img.shields.io/github/v/release/rodrigopereiradevelopment/arca-ionic)](https://github.com/rodrigopereiradevelopment/arca-ionic/releases)
 
@@ -83,7 +83,7 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
 | 📦 **Gestão de Catálogo** | CRUD de produtos, categorias, upload de imagem | ✅ |
 | 🏪 **Gestão de Mercados** | CRUD com geocoding Nominatim e controle de status | ✅ |
 | 🎨 **Temas** | Modo escuro, alto contraste, fonte ajustável | ✅ |
-| ♿ **Acessibilidade** | ARIA labels, `font-size` em `rem`, leitor de tela | ✅ |
+| ♿ **Acessibilidade** | ARIA labels, `font-size` em `rem`, `:focus-visible`, ícones escaláveis com `--icon-size-base` | ✅ |
 | ⚙️ **Configurações** | Painel centralizado com persistência localStorage | ✅ |
 | 🔔 **Notificações** | Reais via API — push/email/promoções, contagem não lidas | ✅ |
 | 🔔 **Push Notifications** | FCM via Capacitor + Firebase, toggle nas Configurações | ✅ |
@@ -160,7 +160,7 @@ Painel centralizado via `ConfigService` com persistência em localStorage e sync
 |-------------|-----------|
 | 🌙 **Modo escuro** | Tema escuro com classe `body.dark-theme` |
 | 🎨 **Alto contraste** | `body.alto-contraste` com cores WCAG AA |
-| 🔤 **Tamanho da fonte** | Pequeno (13px), Médio (16px), Grande (20px), Extra (24px) — via `--font-size-base` + `rem` |
+| 🔤 **Tamanho da fonte** | Pequeno (14px), Médio (16px), Grande (22px), Extra (28px) — via `--font-size-base` + `rem` |
 | **B** **Texto negrito** | `body.texto-negrito` com `font-weight: 700` |
 | 🎬 **Reduzir animações** | `body.reduzir-animacoes` com `transition: none` |
 | ♿ **Modo leitor de tela** | `body.leitor-tela` com foco visível + `.sr-only` |

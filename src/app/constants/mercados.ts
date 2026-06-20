@@ -27,9 +27,9 @@ export const MERCADOS_COORDS: Record<number, MercadoCoords> = {
 };
 
 export const CATEGORIAS_MAP: Record<number, string> = {
-  1: 'Bebidas', 2: 'Mercearia', 3: 'Bebidas',
-  4: 'Laticínios', 5: 'Hortifruti', 6: 'Carnes',
-  7: 'Limpeza', 8: 'Higiene', 9: 'Outros',
+  1: 'Laticínios', 2: 'Carnes e Peixes', 3: 'Bebidas',
+  4: 'Higiene e Limpeza', 5: 'Padaria e Confeitaria', 6: 'Frutas e Verduras',
+  7: 'Grãos e Cereais', 8: 'Congelados', 9: 'Mercearia', 10: 'Petiscos e Snacks',
 };
 
 export const MEDALHAS = [

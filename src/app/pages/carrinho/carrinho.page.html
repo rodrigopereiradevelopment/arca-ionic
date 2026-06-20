@@ -40,7 +40,8 @@
 
     <!-- HISTÓRICO -->
     <div class="historico-section" *ngIf="auth.logado">
-      <button class="btn-historico-toggle" (click)="toggleHistorico()">
+      <button class="btn-historico-toggle" (click)="toggleHistorico()"
+        [attr.aria-label]="historicoAberto ? 'Ocultar historico de listas' : 'Mostrar historico de listas'">
         <span aria-hidden="true">📋</span> Histórico de Listas
         <span class="seta">{{ historicoAberto ? '▲' : '▼' }}</span>
       </button>
@@ -69,7 +70,7 @@
   <div class="botoes-fixos">
     <a routerLink="/pesquisar-produtos" class="btn-voltar">Voltar</a>
     <button class="btn-salvar" (click)="salvarLista()" *ngIf="produtos.length > 0 && auth.logado" aria-label="Salvar lista">💾 Salvar</button>
-    <button class="btn-limpar" (click)="limparTudo()" *ngIf="produtos.length > 0">Limpar</button>
+    <button class="btn-limpar" (click)="limparTudo()" *ngIf="produtos.length > 0" aria-label="Limpar carrinho">Limpar</button>
     <a routerLink="/comparar" class="btn-comparar" (click)="compararPrecos()">Comparar</a>
   </div>
 </ion-content>

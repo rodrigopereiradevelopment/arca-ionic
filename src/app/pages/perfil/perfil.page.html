@@ -101,7 +101,8 @@
       <div class="form-group" *ngIf="editandoDados">
         <label>Raio de Busca: {{ dados.raio }} km</label>
         <input type="range" [(ngModel)]="dados.raio"
-          min="1" max="30" step="1" class="range-input">
+          min="1" max="30" step="1" class="range-input"
+          aria-label="Raio de busca em km">
       </div>
 
       <button class="btn-salvar-dados" *ngIf="editandoDados"

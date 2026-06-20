@@ -18,7 +18,7 @@
         placeholder="Buscar por nome, CNPJ ou cidade..."
         class="input-busca">
 
-      <select [(ngModel)]="filtroStatus" class="select-status">
+      <select [(ngModel)]="filtroStatus" class="select-status" aria-label="Filtrar por status">
         <option value="todos">Todos</option>
         <option value="aprovado">Aprovados</option>
         <option value="pendente">Pendentes</option>
@@ -87,7 +87,7 @@
         </div>
         <div class="form-group">
           <label>Status</label>
-          <select [(ngModel)]="mercadoSelecionado.status">
+          <select [(ngModel)]="mercadoSelecionado.status" aria-label="Status do mercado">
             <option value="pendente">Pendente</option>
             <option value="aprovado">Aprovado</option>
             <option value="desativado">Desativado</option>

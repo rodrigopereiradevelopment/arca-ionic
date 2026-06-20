@@ -16,7 +16,8 @@
       <div class="senha-row">
         <input [type]="mostrarSenha ? 'text' : 'password'"
           [(ngModel)]="senha" placeholder="Sua senha">
-        <button class="btn-olho" (click)="mostrarSenha = !mostrarSenha">
+        <button class="btn-olho" (click)="mostrarSenha = !mostrarSenha"
+          [attr.aria-label]="mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'">
           {{ mostrarSenha ? '🙈' : '👁️' }}
         </button>
       </div>

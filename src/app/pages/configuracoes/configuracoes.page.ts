@@ -34,10 +34,10 @@ export class ConfiguracoesPage {
   get privacidade() { return this.configSvc.config.privacidade; }
 
   tamanhosFonte = [
-    { value: 'pequeno', label: 'Pequeno', size: '13px' },
+    { value: 'pequeno', label: 'Pequeno', size: '14px' },
     { value: 'medio', label: 'Médio', size: '16px' },
-    { value: 'grande', label: 'Grande', size: '20px' },
-    { value: 'extra', label: 'Extra Grande', size: '24px' }
+    { value: 'grande', label: 'Grande', size: '22px' },
+    { value: 'extra', label: 'Extra Grande', size: '28px' }
   ];
 
   ionViewWillEnter() { this.configSvc.init(); }

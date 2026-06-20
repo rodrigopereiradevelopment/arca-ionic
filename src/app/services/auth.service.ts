@@ -33,6 +33,11 @@ export class AuthService {
   get isModerador() { return this.tipo === 'moderador' || this.isAdmin; }
   get isUsuario() { return this.tipo === 'usuario'; }
 
+  salvarNoStorage(): void {
+    const u = this.usuarioAtual.getValue();
+    if (u) localStorage.setItem('arca_usuario', JSON.stringify(u));
+  }
+
   async login(email: string, senha: string): Promise<boolean> {
     try {
       const res = await fetch(environment.apiUrl + '/api/auth/login', {

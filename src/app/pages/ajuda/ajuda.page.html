@@ -52,7 +52,8 @@
         [(ngModel)]="mensagem"
         placeholder="Digite sua dúvida..."
         (keyup.enter)="enviarMensagem()"
-        [disabled]="carregando">
+        [disabled]="carregando"
+        aria-label="Mensagem para o assistente">
       <button (click)="enviarMensagem()" [disabled]="carregando">➤</button>
     </div>
 
@@ -64,7 +65,8 @@
 
     <div class="faq-busca">
       <input type="text" [(ngModel)]="buscaFaq"
-        placeholder="Buscar perguntas..." class="faq-input">
+        placeholder="Buscar perguntas..." class="faq-input"
+        aria-label="Buscar frequently asked questions">
     </div>
 
     <ion-accordion-group *ngIf="faqsFiltrados.length > 0">
