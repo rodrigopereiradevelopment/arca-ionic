@@ -129,6 +129,10 @@ export class GerenciarListasPage {
     this.router.navigate(['/editar-lista', lista.id]);
   }
 
+  abrirLista(lista: ListaComparacao) {
+    this.router.navigate(['/editar-lista', lista.id]);
+  }
+
   compararLista(lista: ListaComparacao) {
     this.comparacaoService.limpar();
     lista.itens.forEach(item => {
