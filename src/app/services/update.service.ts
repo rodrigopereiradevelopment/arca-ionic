@@ -56,23 +56,20 @@ export class UpdateService {
 
       const response = await CapacitorHttp.get({
         url,
-        responseType: 'blob',
+        responseType: 'arraybuffer',
       });
 
       if (response.status < 200 || response.status >= 300) {
         return { ok: false, erro: `HTTP ${response.status}` };
       }
 
-      const blob = response.data as Blob;
-      const reader = new FileReader();
-      const base64 = await new Promise<string>((resolve, reject) => {
-        reader.onloadend = () => {
-          const result = reader.result as string;
-          resolve(result.split(',')[1]);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
+      const arrayBuffer = response.data as ArrayBuffer;
+      const bytes = new Uint8Array(arrayBuffer);
+      let binary = '';
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      const base64 = btoa(binary);
 
       const fileName = `arca-update-${Date.now()}.apk`;
       console.log('[UpdateService] Salvando APK como', fileName);
