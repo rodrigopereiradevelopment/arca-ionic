@@ -99,7 +99,7 @@ export class AppComponent implements OnInit {
             handler: async () => {
               const loading = await this.alertCtrl.create({
                 header: 'Baixando atualização...',
-                message: 'Aguarde, o download está em andamento.',
+                message: 'Aguarde, o download está em andamento. Após o download, o Android pedirá confirmação para instalar — isso é normal para apps fora da Play Store.',
                 backdropDismiss: false,
               });
               await loading.present();
@@ -114,6 +114,13 @@ export class AppComponent implements OnInit {
                   buttons: ['OK'],
                 });
                 await erroAlert.present();
+              } else {
+                const okAlert = await this.alertCtrl.create({
+                  header: 'Download concluído',
+                  message: 'Se o instalador não abrir automaticamente, vá em Configurações > Apps > ARCA e ative "Fontes desconhecidas".',
+                  buttons: ['OK'],
+                });
+                await okAlert.present();
               }
             },
           },

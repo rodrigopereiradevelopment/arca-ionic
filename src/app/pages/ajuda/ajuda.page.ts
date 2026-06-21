@@ -1,4 +1,4 @@
-import { Component, inject, ElementRef, ViewChild } from '@angular/core';
+import { Component, inject, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -7,6 +7,7 @@ import {
   IonItem, IonLabel
 } from '@ionic/angular/standalone';
 import { environment } from '../../../environments/environment';
+import { App } from '@capacitor/app';
 
 interface Mensagem {
   autor: 'usuario' | 'ia';
@@ -27,10 +28,11 @@ const CHAT_KEY = 'arca_chat_historico';
     IonItem, IonLabel
   ]
 })
-export class AjudaPage {
+export class AjudaPage implements OnInit {
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   @ViewChild('ultimaMsg') ultimaMsg!: ElementRef;
 
+  versao = '1.0.0';
   abaAtiva: 'chat' | 'faq' | 'guia' | 'sobre' = 'chat';
   mensagem = '';
   carregando = false;
@@ -67,6 +69,17 @@ export class AjudaPage {
 
   constructor() {
     this.carregarChat();
+  }
+
+  ngOnInit() {
+    this.carregarVersao();
+  }
+
+  private async carregarVersao() {
+    try {
+      const info = await App.getInfo();
+      this.versao = info.version;
+    } catch {}
   }
 
   private carregarChat() {
