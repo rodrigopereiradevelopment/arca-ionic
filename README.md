@@ -350,23 +350,21 @@ arca-ionic/
 ## 📦 Processo de Release
 
 ```bash
-# 1. Build do APK
+# 1. Build do APK (Gradle gera arca-vX.Y.Z.apk automaticamente)
 cd arca-ionic && npx ng build --configuration production
 cd android && ./gradlew assembleDebug
 
 # 2. Sync Capacitor
 npx cap sync android
 
-# 3. Upload pro GitHub Release (NÃO renomear o APK!)
-#    O Gradle gera android/app/build/outputs/apk/debug/app-debug.apk
-#    A API /api/versao aponta para app-debug.apk — manter consistência
+# 3. Upload pro GitHub Release
 gh release create vX.Y.Z \
-  android/app/build/outputs/apk/debug/app-debug.apk \
+  android/app/build/outputs/apk/debug/arca-vX.Y.Z.apk \
   --title "vX.Y.Z — descrição" \
   --notes "Release notes"
 
 # Para atualizar release existente:
-gh release upload vX.Y.Z android/app/build/outputs/apk/debug/app-debug.apk --clobber
+gh release upload vX.Y.Z android/app/build/outputs/apk/debug/arca-vX.Y.Z.apk --clobber
 ```
 
-**Regra:** Nunca renomear o APK antes do upload. O `app-debug.apk` é o nome padrão do Gradle e o que a API espera.
+**Regra:** O nome do APK (`arca-vX.Y.Z.apk`) é gerado automaticamente pelo Gradle via `build.gradle`. A API `/api/versao` aponta para `arca-v{versao}.apk`. Ambos usam o `versionName` como fonte — se um mudar, o outro tem que mudar junto.
