@@ -14,7 +14,7 @@ export interface VersaoInfo {
 
 @Injectable({ providedIn: 'root' })
 export class UpdateService {
-  private readonly VERSION_CODE = 14;
+  private readonly VERSION_CODE = 15;
   private ultimaVerificacao = 0;
 
   async verificar(): Promise<{ update: VersaoInfo | null; erro: boolean }> {
