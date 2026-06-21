@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -8,6 +8,7 @@ import { CarrinhoService } from '../../services/carrinho.service';
 import { HistoricoService } from '../../services/historico.service';
 import { ConfigService } from '../../services/config.service';
 import { PushNotificationService } from '../../services/push-notification.service';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-configuracoes',
@@ -16,7 +17,7 @@ import { PushNotificationService } from '../../services/push-notification.servic
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, IonContent]
 })
-export class ConfiguracoesPage {
+export class ConfiguracoesPage implements OnInit {
   authService = inject(AuthService);
   carrinhoService = inject(CarrinhoService);
   historicoService = inject(HistoricoService);
@@ -24,6 +25,8 @@ export class ConfiguracoesPage {
   private toastCtrl = inject(ToastController);
   private alertCtrl = inject(AlertController);
   private pushSvc = inject(PushNotificationService);
+
+  versao = '1.0.0';
 
 
   get aparencia() { return this.configSvc.config.aparencia; }
@@ -41,6 +44,13 @@ export class ConfiguracoesPage {
   ];
 
   ionViewWillEnter() { this.configSvc.init(); }
+
+  async ngOnInit() {
+    try {
+      const info = await App.getInfo();
+      this.versao = info.version;
+    } catch {}
+  }
 
   async onToggle(tipo?: string) {
     this.configSvc.salvar();
