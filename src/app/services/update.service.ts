@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, CapacitorHttp } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Browser } from '@capacitor/browser';
 
@@ -29,13 +29,13 @@ export class UpdateService {
     try {
       const url = `${environment.apiUrl}/api/versao`;
       console.log('[UpdateService] Checando versao em', url);
-      const res = await fetch(url);
-      if (!res.ok) {
+      const res = await CapacitorHttp.get({ url });
+      if (res.status < 200 || res.status >= 300) {
         console.warn('[UpdateService] Resposta nao OK:', res.status);
         resultado.erro = true;
         return resultado;
       }
-      const data: VersaoInfo = await res.json();
+      const data: VersaoInfo = res.data as any;
       console.log('[UpdateService] API:', data, '| App:', this.VERSION_CODE);
 
       if (data.versionCode > this.VERSION_CODE) {
@@ -54,12 +54,16 @@ export class UpdateService {
     try {
       console.log('[UpdateService] Baixando APK de', url);
 
-      const response = await fetch(url);
-      if (!response.ok) {
+      const response = await CapacitorHttp.get({
+        url,
+        responseType: 'blob',
+      });
+
+      if (response.status < 200 || response.status >= 300) {
         return { ok: false, erro: `HTTP ${response.status}` };
       }
 
-      const blob = await response.blob();
+      const blob = response.data as Blob;
       const reader = new FileReader();
       const base64 = await new Promise<string>((resolve, reject) => {
         reader.onloadend = () => {
