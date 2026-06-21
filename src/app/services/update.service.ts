@@ -1,7 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Capacitor, CapacitorHttp } from '@capacitor/core';
-import { Browser } from '@capacitor/browser';
 
 export interface VersaoInfo {
   versao: string;
@@ -51,11 +50,17 @@ export class UpdateService {
 
   async baixarEInstalar(url: string): Promise<{ ok: boolean; erro?: string }> {
     try {
-      console.log('[UpdateService] Abrindo URL de download:', url);
-      await Browser.open({ url });
+      console.log('[UpdateService] Disparando download de', url);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
       return { ok: true };
     } catch (err) {
-      console.error('[UpdateService] Erro ao abrir download:', err);
+      console.error('[UpdateService] Erro ao disparar download:', err);
       return { ok: false, erro: err instanceof Error ? err.message : 'Erro desconhecido' };
     }
   }
