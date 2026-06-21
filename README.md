@@ -344,3 +344,29 @@ arca-ionic/
 📍 ETEC Pedro Ferreira Alves — Mogi Mirim/SP
 
 📝 **Licença:** MIT © ARCA 2025/2026
+
+---
+
+## 📦 Processo de Release
+
+```bash
+# 1. Build do APK
+cd arca-ionic && npx ng build --configuration production
+cd android && ./gradlew assembleDebug
+
+# 2. Sync Capacitor
+npx cap sync android
+
+# 3. Upload pro GitHub Release (NÃO renomear o APK!)
+#    O Gradle gera android/app/build/outputs/apk/debug/app-debug.apk
+#    A API /api/versao aponta para app-debug.apk — manter consistência
+gh release create vX.Y.Z \
+  android/app/build/outputs/apk/debug/app-debug.apk \
+  --title "vX.Y.Z — descrição" \
+  --notes "Release notes"
+
+# Para atualizar release existente:
+gh release upload vX.Y.Z android/app/build/outputs/apk/debug/app-debug.apk --clobber
+```
+
+**Regra:** Nunca renomear o APK antes do upload. O `app-debug.apk` é o nome padrão do Gradle e o que a API espera.
