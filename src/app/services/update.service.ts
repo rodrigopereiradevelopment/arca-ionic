@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Capacitor, CapacitorHttp } from '@capacitor/core';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Browser } from '@capacitor/browser';
 
 export interface VersaoInfo {
@@ -52,46 +51,11 @@ export class UpdateService {
 
   async baixarEInstalar(url: string): Promise<{ ok: boolean; erro?: string }> {
     try {
-      console.log('[UpdateService] Baixando APK de', url);
-
-      const response = await CapacitorHttp.get({
-        url,
-        responseType: 'arraybuffer',
-      });
-
-      if (response.status < 200 || response.status >= 300) {
-        return { ok: false, erro: `HTTP ${response.status}` };
-      }
-
-      const arrayBuffer = response.data as ArrayBuffer;
-      const bytes = new Uint8Array(arrayBuffer);
-      let binary = '';
-      for (let i = 0; i < bytes.byteLength; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      const base64 = btoa(binary);
-
-      const fileName = `arca-update-${Date.now()}.apk`;
-      console.log('[UpdateService] Salvando APK como', fileName);
-
-      await Filesystem.writeFile({
-        path: fileName,
-        data: base64,
-        directory: Directory.Cache,
-      });
-
-      const fileUri = await Filesystem.getUri({
-        path: fileName,
-        directory: Directory.Cache,
-      });
-
-      console.log('[UpdateService] URI do APK:', fileUri.uri);
-
-      await Browser.open({ url: fileUri.uri });
-
+      console.log('[UpdateService] Abrindo URL de download:', url);
+      await Browser.open({ url });
       return { ok: true };
     } catch (err) {
-      console.error('[UpdateService] Erro no download:', err);
+      console.error('[UpdateService] Erro ao abrir download:', err);
       return { ok: false, erro: err instanceof Error ? err.message : 'Erro desconhecido' };
     }
   }

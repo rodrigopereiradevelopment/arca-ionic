@@ -97,27 +97,19 @@ export class AppComponent implements OnInit {
           {
             text: 'Atualizar agora',
             handler: async () => {
-              const loading = await this.alertCtrl.create({
-                header: 'Baixando atualização...',
-                message: 'Aguarde, o download está em andamento. Após o download, o Android pedirá confirmação para instalar — isso é normal para apps fora da Play Store.',
-                backdropDismiss: false,
-              });
-              await loading.present();
-
               const resultado = await this.updateService.baixarEInstalar(update.url);
-              await loading.dismiss();
 
               if (!resultado.ok) {
                 const erroAlert = await this.alertCtrl.create({
                   header: 'Erro no download',
-                  message: resultado.erro || 'Não foi possível baixar a atualização.',
+                  message: resultado.erro || 'Não foi possível abrir o download.',
                   buttons: ['OK'],
                 });
                 await erroAlert.present();
               } else {
                 const okAlert = await this.alertCtrl.create({
-                  header: 'Download concluído',
-                  message: 'Se o instalador não abrir automaticamente, vá em Configurações > Apps > ARCA e ative "Fontes desconhecidas".',
+                  header: 'Download iniciado',
+                  message: 'O download começou no navegador. Após baixar, abra o arquivo para instalar. Se pedir, ative "Fontes desconhecidas" nas configurações.',
                   buttons: ['OK'],
                 });
                 await okAlert.present();
