@@ -7,7 +7,7 @@
     </div>
 
     <div class="carrinho-item" *ngFor="let produto of produtos">
-      <img [src]="produto.img" [alt]="produto.nome" class="img-produto">
+      <img [src]="produto.img" [alt]="produto.nome" class="img-produto" (error)="onImageError($event)">
       <div class="info">
         <span class="nome">{{ produto.nome }}</span>
         <span class="preco" *ngIf="produto.menorPreco > 0">

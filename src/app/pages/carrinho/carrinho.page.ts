@@ -128,4 +128,10 @@ export class CarrinhoPage {
     });
     await t.present();
   }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/img/Produto1.png';
+    img.onerror = null;
+  }
 }

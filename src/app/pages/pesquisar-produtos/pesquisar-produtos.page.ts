@@ -13,6 +13,7 @@ import { AudioService } from '../../services/audio.service';
 import { AuthService } from '../../services/auth.service';
 import { InfoNutricionalService, InfoNutricional, NUTRI_SCORE_CORES } from '../../services/info-nutricional.service';
 import { environment } from '../../../environments/environment';
+import { MERCADOS_MAP } from '../../constants/mercados';
 import { CATEGORIAS_MAP, MEDALHAS } from '../../constants/mercados';
 
 interface Preco {
@@ -117,7 +118,7 @@ export class PesquisarProdutosPage implements OnInit {
         for (const m of data) {
           this.mapaMercados[m.id] = {
             nome: m.nome,
-            logo: m.logo_url || `assets/img/${m.nome?.toLowerCase().replace(/\s/g, '')}.png`,
+            logo: m.logo_url || MERCADOS_MAP[m.id]?.logo || 'assets/img/mercado.png',
           };
         }
       }
@@ -326,5 +327,11 @@ export class PesquisarProdutosPage implements OnInit {
       message, duration: 2000, color, position: 'top' 
     });
     await t.present();
+  }
+
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/img/Produto1.png';
+    img.onerror = null;
   }
 }
