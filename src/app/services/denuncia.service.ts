@@ -48,7 +48,9 @@ export class DenunciaService {
     try {
       const token = this.auth.usuario?.token;
       if (!token) return [];
-      const res = await fetch(`${environment.apiUrl}/api/denuncias?token=${encodeURIComponent(token)}`);
+      const res = await fetch(`${environment.apiUrl}/api/denuncias`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (!res.ok) return [];
       return await res.json();
     } catch {

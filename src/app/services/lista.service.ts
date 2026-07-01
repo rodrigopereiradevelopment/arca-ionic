@@ -28,7 +28,9 @@ export class ListaService {
     if (!token) return this.listarLocal();
 
     try {
-      const res = await fetch(`${environment.apiUrl}/api/auth/listas?token=${token}`);
+      const res = await fetch(`${environment.apiUrl}/api/auth/listas`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (!res.ok) return this.listarLocal();
       const data = await res.json();
       this.salvarCache(data);

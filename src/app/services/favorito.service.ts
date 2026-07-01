@@ -36,7 +36,9 @@ export class FavoritoService {
     try {
       const token = this.auth.usuario?.token;
       if (!token) return [];
-      const res = await fetch(`${environment.apiUrl}/api/favoritos?token=${encodeURIComponent(token)}`);
+      const res = await fetch(`${environment.apiUrl}/api/favoritos`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       if (!res.ok) return [];
       const data = await res.json();
       this.favoritosCache = data;
@@ -69,8 +71,8 @@ export class FavoritoService {
       const token = this.auth.usuario?.token;
       if (!token) return false;
       const res = await fetch(
-        `${environment.apiUrl}/api/favoritos?token=${encodeURIComponent(token)}&produto_id=${produtoId}`,
-        { method: 'DELETE' }
+        `${environment.apiUrl}/api/favoritos?produto_id=${produtoId}`,
+        { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }
       );
       if (res.ok) {
         this.idsCache.delete(produtoId);
