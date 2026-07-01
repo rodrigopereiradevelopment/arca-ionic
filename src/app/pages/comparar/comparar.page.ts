@@ -36,8 +36,8 @@ interface MercadoComPreco {
   produtos: ProdutoDetalhe[];
 }
 
-const CACHE_KEY = 'arca_compare_cache';
-const CACHE_TTL = 30 * 60 * 1000; // 30 minutos
+const CACHE_KEY = 'arca_compare_cache_v2';
+const CACHE_TTL = 60 * 1000; // 1 minuto (dados de preço mudam com frequência)
 
 @Component({
   selector: 'app-comparar',
