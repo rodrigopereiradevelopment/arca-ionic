@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
     }
 
     this.configService.init();
+    this.updateService.init();
 
     // Intro overlay
     setTimeout(() => {
@@ -91,29 +92,13 @@ export class AppComponent implements OnInit {
       const alert = await this.alertCtrl.create({
         header: 'Nova versão disponível',
         subHeader: `ARCA v${update.versao}`,
-        message: update.mensagem,
+        message: `${update.mensagem}\n\nO download será aberto no navegador. Após baixar, toque no arquivo para instalar.`,
         buttons: [
           { text: 'Depois', role: 'cancel' },
           {
             text: 'Atualizar agora',
             handler: async () => {
-              const resultado = await this.updateService.baixarEInstalar(update.url);
-
-              if (!resultado.ok) {
-                const erroAlert = await this.alertCtrl.create({
-                  header: 'Erro no download',
-                  message: resultado.erro || 'Não foi possível abrir o download.',
-                  buttons: ['OK'],
-                });
-                await erroAlert.present();
-              } else {
-                const okAlert = await this.alertCtrl.create({
-                  header: 'Download iniciado',
-                  message: 'O download começou no navegador. Após baixar, abra o arquivo para instalar. Se pedir, ative "Fontes desconhecidas" nas configurações.',
-                  buttons: ['OK'],
-                });
-                await okAlert.present();
-              }
+              await this.updateService.baixarEInstalar(update.url);
             },
           },
         ],

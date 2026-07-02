@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Capacitor, CapacitorHttp } from '@capacitor/core';
+import { App } from '@capacitor/app';
+import { Browser } from '@capacitor/browser';
 
 export interface VersaoInfo {
   versao: string;
@@ -12,8 +14,17 @@ export interface VersaoInfo {
 
 @Injectable({ providedIn: 'root' })
 export class UpdateService {
-  private readonly VERSION_CODE = 17;
   private ultimaVerificacao = 0;
+  private versionCode = 0;
+
+  async init() {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const info = await App.getInfo();
+        this.versionCode = parseInt(info.build, 10) || 0;
+      } catch {}
+    }
+  }
 
   async verificar(): Promise<{ update: VersaoInfo | null; erro: boolean }> {
     const resultado = { update: null as VersaoInfo | null, erro: false };
@@ -24,25 +35,23 @@ export class UpdateService {
     if (agora - this.ultimaVerificacao < 60000) return resultado;
     this.ultimaVerificacao = agora;
 
+    if (this.versionCode === 0) await this.init();
+    if (this.versionCode === 0) return resultado;
+
     try {
       const url = `${environment.apiUrl}/api/versao`;
-      console.log('[UpdateService] Checando versao em', url);
       const res = await CapacitorHttp.get({ url });
       if (res.status < 200 || res.status >= 300) {
-        console.warn('[UpdateService] Resposta nao OK:', res.status);
         resultado.erro = true;
         return resultado;
       }
       const data: VersaoInfo = res.data as any;
-      console.log('[UpdateService] API:', data, '| App:', this.VERSION_CODE);
 
-      if (data.versionCode > this.VERSION_CODE) {
-        console.log('[UpdateService] Nova versao disponivel!');
+      if (data.versionCode > this.versionCode) {
         resultado.update = data;
       }
       return resultado;
-    } catch (err) {
-      console.warn('[UpdateService] Erro na requisicao:', err);
+    } catch {
       resultado.erro = true;
       return resultado;
     }
@@ -50,17 +59,9 @@ export class UpdateService {
 
   async baixarEInstalar(url: string): Promise<{ ok: boolean; erro?: string }> {
     try {
-      console.log('[UpdateService] Disparando download de', url);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = '';
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      await Browser.open({ url, presentationStyle: 'fullscreen' });
       return { ok: true };
     } catch (err) {
-      console.error('[UpdateService] Erro ao disparar download:', err);
       return { ok: false, erro: err instanceof Error ? err.message : 'Erro desconhecido' };
     }
   }
