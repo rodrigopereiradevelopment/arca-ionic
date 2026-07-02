@@ -169,6 +169,24 @@ ion-content {
     }
   }
 }
+
+.similar-info {
+  margin-top: 4px;
+  small {
+    font-size: 0.75rem;
+    color: var(--arca-text-secondary);
+  }
+}
+
+.motivo-badge {
+  background: var(--arca-bg-subtle, #eee);
+  color: var(--arca-text-secondary);
+  font-size: 0.6rem;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 4px;
+  text-transform: uppercase;
+}
 /* ===== FIM DAS NOVAS CLASSES ===== */
 
 /* Mantém a classe antiga para compatibilidade (se ainda for usada em algum lugar) */

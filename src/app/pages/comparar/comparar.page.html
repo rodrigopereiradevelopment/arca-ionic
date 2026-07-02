@@ -61,7 +61,7 @@
           <div class="similar-info" *ngIf="item.similarInfo">
             <small>
               → {{ item.similarInfo.nomeOriginal }}
-              ({{ item.similarInfo.motivo }})
+              <span class="motivo-badge">{{ item.similarInfo.motivo }}</span>
             </small>
           </div>
         </div>
