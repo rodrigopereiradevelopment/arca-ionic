@@ -6,10 +6,10 @@ import {
   IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
   IonButton, IonIcon, IonList, IonListHeader, IonItem, IonItemSliding,
   IonItemOptions, IonItemOption, IonLabel, IonSearchbar, IonSpinner,
-  ToastController
+  AlertController, ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { add, remove, trash, checkmark, list, arrowBack } from 'ionicons/icons';
+import { add, remove, trash, checkmark, create, list, arrowBack } from 'ionicons/icons';
 import { ListaService, ItemLista, ListaComparacao } from '../../services/lista.service';
 import { environment } from '../../../environments/environment';
 
@@ -29,6 +29,7 @@ export class EditarListaPage implements OnInit {
   private listaService = inject(ListaService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private alertCtrl = inject(AlertController);
   private toastCtrl = inject(ToastController);
 
   listaId = 0;
@@ -40,7 +41,7 @@ export class EditarListaPage implements OnInit {
   alterado = false;
 
   constructor() {
-    addIcons({ add, remove, trash, checkmark, list, arrowBack });
+    addIcons({ add, remove, trash, checkmark, create, list, arrowBack });
   }
 
   async ngOnInit() {
@@ -101,6 +102,50 @@ export class EditarListaPage implements OnInit {
       this.itens[index].quantidade--;
       this.alterado = true;
     }
+  }
+
+  async renomear() {
+    const alert = await this.alertCtrl.create({
+      header: 'Renomear lista',
+      inputs: [{ name: 'nome', type: 'text', value: this.nomeLista }],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Salvar',
+          handler: async (data) => {
+            if (!data.nome?.trim()) return;
+            const atualizada = await this.listaService.atualizar(this.listaId, { nome: data.nome.trim() });
+            if (atualizada) {
+              this.nomeLista = atualizada.nome;
+              this.mostrarToast('Lista renomeada', 'success');
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async excluirLista() {
+    const alert = await this.alertCtrl.create({
+      header: 'Excluir lista',
+      message: `Excluir "${this.nomeLista}" permanentemente?`,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Excluir',
+          role: 'destructive',
+          handler: async () => {
+            const ok = await this.listaService.excluir(this.listaId);
+            if (ok) {
+              this.mostrarToast('Lista excluída', 'success');
+              this.router.navigate(['/gerenciar-listas']);
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   async salvar() {

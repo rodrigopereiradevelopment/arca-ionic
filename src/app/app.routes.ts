@@ -128,6 +128,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { roles: ['admin', 'moderador'] }
   },
+  {
+    path: 'gerenciar-tickets',
+    loadComponent: () => import('./pages/gerenciar-tickets/gerenciar-tickets.page').then(m => m.GerenciarTicketsPage),
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'moderador'] }
+  },
   // ROTAS MODERADOR
   {
     path: 'gerenciar-produtos',

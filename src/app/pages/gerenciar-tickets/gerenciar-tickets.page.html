@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="" icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Gerenciar Tickets</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="carregar()">
+        <ion-icon name="refresh" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="carregar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-segment [(ngModel)]="filtro" mode="ios" style="margin-bottom: 16px;">
+    <ion-segment-button value="todos">
+      <ion-label>Todos</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="aberto">
+      <ion-badge color="danger">!</ion-badge>
+      <ion-label>Abertos</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="analise">
+      <ion-label>Análise</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="resolvido">
+      <ion-label>Resolvidos</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <ion-list *ngIf="!loading && filtrados.length === 0" class="ion-text-center ion-padding">
+    <ion-icon name="ticket" class="empty-icon"></ion-icon>
+    <p>Nenhum ticket {{ filtro === 'todos' ? '' : filtro }}</p>
+  </ion-list>
+
+  <ion-list *ngIf="!loading && filtrados.length > 0">
+    <ion-item *ngFor="let t of filtrados" style="margin-bottom: 8px;">
+      <ion-label>
+        <h2>
+          <ion-badge [color]="corStatus(t.status)" style="margin-right: 8px;">
+            {{ t.status }}
+          </ion-badge>
+          <ion-badge color="medium" style="margin-right: 8px;">
+            {{ labelTipo(t.tipo) }}
+          </ion-badge>
+        </h2>
+        <p><strong>{{ t.titulo }}</strong></p>
+        <p>{{ t.descricao?.slice(0, 100) }}{{ t.descricao?.length > 100 ? '...' : '' }}</p>
+        <p style="font-size: 0.8em; color: var(--ion-color-medium);">
+          {{ t.created_at | date:'dd/MM/yyyy HH:mm' }}
+        </p>
+      </ion-label>
+
+      <div slot="end" style="display: flex; flex-direction: column; gap: 4px;">
+        <ion-button *ngIf="t.status === 'aberto'" fill="outline" size="small" color="warning"
+          (click)="alterarStatus(t, 'analise')">
+          Analisar
+        </ion-button>
+        <ion-button *ngIf="t.status === 'analise'" fill="outline" size="small" color="success"
+          (click)="alterarStatus(t, 'resolvido')">
+          Resolver
+        </ion-button>
+        <ion-button *ngIf="t.status === 'resolvido'" fill="outline" size="small" color="medium"
+          (click)="alterarStatus(t, 'aberto')">
+          Reabrir
+        </ion-button>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -38,11 +38,13 @@ export class MenuComponent {
   ];
 
   itensModerador = [
+    { label: 'Gerenciar Tickets', rota: '/gerenciar-tickets', img: 'assets/img/admin.png' },
     { label: 'Gerenciar Denúncias', rota: '/gerenciar-denuncias', img: 'assets/img/admin.png' },
     { label: 'Gerenciar Produtos', rota: '/gerenciar-produtos', img: 'assets/img/admin.png' }
   ];
 
   itensAdmin = [
+    { label: 'Gerenciar Tickets', rota: '/gerenciar-tickets', img: 'assets/img/admin.png' },
     { label: 'Gerenciar Mercados', rota: '/gerenciar-mercados', img: 'assets/img/admin.png' },
     { label: 'Gerenciar Usuários', rota: '/gerenciar-usuarios', img: 'assets/img/admin.png' },
     { label: 'Gerenciar Denúncias', rota: '/gerenciar-denuncias', img: 'assets/img/admin.png' },
