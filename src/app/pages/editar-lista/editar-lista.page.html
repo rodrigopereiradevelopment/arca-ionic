@@ -58,13 +58,16 @@
           <ion-label>
             <h2>{{ item.nome }}</h2>
           </ion-label>
+          <ion-button fill="clear" size="small" color="danger" (click)="removerItem(i)" class="btn-excluir-item">
+            <ion-icon name="trash" slot="icon-only"></ion-icon>
+          </ion-button>
           <div slot="end" class="qty-controls">
-            <ion-button fill="clear" size="small" (click)="diminuirQtd(i)">
-              <ion-icon name="remove-circle" slot="icon-only"></ion-icon>
+            <ion-button fill="solid" size="small" color="medium" (click)="diminuirQtd(i)" class="btn-qty">
+              <ion-icon name="remove" slot="icon-only"></ion-icon>
             </ion-button>
             <span class="qty">{{ item.quantidade }}</span>
-            <ion-button fill="clear" size="small" (click)="aumentarQtd(i)">
-              <ion-icon name="add-circle" slot="icon-only"></ion-icon>
+            <ion-button fill="solid" size="small" color="primary" (click)="aumentarQtd(i)" class="btn-qty">
+              <ion-icon name="add" slot="icon-only"></ion-icon>
             </ion-button>
           </div>
         </ion-item>

@@ -1,13 +1,29 @@
 .qty-controls {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
+  margin-left: 8px;
 }
 
 .qty {
-  font-weight: 600;
-  min-width: 24px;
+  font-weight: 700;
+  min-width: 28px;
   text-align: center;
+  font-size: 1.05rem;
+}
+
+.btn-qty {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+}
+
+.btn-excluir-item {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  margin-right: 4px;
 }
 
 .empty-icon {
