@@ -3,9 +3,9 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home" text="" icon="arrow-back"></ion-back-button>
     </ion-buttons>
-    <ion-title>Gerenciar Tickets</ion-title>
+    <ion-title>{{ ticketAberto ? 'Ticket #' + ticketAberto.id : 'Gerenciar Tickets' }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="carregar()">
+      <ion-button (click)="carregar()" *ngIf="!ticketAberto">
         <ion-icon name="refresh" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,67 +13,128 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-refresher slot="fixed" (ionRefresh)="carregar($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
 
-  <ion-segment [(ngModel)]="filtro" mode="ios" style="margin-bottom: 16px;">
-    <ion-segment-button value="todos">
-      <ion-label>Todos</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="aberto">
-      <ion-badge color="danger">!</ion-badge>
-      <ion-label>Abertos</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="analise">
-      <ion-label>Análise</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="resolvido">
-      <ion-label>Resolvidos</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+  <!-- LISTA ─────────────────────────────── -->
+  <ng-container *ngIf="!ticketAberto">
+    <ion-refresher slot="fixed" (ionRefresh)="carregar($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
 
-  <div *ngIf="loading" class="ion-text-center ion-padding">
-    <ion-spinner name="crescent"></ion-spinner>
+    <ion-segment [(ngModel)]="filtro" mode="ios" style="margin-bottom: 16px;">
+      <ion-segment-button value="todos">
+        <ion-label>Todos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="aberto">
+        <ion-badge color="danger">!</ion-badge>
+        <ion-label>Abertos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="analise">
+        <ion-label>Análise</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="resolvido">
+        <ion-label>Resolvidos</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <div *ngIf="loading" class="ion-text-center ion-padding">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+
+    <ion-list *ngIf="!loading && filtrados.length === 0" class="ion-text-center ion-padding">
+      <ion-icon name="ticket" class="empty-icon"></ion-icon>
+      <p>Nenhum ticket {{ filtro === 'todos' ? '' : filtro }}</p>
+    </ion-list>
+
+    <ion-list *ngIf="!loading && filtrados.length > 0">
+      <ion-item *ngFor="let t of filtrados" style="margin-bottom: 8px;" (click)="abrirConversa(t)" detail="true">
+        <ion-label>
+          <h2>
+            <ion-badge [color]="corStatus(t.status)" style="margin-right: 8px;">
+              {{ t.status }}
+            </ion-badge>
+            <ion-badge color="medium" style="margin-right: 8px;">
+              {{ labelTipo(t.tipo) }}
+            </ion-badge>
+          </h2>
+          <p><strong>{{ t.titulo }}</strong></p>
+          <p>{{ (t.descricao || '').slice(0, 100) }}{{ t.descricao && t.descricao.length > 100 ? '...' : '' }}</p>
+          <p style="font-size: 0.8em; color: var(--ion-color-medium);">
+            {{ t.created_at | date:'dd/MM/yyyy HH:mm' }}
+          </p>
+        </ion-label>
+
+        <div slot="end" style="display: flex; flex-direction: column; gap: 4px;" (click)="$event.stopPropagation()">
+          <ion-button *ngIf="t.status === 'aberto'" fill="outline" size="small" color="warning"
+            (click)="alterarStatus(t, 'analise')">
+            Analisar
+          </ion-button>
+          <ion-button *ngIf="t.status === 'analise'" fill="outline" size="small" color="success"
+            (click)="alterarStatus(t, 'resolvido')">
+            Resolver
+          </ion-button>
+          <ion-button *ngIf="t.status === 'resolvido'" fill="outline" size="small" color="medium"
+            (click)="alterarStatus(t, 'aberto')">
+            Reabrir
+          </ion-button>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+  <!-- CONVERSA ──────────────────────────── -->
+  <div class="conversa" *ngIf="ticketAberto">
+
+    <div class="conv-info" style="margin-bottom: 16px;">
+      <h2>{{ ticketAberto.titulo }}</h2>
+      <p style="white-space: pre-wrap; color: var(--ion-color-medium);">{{ ticketAberto.descricao }}</p>
+      <ion-badge [color]="corStatus(ticketAberto.status)">
+        {{ ticketAberto.status === 'aberto' ? 'Aberto' : ticketAberto.status === 'analise' ? 'Em Análise' : 'Resolvido' }}
+      </ion-badge>
+      <ion-badge color="medium" style="margin-left: 8px;">
+        {{ labelTipo(ticketAberto.tipo) }}
+      </ion-badge>
+    </div>
+
+    <div *ngIf="carregandoMsgs" class="ion-text-center ion-padding">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+
+    <div class="mensagens" *ngIf="!carregandoMsgs">
+      <div *ngFor="let m of mensagens"
+        style="margin-bottom: 12px; display: flex; flex-direction: column; align-items: {{ m.autor === 'suporte' ? 'flex-start' : 'flex-end' }};">
+        <div style="font-size: 0.75em; color: var(--ion-color-medium); margin-bottom: 2px;">
+          {{ m.autor === 'suporte' ? '🛠️ Suporte' : '👤 Usuário' }}
+        </div>
+        <div style="background: {{ m.autor === 'suporte' ? 'var(--ion-color-light)' : 'var(--ion-color-primary)' }}; color: {{ m.autor === 'suporte' ? 'inherit' : 'white' }}; padding: 8px 12px; border-radius: 12px; max-width: 80%;">
+          {{ m.texto }}
+        </div>
+        <div style="font-size: 0.7em; color: var(--ion-color-medium); margin-top: 2px;">
+          {{ formatarData(m.created_at) }}
+        </div>
+      </div>
+
+      <div *ngIf="mensagens.length === 0" class="ion-text-center ion-padding" style="color: var(--ion-color-medium);">
+        Nenhuma mensagem ainda.
+      </div>
+    </div>
+
+    <div class="input-area" style="display: flex; gap: 8px; margin-top: 16px; align-items: center;">
+      <input type="text" [(ngModel)]="textoResposta"
+        placeholder="Digite sua resposta..."
+        (keyup.enter)="responder()" [disabled]="ticketAberto.status === 'resolvido'"
+        style="flex: 1; border: 1px solid var(--ion-color-light-shade); border-radius: 8px; padding: 10px; font-size: 0.9rem;">
+      <ion-button (click)="responder()" [disabled]="!textoResposta.trim() || ticketAberto.status === 'resolvido'">
+        <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </div>
+
+    <div *ngIf="ticketAberto.status === 'resolvido'" class="ion-text-center ion-padding" style="color: var(--ion-color-medium);">
+      ✅ Ticket resolvido. Reabra para responder.
+    </div>
+
+    <ion-button expand="block" fill="clear" (click)="fecharConversa()" style="margin-top: 16px;">
+      ← Voltar
+    </ion-button>
   </div>
 
-  <ion-list *ngIf="!loading && filtrados.length === 0" class="ion-text-center ion-padding">
-    <ion-icon name="ticket" class="empty-icon"></ion-icon>
-    <p>Nenhum ticket {{ filtro === 'todos' ? '' : filtro }}</p>
-  </ion-list>
-
-  <ion-list *ngIf="!loading && filtrados.length > 0">
-    <ion-item *ngFor="let t of filtrados" style="margin-bottom: 8px;">
-      <ion-label>
-        <h2>
-          <ion-badge [color]="corStatus(t.status)" style="margin-right: 8px;">
-            {{ t.status }}
-          </ion-badge>
-          <ion-badge color="medium" style="margin-right: 8px;">
-            {{ labelTipo(t.tipo) }}
-          </ion-badge>
-        </h2>
-        <p><strong>{{ t.titulo }}</strong></p>
-        <p>{{ (t.descricao || '').slice(0, 100) }}{{ t.descricao && t.descricao.length > 100 ? '...' : '' }}</p>
-        <p style="font-size: 0.8em; color: var(--ion-color-medium);">
-          {{ t.created_at | date:'dd/MM/yyyy HH:mm' }}
-        </p>
-      </ion-label>
-
-      <div slot="end" style="display: flex; flex-direction: column; gap: 4px;">
-        <ion-button *ngIf="t.status === 'aberto'" fill="outline" size="small" color="warning"
-          (click)="alterarStatus(t, 'analise')">
-          Analisar
-        </ion-button>
-        <ion-button *ngIf="t.status === 'analise'" fill="outline" size="small" color="success"
-          (click)="alterarStatus(t, 'resolvido')">
-          Resolver
-        </ion-button>
-        <ion-button *ngIf="t.status === 'resolvido'" fill="outline" size="small" color="medium"
-          (click)="alterarStatus(t, 'aberto')">
-          Reabrir
-        </ion-button>
-      </div>
-    </ion-item>
-  </ion-list>
 </ion-content>

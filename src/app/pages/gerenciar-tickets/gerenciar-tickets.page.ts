@@ -9,8 +9,8 @@ import {
   IonSpinner, IonRefresher, IonRefresherContent, ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { ticket, arrowBack, checkmark, refresh } from 'ionicons/icons';
-import { TicketService, Ticket } from '../../services/ticket.service';
+import { ticket, arrowBack, checkmark, refresh, arrowForward } from 'ionicons/icons';
+import { TicketService, Ticket, TicketMensagem } from '../../services/ticket.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -35,8 +35,13 @@ export class GerenciarTicketsPage {
   loading = true;
   filtro = 'todos';
 
+  ticketAberto: Ticket | null = null;
+  mensagens: TicketMensagem[] = [];
+  textoResposta = '';
+  carregandoMsgs = false;
+
   constructor() {
-    addIcons({ ticket, arrowBack, checkmark, refresh });
+    addIcons({ ticket, arrowBack, checkmark, refresh, arrowForward });
   }
 
   async ionViewWillEnter() {
@@ -77,6 +82,45 @@ export class GerenciarTicketsPage {
     } else {
       await this.toast('Erro ao alterar status', 'danger');
     }
+  }
+
+  async abrirConversa(t: Ticket) {
+    this.ticketAberto = t;
+    this.mensagens = [];
+    this.carregandoMsgs = true;
+    const msgs = await this.ticketSvc.listarMensagens(t.id);
+    if (msgs) this.mensagens = msgs;
+    this.carregandoMsgs = false;
+  }
+
+  fecharConversa() {
+    this.ticketAberto = null;
+    this.mensagens = [];
+    this.textoResposta = '';
+  }
+
+  async responder() {
+    if (!this.textoResposta.trim() || !this.ticketAberto) return;
+    const msg = await this.ticketSvc.enviarMensagem(this.ticketAberto.id, this.textoResposta.trim());
+    if (msg) {
+      this.mensagens.push(msg);
+      this.textoResposta = '';
+    } else {
+      await this.toast('Erro ao enviar resposta', 'danger');
+    }
+  }
+
+  formatarData(dataStr: string): string {
+    const data = new Date(dataStr);
+    const diff = Date.now() - data.getTime();
+    const min = Math.floor(diff / 60000);
+    const h = Math.floor(diff / 3600000);
+    const d = Math.floor(diff / 86400000);
+    if (min < 1) return 'Agora';
+    if (min < 60) return `${min}min`;
+    if (h < 24) return `${h}h`;
+    if (d === 1) return 'Ontem';
+    return `${d}d`;
   }
 
   private async toast(msg: string, color: string) {
