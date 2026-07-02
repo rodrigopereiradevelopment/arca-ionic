@@ -28,14 +28,29 @@ sabao em po 800g</pre>
     <p>Buscando produtos...</p>
   </div>
 
+  <div *ngIf="produtosEncontrados.length > 0" class="encontrados">
+    <p><strong>{{ produtosEncontrados.length }}</strong> produtos encontrados:</p>
+    <ion-list lines="none">
+      <ion-item *ngFor="let p of produtosEncontrados">
+        <ion-label>{{ p.nome }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
   <div *ngIf="erros.length > 0" class="erros">
-    <p>Nao encontrados:</p>
+    <p>Nao encontrados ({{ erros.length }}):</p>
     <ul>
       <li *ngFor="let e of erros">{{ e }}</li>
     </ul>
   </div>
 
-  <ion-button expand="block" (click)="buscarEComparar()" [disabled]="buscando || !textoLista.trim()">
-    Comparar Precos
-  </ion-button>
+  <div class="botoes">
+    <ion-button expand="block" (click)="buscarEComparar()" [disabled]="buscando || !textoLista.trim()">
+      Comparar Precos
+    </ion-button>
+    <ion-button *ngIf="auth.logado" expand="block" fill="outline" (click)="salvarLista()" [disabled]="buscando || !textoLista.trim()">
+      <ion-icon slot="start" name="save-outline"></ion-icon>
+      Salvar Lista
+    </ion-button>
+  </div>
 </ion-content>
