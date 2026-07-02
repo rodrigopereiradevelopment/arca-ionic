@@ -54,7 +54,7 @@
           </ion-badge>
         </h2>
         <p><strong>{{ t.titulo }}</strong></p>
-        <p>{{ t.descricao?.slice(0, 100) }}{{ t.descricao?.length > 100 ? '...' : '' }}</p>
+        <p>{{ (t.descricao || '').slice(0, 100) }}{{ t.descricao && t.descricao.length > 100 ? '...' : '' }}</p>
         <p style="font-size: 0.8em; color: var(--ion-color-medium);">
           {{ t.created_at | date:'dd/MM/yyyy HH:mm' }}
         </p>

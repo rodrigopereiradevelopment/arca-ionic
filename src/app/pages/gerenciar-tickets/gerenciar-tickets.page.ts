@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
   IonContent, IonHeader, IonToolbar, IonTitle, IonButtons,
@@ -15,10 +16,10 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-gerenciar-tickets',
   templateUrl: './gerenciar-tickets.page.html',
-  styleUrls: ['./gerenciar-tickets.page.scss'],
+  styleUrls: [],
   standalone: true,
   imports: [
-    CommonModule, RouterModule,
+    CommonModule, FormsModule, RouterModule,
     IonContent, IonHeader, IonToolbar, IonTitle, IonButtons,
     IonBackButton, IonButton, IonIcon, IonList, IonItem,
     IonLabel, IonChip, IonBadge, IonSegment, IonSegmentButton,
