@@ -151,6 +151,26 @@ ion-content {
       text-transform: uppercase;
       letter-spacing: 0.02em;
     }
+    .badge-exato {
+      background: var(--ion-color-success, #2dd36f);
+      color: #fff;
+      font-size: 0.6rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+  }
+  
+  .item-info-sub {
+    width: 100%;
+    margin-top: 2px;
+    small {
+      font-size: 0.7rem;
+      color: var(--arca-text-muted);
+      font-style: italic;
+    }
   }
   
   .item-preco {

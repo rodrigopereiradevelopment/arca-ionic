@@ -48,7 +48,11 @@
           <div class="item-info">
             <span class="item-nome">{{ item.nome }}</span>
             <span class="item-quantidade">{{ item.quantidade }}x</span>
+            <span class="badge-exato" *ngIf="!item.similarInfo && item.nome !== item.nomeEncontrado">Exato</span>
             <span class="similar-badge" *ngIf="item.similarInfo">Similar</span>
+          </div>
+          <div class="item-info-sub" *ngIf="item.nome !== item.nomeEncontrado">
+            <small>{{ item.nomeEncontrado }}</small>
           </div>
           <div class="item-preco">
             <span *ngIf="item.precoEncontrado > 0" class="preco-ok">

@@ -14,6 +14,7 @@ import { MERCADOS_MAP, MEDALHAS } from '../../constants/mercados';
 interface ProdutoDetalhe {
   id: number;
   nome: string;
+  nomeEncontrado?: string;
   quantidade: number;
   precoEncontrado: number;
   naoEncontrado?: boolean;
@@ -142,6 +143,7 @@ export class CompararPage {
           const produtosDetalhe: ProdutoDetalhe[] = m.produtos.map((prod: any) => ({
             id: prod.id || 0,
             nome: prod.nome,
+            nomeEncontrado: prod.nomeEncontrado || prod.nome,
             quantidade: prod.quantidade,
             precoEncontrado: prod.precoUnitario || 0,
             naoEncontrado: prod.naoEncontrado || false,
