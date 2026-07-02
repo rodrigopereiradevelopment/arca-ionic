@@ -31,9 +31,10 @@ export class ListaRapidaPage {
     for (const linha of linhas) {
       try {
         const res = await fetch(environment.apiUrl + '/api/produtos/search?q=' + encodeURIComponent(linha));
-        const data = await res.json();
-        if (data && data.length > 0) {
-          this.comparacaoService.adicionar(data[0]);
+        const json = await res.json();
+        const produtos = json?.data || [];
+        if (produtos.length > 0) {
+          this.comparacaoService.adicionar(produtos[0]);
         } else {
           this.erros.push(linha);
         }
