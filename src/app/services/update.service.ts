@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Capacitor, CapacitorHttp } from '@capacitor/core';
 import { App } from '@capacitor/app';
-import { Browser } from '@capacitor/browser';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { FileOpener } from '@capacitor-community/file-opener';
+import { LoadingController } from '@ionic/angular/standalone';
 
 export interface VersaoInfo {
   versao: string;
@@ -12,10 +14,20 @@ export interface VersaoInfo {
   mensagem: string;
 }
 
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
 @Injectable({ providedIn: 'root' })
 export class UpdateService {
   private ultimaVerificacao = 0;
   private versionCode = 0;
+  private loadingCtrl = inject(LoadingController);
 
   async init() {
     if (Capacitor.isNativePlatform()) {
@@ -58,10 +70,38 @@ export class UpdateService {
   }
 
   async baixarEInstalar(url: string): Promise<{ ok: boolean; erro?: string }> {
+    const loading = await this.loadingCtrl.create({
+      message: 'Baixando atualização...',
+      spinner: 'circular',
+      backdropDismiss: false,
+    });
+    await loading.present();
+
     try {
-      await Browser.open({ url, presentationStyle: 'fullscreen' });
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Erro HTTP ${response.status}`);
+      }
+
+      const buffer = await response.arrayBuffer();
+      const base64 = arrayBufferToBase64(buffer);
+
+      const result = await Filesystem.writeFile({
+        path: 'arca-update.apk',
+        data: base64,
+        directory: Directory.Data,
+      });
+
+      await loading.dismiss();
+
+      await FileOpener.open({
+        filePath: result.uri,
+        contentType: 'application/vnd.android.package-archive',
+      });
+
       return { ok: true };
     } catch (err) {
+      await loading.dismiss();
       return { ok: false, erro: err instanceof Error ? err.message : 'Erro desconhecido' };
     }
   }

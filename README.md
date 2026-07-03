@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![App](https://img.shields.io/badge/App-Vercel-black?logo=vercel)](https://arca-ionic.vercel.app)
 [![API](https://img.shields.io/badge/API-Vercel-black?logo=vercel)](https://arca-next.vercel.app)
-![Version](https://img.shields.io/badge/version-1.1.6-green)
+![Version](https://img.shields.io/badge/version-1.2.0-green)
 [![Lint](https://img.shields.io/badge/lint-passing-brightgreen)]()
 [![Releases](https://img.shields.io/github/v/release/rodrigopereiradevelopment/arca-ionic)](https://github.com/rodrigopereiradevelopment/arca-ionic/releases)
 
@@ -113,6 +113,12 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
 | ⚡ **Promise.all** | Paralelização em gerenciar-produtos, perfil e app.component | ✅ |
 | 🛡️ **Safe-area + Imersivo** | Padding notch, footer acima nav buttons, `MainActivity.java` | ✅ |
 | 📊 **Índices Performance** | Migration SQL: índices em `produtos`, `precos` | ✅ |
+| 🏷️ **Badge Exato/Similar** | Nome real do banco em itálico + badge Exato (match c/ nome diferente) ou Similar (fallback) | ✅ |
+| 🎯 **Filtro âncora substitutos** | Primeira palavra forte posição 0-1 + blocklists — zero falsos positivos | ✅ |
+| 🏆 **Ordenação por completeza** | Mercados ordenados por itens encontrados primeiro, depois preço | ✅ |
+| 🗑️ **Lixeira visível** | Botão delete ao lado do item (além do swipe) na lista de compras | ✅ |
+| 🧹 **Imagens quebradas limpas** | 6.711 produtos com `imagem_url` morta limpos para `null` | ✅ |
+| 📋 **Motivo nos similares** | `similarInfo.motivo` exibido como badge: equivalente / trigram / substituto | ✅ |
 
 ---
 
@@ -327,6 +333,10 @@ arca-ionic/
 - **Busca por similares** — fallback automático com trigram + categoria + peso + preço
 - **Embeddings 384d** — cosine distance via pgvector com fallback para trigram (53.809 produtos)
 - **RPC `buscar_produtos_embedding`** — busca semântica isolada, não substitui Fase 1 em produção
+- **Filtro âncora substitutos** — primeira palavra forte do produto deve estar nas 2 primeiras do substituto; blocklists por âncora
+- **Substituto_amplo desligado** — melhor "não encontrado" honesto do que produto errado
+- **Ordenação por completeza** — mercado com 20/20 aparece antes de 19/20, independente do preço
+- **nomeEncontrado na UI** — exibe nome real do banco em itálico com badge Exato/Similar + motivo
 
 ---
 

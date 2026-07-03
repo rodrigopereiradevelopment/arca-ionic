@@ -92,13 +92,21 @@ export class AppComponent implements OnInit {
       const alert = await this.alertCtrl.create({
         header: 'Nova versão disponível',
         subHeader: `ARCA v${update.versao}`,
-        message: `${update.mensagem}\n\nO download será aberto no navegador. Após baixar, toque no arquivo para instalar.`,
+        message: update.mensagem,
         buttons: [
           { text: 'Depois', role: 'cancel' },
           {
             text: 'Atualizar agora',
             handler: async () => {
-              await this.updateService.baixarEInstalar(update.url);
+              const result = await this.updateService.baixarEInstalar(update.url);
+              if (!result.ok) {
+                const errAlert = await this.alertCtrl.create({
+                  header: 'Erro ao atualizar',
+                  message: result.erro || 'Tente baixar manualmente pelo site.',
+                  buttons: ['OK'],
+                });
+                await errAlert.present();
+              }
             },
           },
         ],
