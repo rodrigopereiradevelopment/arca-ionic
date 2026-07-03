@@ -122,6 +122,9 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
 | 🎯 **Filtro por mercado na busca** | Chips horizontais para filtrar produtos de um mercado específico | ✅ |
 | 🚀 **In-app Update** | Verifica `GET /api/versao`, download via `CapacitorHttp` + `@capacitor/filesystem` + `@capacitor-community/file-opener` com fallback `Browser.open()` | ✅ |
 | 🔇 **Alt vazio nas imagens** | Medalhas e logos com `onerror` — sem nome duplicado se imagem falhar | ✅ |
+| 🏪 **Portal do Mercado (B2B)** | Dashboard, edição de preços e importação CSV para donos de mercado | ✅ |
+| 🔐 **Role mercado_admin** | Cada mercado vê/edita só seus próprios produtos e preços | ✅ |
+| 🔎 **Índice EAN** | B-Tree em `produtos.codigo_barras` para busca instantânea por código de barras | ✅ |
 
 ---
 
@@ -331,6 +334,9 @@ arca-ionic/
 - **CORS corsOk/corsErr** — helpers em todas as respostas da API
 - **`onerror` anti-loop** — `this.onerror=null;this.src='...'` em imagens
 - **`onerror` silencioso** — imagens decorativas com `this.style.display='none'` (evita alt duplicado)
+- **Portal do Mercado (B2B)** — `lib/mercado-auth.ts`, dashboard, CRUD preços, import CSV com match EAN/nome
+- **Role mercado_admin** — `profiles.mercado_id` FK → `supermercados.id`, RLS no backend
+- **Índice EAN** — `CREATE INDEX idx_produtos_codigo_barras ON produtos(codigo_barras)`
 - **Firebase Admin SDK** — `sendEachForMulticast` com auto-desativação de tokens
 - **google-services.json não versionado** — segurança das chaves Firebase
 - **Busca por similares** — fallback automático com trigram + categoria + peso + preço
