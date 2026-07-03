@@ -4,6 +4,7 @@ import { Capacitor, CapacitorHttp } from '@capacitor/core';
 import { App } from '@capacitor/app';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { FileOpener } from '@capacitor-community/file-opener';
+import { Browser } from '@capacitor/browser';
 import { LoadingController } from '@ionic/angular/standalone';
 
 export interface VersaoInfo {
@@ -12,15 +13,6 @@ export interface VersaoInfo {
   url: string;
   obrigatorio: boolean;
   mensagem: string;
-}
-
-function arrayBufferToBase64(buffer: ArrayBuffer): string {
-  let binary = '';
-  const bytes = new Uint8Array(buffer);
-  for (let i = 0; i < bytes.length; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
 }
 
 @Injectable({ providedIn: 'root' })
@@ -78,13 +70,15 @@ export class UpdateService {
     await loading.present();
 
     try {
-      const response = await fetch(url);
-      if (!response.ok) {
+      const response = await CapacitorHttp.get({
+        url,
+        responseType: 'arraybuffer',
+      });
+      if (response.status < 200 || response.status >= 300) {
         throw new Error(`Erro HTTP ${response.status}`);
       }
 
-      const buffer = await response.arrayBuffer();
-      const base64 = arrayBufferToBase64(buffer);
+      const base64 = response.data as string;
 
       const result = await Filesystem.writeFile({
         path: 'arca-update.apk',
@@ -102,6 +96,7 @@ export class UpdateService {
       return { ok: true };
     } catch (err) {
       await loading.dismiss();
+      await Browser.open({ url });
       return { ok: false, erro: err instanceof Error ? err.message : 'Erro desconhecido' };
     }
   }
