@@ -1,0 +1,49 @@
+<ion-content [fullscreen]="true">
+  <div class="topo">
+    <a routerLink="/home" class="btn-voltar">←</a>
+    <span class="titulo">Portal do Mercado</span>
+  </div>
+
+  <div class="container" *ngIf="carregando">
+    <p class="loading">Carregando painel...</p>
+  </div>
+
+  <div class="container" *ngIf="erro && !carregando">
+    <p class="erro">{{ erro }}</p>
+    <a routerLink="/home" class="btn-link">Voltar ao início</a>
+  </div>
+
+  <div class="container" *ngIf="dados && !carregando">
+    <div class="card-mercado">
+      <div class="mercado-info">
+        <strong>{{ dados.mercado.nome }}</strong>
+        <span>{{ dados.mercado.cidade }} · {{ dados.mercado.status }}</span>
+      </div>
+    </div>
+
+    <div class="cards-stats">
+      <div class="stat-card">
+        <span class="stat-num">{{ dados.totalProdutos }}</span>
+        <span class="stat-label">Total de Preços</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">{{ dados.precosAtivos }}</span>
+        <span class="stat-label">Preços (30 dias)</span>
+      </div>
+    </div>
+
+    <div class="acoes-rapidas">
+      <a routerLink="/portal-mercado/produtos" class="btn-acao">Gerenciar Produtos</a>
+      <a routerLink="/portal-mercado/importar" class="btn-acao">Importar CSV</a>
+    </div>
+
+    <div class="recentes" *ngIf="dados.atualizacoesRecentes.length > 0">
+      <h3>Atualizações Recentes</h3>
+      <div class="recente-item" *ngFor="let r of dados.atualizacoesRecentes.slice(0, 5)">
+        <span class="recente-nome">{{ r.nome }}</span>
+        <span class="recente-preco">R$ {{ r.preco.toFixed(2) }}</span>
+        <span class="recente-data">{{ r.data | date:'dd/MM' }}</span>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,31 @@
+<ion-content [fullscreen]="true">
+  <div class="topo">
+    <a routerLink="/portal-mercado" class="btn-voltar">←</a>
+    <span class="titulo">Importar CSV</span>
+  </div>
+
+  <div class="container">
+    <div class="info">
+      <strong>Formato esperado (separador ;)</strong>
+      <code>nome;preco;ean;promocao;descricao_promocao</code>
+      <small>Colunas: nome, preco (obrigatórios). ean, promocao, descricao_promocao (opcionais).</small>
+    </div>
+
+    <textarea [(ngModel)]="csvTexto" rows="8" class="csv-input"></textarea>
+
+    <button class="btn-importar" (click)="importar()" [disabled]="enviando">
+      {{ enviando ? 'Importando...' : 'Importar Preços' }}
+    </button>
+
+    <div class="resultado" *ngIf="resultado">
+      <div class="resumo">
+        <span class="ok">✅ {{ resultado.importados }} importados</span>
+        <span class="fail" *ngIf="resultado.erros > 0">❌ {{ resultado.erros }} erros</span>
+      </div>
+      <div class="erros-lista" *ngIf="resultado.errosDetalhe.length > 0">
+        <strong>Erros:</strong>
+        <p *ngFor="let e of resultado.errosDetalhe">{{ e.linha }} → {{ e.erro }}</p>
+      </div>
+    </div>
+  </div>
+</ion-content>

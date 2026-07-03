@@ -155,5 +155,24 @@ export const routes: Routes = [
     path: 'editar-lista/:id',
     loadComponent: () => import('./pages/editar-lista/editar-lista.page').then( m => m.EditarListaPage),
     canActivate: [authGuard]
+  },
+  // ROTAS PORTAL DO MERCADO
+  {
+    path: 'portal-mercado',
+    loadComponent: () => import('./pages/portal-mercado/portal-mercado.page').then(m => m.PortalMercadoPage),
+    canActivate: [authGuard],
+    data: { roles: ['mercado_admin'] }
+  },
+  {
+    path: 'portal-mercado/produtos',
+    loadComponent: () => import('./pages/portal-mercado/produtos/produtos.page').then(m => m.PortalProdutosPage),
+    canActivate: [authGuard],
+    data: { roles: ['mercado_admin'] }
+  },
+  {
+    path: 'portal-mercado/importar',
+    loadComponent: () => import('./pages/portal-mercado/importar/importar.page').then(m => m.PortalImportarPage),
+    canActivate: [authGuard],
+    data: { roles: ['mercado_admin'] }
   }
 ];

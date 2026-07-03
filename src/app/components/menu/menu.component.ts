@@ -51,6 +51,12 @@ export class MenuComponent {
     { label: 'Gerenciar Produtos', rota: '/gerenciar-produtos', img: 'assets/img/admin.png' }
   ];
 
+  itensMercado = [
+    { label: 'Painel do Mercado', rota: '/portal-mercado', img: 'assets/img/admin.png' },
+    { label: 'Gerenciar Produtos', rota: '/portal-mercado/produtos', img: 'assets/img/admin.png' },
+    { label: 'Importar CSV', rota: '/portal-mercado/importar', img: 'assets/img/admin.png' }
+  ];
+
   fecharMenu() { this.menuCtrl.close(); }
 
   logout() {

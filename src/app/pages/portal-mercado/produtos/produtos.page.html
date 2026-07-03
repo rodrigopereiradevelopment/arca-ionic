@@ -1,0 +1,44 @@
+<ion-content [fullscreen]="true">
+  <div class="topo">
+    <a routerLink="/portal-mercado" class="btn-voltar">←</a>
+    <span class="titulo">Meus Produtos</span>
+  </div>
+
+  <div class="container">
+    <div class="busca-bar">
+      <input [(ngModel)]="busca" placeholder="Buscar por nome ou EAN..." (keyup.enter)="buscar()">
+      <button (click)="buscar()">Buscar</button>
+    </div>
+
+    <div *ngIf="carregando" class="loading">Carregando...</div>
+
+    <div class="produto-card" *ngFor="let p of produtos">
+      <div class="produto-header">
+        <span class="prod-nome">{{ p.nome }}</span>
+        <span class="prod-ean">{{ p.ean }}</span>
+      </div>
+
+      <ng-container *ngIf="!editando[p.precoId]; else editForm">
+        <div class="prod-preco">
+          <span class="valor">R$ {{ p.preco.toFixed(2) }}</span>
+          <span class="badge-promo" *ngIf="p.promocao">Promoção</span>
+          <button class="btn-editar" (click)="iniciarEdicao(p)">Editar</button>
+        </div>
+      </ng-container>
+
+      <ng-template #editForm>
+        <div class="edit-form">
+          <input type="number" step="0.01" [(ngModel)]="editando[p.precoId].preco" placeholder="Preço">
+          <label><input type="checkbox" [(ngModel)]="editando[p.precoId].promocao"> Promoção</label>
+          <input *ngIf="editando[p.precoId].promocao" [(ngModel)]="editando[p.precoId].descricao" placeholder="Descrição da promoção">
+          <div class="edit-actions">
+            <button class="btn-salvar" (click)="salvarEdicao(p)">Salvar</button>
+            <button class="btn-cancelar" (click)="cancelarEdicao(p.precoId)">Cancelar</button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
+    <p class="sem-produtos" *ngIf="!carregando && produtos.length === 0">Nenhum produto encontrado.</p>
+  </div>
+</ion-content>

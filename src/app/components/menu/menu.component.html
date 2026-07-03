@@ -40,6 +40,16 @@
           </a>
         </li>
       </ng-container>
+
+      <ng-container *ngIf="authService.isMercadoAdmin">
+        <li class="separador"><span>Meu Mercado</span></li>
+        <li *ngFor="let item of itensMercado">
+          <a [routerLink]="item.rota" (click)="fecharMenu()">
+            <img [src]="item.img" [alt]="item.label">
+            <span>{{ item.label }}</span>
+          </a>
+        </li>
+      </ng-container>
     </ul>
 
   </ion-content>

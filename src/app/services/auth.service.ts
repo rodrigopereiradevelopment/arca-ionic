@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
-export type TipoUsuario = 'usuario' | 'moderador' | 'admin' | null;
+export type TipoUsuario = 'usuario' | 'moderador' | 'admin' | 'mercado_admin' | null;
 
 export interface Usuario {
   id: string;
@@ -31,6 +31,7 @@ export class AuthService {
   get tipo() { return this.usuarioAtual.getValue()?.tipo; }
   get isAdmin() { return this.tipo === 'admin'; }
   get isModerador() { return this.tipo === 'moderador' || this.isAdmin; }
+  get isMercadoAdmin() { return this.tipo === 'mercado_admin'; }
   get isUsuario() { return this.tipo === 'usuario'; }
 
   salvarNoStorage(): void {
