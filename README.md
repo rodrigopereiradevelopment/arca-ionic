@@ -106,9 +106,7 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
 | 📱 **Onboarding** | 5 slides com swipe, permissões (localização/câmera) e termos (Swiper.js) | ✅ |
 | 🔐 **Recuperação Senha** | `esqueci-senha` + `redefinir-senha` via Resend | ✅ |
 | 🔍 **Busca por Similares** | Fallback automático quando produto não encontrado — busca por trigram + categoria + peso + preço | ✅ |
-| 🧠 **Embeddings (Fase 2)** | Busca semântica via cosine distance com fallback para trigram — 53.809 produtos indexados | ✅ |
 | 📋 **Categoria Browse** | Navegação por categoria com paginação 15 em 15 | ✅ |
-| 🚀 **In-app Update** | Verifica `GET /api/versao`, download automático + instalação nativa via `@capacitor/filesystem` | ✅ |
 | 📄 **Fetch one extra** | Paginação sem `count(*)` — evita timeout no Supabase | ✅ |
 | ⚡ **Promise.all** | Paralelização em gerenciar-produtos, perfil e app.component | ✅ |
 | 🛡️ **Safe-area + Imersivo** | Padding notch, footer acima nav buttons, `MainActivity.java` | ✅ |
@@ -122,6 +120,7 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
 | 🧩 **Comparação chunked** | Divide listas grandes em chunks de 20, 3 requisições paralelas, resultados progressivos | ✅ |
 | ⚡ **Busca paralela Lista Rápida** | Batches de 10 requisições simultâneas em vez de 115 sequenciais | ✅ |
 | 🎯 **Filtro por mercado na busca** | Chips horizontais para filtrar produtos de um mercado específico | ✅ |
+| 🚀 **In-app Update** | Verifica `GET /api/versao`, download via `CapacitorHttp` + `@capacitor/filesystem` + `@capacitor-community/file-opener` com fallback `Browser.open()` | ✅ |
 | 🔇 **Alt vazio nas imagens** | Medalhas e logos com `onerror` — sem nome duplicado se imagem falhar | ✅ |
 
 ---
@@ -328,10 +327,10 @@ arca-ionic/
 - **Fetch one extra** — `limit+1` em vez de `count: "exact"` para evitar timeout
 - **Parallelização Promise.all** — 40–60% mais rápido em gerenciar-produtos, perfil, app.component
 - **Safe-area headers/footer** — `padding-top: var(--ion-safe-area-top)`, `env(safe-area-inset-bottom)`
-- **Modo imersivo** — `MainActivity.java` com `SYSTEM_UI_FLAG_IMMERSIVE_STICKY`
-- **In-app update** — UpdateService + AlertController + download direto via `@capacitor/filesystem` + `@capacitor/browser`
+- **In-app update** — `CapacitorHttp` + `@capacitor/filesystem` + `@capacitor-community/file-opener` (fallback `Browser.open`)
 - **CORS corsOk/corsErr** — helpers em todas as respostas da API
 - **`onerror` anti-loop** — `this.onerror=null;this.src='...'` em imagens
+- **`onerror` silencioso** — imagens decorativas com `this.style.display='none'` (evita alt duplicado)
 - **Firebase Admin SDK** — `sendEachForMulticast` com auto-desativação de tokens
 - **google-services.json não versionado** — segurança das chaves Firebase
 - **Busca por similares** — fallback automático com trigram + categoria + peso + preço
