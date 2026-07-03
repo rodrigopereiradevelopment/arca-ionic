@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonSpinner, IonSegment, IonSegmentButton, IonLabel, IonButton, IonIcon, ToastController } from '@ionic/angular/standalone';
+import { IonContent, IonSpinner, IonSegment, IonSegmentButton, IonLabel, IonButton, IonIcon, IonProgressBar, ToastController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { list } from 'ionicons/icons';
 import { ComparacaoService } from '../../services/comparacao.service';
@@ -37,15 +37,17 @@ interface MercadoComPreco {
   produtos: ProdutoDetalhe[];
 }
 
-const CACHE_KEY = 'arca_compare_cache_v2';
-const CACHE_TTL = 60 * 1000; // 1 minuto (dados de preço mudam com frequência)
+const CACHE_TTL = 60 * 1000;
+const CACHE_PREFIX = 'arca_chunk_';
+const CHUNK_SIZE = 20;
+const CONCORRENCIA = 3;
 
 @Component({
   selector: 'app-comparar',
   templateUrl: './comparar.page.html',
   styleUrls: ['./comparar.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, IonContent, IonSpinner, IonSegment, IonSegmentButton, IonLabel, IonButton, IonIcon]
+  imports: [CommonModule, RouterModule, FormsModule, IonContent, IonSpinner, IonSegment, IonSegmentButton, IonLabel, IonButton, IonIcon, IonProgressBar]
 })
 export class CompararPage {
   private comparacaoService = inject(ComparacaoService);
@@ -57,6 +59,9 @@ export class CompararPage {
   produtosSelecionados: any[] = [];
   listas: ListaComparacao[] = [];
   listaSelecionada = 'atual';
+
+  progressoCarregados = 0;
+  totalProdutos = 0;
 
   private historicoService = inject(HistoricoService);
 
@@ -89,102 +94,169 @@ export class CompararPage {
       return;
     }
 
-    const cache = this.lerCache();
     const payload = this.produtosSelecionados.map(p => ({
       id: p.id, nome: p.nome, quantidade: p.quantidade || 1
     }));
     const hash = this.hashPayload(payload);
 
-    if (cache && cache.hash === hash && Date.now() - cache.timestamp < CACHE_TTL) {
-      this.mercados = cache.mercados;
-      this.mostrarToast('Resultados da comparação', 'success');
-      return;
-    }
-
-    await this.calcularCesta(payload, hash);
+    await this.calcularCesta(payload);
   }
 
   private hashPayload(payload: any[]): string {
     return payload.map(p => `${p.id}x${p.quantidade}`).join('|');
   }
 
-  private lerCache(): { hash: string; timestamp: number; mercados: MercadoComPreco[] } | null {
+  private lerChunkCache(hash: string): any[] | null {
     try {
-      const raw = localStorage.getItem(CACHE_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch {
+      const raw = localStorage.getItem(CACHE_PREFIX + hash);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (Date.now() - data.timestamp < CACHE_TTL) return data.mercados;
+      localStorage.removeItem(CACHE_PREFIX + hash);
       return null;
-    }
+    } catch { return null; }
   }
 
-  private salvarCache(hash: string, mercados: MercadoComPreco[]) {
+  private salvarChunkCache(hash: string, mercados: any[]) {
     try {
-      localStorage.setItem(CACHE_KEY, JSON.stringify({ hash, timestamp: Date.now(), mercados }));
+      localStorage.setItem(CACHE_PREFIX + hash, JSON.stringify({
+        mercados, timestamp: Date.now()
+      }));
     } catch {}
   }
 
-  async calcularCesta(produtosPayload: any[], hash: string) {
+  private limparChunkCaches() {
+    try {
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(CACHE_PREFIX)) {
+          localStorage.removeItem(key);
+        }
+      }
+    } catch {}
+  }
+
+  async calcularCesta(produtosPayload: any[]) {
     this.loading = true;
     this.mercados = [];
+    this.totalProdutos = produtosPayload.length;
+    this.progressoCarregados = 0;
 
-    try {
-      const response = await fetch(`${environment.apiUrl}/api/comparar`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ produtos: produtosPayload })
-      });
-
-      const data = await response.json();
-
-      if (data.sucesso && data.mercados) {
-        this.mercados = data.mercados.map((m: any, i: number) => {
-          const mercadoInfo = MERCADOS_MAP[m.id];
-
-          const produtosDetalhe: ProdutoDetalhe[] = m.produtos.map((prod: any) => ({
-            id: prod.id || 0,
-            nome: prod.nome,
-            nomeEncontrado: prod.nomeEncontrado || prod.nome,
-            quantidade: prod.quantidade,
-            precoEncontrado: prod.precoUnitario || 0,
-            naoEncontrado: prod.naoEncontrado || false,
-            similarInfo: prod.similarInfo || undefined
-          }));
-
-          return {
-            id: m.id,
-            nome: m.nome,
-            logo: mercadoInfo?.logo || 'assets/img/mercado.png',
-            preco: m.total,
-            precoFormatado: m.total > 0 ? `R$ ${m.total.toFixed(2)}` : 'Sem dados',
-            itens: m.itensEncontrados,
-            posicao: i === 0 && m.total > 0 ? MEDALHAS[0]
-                   : i === 1 && m.total > 0 ? MEDALHAS[1]
-                   : i === 2 && m.total > 0 ? MEDALHAS[2] : '',
-            expandido: false,
-            produtos: produtosDetalhe
-          };
-        });
-
-        this.salvarCache(hash, this.mercados);
-
-        const melhor = this.mercados.find(m => m.preco > 0);
-        if (melhor) {
-          this.historicoService.adicionar({
-            tipo: 'comparacao',
-            descricao: `Comparação de ${this.produtosSelecionados.length} produto(s)`,
-            detalhe: `Melhor: ${melhor.nome} ${melhor.precoFormatado}`,
-            icone: '💰',
-            rota: '/comparar',
-          });
-        }
-      } else {
-        this.mostrarToast('Erro ao comparar preços', 'danger');
-      }
-    } catch {
-      this.mostrarToast('Erro de conexão com o servidor', 'danger');
-    } finally {
-      this.loading = false;
+    const chunks: any[][] = [];
+    for (let i = 0; i < produtosPayload.length; i += CHUNK_SIZE) {
+      chunks.push(produtosPayload.slice(i, i + CHUNK_SIZE));
     }
+
+    for (let i = 0; i < chunks.length; i += CONCORRENCIA) {
+      const batch = chunks.slice(i, i + CONCORRENCIA);
+
+      const results = await Promise.all(
+        batch.map(async chunk => {
+          const chunkHash = this.hashPayload(chunk);
+          const cached = this.lerChunkCache(chunkHash);
+          if (cached) return { sucesso: true, mercados: cached } as any;
+
+          try {
+            const r = await fetch(`${environment.apiUrl}/api/comparar`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ produtos: chunk })
+            });
+            const data = await r.json() as any;
+            if (data?.sucesso && data?.mercados) {
+              this.salvarChunkCache(chunkHash, data.mercados);
+            }
+            return data;
+          } catch { return null; }
+        })
+      );
+
+      for (let j = 0; j < results.length; j++) {
+        const data = results[j];
+        if (data?.sucesso && data?.mercados) {
+          this.aplicarChunk(data.mercados, batch[j].length);
+        }
+      }
+    }
+
+    this.ordenarMercados();
+
+    if (this.mercados.length > 0) {
+      const melhor = this.mercados.find(m => m.preco > 0);
+      if (melhor) {
+        this.historicoService.adicionar({
+          tipo: 'comparacao',
+          descricao: `Comparação de ${this.totalProdutos} produto(s)`,
+          detalhe: `Melhor: ${melhor.nome} ${melhor.precoFormatado}`,
+          icone: '💰',
+          rota: '/comparar',
+        });
+      }
+    } else {
+      this.mostrarToast('Erro ao comparar preços', 'danger');
+    }
+
+    this.loading = false;
+  }
+
+  private aplicarChunk(mercadosChunk: any[], qtdProdutos: number) {
+    if (this.mercados.length === 0) {
+      this.mercados = mercadosChunk.map((m: any, i: number) => this.mapearMercado(m, i));
+    } else {
+      for (const mc of mercadosChunk) {
+        const alvo = this.mercados.find(m => m.id === mc.id);
+        if (alvo) {
+          alvo.preco += mc.total || 0;
+          alvo.itens += mc.itensEncontrados || 0;
+          alvo.precoFormatado = alvo.preco > 0 ? `R$ ${alvo.preco.toFixed(2)}` : 'Sem dados';
+          const prods = (mc.produtos || []).map((p: any) => this.mapearProduto(p));
+          alvo.produtos.push(...prods);
+        }
+      }
+    }
+    this.progressoCarregados += qtdProdutos;
+    this.ordenarMercados();
+  }
+
+  private mapearMercado(m: any, idx: number): MercadoComPreco {
+    const mercadoInfo = MERCADOS_MAP[m.id];
+    return {
+      id: m.id,
+      nome: m.nome,
+      logo: mercadoInfo?.logo || 'assets/img/mercado.png',
+      preco: m.total || 0,
+      precoFormatado: m.total > 0 ? `R$ ${Number(m.total).toFixed(2)}` : 'Sem dados',
+      itens: m.itensEncontrados || 0,
+      posicao: '',
+      expandido: false,
+      produtos: (m.produtos || []).map((p: any) => this.mapearProduto(p)),
+    };
+  }
+
+  private mapearProduto(prod: any): ProdutoDetalhe {
+    return {
+      id: prod.id || 0,
+      nome: prod.nome,
+      nomeEncontrado: prod.nomeEncontrado || prod.nome,
+      quantidade: prod.quantidade,
+      precoEncontrado: prod.precoUnitario || 0,
+      naoEncontrado: prod.naoEncontrado || false,
+      similarInfo: prod.similarInfo || undefined,
+    };
+  }
+
+  private ordenarMercados() {
+    this.mercados.sort((a, b) => {
+      if (b.itens !== a.itens) return b.itens - a.itens;
+      return a.preco - b.preco;
+    });
+
+    this.mercados.forEach((m, i) => {
+      if (i === 0 && m.preco > 0) m.posicao = MEDALHAS[0];
+      else if (i === 1 && m.preco > 0) m.posicao = MEDALHAS[1];
+      else if (i === 2 && m.preco > 0) m.posicao = MEDALHAS[2];
+      else m.posicao = '';
+    });
   }
 
   toStr(v: any): string { return String(v); }
@@ -193,7 +265,9 @@ export class CompararPage {
     this.comparacaoService.limpar();
     this.mercados = [];
     this.produtosSelecionados = [];
-    localStorage.removeItem(CACHE_KEY);
+    this.progressoCarregados = 0;
+    this.totalProdutos = 0;
+    this.limparChunkCaches();
   }
 
   toggleExpandir(mercado: MercadoComPreco) {

@@ -1,5 +1,19 @@
 <ion-content [fullscreen]="true">
-  <div class="container" *ngIf="!loading; else loadingTemplate">
+
+  <!-- LOADING INICIAL (sem dados ainda) -->
+  <div class="loading-container" *ngIf="loading && mercados.length === 0" style="text-align:center; padding: 40px;">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Calculando melhor mercado para sua cesta...</p>
+  </div>
+
+  <!-- PROGRESSO DURANTE CARREGAMENTO (já tem dados parciais) -->
+  <div class="progress-bar-container" *ngIf="loading && mercados.length > 0">
+    <ion-progress-bar [value]="progressoCarregados / totalProdutos"></ion-progress-bar>
+    <p class="progress-text">Carregando {{ progressoCarregados }} de {{ totalProdutos }} produtos...</p>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="container" *ngIf="mercados.length > 0 || !loading">
 
     <!-- SELETOR DE LISTA -->
     <div class="seletor-lista" *ngIf="listas.length > 0">
@@ -16,7 +30,7 @@
     <div class="intro-texto">
       <span>Esses são os melhores preços da sua lista de compras</span>
       <span>Comparada entre os mercados cadastrados</span>
-      <span class="qtd-produtos">{{ produtosSelecionados.length }} produto(s) selecionado(s)</span>
+      <span class="qtd-produtos">{{ totalProdutos }} produto(s) selecionado(s)</span>
     </div>
 
     <div class="titulo-card">
@@ -38,7 +52,7 @@
           <span class="expand-icon">{{ mercado.expandido ? '▲' : '▼' }}</span>
         </div>
         <div class="itens-info">
-          {{ mercado.itens }} de {{ produtosSelecionados.length }} itens encontrados
+          {{ mercado.itens }} de {{ totalProdutos }} itens encontrados
         </div>
       </div>
 
@@ -72,22 +86,15 @@
       </div>
     </div>
 
-    <div class="aviso" *ngIf="produtosSelecionados.length === 0">
+    <div class="aviso" *ngIf="totalProdutos === 0">
       <span>Nenhum produto selecionado. Busque produtos e clique em 📊 para comparar.</span>
     </div>
 
-    <div class="aviso" *ngIf="produtosSelecionados.length > 0">
+    <div class="aviso" *ngIf="totalProdutos > 0">
       <span><strong>Atenção:</strong> Comprar os produtos separados pode sair mais barato.</span>
     </div>
 
   </div>
-
-  <ng-template #loadingTemplate>
-    <div class="loading-container" style="text-align:center; padding: 40px;">
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>Calculando melhor mercado para sua cesta...</p>
-    </div>
-  </ng-template>
 
   <div class="botoes-fixos">
     <a routerLink="/home" class="btn-voltar">← Home</a>
