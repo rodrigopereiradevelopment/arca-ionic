@@ -43,10 +43,11 @@
       <!-- CABEÇALHO DO CARD (CLICÁVEL) -->
       <div class="mercado-header" (click)="toggleExpandir(mercado)" role="button" tabindex="0">
         <div class="mercado-info">
-          <img [src]="mercado.posicao" [alt]="mercado.nome" class="img-posicao" *ngIf="mercado.posicao">
+          <img [src]="mercado.posicao" *ngIf="mercado.posicao" class="img-posicao"
+               alt="" onerror="this.style.display='none'">
           <span class="posicao-numero" *ngIf="!mercado.posicao">{{ i + 1 }}º</span>
-          <img [src]="mercado.logo" [alt]="mercado.nome" class="img-logo"
-               onerror="this.onerror=null;this.src='assets/img/mercado.png'">
+          <img [src]="mercado.logo" alt="" class="img-logo"
+               onerror="this.style.display='none'">
           <span class="nome-mercado">{{ mercado.nome }}</span>
           <span class="preco">{{ mercado.precoFormatado }}</span>
           <span class="expand-icon">{{ mercado.expandido ? '▲' : '▼' }}</span>
