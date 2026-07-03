@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![App](https://img.shields.io/badge/App-Vercel-black?logo=vercel)](https://arca-ionic.vercel.app)
 [![API](https://img.shields.io/badge/API-Vercel-black?logo=vercel)](https://arca-next.vercel.app)
-![Version](https://img.shields.io/badge/version-1.2.0-green)
+![Version](https://img.shields.io/badge/version-1.2.1-green)
 [![Lint](https://img.shields.io/badge/lint-passing-brightgreen)]()
 [![Releases](https://img.shields.io/github/v/release/rodrigopereiradevelopment/arca-ionic)](https://github.com/rodrigopereiradevelopment/arca-ionic/releases)
 
@@ -119,6 +119,10 @@ App mobile para comparação de preços em supermercados. O usuário pesquisa pr
 | 🗑️ **Lixeira visível** | Botão delete ao lado do item (além do swipe) na lista de compras | ✅ |
 | 🧹 **Imagens quebradas limpas** | 6.711 produtos com `imagem_url` morta limpos para `null` | ✅ |
 | 📋 **Motivo nos similares** | `similarInfo.motivo` exibido como badge: equivalente / trigram / substituto | ✅ |
+| 🧩 **Comparação chunked** | Divide listas grandes em chunks de 20, 3 requisições paralelas, resultados progressivos | ✅ |
+| ⚡ **Busca paralela Lista Rápida** | Batches de 10 requisições simultâneas em vez de 115 sequenciais | ✅ |
+| 🎯 **Filtro por mercado na busca** | Chips horizontais para filtrar produtos de um mercado específico | ✅ |
+| 🔇 **Alt vazio nas imagens** | Medalhas e logos com `onerror` — sem nome duplicado se imagem falhar | ✅ |
 
 ---
 
@@ -337,6 +341,11 @@ arca-ionic/
 - **Substituto_amplo desligado** — melhor "não encontrado" honesto do que produto errado
 - **Ordenação por completeza** — mercado com 20/20 aparece antes de 19/20, independente do preço
 - **nomeEncontrado na UI** — exibe nome real do banco em itálico com badge Exato/Similar + motivo
+- **Comparação chunked** — CHUNK_SIZE=20, CONCORRENCIA=3, merge progressivo com reordenação por completeza
+- **Cache por chunk** — `arca_chunk_<hash>` no localStorage, TTL 1 minuto
+- **Busca paralela** — Lista Rápida em batches de 10, barra de progresso
+- **Filtro por mercado** — `supermercado_id` na API de search + chips horizontais no frontend
+- **`onerror` silencioso** — `this.style.display='none'` em vez de `alt` com nome (evita texto duplicado)
 
 ---
 
