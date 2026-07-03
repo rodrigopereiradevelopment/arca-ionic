@@ -41,7 +41,7 @@
         </li>
       </ng-container>
 
-      <ng-container *ngIf="authService.isMercadoAdmin">
+      <ng-container *ngIf="authService.isMercadoAdmin || authService.isAdmin">
         <li class="separador"><span>Meu Mercado</span></li>
         <li *ngFor="let item of itensMercado">
           <a [routerLink]="item.rota" (click)="fecharMenu()">
