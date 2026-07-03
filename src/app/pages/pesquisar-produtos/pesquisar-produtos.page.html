@@ -29,6 +29,17 @@
       </button>
     </div>
 
+    <!-- FILTRO POR MERCADO -->
+    <div class="mercados-scroll">
+      <button
+        *ngFor="let m of opcoesMercados"
+        class="mercado-btn"
+        [class.ativo]="mercadoFiltroId === m.id"
+        (click)="selecionarMercado(m.id)">
+        {{ m.nome }}
+      </button>
+    </div>
+
     <!-- ORDENAÇÃO E CONTAGEM -->
     <div class="barra-opcoes">
       <span class="contagem" aria-live="polite" aria-atomic="true">{{ produtosFiltrados.length }} produto(s)</span>

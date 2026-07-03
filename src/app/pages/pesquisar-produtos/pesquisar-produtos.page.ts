@@ -75,8 +75,10 @@ export class PesquisarProdutosPage implements OnInit {
   categorias: string[] = ['Todas'];
   private categoriaMap: Record<string, number> = {};
   produtos: Produto[] = [];
+  mercadoFiltroId: number | null = null;
 
   private mapaMercados: Record<number, { nome: string; logo: string }> = {};
+  opcoesMercados: { id: number | null; nome: string }[] = [{ id: null, nome: 'Todos' }];
 
   async ngOnInit() {
     await Promise.all([
@@ -115,11 +117,13 @@ export class PesquisarProdutosPage implements OnInit {
       const res = await fetch(`${environment.apiUrl}/api/mercados`);
       if (res.ok) {
         const data = await res.json();
+        this.opcoesMercados = [{ id: null, nome: 'Todos' }];
         for (const m of data) {
           this.mapaMercados[m.id] = {
             nome: m.nome,
             logo: m.logo_url || MERCADOS_MAP[m.id]?.logo || 'assets/img/mercado.png',
           };
+          this.opcoesMercados.push({ id: m.id, nome: m.nome });
         }
       }
     } catch {}
@@ -134,7 +138,9 @@ export class PesquisarProdutosPage implements OnInit {
     this.temMais = false;
     this.loading = true;
     try {
-      const res = await fetch(`${environment.apiUrl}/api/produtos/search?q=${encodeURIComponent(query)}`);
+      let url = `${environment.apiUrl}/api/produtos/search?q=${encodeURIComponent(query)}`;
+      if (this.mercadoFiltroId) url += `&supermercado_id=${this.mercadoFiltroId}`;
+      const res = await fetch(url);
       if (!res.ok) throw new Error('Erro na busca');
       const result: any = await res.json();
       const raw: any[] = result.data ?? [];
@@ -179,13 +185,24 @@ export class PesquisarProdutosPage implements OnInit {
     await this.carregarPorCategoria();
   }
 
+  selecionarMercado(id: number | null) {
+    this.mercadoFiltroId = id;
+    if (this.busca.length >= 2) {
+      this.handleSearch({ detail: { value: this.busca } });
+    } else if (this.categoriaAtiva !== 'Todas') {
+      this.pagina = 1;
+      this.carregarPorCategoria();
+    }
+  }
+
   async carregarPorCategoria(append = false) {
     if (!append) { this.loading = true; this.produtos = []; }
     else { this.carregandoMais = true; }
     try {
       const catId = this.categoriaMap[this.categoriaAtiva];
       if (!catId) return;
-      const url = `${environment.apiUrl}/api/produtos/search?categoria_id=${catId}&page=${this.pagina}`;
+      let url = `${environment.apiUrl}/api/produtos/search?categoria_id=${catId}&page=${this.pagina}`;
+      if (this.mercadoFiltroId) url += `&supermercado_id=${this.mercadoFiltroId}`;
       const res = await fetch(url);
       const result: any = await res.json();
       const raw: any[] = result.data ?? [];

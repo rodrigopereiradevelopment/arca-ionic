@@ -93,6 +93,36 @@ ion-content {
   }
 }
 
+// FILTRO POR MERCADO
+.mercados-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 0 12px;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+
+  .mercado-btn {
+    padding: 5px 14px;
+    border: 2px solid var(--arca-border);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--arca-text-muted);
+    background: var(--arca-surface);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    flex-shrink: 0;
+
+    &.ativo {
+      border-color: var(--arca-primary);
+      background: var(--arca-primary);
+      color: var(--arca-text-white);
+    }
+  }
+}
+
 // BARRA DE OPÇÕES
 .barra-opcoes {
   display: flex;
