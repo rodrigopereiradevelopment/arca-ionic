@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonContent, IonSpinner, IonButton, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, ToastController, IonList, IonItem, IonLabel, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonSpinner, IonButton, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, ToastController, IonList, IonItem, IonLabel, IonIcon, IonProgressBar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { saveOutline } from 'ionicons/icons';
 import { ComparacaoService } from '../../services/comparacao.service';
@@ -10,12 +10,14 @@ import { HistoricoListasService } from '../../services/historico-listas.service'
 import { AuthService } from '../../services/auth.service';
 import { environment } from '../../../environments/environment';
 
+const CONCORRENCIA_BUSCA = 10;
+
 @Component({
   selector: 'app-lista-rapida',
   templateUrl: './lista-rapida.page.html',
   styleUrls: ['./lista-rapida.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonContent, IonSpinner, IonButton, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonIcon]
+  imports: [CommonModule, FormsModule, IonContent, IonSpinner, IonButton, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonIcon, IonProgressBar]
 })
 export class ListaRapidaPage {
   private comparacaoService = inject(ComparacaoService);
@@ -26,6 +28,8 @@ export class ListaRapidaPage {
 
   textoLista = '';
   buscando = false;
+  buscandoProgresso = 0;
+  buscandoTotal = 0;
   erros: string[] = [];
   produtosEncontrados: any[] = [];
 
@@ -37,26 +41,47 @@ export class ListaRapidaPage {
     const linhas = this.textoLista.split('\n').map(l => l.trim()).filter(l => l.length > 1);
     if (linhas.length === 0) return [];
     this.buscando = true;
+    this.buscandoTotal = linhas.length;
+    this.buscandoProgresso = 0;
     this.erros = [];
     this.produtosEncontrados = [];
     this.comparacaoService.limpar();
-    for (const linha of linhas) {
-      try {
-        const res = await fetch(environment.apiUrl + '/api/produtos/search?q=' + encodeURIComponent(linha));
-        const json = await res.json();
-        const produtos = json?.data || [];
-        if (produtos.length > 0) {
-          this.comparacaoService.adicionar(produtos[0]);
-          this.produtosEncontrados.push(produtos[0]);
+
+    const encontrados: any[] = [];
+    const erros: string[] = [];
+
+    for (let i = 0; i < linhas.length; i += CONCORRENCIA_BUSCA) {
+      const batch = linhas.slice(i, i + CONCORRENCIA_BUSCA);
+
+      const results = await Promise.all(
+        batch.map(async linha => {
+          try {
+            const res = await fetch(environment.apiUrl + '/api/produtos/search?q=' + encodeURIComponent(linha));
+            const json = await res.json();
+            const produtos = json?.data || [];
+            return { linha, produto: produtos.length > 0 ? produtos[0] : null };
+          } catch {
+            return { linha, produto: null };
+          }
+        })
+      );
+
+      for (const r of results) {
+        if (r.produto) {
+          this.comparacaoService.adicionar(r.produto);
+          encontrados.push(r.produto);
         } else {
-          this.erros.push(linha);
+          erros.push(r.linha);
         }
-      } catch {
-        this.erros.push(linha);
       }
+
+      this.buscandoProgresso += batch.length;
+      this.produtosEncontrados = [...encontrados];
+      this.erros = [...erros];
     }
+
     this.buscando = false;
-    return this.produtosEncontrados;
+    return encontrados;
   }
 
   async buscarEComparar() {

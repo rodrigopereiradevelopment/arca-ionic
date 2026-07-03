@@ -25,7 +25,8 @@ sabao em po 800g</pre>
 
   <div *ngIf="buscando" class="loading">
     <ion-spinner name="crescent"></ion-spinner>
-    <p>Buscando produtos...</p>
+    <ion-progress-bar [value]="buscandoProgresso / buscandoTotal"></ion-progress-bar>
+    <p>Buscando {{ buscandoProgresso }} de {{ buscandoTotal }} produtos...</p>
   </div>
 
   <div *ngIf="produtosEncontrados.length > 0" class="encontrados">
