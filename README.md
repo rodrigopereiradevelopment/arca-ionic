@@ -1,69 +1,77 @@
-# 🛒 ARCA Ionic — Comparador de Preços
+# 🛒 ARCA — O App que te mostra onde a comida é mais barata
 
 [![Ionic](https://img.shields.io/badge/Ionic-8-blue?logo=ionic)](https://ionicframework.com/)
 [![Angular](https://img.shields.io/badge/Angular-20-red?logo=angular)](https://angular.io/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![App](https://img.shields.io/badge/App-Vercel-black?logo=vercel)](https://arca-ionic.vercel.app)
 [![API](https://img.shields.io/badge/API-Vercel-black?logo=vercel)](https://arca-next.vercel.app)
-![Version](https://img.shields.io/badge/version-1.2.1-green)
+![Version](https://img.shields.io/badge/version-1.2.2-green)
 [![Lint](https://img.shields.io/badge/lint-passing-brightgreen)]()
 [![Releases](https://img.shields.io/github/v/release/rodrigopereiradevelopment/arca-ionic)](https://github.com/rodrigopereiradevelopment/arca-ionic/releases)
 
 **TCC — ETEC Pedro Ferreira Alves — Mogi Mirim/SP — 2025/2026**
 
-App mobile para comparação de preços em supermercados. O usuário pesquisa produtos, monta sua lista de compras, gerencia o catálogo e descobre qual mercado oferece o menor preço total para a cesta completa.
+Compare preços em 6 supermercados da sua região sem sair de casa. Monte a lista de compras, veja onde cada item é mais barato e descubra qual mercado leva a sua cesta inteira pelo menor preço.
 
-> 🔗 **App:** [arca-ionic](https://github.com/rodrigopereiradevelopment/arca-ionic) — https://arca-ionic.vercel.app
-> 🔗 **API Backend:** [arca-next](https://github.com/rodrigopereiradevelopment/arca-next) — https://arca-next.vercel.app
-> 🕷️ **Scraper:** [arca-scraper](https://github.com/rodrigopereiradevelopment/arca-scraper)
-> 📦 **Releases:** https://github.com/rodrigopereiradevelopment/arca-ionic/releases
+```
+📱 58.000+ produtos · 6 supermercados · Android + Web
+⚙️  API Next.js · PostgreSQL + MongoDB · Scraper Python
+```
+
+> 🔗 **App:** https://arca-ionic.vercel.app
+> 🔗 **API:** https://arca-next.vercel.app
+> 🔗 **Scraper:** [arca-scraper](https://github.com/rodrigopereiradevelopment/arca-scraper)
 
 ---
 
-## 🏗️ Arquitetura Completa
+## 🏗️ Arquitetura
 
 ```
-🕷️  arca-scraper (Python + GitHub Actions)
-         ↓ 2x por semana
-🗄️  MongoDB Atlas (~57.000 produtos — Bronze)
-         ↓ ETL
+🕷️  arca-scraper (Python)
+  ↓ 2×/semana (GitHub Actions)
+🗄️  MongoDB Atlas (Bronze — ~57k produtos brutos)
+  ↓ ETL (sync 3 fases)
 🏺  Supabase PostgreSQL (Gold)
-     ├── pg_trgm (busca fuzzy)
-     ├── pgvector (embeddings 384d — busca semântica)
-     ├── 6 mercados com coordenadas reais
-     ├── histórico de preços
-     ├── gestão de produtos, categorias e mercados
-     ├── notificações (RLS)
-     ├── atividades_recentes
-     ├── tickets + mensagens
-     └── alerta_preco (RLS)
-         ↓
-🚀  arca-next (Vercel — API)
-     ├── /api/produtos
-      ├── /api/produtos
-      ├── /api/produtos/precos
-      ├── /api/produtos/search
-      ├── /api/produtos/info-nutricional
-      ├── /api/categorias
-      ├── /api/mercados
-      ├── /api/comparar (dinâmico — query Supabase)
-      ├── /api/auth/*
-      ├── /api/notificacoes
-      ├── /api/notificacoes/registrar-token
-      ├── /api/historico
-      ├── /api/tickets [+ mensagens]
-      ├── /api/alertas
-      ├── /api/favoritos
-      ├── /api/cupons
-      ├── /api/denuncias
-      ├── /api/avaliacoes
-      ├── /api/versao
-      ├── /api/upload
-      ├── /api/configuracoes
-      └── /api/chat (com contexto)
-         ↓
-📱  ESTE APP (Ionic + Angular)
+  ├── pg_trgm — busca fuzzy
+  ├── pgvector — embeddings 384d (busca semântica)
+  ├── 6 mercados com coordenadas Geocoding
+  ├── histórico completo de preços
+  └── tickets + mensagens + notificações + denúncias
+  ↓
+🚀  arca-next (Vercel — Next.js App Router)
+  ├── /api/comparar — 4 camadas de fallback
+  ├── /api/produtos/search — busca tokenizada + acentos
+  ├── /api/mercado — portal B2B (dashboard, produtos, CSV)
+  ├── /api/auth — email + OAuth (Google/Facebook)
+  └── +15 endpoints (tickets, favoritos, alertas, chat...)
+  ↓
+📱  arca-ionic (Ionic 8 + Angular 20 — Android + Web)
 ```
+
+---
+
+## ⚡ Performance
+
+| Processo | Antes | Hoje |
+|----------|-------|------|
+| Busca de produtos | timeout | ~120ms |
+| Comparação (7 produtos, 6 mercados) | ~40s | ~380ms |
+| Sincronização scraper → Supabase | ~27 min | ~2 min |
+| Busca na Lista Rápida (115 requisições) | sequencial | paralela (batches de 10) |
+| Comparação lista grande (chunked) | sequencial | paralela (chunks de 20, 3× concorrente) |
+
+---
+
+## 🏪 Portal do Mercado (B2B)
+
+Sistema separado dentro do app para donos de supermercado gerenciarem seus próprios dados:
+
+- **Dashboard** — stats de produtos, preços, última sincronização
+- **Gerenciar Produtos** — busca + edição inline de preço
+- **Importação CSV** — upload em lote com match por EAN ou nome
+- **Segurança** — role `mercado_admin`, cada mercado vê só seus produtos
+
+> O portal é acessível via menu "Meu Mercado" para usuários com role `mercado_admin` ou `admin`.
 
 ---
 
