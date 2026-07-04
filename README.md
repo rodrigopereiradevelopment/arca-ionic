@@ -11,7 +11,9 @@
 
 **TCC — ETEC Pedro Ferreira Alves — Mogi Mirim/SP — 2025/2026**
 
-Compare preços em 6 supermercados da sua região sem sair de casa. Monte a lista de compras, veja onde cada item é mais barato e descubra qual mercado leva a sua cesta inteira pelo menor preço.
+ARCA é uma plataforma de comparação inteligente de preços para supermercados, desenvolvida como Trabalho de Conclusão de Curso da ETEC Pedro Ferreira Alves.
+
+O sistema monitora milhares de produtos de diferentes mercados, permitindo montar listas de compras e descobrir automaticamente onde a cesta completa sai mais barata — sem sair de casa.
 
 ```
 📱 58.000+ produtos · 6 supermercados · Android + Web
