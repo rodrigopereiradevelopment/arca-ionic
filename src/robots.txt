@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://arca-ionic.vercel.app/sitemap.xml
