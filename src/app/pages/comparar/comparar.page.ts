@@ -9,7 +9,7 @@ import { ComparacaoService } from '../../services/comparacao.service';
 import { HistoricoService } from '../../services/historico.service';
 import { ListaService, ListaComparacao } from '../../services/lista.service';
 import { environment } from '../../../environments/environment';
-import { MERCADOS_MAP, MEDALHAS } from '../../constants/mercados';
+import { MERCADOS_MAP } from '../../constants/mercados';
 
 interface ProdutoDetalhe {
   id: number;
@@ -252,10 +252,7 @@ export class CompararPage {
     });
 
     this.mercados.forEach((m, i) => {
-      if (i === 0 && m.preco > 0) m.posicao = MEDALHAS[0];
-      else if (i === 1 && m.preco > 0) m.posicao = MEDALHAS[1];
-      else if (i === 2 && m.preco > 0) m.posicao = MEDALHAS[2];
-      else m.posicao = '';
+      m.posicao = `${i + 1}°`;
     });
   }
 

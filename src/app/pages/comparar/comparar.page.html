@@ -17,20 +17,14 @@
 
     <!-- SELETOR DE LISTA -->
     <div class="seletor-lista" *ngIf="listas.length > 0">
-      <ion-segment [value]="listaSelecionada" (ionChange)="trocarLista($event)" mode="ios">
-        <ion-segment-button value="atual">
-          <ion-label>Lista Atual</ion-label>
-        </ion-segment-button>
-        <ion-segment-button *ngFor="let l of listas" [value]="toStr(l.id)">
-          <ion-label>{{ l.nome }}</ion-label>
-        </ion-segment-button>
-      </ion-segment>
+      <ion-select [(ngModel)]="listaSelecionada" (ionChange)="trocarLista($event)" interface="popover" placeholder="Selecione uma lista">
+        <ion-select-option value="atual">Lista Atual</ion-select-option>
+        <ion-select-option *ngFor="let l of listas" [value]="toStr(l.id)">{{ l.nome }}</ion-select-option>
+      </ion-select>
     </div>
 
     <div class="intro-texto">
-      <span>Esses são os melhores preços da sua lista de compras</span>
-      <span>Comparada entre os mercados cadastrados</span>
-      <span class="qtd-produtos">{{ totalProdutos }} produto(s) selecionado(s)</span>
+      <span>{{ totalProdutos }} produto{{ totalProdutos > 1 ? 's' : '' }} · {{ mercados.length }} mercado{{ mercados.length > 1 ? 's' : '' }} comparado{{ mercados.length > 1 ? 's' : '' }}</span>
     </div>
 
     <div class="titulo-card">
@@ -43,9 +37,7 @@
       <!-- CABEÇALHO DO CARD (CLICÁVEL) -->
       <div class="mercado-header" (click)="toggleExpandir(mercado)" role="button" tabindex="0">
         <div class="mercado-info">
-          <img [src]="mercado.posicao" *ngIf="mercado.posicao" class="img-posicao"
-               alt="" onerror="this.style.display='none'">
-          <span class="posicao-numero" *ngIf="!mercado.posicao">{{ i + 1 }}º</span>
+          <span class="posicao-numero">{{ i + 1 }}º</span>
           <img [src]="mercado.logo" alt="" class="img-logo"
                onerror="this.style.display='none'">
           <div class="mercado-dados">
