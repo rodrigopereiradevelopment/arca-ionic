@@ -4,9 +4,12 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-searchbar
-      placeholder="Categoria / Produto"
+      placeholder="Buscar produto..."
+      [value]="buscaQuery"
+      (ionInput)="buscaQuery = $any($event).target.value"
+      (keyup.enter)="buscar()"
       showCancelButton="never"
-      (keyup.enter)="buscar($event)">
+      debounce="0">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
@@ -14,27 +17,62 @@
 <ion-content [fullscreen]="false">
   <h1 class="sr-only">ARCA — Comparador de Preços</h1>
   <div class="home-container">
-    
-<!--Trocar os baners por encartes de oferta reais-->
-    <swiper-container loop="true" autoplay="true" pagination="true"
-      slides-per-view="2" space-between="8" class="banner-top"
-      breakpoints='{"768": {"slidesPerView": 3}, "1024": {"slidesPerView": 4}}'>
-      <swiper-slide><img src="assets/img/Compare1.png" alt="Comparação de preços entre mercados"></swiper-slide>
-      <swiper-slide><img src="assets/img/Compare.png" alt="Encontre o menor preço perto de você"></swiper-slide>
-      <swiper-slide><img src="assets/img/Descontos.png" alt="Descontos e ofertas especiais"></swiper-slide>
-      <swiper-slide><img src="assets/img/Descubra.png" alt="Descubra novos produtos e marcas"></swiper-slide>
-      <swiper-slide><img src="assets/img/Economia.png" alt="Economize nas suas compras do dia a dia"></swiper-slide>
-      <swiper-slide><img src="assets/img/Ofertas.png" alt="Ofertas imperdíveis dessa semana"></swiper-slide>
-    </swiper-container>
 
-    <swiper-container loop="true" autoplay="true" pagination="true"
-      slides-per-view="1.05" space-between="12" class="banner-promo"
-      breakpoints='{"768": {"slidesPerView": 2}, "1024": {"slidesPerView": 2.5}}'>
-      <swiper-slide><img src="assets/img/Promocao3.png" alt="Promoção de carnes e frangos"></swiper-slide>
-      <swiper-slide><img src="assets/img/Promocao1.png" alt="Promoção de bebidas e refrigerantes"></swiper-slide>
-      <swiper-slide><img src="assets/img/Promocao.png" alt="Promoção de mercearia e grãos"></swiper-slide>
-      <swiper-slide><img src="assets/img/Promocao2.png" alt="Promoção de higiene e limpeza"></swiper-slide>
-    </swiper-container>
+    <!-- COMO USAR - 3 passos -->
+    <section class="como-usar">
+      <h2 class="secao-titulo">Como funciona</h2>
+      <div class="passos-grid">
+        <div class="passo" *ngFor="let p of passos; let i = index">
+          <div class="passo-numero">{{ i + 1 }}</div>
+          <ion-icon [name]="p.icone" class="passo-icone"></ion-icon>
+          <strong>{{ p.titulo }}</strong>
+          <span>{{ p.descricao }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- AÇÕES RÁPIDAS -->
+    <section class="acoes-rapidas">
+      <button class="acao-btn" (click)="irPara('/pesquisar-produtos')">
+        <ion-icon name="search"></ion-icon>
+        <span>Buscar Produtos</span>
+      </button>
+      <button class="acao-btn" (click)="irPara('/comparar')">
+        <ion-icon name="swap-horizontal"></ion-icon>
+        <span>Comparar</span>
+      </button>
+      <button class="acao-btn" (click)="irPara('/lista-rapida')">
+        <ion-icon name="list"></ion-icon>
+        <span>Lista Rápida</span>
+      </button>
+      <button class="acao-btn" (click)="irPara('/mercados-proximos')">
+        <ion-icon name="cart"></ion-icon>
+        <span>Mercados</span>
+      </button>
+    </section>
+
+    <!-- HISTÓRICO RECENTE -->
+    <section class="historico-secao" *ngIf="historico.length > 0">
+      <div class="secao-header">
+        <h2 class="secao-titulo">
+          <ion-icon name="time"></ion-icon>
+          Atividade Recente
+        </h2>
+        <button class="ver-todas" (click)="irPara('/historico')">
+          Ver todas <ion-icon name="chevron-forward"></ion-icon>
+        </button>
+      </div>
+      <div class="historico-lista">
+        <div class="historico-item" *ngFor="let item of historico" (click)="item.rota && irPara(item.rota)">
+          <span class="historico-icone">{{ item.icone }}</span>
+          <div class="historico-info">
+            <span class="historico-desc">{{ item.descricao }}</span>
+            <span class="historico-detalhe" *ngIf="item.detalhe">{{ item.detalhe }}</span>
+          </div>
+          <span class="historico-tempo">{{ formatarData(item.data) }}</span>
+        </div>
+      </div>
+    </section>
 
   </div>
 </ion-content>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonFooter, ModalController } from '@ionic/angular/standalone';
 import { ModalCarrinhoComponent } from '../modal-carrinho/modal-carrinho.component';
+import { FeedbackWidgetComponent } from '../feedback-widget/feedback-widget.component';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, IonFooter]
+  imports: [CommonModule, RouterModule, IonFooter, FeedbackWidgetComponent]
 })
 export class FooterComponent {
   private modalCtrl = inject(ModalController);

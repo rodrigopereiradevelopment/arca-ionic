@@ -261,6 +261,11 @@ export class CompararPage {
 
   toStr(v: any): string { return String(v); }
 
+  getPorcentagem(itens: number, total: number): number {
+    if (total === 0) return 0;
+    return Math.round((itens / total) * 100);
+  }
+
   limparSelecao() {
     this.comparacaoService.limpar();
     this.mercados = [];

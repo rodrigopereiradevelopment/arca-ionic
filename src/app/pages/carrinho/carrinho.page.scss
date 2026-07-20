@@ -37,11 +37,11 @@ ion-content {
   &.adicionar {
     justify-content: center;
     background: var(--arca-fav-bg);
-    border: 1px dashed var(--arca-tertiary);
+    border: 1px dashed var(--arca-primary);
     box-shadow: none;
 
     .link-adicionar {
-      color: var(--arca-tertiary);
+      color: var(--arca-primary);
       font-weight: bold;
       font-size: 1rem;
       text-decoration: none;
@@ -68,7 +68,7 @@ ion-content {
   box-shadow: 0 4px 8px var(--arca-shadow-lg);
 
   small { display: block; color: var(--arca-text-secondary); font-size: 0.8125rem; margin-bottom: 4px; }
-  strong { font-size: 1.375rem; color: var(--arca-tertiary); }
+  strong { font-size: 1.375rem; color: var(--arca-primary); }
 }
 
 .historico-section {
@@ -129,8 +129,8 @@ ion-content {
       padding: 6px 12px;
       border: none;
       border-radius: 20px;
-      background: var(--arca-tertiary);
-      color: var(--arca-text-white);
+      background: var(--arca-primary);
+      color: white;
       font-size: 0.8125rem;
       font-weight: 600;
       cursor: pointer;
@@ -181,12 +181,12 @@ ion-content {
   }
 
   .btn-comparar {
-    background: var(--arca-tertiary);
-    color: var(--arca-text-white);
+    background: var(--arca-primary);
+    color: white;
   }
 
   .btn-salvar {
-    background: var(--arca-fav-bg);
-    color: var(--arca-tertiary);
+    background: var(--arca-success-bg);
+    color: var(--arca-primary);
   }
 }

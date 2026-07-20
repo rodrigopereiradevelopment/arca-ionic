@@ -1,0 +1,46 @@
+<div class="feedback-container">
+  <button class="feedback-fab" (click)="toggle()" [class.active]="isOpen" aria-label="Feedback">
+    <ion-icon name="chatbubble-ellipses"></ion-icon>
+  </button>
+
+  <div class="feedback-panel" *ngIf="isOpen">
+    <div class="panel-header">
+      <span class="panel-title">Como foi sua experiência?</span>
+      <button class="btn-fechar" (click)="fechar()" aria-label="Fechar">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </div>
+
+    <div class="panel-body" *ngIf="!enviado">
+      <div class="emojis-row">
+        <button *ngFor="let e of emojis"
+          class="emoji-btn"
+          [class.selected]="emojiSelecionado === e.valor"
+          (click)="selecionar(e.valor)"
+          [attr.aria-label]="e.label">
+          <span class="emoji-icone">{{ e.icone }}</span>
+          <span class="emoji-label">{{ e.label }}</span>
+        </button>
+      </div>
+
+      <textarea
+        class="feedback-input"
+        [(ngModel)]="mensagem"
+        placeholder="Conte mais (opcional)..."
+        rows="3"
+        maxlength="280">
+      </textarea>
+
+      <button class="btn-enviar"
+        [disabled]="!emojiSelecionado"
+        (click)="enviar()">
+        Enviar
+      </button>
+    </div>
+
+    <div class="panel-body enviado" *ngIf="enviado">
+      <span class="emoji-grande">{{ emojiSelecionado === 'ruim' ? '😞' : emojiSelecionado === 'ok' ? '😐' : emojiSelecionado === 'bom' ? '😊' : '🤩' }}</span>
+      <span>Obrigado pelo feedback!</span>
+    </div>
+  </div>
+</div>

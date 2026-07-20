@@ -13,56 +13,80 @@
       </div>
     </div>
 
-    <ul class="menu-list">
-      <li *ngFor="let item of itensUsuario">
-        <a [routerLink]="item.rota" (click)="fecharMenu()">
-          <img [src]="item.img" [alt]="item.label">
+    <!-- ITENS PRINCIPAIS (5) -->
+    <ul class="menu-list menu-principal">
+      <li *ngFor="let item of itensPrincipais">
+        <a [routerLink]="item.rota" (click)="fecharMenu()" routerLinkActive="active">
+          <ion-icon [name]="item.icon"></ion-icon>
           <span>{{ item.label }}</span>
         </a>
       </li>
-
-      <ng-container *ngIf="authService.isModerador">
-        <li class="separador"><span>Moderação</span></li>
-        <li *ngFor="let item of itensModerador">
-          <a [routerLink]="item.rota" (click)="fecharMenu()">
-            <img [src]="item.img" [alt]="item.label">
-            <span>{{ item.label }}</span>
-          </a>
-        </li>
-      </ng-container>
-
-      <ng-container *ngIf="authService.isAdmin">
-        <li class="separador"><span>Administração</span></li>
-        <li *ngFor="let item of itensAdmin">
-          <a [routerLink]="item.rota" (click)="fecharMenu()">
-            <img [src]="item.img" [alt]="item.label">
-            <span>{{ item.label }}</span>
-          </a>
-        </li>
-      </ng-container>
-
-      <ng-container *ngIf="authService.isMercadoAdmin || authService.isAdmin">
-        <li class="separador"><span>Meu Mercado</span></li>
-        <li *ngFor="let item of itensMercado">
-          <a [routerLink]="item.rota" (click)="fecharMenu()">
-            <img [src]="item.img" [alt]="item.label">
-            <span>{{ item.label }}</span>
-          </a>
-        </li>
-      </ng-container>
     </ul>
+
+    <!-- BOTÃO MAIS -->
+    <button class="btn-mais" (click)="toggleMais()">
+      <ion-icon name="ellipsis-vertical"></ion-icon>
+      <span>{{ showMais ? 'Menos opções' : 'Mais opções' }}</span>
+    </button>
+
+    <!-- ITENS EXPANDIDOS -->
+    <ul class="menu-list menu-mais" *ngIf="showMais">
+      <li *ngFor="let item of itensMais">
+        <a [routerLink]="item.rota" (click)="fecharMenu()" routerLinkActive="active">
+          <ion-icon [name]="item.icon"></ion-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- SEÇÕES ADMIN/MODERADOR/MERCADO -->
+    <ng-container *ngIf="authService.isModerador">
+      <div class="separador"><span>Moderação</span></div>
+      <ul class="menu-list">
+        <li *ngFor="let item of itensModerador">
+          <a [routerLink]="item.rota" (click)="fecharMenu()" routerLinkActive="active">
+            <ion-icon [name]="item.icon"></ion-icon>
+            <span>{{ item.label }}</span>
+          </a>
+        </li>
+      </ul>
+    </ng-container>
+
+    <ng-container *ngIf="authService.isAdmin">
+      <div class="separador"><span>Administração</span></div>
+      <ul class="menu-list">
+        <li *ngFor="let item of itensAdmin">
+          <a [routerLink]="item.rota" (click)="fecharMenu()" routerLinkActive="active">
+            <ion-icon [name]="item.icon"></ion-icon>
+            <span>{{ item.label }}</span>
+          </a>
+        </li>
+      </ul>
+    </ng-container>
+
+    <ng-container *ngIf="authService.isMercadoAdmin || authService.isAdmin">
+      <div class="separador"><span>Meu Mercado</span></div>
+      <ul class="menu-list">
+        <li *ngFor="let item of itensMercado">
+          <a [routerLink]="item.rota" (click)="fecharMenu()" routerLinkActive="active">
+            <ion-icon [name]="item.icon"></ion-icon>
+            <span>{{ item.label }}</span>
+          </a>
+        </li>
+      </ul>
+    </ng-container>
 
   </ion-content>
 
   <ion-footer>
     <div class="menu-footer">
       <button class="btn-sair" (click)="logout()" *ngIf="authService.logado">
-        <img src="assets/img/sair.png" alt="Sair">
+        <ion-icon name="log-out"></ion-icon>
         <span>Sair</span>
       </button>
       <a routerLink="/login" class="btn-sair" *ngIf="!authService.logado"
         (click)="fecharMenu()">
-        <img src="assets/img/usuario1.png" alt="Login">
+        <ion-icon name="person"></ion-icon>
         <span>Entrar</span>
       </a>
     </div>

@@ -48,12 +48,20 @@
           <span class="posicao-numero" *ngIf="!mercado.posicao">{{ i + 1 }}º</span>
           <img [src]="mercado.logo" alt="" class="img-logo"
                onerror="this.style.display='none'">
-          <span class="nome-mercado">{{ mercado.nome }}</span>
-          <span class="preco">{{ mercado.precoFormatado }}</span>
+          <div class="mercado-dados">
+            <span class="nome-mercado">{{ mercado.nome }}</span>
+            <span class="preco">{{ mercado.precoFormatado }}</span>
+          </div>
+          <div class="badge-cobertura" [title]="mercado.itens + ' de ' + totalProdutos + ' itens encontrados'">
+            {{ getPorcentagem(mercado.itens, totalProdutos) }}%
+          </div>
           <span class="expand-icon">{{ mercado.expandido ? '▲' : '▼' }}</span>
         </div>
         <div class="itens-info">
-          {{ mercado.itens }} de {{ totalProdutos }} itens encontrados
+          <div class="barra-cobertura">
+            <div class="barra-preenchimento" [style.width]="getPorcentagem(mercado.itens, totalProdutos) + '%'"></div>
+          </div>
+          <span>{{ mercado.itens }} de {{ totalProdutos }} itens encontrados</span>
         </div>
       </div>
 

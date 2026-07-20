@@ -1,10 +1,16 @@
 :root {
-  --arca-primary: #39e6c2;
-  --arca-primary-rgb: 57, 230, 194;
-  --arca-secondary: #00BF9F;
-  --arca-secondary-rgb: 0, 191, 159;
-  --arca-tertiary: #22dbcf;
+  --arca-primary: #2BC67D;
+  --arca-primary-rgb: 43, 198, 125;
+  --arca-primary-hover: #1BA65A;
+  --arca-secondary: #667085;
+  --arca-secondary-rgb: 102, 112, 133;
+  --arca-tertiary: #3B82F6;
   --arca-quaternary: #4DD9D5;
+
+  --arca-info: #3B82F6;
+  --arca-warning: #F59E0B;
+  --arca-success: #2BC67D;
+  --arca-danger: #EF4444;
 
   --arca-bg: #f5f5f5;
   --arca-surface: #ffffff;
@@ -33,18 +39,18 @@
   --arca-shadow-md: rgba(0, 0, 0, 0.1);
   --arca-shadow-lg: rgba(0, 0, 0, 0.15);
   --arca-shadow-xl: rgba(0, 0, 0, 0.2);
-  --arca-shadow-button: rgba(0, 191, 159, 0.4);
+  --arca-shadow-button: rgba(43, 198, 125, 0.4);
 
-  --arca-info-bg: #e3f2fd;
-  --arca-info-text: #1565c0;
-  --arca-warning-bg: #fff3cd;
-  --arca-warning-text: #856404;
-  --arca-warning-border: #ffe082;
-  --arca-success-bg: #d4edda;
-  --arca-success-text: #155724;
-  --arca-danger-bg: #f8d7da;
-  --arca-danger-text: #721c24;
-  --arca-danger-border: #f5c6cb;
+  --arca-info-bg: #eff6ff;
+  --arca-info-text: #1d4ed8;
+  --arca-warning-bg: #fffbeb;
+  --arca-warning-text: #b45309;
+  --arca-warning-border: #fde68a;
+  --arca-success-bg: #d1fae5;
+  --arca-success-text: #065f46;
+  --arca-danger-bg: #fef2f2;
+  --arca-danger-text: #b91c1c;
+  --arca-danger-border: #fecaca;
   --arca-moderator-bg: #fff3cd;
   --arca-moderator-text: #856404;
   --arca-admin-bg: #f3e5f5;
@@ -61,19 +67,19 @@
   --arca-facebook: #1877F2;
   --arca-google: #4285F4;
 
-  --ion-color-primary: #39e6c2;
-  --ion-color-primary-rgb: 57, 230, 194;
+  --ion-color-primary: #2BC67D;
+  --ion-color-primary-rgb: 43, 198, 125;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #32cbaa;
-  --ion-color-primary-tint: #4de9c8;
+  --ion-color-primary-shade: #26b06f;
+  --ion-color-primary-tint: #42cb89;
 
-  --ion-color-secondary: #00BF9F;
-  --ion-color-secondary-rgb: 0, 191, 159;
+  --ion-color-secondary: #667085;
+  --ion-color-secondary-rgb: 102, 112, 133;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #00a88c;
-  --ion-color-secondary-tint: #1ac5a9;
+  --ion-color-secondary-shade: #5a6275;
+  --ion-color-secondary-tint: #757e92;
 
   --ion-background-color: #f5f5f5;
   --ion-text-color: #333333;

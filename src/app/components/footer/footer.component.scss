@@ -37,8 +37,8 @@
 }
 
 ion-footer {
-  --background: var(--arca-tertiary);
-  background:  var(--arca-tertiary)!important;
+  --background: var(--arca-primary);
+  background: var(--arca-primary) !important;
   --min-height: 60px;
   padding-bottom: 0 !important;
   &::before { display: none !important; }
