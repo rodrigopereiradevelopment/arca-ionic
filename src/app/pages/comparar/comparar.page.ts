@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonSpinner, IonSegment, IonSegmentButton, IonLabel, IonButton, IonIcon, IonProgressBar, ToastController } from '@ionic/angular/standalone';
+import { IonContent, IonSpinner, IonProgressBar, IonSelect, IonSelectOption, ToastController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { list } from 'ionicons/icons';
 import { ComparacaoService } from '../../services/comparacao.service';
@@ -47,7 +47,7 @@ const CONCORRENCIA = 3;
   templateUrl: './comparar.page.html',
   styleUrls: ['./comparar.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, IonContent, IonSpinner, IonSegment, IonSegmentButton, IonLabel, IonButton, IonIcon, IonProgressBar]
+  imports: [CommonModule, RouterModule, FormsModule, IonContent, IonSpinner, IonProgressBar, IonSelect, IonSelectOption]
 })
 export class CompararPage {
   private comparacaoService = inject(ComparacaoService);
