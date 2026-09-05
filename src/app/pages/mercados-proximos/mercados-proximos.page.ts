@@ -86,7 +86,7 @@ export class MercadosProximosPage implements AfterViewInit {
         ...m,
         distancia: 0,
         horario: '',
-        logo: MERCADOS_MAP[m.id]?.logo || 'assets/img/mercado.png',
+        logo: m.logo_url || MERCADOS_MAP[m.id]?.logo || 'assets/img/mercado.png',
         media_geral: nota?.media_geral || 0,
         total_avaliacoes: nota?.total || 0,
       };

@@ -223,7 +223,7 @@ export class CompararPage {
     return {
       id: m.id,
       nome: m.nome,
-      logo: mercadoInfo?.logo || 'assets/img/mercado.png',
+      logo: m.logo_url || mercadoInfo?.logo || 'assets/img/mercado.png',
       preco: m.total || 0,
       precoFormatado: m.total > 0 ? `R$ ${Number(m.total).toFixed(2)}` : 'Sem dados',
       itens: m.itensEncontrados || 0,

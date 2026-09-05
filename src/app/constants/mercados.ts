@@ -15,6 +15,8 @@ export const MERCADOS_MAP: Record<number, MercadoInfo> = {
   4: { nome: 'Atacadão',   logo: 'assets/img/atacadao.png' },
   5: { nome: 'Pague Menos', logo: 'assets/img/paguemenos.png' },
   6: { nome: 'São Vicente', logo: 'assets/img/saovicente.png' },
+  7: { nome: 'Mercado Teste ARCA', logo: 'assets/img/teste-arca.png' },
+  8: { nome: 'Wild Store', logo: 'assets/img/teste-wild.png' },
 };
 
 export const MERCADOS_COORDS: Record<number, MercadoCoords> = {
